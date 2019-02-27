@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="row" style="text-align: center">
+        <h3>Absence Detail (
+            <b>{{data.absenceLocation}}</b>)</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-xs-12" style="padding-top: 15px">
+            <div class="col-md-6">
+                <div class="col-md-6">Employee:</div>
+                <div class="col-md-6">{{data.employeeName}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">Position:</div>
+                <div class="col-md-6">{{data.positionDescription}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">Start Date::</div>
+                <div class="col-md-6">{{data.startDate | date}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">End Date:</div>
+                <div class="col-md-6">{{data.endDate | date}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">Substitute Required:</div>
+                <div class="col-md-6">{{data.substituteRequired ? 'Yes' : 'No'}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">Absence Reason:</div>
+                <div class="col-md-6">{{data.absenceReasonDescription}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">Absence Type:</div>
+                <div class="col-md-6">{{data.durationType == 1 ? 'Full Day' : data.durationType == 2 ? 'First Half' : data.durationType == 3 ?
+                    'Second Half' : 'Custom Time'}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">Start Time:</div>
+                <div class="col-md-6">{{data.startTime | date:'shortTime'}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">End Time:</div>
+                <div class="col-md-6">{{data.endTime | date:'shortTime'}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">Notes to Substitute:</div>
+                <div class="col-md-6">{{data.substituteNotes}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">Status</div>
+                <div class="col-md-6">{{data.absenceStatusDescription}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">PayRoll Notes:</div>
+                <div class="col-md-6">{{data.payrollNotes}}</div>
+            </div>
+            <div *ngIf='data.anyAttachment' style="text-align: center">
+                <button mat-button type="button" color="warn" (click)="DownloadFile()">
+                    Download Attachment
+                    <mat-icon>download</mat-icon>
+                    {{FileName}}
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>

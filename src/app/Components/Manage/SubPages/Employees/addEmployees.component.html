@@ -1,0 +1,115 @@
+<mat-card>
+    <mat-card-title>
+        Add Employee
+    </mat-card-title>
+
+    <mat-card-content>
+        <form (ngSubmit)="onSubmitEmployeeForm(employeeForm)" class="row" [formGroup]="employeeForm">
+            <div class="row col-md-12">
+                <div class="col-md-10 col-lg-10">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="row">
+                            <mat-form-field class="col-md-6 col-lg-6">
+                                <input matInput placeholder="First Name" formControlName="FirstName">
+                            </mat-form-field>
+                            <mat-form-field class="col-md-6 col-lg-6">
+                                <input matInput placeholder="Last Name" formControlName="LastName">
+                            </mat-form-field>
+
+                        </div>
+                        <div class="row">
+                            <mat-form-field class="col-md-6 col-lg-6">
+                                <mat-select placeholder="Role" (selectionChange)="onChangeEmployeeType($event.value)" formControlName="UserTypeId">
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let userType of userTypes" [value]="userType.id">
+                                        {{userType.title}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="col-md-6 col-lg-6">
+                                <input matInput type="email" placeholder="Email" formControlName="EmailId">
+                                <mat-error *ngIf="employeeForm.controls['EmailId'].hasError('email')">Not a valid email</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="row" *ngIf="employeeForm.value.UserTypeId == 1">
+                            <mat-form-field class="col-md-6 col-lg-6">
+                                <mat-select placeholder="Teaching Level" formControlName="TeachingLevel">
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let teachingLevel of TeachingLevels" [value]="teachingLevel.id">
+                                        {{teachingLevel.title}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="col-md-6 col-lg-6">
+                                <input matInput placeholder="Speciality" formControlName="Speciality">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6" style="margin-top: 10px">
+                                Work Location <br>
+                                <mat-radio-group (change)="OnchangeWorkLocation($event)" formControlName="WorkLocaion" #radioGroupForLocation="matRadioGroup">
+                                    <mat-radio-button color="primary" value="1">District Level</mat-radio-button>
+                                    <mat-radio-button style="padding-left:10px" color="primary" value="2">Campus/Building</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <mat-form-field *ngIf='radioGroupForLocation.value == "1"' class="col-md-6 col-lg-6">
+                                <mat-select placeholder="District" formControlName="District" required>
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let district of Districts" [value]="district.districtId">
+                                        {{district.districtName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field *ngIf='radioGroupForLocation.value == "2"' class="col-md-6 col-lg-6">
+                                <mat-select placeholder="Organization" formControlName="OrganizationId" required>
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
+                                        {{Organization.schoolName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <mat-form-field class="col-md-6 col-lg-6" hintLabel="Max 11 characters">
+                                <input matInput #input maxlength="11" formControlName="PhoneNumber" placeholder="Contact Number">
+                                <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
+                                <mat-error *ngIf="employeeForm.controls['PhoneNumber'].hasError('pattern')">Only numbers allowed</mat-error>
+                            </mat-form-field>
+                            <div class="col-md-2 col-lg-2">
+                                <label class="col-md-6 col-lg-6" for="mat-radio-group" style="margin-top:10px">Certified</label>
+                                <mat-radio-group class="col-md-6 col-lg-6" style="margin-top:10px" formControlName="IsCertified" #radioGroup="matRadioGroup">
+                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="0">No</mat-radio-button>
+                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="1">Yes</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-md-2 col-lg-2">
+                                <label class="col-md-6 col-lg-6" style="margin-top:10px">Gender</label>
+                                <mat-radio-group class="col-md-6 col-lg-6" style="margin-top:10px" formControlName="Gender">
+                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="M">Male</mat-radio-button>
+                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="F">Female</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-lg-2">
+                    <div class="row">
+                        <img [src]="profilePicture" width="200" height="200">
+                    </div>
+                    <div class="row">
+                        <input type='file' (change)="onSelectProfileImage($event)">
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12" style="text-align:right;margin-top: 10px">
+                <a routerLink="./../../employees">
+                    <button mat-raised-button type="button" color="primary">Back</button>
+                </a>
+                <button mat-raised-button color="primary" type="submit">{{userIdForUpdate ? 'Update': 'Save'}}</button>
+
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

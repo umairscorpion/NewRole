@@ -1,0 +1,32 @@
+<style>
+    mat-card {
+        max-width: 716px;
+        margin: 2em auto;
+        text-align: center;
+    }
+
+    .Leave-content {
+        padding: 60px 1rem;
+    }
+
+    .full-width-input {
+        width: 100%;
+    }
+</style>
+<div class="Leave-content">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="LeaveForm" (ngSubmit)="onSubmit(LeaveForm)">
+                <h4>Add New Leave</h4>
+                <mat-form-field class="full-width-input">
+                    <input matInput placeholder="Leave Name" formControlName="LeaveTypeName" required>
+                </mat-form-field>
+                <mat-form-field class="full-width-input">
+                    <input matInput placeholder="Starting Balance" formControlName="StartingBalance" required>
+                </mat-form-field>
+                <a routerLink="./../../leave"> <button mat-raised-button color="primary">Back</button></a>
+                <button mat-raised-button color="primary">Save</button>
+            </form>
+</mat-card-content>
+</mat-card>
+</div>

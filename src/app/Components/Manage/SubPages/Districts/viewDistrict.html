@@ -1,0 +1,46 @@
+<h1 mat-dialog-title style="text-align: center">District Detail</h1>
+<div mat-dialog-content>
+    <div class="row">
+        <div style="margin-top:20px">
+            <div class='row col-md-10 col-md-offset-1'>
+                <div class='col-md-3 heading'>Name:</div>
+                <div class='col-md-3'>{{data[0].districtName}}</div>
+                <div class='col-md-3 heading'>Address:</div>
+                <div class='col-md-3'>{{data[0].districtAddress}}</div>
+            </div>
+            <div class='row col-md-10 col-md-offset-1'>
+                <div class='col-md-3 heading'>City:</div>
+                <div class='col-md-3'>{{data[0].city}}</div>
+                <div class='col-md-3 heading'>Zip Code:</div>
+                <div class='col-md-3'>{{data[0].districtZipCode}}</div>
+            </div>
+            <div class='row col-md-10 col-md-offset-1'>
+                <div class='col-md-3 heading'>Country:</div>
+                <div class='col-md-3'>{{data[0].countryName }}</div>
+                <div class='col-md-3 heading'>State:</div>
+                <div class='col-md-3'>{{data[0].stateName }}</div>
+            </div>
+            <div class='row col-md-10 col-md-offset-1'>
+                <div class='col-md-3 heading'>Start Time:</div>
+                <div class='col-md-3'>{{data[0].districtStartTime }}</div>
+                <div class='col-md-3 heading'>First Half End:</div>
+                <div class='col-md-3'>{{data[0].district1stHalfEnd}}</div>
+            </div>
+            <div class='row col-md-10 col-md-offset-1'>
+                <div class='col-md-3  heading'>Second Half Start: </div>
+                <div class='col-md-3'>{{data[0].district2ndHalfStart}}</div>
+                <div class='col-md-3 heading'>End Time: </div>
+                <div class='col-md-3'>{{data[0].districtEndTime}}</div>
+            </div>
+            <div class='row col-md-10 col-md-offset-1'>
+                <div class='col-md-3 heading'>Time Zone:</div>
+                <div class='col-md-3'>(GMT+09:30) Adelaide</div>
+                <div class='col-md-3 heading'>Phone Number:</div>
+                <div class='col-md-3'>{{data[0].districtPhone}}</div>
+            </div>
+        </div>
+        
+        
+    </div>
+    <div class="row col-md-10 col-md-offset-1"><hr></div>
+</div>

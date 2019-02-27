@@ -1,0 +1,110 @@
+﻿<div class="container">
+    <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+        <Subzz-app-SideNav></Subzz-app-SideNav>
+        <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+            <mat-sidenav class="col-md-2" opened="{{isOpen}}" (keydown.escape)="toggle()" [mode]="mobileQuery.matches ? 'over' : 'side'"
+                [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+                <mat-nav-list *ngIf='userTemplate && userTemplate.length'>
+                    <a mat-list-item [routerLinkActive]="['active']" routerLink="/{{userTempplateObj.stateMachine}}" *ngFor="let userTempplateObj of userTemplate">{{userTempplateObj.name}}</a>
+                </mat-nav-list>
+            </mat-sidenav>
+            <mat-sidenav-content class="col-md-10">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <span class="stat-percent" style="font-size: 20px;margin-right:10px">25</span>
+                                <h5 class="label label-success" style="line-height:2px!important;font-size: 92%!important;">Total Absences</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="stat-percent font-bold text-success">98%
+                                    <i class="fa fa-level-up"></i>
+                                </div>
+                                <small>Previous Day</small>
+                                <div>3</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <span class="stat-percent" style="font-size: 20px;margin-right:10px">25</span>
+                                <h5 class="label label-info" style="line-height:2px!important;font-size: 92%!important;">Filled</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="stat-percent font-bold text-info">20%
+                                    <i class="fa fa-level-up"></i>
+                                </div>
+                                <small>Previous Day</small>
+                                <div>3</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <span class="stat-percent" style="font-size: 20px;margin-right:10px">25</span>
+                                <h5 class="label label-primary" style="line-height:2px!important;font-size: 92%!important;">Unfilled</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="stat-percent font-bold text-navy">44%
+                                    <i class="fa fa-level-up"></i>
+                                </div>
+                                <small>Previous Day</small>
+                                <div>3</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <span class="stat-percent" style="font-size: 20px;margin-right:10px">25</span>
+                                <h5 class="label label-danger" style="line-height:2px!important;font-size: 92%!important;">No Sub Required</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="stat-percent font-bold text-danger">38%
+                                    <i class="fa fa-level-up"></i>
+                                </div>
+                                <small>Previous Day</small>
+                                <div>3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="col-md-6">
+                            <div class="ibox-title">
+                                Absence Summary
+                            </div>
+                            <div>
+                                <canvas id="absenceSummary">{{ absenceSummary }}</canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="ibox-title">
+                                Absence Reason
+                            </div>
+                            <div>
+                                <canvas id="absenceReason">{{ absenceReason }}</canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="col-md-12">
+                            <div class="col-md-12 ibox-title">
+                                Filled / Unfilled 10 Day Trend
+                            </div>
+                            <div class="col-md-12">
+                                <canvas height="100" id="filledunfilledAbsence">{{ filledunfilledAbsence }}</canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-sidenav-content>
+        </mat-sidenav-container>
+    </div>
+</div>

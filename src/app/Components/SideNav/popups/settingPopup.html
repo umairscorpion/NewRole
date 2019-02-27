@@ -1,0 +1,54 @@
+<div>
+    <div class="row">
+
+        <div class="col-md-8 col-xs-8" style="padding: 24px">
+            <div class="col-md-6">
+                <div>
+                    <b>Subzz</b>
+                </div>
+                <div style="margin-top: 18px">Your Organization</div>
+                <div style="margin-top: 20px">
+                    <a (click)="OpenSettingsPage()">Account And Settings</a>
+                </div>
+                <div *ngIf="userRole != 4" style="margin-top: 20px;">
+                    <a>Manage Users</a>
+                </div>
+            </div>
+            <div style="margin-top:10px" class="col-md-6">
+                <div style="margin-top: 20px">
+                    <b>Tools</b>
+                </div>
+                <div *ngIf="userRole != 4" style="margin-top:20px">
+                    <a>Audit Log</a>
+                </div>
+                <div  style="margin-top:20px">
+                    <a>Calendar</a>
+                </div>
+                <div *ngIf="userRole != 4" style="margin-top:20px">
+                    <a>Substitute Availabilty</a>
+                </div>
+                <div style="margin-top: 20px">
+                    <a>Time Clock</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-xs-4" style="height: 300px;background-color: rgba(209,196,233,.3);">
+            <div class="row" style="text-align:center">
+                <div style="margin-top: 10px">
+                    <img class="img-circle" [src]="ProfilePicture" onError="this.src='assets/Images/noimage.png'" height="100" width="100">
+                </div>
+                <div style="margin-top: 20px">{{UserName}}</div>
+                <div style="margin-top: 20px">
+                    <a (click)="OpenProfilePage()">User Profile</a>
+                </div>
+                <div style="margin-top: 20px">
+                    <button mat-button type="button" mat-dialog-close (click)="Logout()">
+                        <mat-icon>lock</mat-icon>
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

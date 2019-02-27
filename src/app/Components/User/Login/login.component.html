@@ -1,0 +1,29 @@
+﻿<div class="signin-content">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="loginFrm" (ngSubmit)="onSubmit(loginFrm)">
+                <h3>Subzz</h3>
+                <p i18n="login header|Login Screen heading@@loginHeader">Please login to continue</p>
+                <mat-form-field class="full-width-input">
+                    <input matInput placeholder="Email" formControlName="userName" required>
+                    <mat-error *ngIf="isFieldInvalid('userName')">
+                        Please enter your email
+                    </mat-error>    
+                </mat-form-field>
+                <mat-form-field class="full-width-input">
+                    <input matInput placeholder="Password" formControlName="password" required [type]="hide ? 'password' : 'text'">
+                    <mat-icon style="cursor: pointer;" matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                    <mat-error *ngIf="isFieldInvalid('userName')">
+                        Please inform your password
+                    </mat-error>
+                </mat-form-field>
+                <button mat-raised-button color="primary">Login</button>
+               <div style="padding-top: 10px">or</div>
+                <a class="btn btn-block btn-social btn-google" (click)="loginWithGoogle()">
+                        <span class="fa fa-google"></span> Sign in with Google
+                </a>
+            </form>
+        </mat-card-content>
+        © Subzz 2018. All Rights Reserved
+    </mat-card>
+</div>

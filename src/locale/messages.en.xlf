@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="appTitle" datatype="html">
+        <source>
+          Angular Internationalization
+        </source>
+        <target>
+          Angular Internationalization
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">The title for our i18n sample app</note>
+        <note priority="1" from="meaning">site title</note>
+      </trans-unit>
+      <trans-unit id="homeTitle" datatype="html">
+        <source>
+          Let&apos;s create an angular app using internationalization!!
+        </source>
+        <target>
+          Let&apos;s create an angular app using internationalization!!
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <note priority="1" from="description">The home title for our i18n sample app</note>
+        <note priority="1" from="meaning">home text</note>
+      </trans-unit>
+      <trans-unit id="loginHeader" datatype="html">
+        <source>Please login to continue</source>
+        <target>
+          Please login to continue
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/Components/User/Login/login.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">Login Screen heading</note>
+        <note priority="1" from="meaning">login header</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

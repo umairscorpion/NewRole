@@ -1,0 +1,34 @@
+﻿<mat-toolbar style="background:#3C3C3F!important;">
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="toggle()">
+      <mat-icon class="top-Bar-text">menu</mat-icon>
+    </button>
+    <span>
+      <a  (click)="GotoDashboard()" style="cursor: pointer;color:white">Subzz</a>
+    </span>
+    <span class="adjust-spacer"></span>
+    <!-- <img class="img-circle" [src]="ProfilePicture" onError="this.src='assets/Images/noimage.png'" height="34" width="34"> -->
+    <br/> &nbsp;
+    <!-- <span style="font-size: 14px;" class="top-Bar-text"> {{UserName}}</span> -->
+    <!-- <form *ngIf='ShowHide'>
+        <input type="text" placeholder="search">
+    </form> -->
+    <button mat-icon-button>
+      <mat-icon class="top-Bar-text" (click)="showSearchPopup()">search</mat-icon>
+    </button>
+    <button mat-icon-button class="hexagon">
+      <mat-icon class="top-Bar-text" (click)="showSettingsPopup()">settings</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon class="top-Bar-text">help_outline</mat-icon>
+    </button>
+    <span style="color:white;font-size: 16px;">Help</span>
+    <button mat-icon-button>
+      <mat-icon class="top-Bar-text">notification_important</mat-icon>
+    </button>
+    <!-- <button mat-button class="top-Bar-text" (click)="Logout()">Logout</button> -->
+  </mat-toolbar-row>
+</mat-toolbar>
+<!-- <mat-sidenav #sidenav (keydown.escape)="toggle()" disableClose>
+    <p><button mat-button (click)="toggle()">Toggle</button></p>
+  </mat-sidenav> -->

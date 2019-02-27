@@ -1,0 +1,92 @@
+import { Component, ViewChild, OnInit, Inject } from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { IDistrict } from '../../../../Model/Manage/district';
+import { DistrictService } from '../../../../Service/Manage/district.service';
+import { EmployeeService } from '../../../../Service/Manage/employees.service';
+import { DataContext } from '../../../../Services/dataContext.service';
+import { UserSession } from '../../../../Services/userSession.service';
+import { NotifierService } from 'angular-notifier';
+import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+
+@Component({
+    templateUrl: 'substitutes.component.html'
+})
+export class SubstitutesComponent implements OnInit {
+  displayedColumns = ['FirstName', 'LastName', 'Email', 'PhoneNumber', 'action'];
+  SubstituteDetail : any;
+  private notifier: NotifierService;
+  District: IDistrict;
+  substituteDataSource = new MatTableDataSource();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  Employees : any
+  msg: string;
+  constructor(private router: Router, private _districtService: DistrictService, public dialog: MatDialog,
+     private _employeeService: EmployeeService, notifier: NotifierService, private _dataContext : DataContext,
+     public sanitizer:DomSanitizer, private _userSession: UserSession) {
+      this.notifier = notifier;
+  }
+  ngOnInit(): void {
+    this.GetSustitutes();
+  }
+  ngAfterViewInit() {
+    this.substituteDataSource.sort = this.sort;
+    this.substituteDataSource.paginator = this.paginator;
+  }
+
+  GetSustitutes(): void {
+    let RoleId = 4;
+    let OrgId = -1;
+    let DistrictId = this._userSession.getUserDistrictId();
+    this._employeeService.get('user/getUsers',RoleId, OrgId, DistrictId).subscribe((data: any) => {
+      this.substituteDataSource.data = data;
+    },
+      error => this.msg = <any>error);
+  }
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    this.substituteDataSource.filter = filterValue;
+  }
+
+  DeleteSubstitute(SelectedRow: any) {
+    var confirmResult = confirm('Are you sure you want to delete Substitute?');
+    if (confirmResult) {
+      this._districtService.delete('user/', SelectedRow.userId).subscribe((data: any) => {
+        this.notifier.notify( 'success', 'Deleted Successfully' );
+        this.GetSustitutes();
+      },
+        error => this.msg = <any>error);
+    }
+  }
+  
+  EditSubstitute(SelectedRow: any) {
+    this.router.navigate(['/manage/substitutes/addSubstitute'], { queryParams: { Id: SelectedRow.userId } });
+  }
+
+  ViewSubstituteDetail(SelectedRow: any) {
+
+    this._dataContext.getById('user/getUserById', SelectedRow.userId).subscribe((data: any) => {
+      this.dialog.open(PopupDialogForSubstituteDetail, {
+        data,
+        height: '500px',
+        width: '750px',
+       
+    });
+    },
+        error => <any>error);
+  }
+}
+
+@Component({
+  templateUrl: 'viewSubstitute.html',
+  styleUrls: ['substitute.component.css']
+})
+export class PopupDialogForSubstituteDetail {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public sanitizer:DomSanitizer) {
+    console.log(data);
+  }
+}
+

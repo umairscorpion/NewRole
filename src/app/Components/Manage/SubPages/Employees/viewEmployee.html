@@ -1,0 +1,37 @@
+<h1 mat-dialog-title style="text-align: center">Employee Detail</h1>
+<div mat-dialog-content>
+    <div class="row">
+        <div style="text-align:center">
+            <div>
+                <img [src]="data[0].profilePicture" onError="this.src='assets/Images/noimage.png'" width="200" height="200">
+            </div>
+        </div>
+        <div style="margin-top:20px">
+        <div class='row col-md-10 col-md-offset-1'>
+            <div class='col-md-2 heading'>Name:</div>
+            <div class='col-md-4'>{{data[0].firstName}} {{data[0].lastName}}</div>
+            <div class='col-md-2 heading'>Type:</div>
+            <div class='col-md-4'>{{data[0].userTypeDescription}}</div>
+        </div>
+        <div class='row col-md-10 col-md-offset-1'>
+            <div class='col-md-2 heading'>Role:</div>
+            <div class='col-md-4'>{{data[0].userRoleDesciption}}</div>
+            <div class='col-md-2 heading'>Gender:</div>
+            <div class='col-md-4'>{{data[0].gender == 'M' ? 'Male': 'Female'}}</div>
+        </div>
+        <div class='row col-md-10 col-md-offset-1'>
+            <div class='col-md-2 heading'>Certified:</div>
+            <div class='col-md-4'>{{data[0].isCertified == 1 ? 'Yes' : 'No'}}</div>
+            <div class='col-md-2 heading'>District:</div>
+            <div class='col-md-4'>Subzz</div>
+        </div>
+        <div class='row col-md-10 col-md-offset-1'>
+            <div class='col-md-2  heading'>Email: </div>
+            <div class='col-md-4'>{{data[0].email}}</div>
+            <div class='col-md-2 heading'>Phone: </div>
+            <div class='col-md-4'>{{data[0].phoneNumber}}</div>
+        </div>
+    </div>
+    </div>
+    <div class="row col-md-10 col-md-offset-1"><hr></div>
+</div>

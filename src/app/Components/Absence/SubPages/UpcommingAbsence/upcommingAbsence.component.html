@@ -1,0 +1,94 @@
+<style>
+  /* Structure */
+
+  .example-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+  }
+
+  .example-header {
+    min-height: 64px;
+    padding: 8px 24px 0;
+  }
+
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .mat-table {
+    overflow: auto;
+    max-height: 500px;
+  }
+</style>
+<h3>Upcoming Absences</h3>
+<div class="row">
+  <div class="col-md-12 col-lg-12">
+    <div class="example-container mat-elevation-z8">
+      <div class="example-header">
+        <!-- <mat-form-field>
+          <input matInput placeholder="Filter">
+        </mat-form-field> -->
+      </div>
+      <mat-table #table [dataSource]="UpcommingAbsences" matSort>
+        <!-- Position Column -->
+        <ng-container matColumnDef="AbsenceDate">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Absence Date </mat-header-cell>
+          <mat-cell *matCellDef="let Absence"> {{Absence.startDate | date}}
+            <br> {{Absence.startTime | date:'shortTime'}}-{{Absence.endTime | date:'shortTime'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Posted">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Posted </mat-header-cell>
+          <mat-cell *matCellDef="let Absence"> {{Absence.createdDate | date}}
+            <br> By: {{Absence.createdByUser}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Location">
+          <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+          <mat-cell *matCellDef="let Absence"> {{Absence.employeeId == Absence.absenceCreatedByEmployeeId ? 'self' : Absence.employeeName}}
+            <br> {{Absence.absenceLocation}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Status">
+          <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+          <mat-cell *matCellDef="let Absence"> {{Absence.absenceStatusDescription}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Substitute">
+          <mat-header-cell *matHeaderCellDef> Substitute </mat-header-cell>
+          <mat-cell *matCellDef="let Absence"> {{Absence.substituteName ? Absence.substituteName: 'N/A'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Action">
+          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+          <mat-cell *matCellDef="let Absence">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button (click)="UpdateStatus(Absence, 4)" mat-menu-item>
+                <mat-icon>cancel</mat-icon>
+                <span>Cancel</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </button>
+              <button (click)="ShowDetail(Absence)" mat-menu-item>
+                  <mat-icon>visibility</mat-icon>
+                  <span>view</span>
+                </button>
+            </mat-menu>
+
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+      </mat-paginator>
+    </div>
+  </div>
+</div>

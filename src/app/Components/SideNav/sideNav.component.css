@@ -1,0 +1,19 @@
+﻿.example-icon {
+  padding: 0 14px;
+}
+
+.top-Bar-text {
+color: white;
+}
+
+.adjust-spacer {
+  flex: 1 1 auto;
+}
+
+div > a {
+  cursor: pointer;
+  text-decoration: none !important;
+  color: black
+}
+
+

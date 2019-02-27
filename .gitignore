@@ -1,0 +1,17 @@
+.idea
+bin
+typings
+node_modules
+dist
+jspm_packages
+link-checker-results.txt
+npm-debug.log
+**/*npm-debug.log.*
+*.js
+*.js.map
+_test-output
+_temp
+.editorconfig
+CHANGELOG.md
+app/**/*.js
+app/**/*.js.map

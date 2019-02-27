@@ -1,0 +1,104 @@
+<mat-card>
+    <mat-card-title>
+        Add Organziation
+    </mat-card-title>
+
+    <mat-card-content>
+        <form (ngSubmit)="onSubmit(organizationForm)" [formGroup]="organizationForm">
+            <table class="col-md-12 col-lg-12">
+                <tr>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput placeholder="Organization Name" formControlName="Name">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput placeholder="City" formControlName="City">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <textarea matInput placeholder="Address" formControlName="Address" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput type="number" placeholder="Zip Code" formControlName="ZipCode">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field>
+                            <mat-select placeholder="Country" formControlName="Country" (selectionChange)="onChange($event.value)" required>
+                                <mat-option>--</mat-option>
+                                <mat-option *ngFor="let country of countries" [value]="country.countryId">
+                                    {{country.countryName}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="organizationForm.controls['Country'].hasError('required')">Please choose any country</mat-error>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field>
+                            <mat-select placeholder="state" formControlName="State">
+                                <mat-option>--</mat-option>
+                                <mat-option *ngFor="let state of states  | async" [value]="state.stateId">
+                                    {{state.stateName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <mat-select placeholder="Select Time Zone" formControlName="TimeZone">
+                                <mat-option>-- Select Any --</mat-option>
+                                <mat-option value="4">(GMT+09:30) Adelaide</mat-option>
+                                <mat-option value="5">(GMT+10:00) Canberra, Melbourne, Sydney</mat-option>
+                                <mat-option value="6">(GMT+11:00) Magadan, Solomon Islands, New Caledonien</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput placeholder="City" formControlName="City">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput type="number" placeholder="Phone No" formControlName="PhoneNo">
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                                <input matInput placeholder="No. Schools" formControlName="NoSchools">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                                <input matInput placeholder="No. Users" formControlName="NoUsers">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="content-center">
+                        <button mat-raised-button color="primary" type="submit">Save</button>
+                        <a routerLink="/manage/districts">
+                            <button mat-raised-button type="button" color="primary">Back</button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </mat-card-content>
+</mat-card>

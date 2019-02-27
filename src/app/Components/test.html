@@ -1,0 +1,217 @@
+<fuse-sidebar class="chat-panel right-chat-panel right-positioned folded open locked-open animations-enabled ng-star-inserted unfolded"
+    lockedopen="gt-md" name="chatPanel" position="right">
+    <chat-panel>
+        <div class="header mat-elevation-z4 primary" fxlayout="row" fxlayoutalign="space-between center" style="flex-direction: row; box-sizing: border-box; display: flex; place-content: center space-between; align-items: center;">
+            <!---->
+            <!---->
+            <div class="title ml-16 ng-star-inserted" fxlayout="row" fxlayoutalign="start center" style="flex-direction: row; box-sizing: border-box; display: flex; place-content: center flex-start; align-items: center;">
+                <mat-icon class="s-32 fuse-white-fg mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">chat</mat-icon>
+                <h3 class="ml-12">Team Chat</h3>
+            </div>
+            <!---->
+            <button class="toggle-sidebar-folded mr-8 mat-icon-button" fxhide="" fxshow.gt-md="" mat-icon-button="">
+                <span class="mat-button-wrapper">
+                    <mat-icon class="secondary-text s-20 mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">close</mat-icon>
+                </span>
+                <div class="mat-button-ripple mat-ripple mat-button-ripple-round" matripple=""></div>
+                <div class="mat-button-focus-overlay"></div>
+            </button>
+            <button class="toggle-sidebar-open mr-8 mat-icon-button" fxhide.gt-md="" mat-icon-button="" style="display: none;">
+                <span class="mat-button-wrapper">
+                    <mat-icon class="secondary-text mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">close</mat-icon>
+                </span>
+                <div class="mat-button-ripple mat-ripple mat-button-ripple-round" matripple=""></div>
+                <div class="mat-button-focus-overlay"></div>
+            </button>
+        </div>
+        <div class="content" style="flex-direction: row; box-sizing: border-box; display: flex;">
+            <div fuseperfectscrollbar="" id="contacts-list" class="ps ps--active-y">
+                <!---->
+                <div class="contacts-list-item online ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-99" cdk-describedby-host=""
+                        src="assets/images/avatars/alice.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="unread-count ng-star-inserted">2</div>
+                    <div class="status-icon online"></div>
+                </div>
+                <div class="contacts-list-item do-not-disturb ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-100" cdk-describedby-host=""
+                        src="assets/images/avatars/Arnold.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon do-not-disturb"></div>
+                </div>
+                <div class="contacts-list-item do-not-disturb ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-101" cdk-describedby-host=""
+                        src="assets/images/avatars/Barrera.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon do-not-disturb"></div>
+                </div>
+                <div class="contacts-list-item offline ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-102" cdk-describedby-host=""
+                        src="assets/images/avatars/Blair.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="unread-count ng-star-inserted">3</div>
+                    <div class="status-icon offline"></div>
+                </div>
+                <div class="contacts-list-item offline ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-103" cdk-describedby-host=""
+                        src="assets/images/avatars/Boyle.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="unread-count ng-star-inserted">1</div>
+                    <div class="status-icon offline"></div>
+                </div>
+                <div class="contacts-list-item offline ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-104" cdk-describedby-host=""
+                        src="assets/images/avatars/Christy.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon offline"></div>
+                </div>
+                <div class="contacts-list-item online ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-105" cdk-describedby-host=""
+                        src="assets/images/avatars/Copeland.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon online"></div>
+                </div>
+                <div class="contacts-list-item away ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-106" cdk-describedby-host=""
+                        src="assets/images/avatars/Estes.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon away"></div>
+                </div>
+                <div class="contacts-list-item offline ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-107" cdk-describedby-host=""
+                        src="assets/images/avatars/Harper.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon offline"></div>
+                </div>
+                <div class="contacts-list-item away ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-108" cdk-describedby-host=""
+                        src="assets/images/avatars/Helen.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon away"></div>
+                </div>
+                <div class="contacts-list-item offline ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-109" cdk-describedby-host=""
+                        src="assets/images/avatars/Henderson.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon offline"></div>
+                </div>
+                <div class="contacts-list-item online ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-110" cdk-describedby-host=""
+                        src="assets/images/avatars/Josefina.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon online"></div>
+                </div>
+                <div class="contacts-list-item away ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-111" cdk-describedby-host=""
+                        src="assets/images/avatars/Katina.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon away"></div>
+                </div>
+                <div class="contacts-list-item do-not-disturb ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-112" cdk-describedby-host=""
+                        src="assets/images/avatars/Lily.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="unread-count ng-star-inserted">10</div>
+                    <div class="status-icon do-not-disturb"></div>
+                </div>
+                <div class="contacts-list-item away ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-113" cdk-describedby-host=""
+                        src="assets/images/avatars/Mai.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon away"></div>
+                </div>
+                <div class="contacts-list-item do-not-disturb ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-114" cdk-describedby-host=""
+                        src="assets/images/avatars/Nancy.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon do-not-disturb"></div>
+                </div>
+                <div class="contacts-list-item do-not-disturb ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-115" cdk-describedby-host=""
+                        src="assets/images/avatars/Nora.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="unread-count ng-star-inserted">7</div>
+                    <div class="status-icon do-not-disturb"></div>
+                </div>
+                <div class="contacts-list-item away ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-116" cdk-describedby-host=""
+                        src="assets/images/avatars/Odessa.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="unread-count ng-star-inserted">1</div>
+                    <div class="status-icon away"></div>
+                </div>
+                <div class="contacts-list-item offline ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-117" cdk-describedby-host=""
+                        src="assets/images/avatars/Reyna.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon offline"></div>
+                </div>
+                <div class="contacts-list-item online ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-118" cdk-describedby-host=""
+                        src="assets/images/avatars/Shauna.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon online"></div>
+                </div>
+                <div class="contacts-list-item online ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-119" cdk-describedby-host=""
+                        src="assets/images/avatars/Shepard.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon online"></div>
+                </div>
+                <div class="contacts-list-item do-not-disturb ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-120" cdk-describedby-host=""
+                        src="assets/images/avatars/Tillman.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="unread-count ng-star-inserted">99+</div>
+                    <div class="status-icon do-not-disturb"></div>
+                </div>
+                <div class="contacts-list-item away ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-121" cdk-describedby-host=""
+                        src="assets/images/avatars/Trevino.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon away"></div>
+                </div>
+                <div class="contacts-list-item do-not-disturb ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-122" cdk-describedby-host=""
+                        src="assets/images/avatars/Tyson.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon do-not-disturb"></div>
+                </div>
+                <div class="contacts-list-item online ng-star-inserted">
+                    <img class="avatar" mattooltipposition="left" aria-describedby="cdk-describedby-message-123" cdk-describedby-host=""
+                        src="assets/images/avatars/Velazquez.jpg" style="touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <!---->
+                    <div class="status-icon online"></div>
+                </div>
+                <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                </div>
+                <div class="ps__rail-y" style="top: 0px; right: 0px; height: 373px;">
+                    <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 97px;"></div>
+                </div>
+            </div>
+            <div fxflex="1 1 auto" fxlayout="column" id="chat" style="flex-direction: column; box-sizing: border-box; display: flex; flex: 1 1 auto;">
+                <div class="messages ps" fuseperfectscrollbar="" fxflex="1 1 auto" id="messages" style="flex: 1 1 auto; box-sizing: border-box;">
+                    <!---->
+                    <!---->
+                    <!---->
+                    <!---->
+                    <div class="no-contact-selected ng-star-inserted">
+                        <div class="no-contact-icon">
+                            <mat-icon class="s-128 fade-text mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">chat</mat-icon>
+                        </div>
+                        <div class="no-contact secondary-text"> Select a contact to start a conversation. </div>
+                    </div>
+                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                    </div>
+                    <div class="ps__rail-y" style="top: 0px; right: 0px;">
+                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                    </div>
+                </div>
+                <!---->
+            </div>
+        </div>
+    </chat-panel>
+</fuse-sidebar>

@@ -1,0 +1,148 @@
+<div class="main-container">
+    <Subzz-app-SideNav></Subzz-app-SideNav>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="row">
+                <mat-card>
+                    <mat-card-title>
+                        Accounts and Settings
+                    </mat-card-title>
+                    <mat-card-content>
+                        <mat-tab-group class="demo-tab-group">
+                            <mat-tab label="Custom Settings">
+
+                            </mat-tab>
+                            <mat-tab label="Notification Settings">
+                                <div class="row col-md-8 col-md-offset-2">
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-top:10px;text-align: center">
+                                            <b>
+                                                These subs will have
+                                                <mat-form-field style="width:75px">
+                                                    <mat-select [(value)]="TimeCustomDelay" placeholder="hours">
+                                                        <mat-option value="1">12 hours</mat-option>
+                                                        <mat-option value="2">6 hours</mat-option>
+                                                        <mat-option value="3">2 hours</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                to accept the request before we notify the rest of your sub.
+                                            </b>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                                                <ng-container matColumnDef="event">
+                                                    <th mat-header-cell *matHeaderCellDef> Event </th>
+                                                    <td mat-cell *matCellDef="let row"> {{row.Event}} </td>
+                                                </ng-container>
+                                                
+                                                <!-- Weight Column -->
+                                                <ng-container matColumnDef="email">
+                                                    <th mat-header-cell *matHeaderCellDef>
+                                                        <span class="HeaderAlignment">
+                                                            <i class="material-icons">
+                                                                email
+                                                            </i>
+                                                            <span style="padding-top:5px ">Email Alert</span>
+                                                        </span>
+                                                    </th>
+
+                                                    <td mat-cell *matCellDef="let row ;let i = index;">
+                                                        <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="$event ? ChangeNotificationPreference(row, 'Email') : null"
+                                                            [checked]="row.Email">
+                                                        </mat-checkbox>
+                                                        {{row.Email}}
+                                                    </td>
+
+                                                </ng-container>
+
+                                                <!-- Symbol Column -->
+                                                <ng-container matColumnDef="text">
+                                                    <th mat-header-cell *matHeaderCellDef>
+                                                        <span class="HeaderAlignment">
+                                                            <i class="material-icons">
+                                                                message
+                                                            </i>
+                                                            <span style="padding-top:5px ">Text Message Alert</span>
+                                                        </span>
+                                                    </th>
+                                                    <td mat-cell *matCellDef="let row">
+                                                        <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="$event ? ChangeNotificationPreference(row, 'Text') : null"
+                                                            [checked]="row.Text">
+                                                        </mat-checkbox>
+                                                    </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="voice">
+                                                    <th mat-header-cell *matHeaderCellDef>
+                                                        <span class="HeaderAlignment">
+                                                            <i class="material-icons">
+                                                                record_voice_over
+                                                            </i>
+                                                            <span style="padding-top:5px ">Voice Alert</span>
+                                                        </span>
+                                                    </th>
+                                                    <td mat-cell *matCellDef="let row">
+                                                        <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="$event ? ChangeNotificationPreference(row,'voice') : null"
+                                                            [checked]="row.voice">
+                                                        </mat-checkbox>
+                                                    </td>
+                                                </ng-container>
+                                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding-top: 20px">
+                                        <div class="col-md-12" style="text-align: center">
+                                            <button color="primary" mat-raised-button (click)="SaveCustomSettings()">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                            <mat-tab *ngIf='isSubstitute' label="Categories Settings">
+                                <div class="row col-md-8 col-md-offset-2">
+                                    <div class="col-md-12" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
+                                        <p>
+                                            <b> Select Categories against which you want to get notifications.</b>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12" style="overflow-y: scroll; height:400px;">
+                                        <mat-selection-list #Category>
+                                            <mat-list-option *ngFor="let category of Categories" [value]="category.id" [selected]="category.isNotificationSend">
+                                                {{category.title}}
+                                            </mat-list-option>
+                                        </mat-selection-list>
+                                    </div>
+                                    <div class="col-md-12" style="text-align: center">
+                                        <button color="primary" mat-raised-button (click)="SaveCategories(Category)">Save</button>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                            <!-- <mat-tab *ngIf='isSubstitute' label="School Settings">
+                                <div class="row col-md-8 col-md-offset-2">
+                                    <div class="col-md-12" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
+                                        <p>
+                                            <b> Select Schools against which you want to get notifications.</b>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12" style="overflow-y: scroll; height:400px;">
+                                        <mat-selection-list #Category>
+                                            <mat-list-option *ngFor="let category of Categories" [value]="category.id" [selected]="category.isNotificationSend">
+                                                {{category.title}}
+                                            </mat-list-option>
+                                        </mat-selection-list>
+                                    </div>
+                                    <div class="col-md-12" style="text-align: center">
+                                        <button color="primary" mat-raised-button (click)="SavePreferredSchoolSettings(Category)">Save</button>
+                                    </div>
+                                </div>
+                            </mat-tab> -->
+                        </mat-tab-group>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

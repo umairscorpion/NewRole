@@ -1,0 +1,297 @@
+<mat-card>
+  <mat-card-content>
+    <h2 class="example-h2">Leave Settings</h2>
+    <mat-tab-group class="demo-tab-group">
+      <mat-tab label="Leave">
+        <div class="demo-tab-content">
+          <h3>Type Of Leaves</h3>
+          <div>
+            <div class="row">
+              <div class="col-md-12 col-lg-12" style="text-align: right">
+                <a routerLink="./AddLeave">
+                  <button mat-raised-button color="primary">Add Leave</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-lg-12">
+              <div class="example-container mat-elevation-z8">
+                <div class="example-header">
+                  <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                  </mat-form-field>
+                </div>
+                <mat-table #table [dataSource]="dataSourceForLeaveTypes" matSort>
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="LeaveTypeName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Type Of Leave </mat-header-cell>
+                    <mat-cell *matCellDef="let LeaveType"> {{LeaveType.leaveTypeName}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="StartingBalance">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Starting Balance </mat-header-cell>
+                    <mat-cell *matCellDef="let LeaveType"> {{LeaveType.startingBalance}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <a>
+                        <i class="material-icons" (click)="DeleteRecord(row.member_id)">delete_sweep</i>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveTypes"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumnsForLeaveTypes;"></mat-row>
+                </mat-table>
+                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+                </mat-paginator>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Leave To Approve">
+        <!-- md-dynamic-height md-stretch-tabs -->
+        <mat-tab-group [selectedIndex]="0" (selectedTabChange)="tabClick($event)">
+          <mat-tab label="Submitted Leaves">
+            <h4>Submitted Leaves</h4>
+            <div *ngIf="dataSourceForLeaveRequests.data.length > 0 ;else NoSubmittedLeaves" class="demo-tab-content">
+              <!-- <h3>Leave Requests</h3> -->
+              <div>
+                <div class="row">
+                  <div class="col-md-6 col-lg-6" style="text-align: left">
+                    <a>
+                      <button (click)="OnApproveClick()" mat-raised-button color="primary">Approve</button>
+                    </a>
+                    <a>
+                      <button (click)="OnDenyClick()" mat-raised-button color="primary">Deny</button>
+                    </a>
+                  </div>
+                  <div class="col-md-6 col-lg-6" style="text-align: right">
+                    <a routerLink="./AddLeaveRequest">
+                      <button mat-raised-button color="primary">Add Leave Request</button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 col-lg-12">
+                  <div class="example-container mat-elevation-z8">
+                    <div class="example-header">
+                      <mat-form-field>
+                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                      </mat-form-field>
+                    </div>
+                    <mat-table #table [dataSource]="dataSourceForLeaveRequests" matSort>
+                      <ng-container matColumnDef="select">
+                        <mat-header-cell *matHeaderCellDef>
+                          <mat-checkbox (change)="$event ? OnSelectUnselectAll() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                          </mat-checkbox>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                          </mat-checkbox>
+                        </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="CreatedDate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Submitted On </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.createdDate}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="EmployeeName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Employee </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.employeeName}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="Description">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Description </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.description}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="EndDate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Leave Period </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.endDate}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="EndTime">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Duration </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.endTime}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="LeaveTypeName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Leave Type </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.leaveTypeName}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="Status">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> Requested </mat-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveRequests"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumnsForLeaveRequests;"></mat-row>
+                    </mat-table>
+                    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+                    </mat-paginator>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #NoSubmittedLeaves>
+              <div style="text-align: center">No Submitted Leaves</div>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Approved Leaves">
+            <h4>Approved Leaves</h4>
+            <div *ngIf="dataSourceForLeaveRequests.data.length > 0 ;else NoApprovedLeaves" class="demo-tab-content">
+              <!-- <h3>Leave Requests</h3> -->
+              <div>
+                <div class="row">
+                  <div class="col-md-6 col-lg-6" style="text-align: left">
+                    <a>
+                      <button (click)="OnDenyClick()" mat-raised-button color="primary">Deny</button>
+                    </a>
+                  </div>
+                  <div class="col-md-6 col-lg-6" style="text-align: right">
+                    <a routerLink="./AddLeaveRequest">
+                      <button mat-raised-button color="primary">Add Leave Request</button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 col-lg-12">
+                  <div class="example-container mat-elevation-z8">
+                    <div class="example-header">
+                      <mat-form-field>
+                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                      </mat-form-field>
+                    </div>
+                    <mat-table #table [dataSource]="dataSourceForLeaveRequests" matSort>
+                      <ng-container matColumnDef="select">
+                        <mat-header-cell *matHeaderCellDef>
+                          <mat-checkbox (change)="$event ? OnSelectUnselectAll() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                          </mat-checkbox>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                          </mat-checkbox>
+                        </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="CreatedDate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Submitted On </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.createdDate}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="EmployeeName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Employee </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.employeeName}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="Description">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Description </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.description}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="EndDate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Leave Period </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.endDate}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="EndTime">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Duration </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.endTime}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="LeaveTypeName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Leave Type </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.leaveTypeName}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="Status">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> Approved </mat-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveRequests"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumnsForLeaveRequests;"></mat-row>
+                    </mat-table>
+                    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+                    </mat-paginator>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #NoApprovedLeaves>
+              <div style="text-align: center">No Approved Leaves</div>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Denied Leaves">
+            <h4>Denied Leaves</h4>
+            <div *ngIf="dataSourceForLeaveRequests.data.length > 0 ;else NoDeniedLeaves" class="demo-tab-content">
+              <!-- <h3>Leave Requests</h3> -->
+              <div>
+                <div class="row">
+                  <div class="col-md-6 col-lg-6" style="text-align: left">
+                    <a>
+                      <button (click)="OnApproveClick()" mat-raised-button color="primary">Approve</button>
+                    </a>
+                  </div>
+                  <div class="col-md-6 col-lg-6" style="text-align: right">
+                    <a routerLink="./AddLeaveRequest">
+                      <button mat-raised-button color="primary">Add Leave Request</button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 col-lg-12">
+                  <div class="example-container mat-elevation-z8">
+                    <div class="example-header">
+                      <mat-form-field>
+                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                      </mat-form-field>
+                    </div>
+                    <mat-table #table [dataSource]="dataSourceForLeaveRequests" matSort>
+                      <ng-container matColumnDef="select">
+                        <mat-header-cell *matHeaderCellDef>
+                          <mat-checkbox (change)="$event ? OnSelectUnselectAll() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                          </mat-checkbox>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                          </mat-checkbox>
+                        </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="CreatedDate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Submitted On </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.createdDate}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="EmployeeName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Employee </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.employeeName}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="Description">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Description </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.description}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="EndDate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Leave Period </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.endDate}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="EndTime">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Duration </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.endTime}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="LeaveTypeName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Leave Type </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> {{Leave.leaveTypeName}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="Status">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let Leave"> Denied </mat-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveRequests"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumnsForLeaveRequests;"></mat-row>
+                    </mat-table>
+                    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+                    </mat-paginator>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #NoDeniedLeaves>
+              <div style="text-align: center">No Denied Leaves</div>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>

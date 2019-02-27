@@ -1,0 +1,28 @@
+/* Popups on Top Header */
+.search-popup .mat-dialog-container {
+    overflow: hidden;
+    padding: 0;
+    border-radius: 5px;
+  }
+
+.setting-popup .mat-dialog-container {
+  overflow: hidden;
+  padding: 0;
+  border-radius: 5px;
+}
+
+/* Setting Page */
+
+.HeaderAlignment {
+  display: flex;
+  
+}
+
+/* Absence Detail popup */
+
+.AbsenceDetail-popup .mat-dialog-container {
+  overflow: hidden;
+}
+
+.highlightDate { background: orange;
+  border-radius: 100%;}

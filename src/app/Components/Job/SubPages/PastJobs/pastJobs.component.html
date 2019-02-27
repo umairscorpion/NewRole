@@ -1,0 +1,102 @@
+
+      <h4>Past Jobs</h4>
+      <div class="row">
+          <div class="row">
+              <div class="col-md-12 col-lg-12">
+                  <form [formGroup]="FilterForm" (ngSubmit)="SearchPastJobs(FilterForm)">
+                      <mat-form-field class="col-md-2 col-lg-2">
+                          <input matInput [max]="FilterForm.value.EndDatePicker? FilterForm.value.EndDatePicker : CurrentDate" [matDatepicker]="StartDatePicker" placeholder="Start Date"
+                              formControlName="FilterStartDate">
+                          <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
+                          <mat-datepicker #StartDatePicker></mat-datepicker>
+                      </mat-form-field>
+                      <mat-form-field class="col-md-2 col-lg-2">
+                          <input matInput [min]="FilterForm.value.FilterStartDate" [max]="CurrentDate" [matDatepicker]="EndDatePicker"
+                              placeholder="End Date" formControlName="FilterEndDate">
+                          <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
+                          <mat-datepicker #EndDatePicker></mat-datepicker>
+                      </mat-form-field>
+                      <mat-form-field class="col-md-3 col-lg-3">
+                          <mat-select placeholder="District" formControlName="DistrictId">
+                              <mat-option *ngFor="let district of Districts" [value]="district.districtId">
+                                  {{district.districtName}}
+                              </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                      <mat-form-field class="col-md-3 col-lg-3">
+                          <mat-select placeholder="School" formControlName="OrganizationId">
+                              <mat-option value="-1"><b>All Schools</b></mat-option>
+                              <mat-option *ngFor="let organization of Organizations" [value]="organization.schoolId">
+                                  {{organization.schoolName}}
+                              </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                      <div class="col-md-2 col-lg-2">
+                              <button mat-button type="submit">Search</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+        <div class="col-md-12 col-lg-12">
+            <div class="row" style="text-align: center">
+                <h4><h4><b>Displaying Jobs For Dates</b>: {{FilterForm.value.FilterStartDate | date}} To {{FilterForm.value.FilterEndDate | date}}</h4></h4>
+            </div>
+          <div class="example-container mat-elevation-z8">
+            <div class="example-header">
+              <!-- <mat-form-field>
+                <input matInput placeholder="Filter">
+              </mat-form-field> -->
+            </div>
+            <mat-table *ngIf='this.PastJobs.data.length > 0' #table [dataSource]="PastJobs" matSort>
+              <!-- Position Column -->
+              <ng-container matColumnDef="AbsenceDate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Absence Date </mat-header-cell>
+                <mat-cell *matCellDef="let Absence"> {{Absence.startDate | date}}
+                  <br> {{Absence.startTime | date:'shortTime'}}-{{Absence.endTime | date:'shortTime'}} </mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="Posted">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Posted </mat-header-cell>
+                <mat-cell *matCellDef="let Absence"> {{Absence.createdDate | date}}
+                  <br> By: {{Absence.createdByUser}} </mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="Location">
+                <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+                <mat-cell *matCellDef="let Absence"> {{Absence.employeeName}}
+                  <br> {{Absence.absenceLocation}} </mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="Status">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let Absence"> {{Absence.absenceStatusDescription}} </mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="Substitute">
+                <mat-header-cell *matHeaderCellDef> Substitute </mat-header-cell>
+                <mat-cell *matCellDef="let Absence"> {{Absence.substituteName ? Absence.substituteName: 'N/A'}} </mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="Action">
+                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                <mat-cell *matCellDef="let Absence">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button (click)="ShowJobDetail(Absence)" mat-menu-item>
+                        <mat-icon>visibility</mat-icon>
+                        <span>view</span>
+                      </button>
+                  </mat-menu>
+      
+                </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+            </mat-paginator>
+          </div>
+        </div>
+      </div>

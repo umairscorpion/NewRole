@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="loginHeader" datatype="html">
+        <source>Please login to continue</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/Components/User/Login/login.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">Login Screen heading</note>
+        <note priority="1" from="meaning">login header</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

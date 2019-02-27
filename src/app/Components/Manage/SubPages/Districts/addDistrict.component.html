@@ -1,0 +1,126 @@
+<!-- <block-ui>
+    
+</block-ui>  -->
+<mat-card>
+    <mat-card-title>
+        Add District
+    </mat-card-title>
+
+    <mat-card-content>
+        <form (ngSubmit)="onSubmit(districtForm)" [formGroup]="districtForm">
+            <table class="col-md-12 col-lg-12">
+                <tr>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput placeholder="Name" formControlName="Name">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput placeholder="City" formControlName="City">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <textarea matInput placeholder="Address" formControlName="Address" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <!--<input matInput [matDatepicker]="picker" placeholder="Date of birth">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker touchUi="true" #picker></mat-datepicker>-->
+                            <input matInput type="number" placeholder="Zip Code" formControlName="ZipCode">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field>
+                            <mat-select placeholder="Country" formControlName="Country" (selectionChange)="onChange($event.value)" required>
+                                <mat-option>--</mat-option>
+                                <mat-option *ngFor="let country of countries" [value]="country.countryId">
+                                    {{country.countryName}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="districtForm.controls['Country'].hasError('required')">Please choose any country</mat-error>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field>
+                            <mat-select placeholder="state" formControlName="State">
+                                <mat-option>--</mat-option>
+                                <mat-option *ngFor="let state of states  | async" [value]="state.stateId">
+                                    {{state.stateName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput type="time" placeholder="Start Time" formControlName="StartTime">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput type="time" placeholder="1st Half Day EndTime" formControlName="firstHalfEndTime">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput type="time" placeholder="2nt Half Day StartTime" formControlName="SecondHaifStartTime">
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput type="time" placeholder="End Time" formControlName="EndTime">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field>
+                            <mat-select placeholder="Select Time Zone" formControlName="TimeZone">
+                                <mat-option>-- Select Any --</mat-option>
+                                <mat-option value="4">(GMT+09:30) Adelaide</mat-option>
+                                <mat-option value="5">(GMT+10:00) Canberra, Melbourne, Sydney</mat-option>
+                                <mat-option value="6">(GMT+11:00) Magadan, Solomon Islands, New Caledonien</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput type="number" placeholder="Phone No" formControlName="PhoneNo">
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr></tr>
+                <!-- <tr>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput type="number" placeholder="No Of Employees" formControlName="NoOfEmployees">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="demo-full-width">
+                            <input matInput type="number" placeholder="No Of Substitutes" formControlName="NoOfSubstitutes">
+                        </mat-form-field>
+                    </td>
+                </tr> -->
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="content-center">
+                        <button mat-raised-button color="primary" type="submit">{{districtIdForUpdate ? 'Update': 'Save'}}</button>
+                        <a routerLink="/manage/districts">
+                            <button mat-raised-button type="button" color="primary">Back</button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </mat-card-content>
+</mat-card>
