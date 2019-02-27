@@ -1,33 +1,30 @@
-<h1>Report Filters</h1>
 <div class="report-filters">
   <mat-expansion-panel #myPanel [disabled]="true">
-    <mat-expansion-panel-header class="filters-panel-header">
-
-      <mat-panel-description fxLayout="row" fxFlex fxLayoutAlign="start center" fxLayoutGap="10px">
-        <span>
-          FILTER OPTIONS
-        </span>
-        <mat-form-field fxFlex="20">
-          <input matInput [matDatepicker]="datePickerFrom" placeholder="Choose a date">
-          <mat-datepicker-toggle matSuffix [for]="datePickerFrom"></mat-datepicker-toggle>
-          <mat-datepicker #datePickerFrom></mat-datepicker>
-        </mat-form-field>
-
-        <!-- <mat-form-field fxFlex="20">
-          <input matInput [matDatepicker]="datePickerTo" placeholder="Choose a date">
-          <mat-datepicker-toggle matSuffix [for]="datePickerTo"></mat-datepicker-toggle>
-          <mat-datepicker #datePickerTo></mat-datepicker>
-        </mat-form-field> -->
-
-        <div fxFlex="60">
-          <button mat-icon-button color="primary" (click)="expandPannel()" [disableRipple]="true">
-            <mat-icon>{{matIcon}}</mat-icon>
-          </button>
+    <mat-expansion-panel-header class="header-panel">
+      <mat-panel-description>
+        <div class="col-md-12 title-bar">
+          <div class="col-md-4 title">
+            FILTER OPTIONS
+          </div>
+          <div class="col-md-3">
+            <mat-form-field>
+              <input matInput [matDatepicker]="datePickerFrom" placeholder="Choose a date">
+              <mat-datepicker-toggle matSuffix [for]="datePickerFrom"></mat-datepicker-toggle>
+              <mat-datepicker #datePickerFrom></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <button type="button" mat-raised-button class="btn btn-success">Print</button>&nbsp;
+            <button type="button" mat-raised-button class="btn btn-default">Cancel</button>
+          </div>
+          <div class="col-md-1">
+            <button mat-icon-button color="primary" (click)="expandPannel()" [disableRipple]="true">
+              <mat-icon>{{matIcon}}</mat-icon>
+            </button>
+          </div>
         </div>
       </mat-panel-description>
     </mat-expansion-panel-header>
-
-
     <div class="row">
       <div class="col-md-4 text-right">
         <label>Job Number:</label>
@@ -38,7 +35,6 @@
         </mat-form-field>
       </div>
     </div>
-
     <div class="row">
       <div class="col-md-4 text-right">
         <label>Employee Type:</label>
@@ -54,7 +50,6 @@
         </mat-form-field>
       </div>
     </div>
-
     <div class="row">
       <div class="col-md-4 text-right">
         <label>Absence Type:</label>
@@ -69,7 +64,6 @@
         </mat-form-field>
       </div>
     </div>
-
     <div class="row">
       <div class="col-md-4 text-right">
         <label>Location:</label>
@@ -84,7 +78,6 @@
         </mat-form-field>
       </div>
     </div>
-
     <div class="row">
       <div class="col-md-4 text-right">
         <label>Reason:</label>
@@ -99,7 +92,6 @@
         </mat-form-field>
       </div>
     </div>
-
     <div class="row">
       <div class="col-md-4 text-right">
         <label>Employee Last Name:</label>
@@ -110,7 +102,6 @@
         </mat-form-field>
       </div>
     </div>
-
     <div class="row">
       <div class="col-md-4">
       </div>
@@ -120,13 +111,4 @@
       </div>
     </div>
   </mat-expansion-panel>
-</div>
-
-
-<div class="row">
-  <div class="col-md-4">
-    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [options]="doughnutChartOptions"></canvas>
-  </div>
-  <div class="col-md-4"></div>
-  <div class="col-md-4"></div>
 </div>
