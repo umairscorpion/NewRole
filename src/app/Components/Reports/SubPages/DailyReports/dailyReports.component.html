@@ -1,1 +1,16 @@
+<div class="row text-center m-20">
+  <h3>Absence Summary</h3>
+  <div class="text-muted">{{date | date:'MMMM dd, yyyy'}}</div>
+</div>
 <app-report-filters></app-report-filters>
+<div class="row mt-30">
+  <div class="col-md-4">
+    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [options]="doughnutChartOptions"></canvas>
+  </div>
+  <div class="col-md-4">
+    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="'barchart'" [options]="doughnutChartOptions"></canvas>
+  </div>
+  <div class="col-md-4">
+    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [options]="doughnutChartOptions"></canvas>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "~font-awesome/css/font-awesome.css";
+@import "../node_modules/angular-notifier/styles.css";
+@import "../node_modules/angular-notifier/styles/core.css";
+@import "../node_modules/angular-notifier/styles/themes/theme-material.css";
+
+
+$sides: (top, bottom, left, right);
+@for $i from 0 to 100 {
+  @each $side in $sides {
+    .m#{str-slice($side, 0, 1)}-#{$i} {
+      margin-#{$side}: #{$i}px !important;
+    }
+    .p#{str-slice($side, 0, 1)}-#{$i} {
+      padding-#{$side}: #{$i}px !important;
+    }
+    .m-#{$i} {
+      margin: #{$i}px !important;
+    }
+    .p-#{$i} {
+      padding: #{$i}px !important;
+    }
+  }
+  @each $side in $sides {
+    .m#{str-slice($side, 0, 1)}--#{$i} {
+      margin-#{$side}: -#{$i}px !important;
+    }
+    .m--#{$i} {
+      margin: -#{$i}px !important;
+    }
+  }
+  .pv-#{$i} {
+    padding-top: #{$i}px !important;
+    padding-bottom: #{$i}px !important;
+  }
+  .ph-#{$i} {
+    padding-left: #{$i}px !important;
+    padding-right: #{$i}px !important;
+  }
+  .mv-#{$i} {
+    margin-top: #{$i}px !important;
+    margin-bottom: #{$i}px !important;
+  }
+  .mh-#{$i} {
+    margin-left: #{$i}px !important;
+    margin-right: #{$i}px !important;
+  }
+  .mv--#{$i} {
+    margin-top: -#{$i}px !important;
+    margin-bottom: -#{$i}px !important;
+  }
+  .mh--#{$i} {
+    margin-left: -#{$i}px !important;
+    margin-right: -#{$i}px !important;
+  }
+}
+
+@for $space from 0 to 100 {
+  .w-#{$space} {
+    width: #{$space}% !important;
+  }
+}

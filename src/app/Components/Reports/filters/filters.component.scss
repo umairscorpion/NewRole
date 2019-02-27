@@ -1,22 +1,24 @@
 .report-filters{
+  .header-panel {
+    align-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 8px 20px;
+    color: rgba(0,0,0,.54);
+    background: rgba(0,0,0,.03);
+  }
+  .title-bar {
+    align-items: center;
+    display: flex;
+    .title {
+      font-weight: 400;
+    }
+  }
   label{
     margin-top: 16px;
   }
   .w-100 {
     width: 100%;
   }
-}
-
-.filters-panel-header
-{
-  height: 48px !important;
-  background: #d1d1d1;
-}
-.filter-options-button
-{
-  background: #3c3c3f;
-  padding-left: 20px;
-  color: white;
-  font-weight: bold;
-  margin-right: 30px;
 }
