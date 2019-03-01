@@ -26,15 +26,8 @@ export class LoginComponent implements OnInit {
     Date = new Date();
     private notifier: NotifierService;
     hide = true;
-    @ViewChild('modal') modal: ModalComponent;
-    logins: ILogin[];
-    login: ILogin;
     msg: string;
-    indLoading: boolean = false;
     loginFrm: FormGroup;
-    dbops: DBOperation;
-    modalTitle: string;
-    modalBtnTitle: string;
     private formSubmitAttempt: boolean;
     constructor(private socialAuthService: AuthService, private ngZone: NgZone,
         private fb: FormBuilder, private _userService: UserService, private router: Router,
