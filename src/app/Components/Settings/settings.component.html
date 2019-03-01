@@ -8,7 +8,7 @@
                         Accounts and Settings
                     </mat-card-title>
                     <mat-card-content>
-                        <mat-tab-group class="demo-tab-group">
+                        <mat-tab-group class="demo-tab-group" (selectedTabChange)="onChangeTab($event)">
                             <mat-tab label="Custom Settings">
 
                             </mat-tab>
@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                             </mat-tab>
-                            <!-- <mat-tab *ngIf='isSubstitute' label="School Settings">
+                            <mat-tab *ngIf='isSubstitute' label="School Settings">
                                 <div class="row col-md-8 col-md-offset-2">
                                     <div class="col-md-12" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
                                         <p>
@@ -129,8 +129,8 @@
                                     </div>
                                     <div class="col-md-12" style="overflow-y: scroll; height:400px;">
                                         <mat-selection-list #Category>
-                                            <mat-list-option *ngFor="let category of Categories" [value]="category.id" [selected]="category.isNotificationSend">
-                                                {{category.title}}
+                                            <mat-list-option *ngFor="let school of PreferredSchools" [value]="PreferredSchools.id" [selected]="PreferredSchools.isEnabled">
+                                                {{school.organizationName}}
                                             </mat-list-option>
                                         </mat-selection-list>
                                     </div>
@@ -138,7 +138,7 @@
                                         <button color="primary" mat-raised-button (click)="SavePreferredSchoolSettings(Category)">Save</button>
                                     </div>
                                 </div>
-                            </mat-tab> -->
+                            </mat-tab>
                         </mat-tab-group>
                     </mat-card-content>
                 </mat-card>

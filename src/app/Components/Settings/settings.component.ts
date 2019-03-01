@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataContext } from '../../Services/dataContext.service';
+import { UserSession } from '../../Services/userSession.service';
 import { MatTableDataSource } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -18,10 +19,11 @@ export class SettingComponent implements OnInit {
     modalTitle: string;
     modalBtnTitle: string;
     Categories: any;
+    PreferredSchools: any;
     ChangedPreferences: any[] = [];
     private notifier: NotifierService;
 
-    constructor(private _dataContext: DataContext, notifier: NotifierService) { this.notifier = notifier; }
+    constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession : UserSession) { this.notifier = notifier; }
     ngOnInit(): void {
         this.GetSubstituteCategories();
         this.ManageDefultValuesAgainstDifferentUserRoles();
@@ -41,6 +43,20 @@ export class SettingComponent implements OnInit {
             error => <any>error);
     }
 
+    getPreferredSchools(): void {
+        let UserId = this._userSession.getUserId();
+        this._dataContext.get('user/GetSubstitutePreferredSchools/' + UserId).subscribe((data: any) => {
+            this.PreferredSchools = data;
+        },
+            error => <any>error);
+    }
+
+    onChangeTab(tab: any) {
+        if (tab.index == 3) {
+            this.getPreferredSchools();
+        }
+    }
+
     ChangeNotificationPreference(row: any, type: string): void {
         this.ChangedPreferences.slice(1, 1);
         if (type == 'Email')
@@ -55,7 +71,6 @@ export class SettingComponent implements OnInit {
     SaveNotificationSettings(): void {
         if (this.ChangedPreferences.length > 0) {
             let JsonString: string = JSON.stringify(this.ChangedPreferences);
-
         }
     }
 
@@ -77,7 +92,19 @@ export class SettingComponent implements OnInit {
     SaveCustomSettings() {
     }
 
-    SavePreferredSchoolSettings() {
+    SavePreferredSchoolSettings(Schools: any): void {
+        for (let School of Schools.options._results) {
+            let model = {
+                Id: School.value,
+                IsNotificationSend: School.selected
+            }
+            this._dataContext.Patch('user/UpdateEnabledSchools', model).subscribe((data: any) => {
+            },
+                (err: HttpErrorResponse) => {
+                    this.notifier.notify('error', err.error.error_description);
+                });
+        }
+        this.notifier.notify('success', 'Updated Successfully');
     }
 }
 export interface PeriodicElement {
