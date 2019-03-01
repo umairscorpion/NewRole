@@ -1,8 +1,8 @@
 ﻿export interface IUserClaims {
-    UserId: string,
-    UserName: string,
-    UserTypeId: string,
-    FirstName: string,
-    LastName: string,
-    Email: string
+    userId: string,
+    userName: string,
+    userTypeId: string,
+    firstName: string,
+    lastName: string,
+    email: string
 }

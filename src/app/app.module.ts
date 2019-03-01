@@ -7,7 +7,6 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { routing } from './app.routing';
-import { UserComponent } from './Components/User/user.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { MatSidenavModule } from '@angular/material/sidenav';
 import { CdkTableModule } from '@angular/cdk/table';
@@ -226,7 +225,7 @@ const customNotifierOptions: NotifierOptions = {
         MatToolbarModule,
         SocialLoginModule,
         MatTooltipModule, BlockUIModule.forRoot(), NotifierModule.withConfig(customNotifierOptions)],
-    declarations: [AppComponent, HomeComponent, UserComponent, LoginComponent,
+    declarations: [AppComponent, HomeComponent, LoginComponent,
         SideNavComponent, DistrictsComponent, ManageComponent, OrganizationsComponent, AddOrganizationComponent,
         AddDistrictComponent, EmployeesComponent, AddEmployeesComponent, SubstitutesComponent, SchoolSubListComponent,
         LeavesComponent, AddLeaveComponent, AddLeaveRequestComponent,

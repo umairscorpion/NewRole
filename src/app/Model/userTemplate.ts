@@ -1,5 +1,5 @@
 ﻿export interface IUserTemplate {
-    TemmplateName: string,
-    TemplateClass: string,
-    TemplateUrl: string
+    temmplateName: string,
+    templateClass: string,
+    templateUrl: string
 }
