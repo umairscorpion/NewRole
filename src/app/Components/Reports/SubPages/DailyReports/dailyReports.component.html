@@ -5,12 +5,41 @@
 <app-report-filters></app-report-filters>
 <div class="row mt-30">
   <div class="col-md-4">
-    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [options]="doughnutChartOptions"></canvas>
+    <table>
+      <tr>
+        <td class="text-center">
+          <h4>Total</h4>
+          <canvas baseChart [legend]="false" width="150" height="100" [data]="totalAbsence" [colors]="totalChartColors" [labels]="['Total']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
+        </td>
+        <td class="text-center">
+          <h4>Filled</h4>
+          <canvas baseChart [legend]="false" width="150" height="100" [data]="filledAbsence" [colors]="filledChartColors" [labels]="['Filled', '']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-center">
+          <h4>Unfilled</h4>
+          <canvas baseChart [legend]="false" width="150" height="100" [colors]="unFilledChartColors" [data]="unFilledAbsence" [labels]="['Unfilled', '']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
+        </td>
+        <td class="text-center">
+          <h4>No Sub Req</h4>
+          <canvas baseChart [legend]="false" width="150" height="100" [colors]="noSubReqChartColors" [data]="noSubReqAbsence" [labels]="['No Sub Req', '']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
+        </td>
+      </tr>
+    </table>
   </div>
   <div class="col-md-4">
-    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="'barchart'" [options]="doughnutChartOptions"></canvas>
+    <canvas baseChart [data]="absenceSummary" [colors]="absenceSummaryColors" [labels]="['Filled', 'UnFilled', 'No Sub Required']" [legend]="true" [chartType]="'bar'"></canvas>
   </div>
   <div class="col-md-4">
-    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [options]="doughnutChartOptions"></canvas>
+    <canvas baseChart [legend]="true" width="150" height="100" [data]="absenceSummary" [colors]="absenceSummaryColors" [labels]="['Filled', 'UnFilled', 'No Sub Required']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
   </div>
+
+</div>
+<div class="row mt-30">
+  <mat-tab-group>
+    <mat-tab label="Filled"> Filled </mat-tab>
+    <mat-tab label="UnFilled"> UnFilled </mat-tab>
+    <mat-tab label="No Sub Req"> No Sub Req </mat-tab>
+  </mat-tab-group>
 </div>
