@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild ,ChangeDetectorRef, HostBinding } from '@a
 import { UserService } from '../../Service/user.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
-import { SideNavService } from '../../Components/SideNav/sideNav.service'; 
+import { SideNavService } from '../SideNav/sideNav.service'; 
 
 @Component({
     templateUrl: 'manage.component.html',

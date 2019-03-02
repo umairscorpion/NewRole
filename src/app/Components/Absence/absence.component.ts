@@ -4,7 +4,7 @@ import { DataContext } from '../../Services/dataContext.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
-import { SideNavService } from '../../Components/SideNav/sideNav.service';
+import { SideNavService } from '../SideNav/sideNav.service';
 import { CommunicationService } from '../../Services/communication.service';
 
 @Component({

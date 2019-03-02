@@ -1,4 +1,8 @@
+import { Time } from "@angular/common";
+
 export interface employeeSchedule {
-    StartDate : Date,
-    EndDate: Date 
+    startDate: Date | string;
+    endDate: Date | string;
+    startTime: Time;
+    endTime: Time;
 }

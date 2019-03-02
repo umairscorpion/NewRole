@@ -5,11 +5,12 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import { Global } from '../Shared/global';
+import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class DataContext {
+    baseUrl = environment.apiUrl;
     private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     constructor(private _http: HttpClient) { }
     //userAuthentication(userName, password) {
@@ -21,10 +22,10 @@ export class DataContext {
         return this.loggedIn.asObservable();
     }
     getUserClaims() {
-        return this._http.get(Global.authenticationApiUrl + 'user/reference/GetUserClaims');
+        return this._http.get(this.baseUrl + 'user/reference/GetUserClaims');
     }
     getUserResources(resourceTypeId : number, parentResourceTypeId : number,IsAdminPortal: number) {
-        return this._http.get(Global.authenticationApiUrl + 'user/GetUserResources/' + resourceTypeId +'/'+ parentResourceTypeId +'/'+ IsAdminPortal);
+        return this._http.get(this.baseUrl + 'user/GetUserResources/' + resourceTypeId +'/'+ parentResourceTypeId +'/'+ IsAdminPortal);
     }
     userAuthentication(url: string, model: any): Observable<any> {
         let body = "username=" + model.userName + "&password=" + model.password + "&grant_type=password";
@@ -33,19 +34,19 @@ export class DataContext {
     }
     //Funtions For crud operations
     get(url: string): Observable<any> {
-        return this._http.get(Global.authenticationApiUrl + url );
+        return this._http.get(this.baseUrl + url );
     }
 
     getById(url: string, Id: number): Observable<any> {
-        return this._http.get(Global.baseApiUrl + url + "/" + Id);
+        return this._http.get(this.baseUrl + url + "/" + Id);
     }
 
     post(url: string, model: any): Observable<any> {    
-        return this._http.post(Global.authenticationApiUrl + url, model);
+        return this._http.post(this.baseUrl + url, model);
     }
 
     Patch(url: string, model: any): Observable<any> {
-        return this._http.patch(Global.baseApiUrl + url , model);
+        return this._http.patch(this.baseUrl + url , model);
     }
 
     put(url: string, id: number, model: any): Observable<any> {
@@ -54,16 +55,16 @@ export class DataContext {
     }
 
     delete(url: string, id: number): Observable<any> {
-        return this._http.delete(Global.baseApiUrl + url + id);
+        return this._http.delete(this.baseUrl + url + id);
     }
 
     //miscellaneous Functions
     getUserLocationTime(url: string, userId: string,  userLevel: number): Observable<any> {
-        return this._http.get(Global.baseApiUrl + url + "/" + userId + "/" + userLevel);
+        return this._http.get(this.baseUrl + url + "/" + userId + "/" + userLevel);
     }
 
     UpdateAbsenceStatus(url: string, AbsenceId: number, StatusId: number, UpdateStatusDate: string, userId: string): Observable<any> {
-        return this._http.get(Global.baseApiUrl + url + "/" + AbsenceId + "/" + StatusId + "/" + UpdateStatusDate + "/" + userId);
+        return this._http.get(this.baseUrl + url + "/" + AbsenceId + "/" + StatusId + "/" + UpdateStatusDate + "/" + userId);
     }
 
     private handleError(error: Response) {
@@ -78,6 +79,6 @@ export class DataContext {
     }
 
     getFile(url: string, model: any) {
-        return this._http.post(Global.authenticationApiUrl + url, model , {responseType: 'blob' } );
+        return this._http.post(this.baseUrl + url, model , {responseType: 'blob' } );
     }
 }
