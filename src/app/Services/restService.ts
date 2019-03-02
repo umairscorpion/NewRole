@@ -7,14 +7,14 @@ import 'rxjs/add/operator/catch';
 import { environment } from '../../environments/environment';
 
 @Injectable()
-export abstract class restService<T> {
+export abstract class RestService<T> {
 
     private baseUrl = environment.apiUrl;
 
     constructor(
         protected httpClient: HttpClient) { }
 
-    //Funtions For crud operations
+
     get(url: string): Observable<any> {
         return this.httpClient.get(this.baseUrl + url);
     }

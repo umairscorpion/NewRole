@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
 import { DataContext } from 'src/app/Services/dataContext.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ReportFilter } from 'src/app/Model/Report/report.filter';
 
 @Component({
   selector: 'app-report-filters',
@@ -12,12 +14,13 @@ export class ReportFiltersComponent implements OnInit {
   matIcon = 'keyboard_arrow_down' || 'keyboard_arrow_up';
   districts: any;
   leaveReasons: any;
-
+  reportFilterForm: FormGroup;
 
   constructor(
+    private fb: FormBuilder,
     private dataContext: DataContext
   ) {
-
+    this.reportFilterForm = this.initReportFilters();
   }
 
   ngOnInit() {
@@ -25,6 +28,10 @@ export class ReportFiltersComponent implements OnInit {
       this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
     });
     this.loadData();
+  }
+
+  initReportFilters() {
+    return ReportFilter.CreateFilterFormGroup(this.fb);
   }
 
   expandPannel() {

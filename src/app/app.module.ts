@@ -134,6 +134,8 @@ import {
     GoogleLoginProvider,
 } from "angular-6-social-login";
 import { ReportFiltersComponent } from './Components/Reports/filters/filters.component';
+import { ReportService } from './Services/report.service';
+import { ErrorHandlerService } from './Services/error-handler/error-handler.service';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -242,6 +244,8 @@ const customNotifierOptions: NotifierOptions = {
     entryComponents: [PopupDialogForSubstituteDetail, PopupDialogForDistrictDetail, PopupDialogForSchoolDetail, PopupDialogForJobDetail,
         PopupDialogForEmployeeDetail, PopupDialogForSearch, PopupDialogForSettings, PopupDialogForOrganizationDetail, PopupDialogForAbsenceDetail],
     providers: [UserService, SideNavService, DistrictService, SchoolService, EmployeeService, AuthGuard, DataContext, UserSession, CommunicationService,
+        ReportService,
+        ErrorHandlerService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
