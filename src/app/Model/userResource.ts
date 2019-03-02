@@ -1,5 +1,6 @@
-export interface userResource
-{
+import { Entity } from "./entity";
+
+export class UserResource extends Entity {
     id: number;
     name: string;
     css: string;

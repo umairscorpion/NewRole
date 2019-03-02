@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:61137/api/'
+  apiUrl: 'http://162.241.138.178/plesk-site-preview/sapi.loginsubzz.com/api/'
 };

@@ -2,11 +2,6 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
 import { UserService } from '../../Service/user.service';
-import { IUserTemplate } from '../../Model/userTemplate';
-import { IUserClaims } from '../../Model/userClaims';
-// import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Global } from '../../Shared/global';
 import { SideNavService } from '../SideNav/sideNav.service'; 
 import { Chart } from 'chart.js'
 

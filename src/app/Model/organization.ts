@@ -1,6 +1,7 @@
 import { Time } from "../../../node_modules/@angular/common";
+import { Entity } from "./entity";
 
-export interface organization {
+export class Organization extends Entity {
     schoolName: string;
     schoolId: string;
     schoolDistrictId: number;

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://162.241.138.178/plesk-site-preview/sapi.loginsubzz.com/api/'
+  apiUrl: 'http://localhost:61137/api/'
 };
 
 /*
@@ -14,3 +14,4 @@ export const environment = {
  * because it will have a performance impact when errors are thrown
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+  

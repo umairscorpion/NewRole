@@ -128,14 +128,14 @@
                                         </p>
                                     </div>
                                     <div class="col-md-12" style="overflow-y: scroll; height:400px;">
-                                        <mat-selection-list #Category>
-                                            <mat-list-option *ngFor="let school of PreferredSchools" [value]="PreferredSchools.id" [selected]="PreferredSchools.isEnabled">
+                                        <mat-selection-list #EnabledSchools>
+                                            <mat-list-option *ngFor="let school of PreferredSchools" [value]="school.organizationId" [selected]="school.isEnabled">
                                                 {{school.organizationName}}
                                             </mat-list-option>
                                         </mat-selection-list>
                                     </div>
                                     <div class="col-md-12" style="text-align: center">
-                                        <button color="primary" mat-raised-button (click)="SavePreferredSchoolSettings(Category)">Save</button>
+                                        <button color="primary" mat-raised-button (click)="SavePreferredSchoolSettings(EnabledSchools)">Save</button>
                                     </div>
                                 </div>
                             </mat-tab>

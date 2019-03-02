@@ -1,4 +1,6 @@
-export interface preferredSubstitute {
+import { Entity } from "./entity";
+
+export class PreferredSubstitute extends Entity {
     id: number;
     employeeId: string;
     substituteId: string;

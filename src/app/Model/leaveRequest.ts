@@ -1,6 +1,7 @@
 import { Time } from "../../../node_modules/@angular/common";
+import { Entity } from "./entity";
 
-export interface leaveRequest {
+export class LeaveRequest extends Entity {
     leaveRequestId: number;
     employeeName: string;
     employeeId: string;

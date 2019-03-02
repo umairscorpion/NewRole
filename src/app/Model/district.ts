@@ -1,4 +1,6 @@
-export interface district
+import { Entity } from "./entity";
+
+export class District extends Entity
     {
         districtName: string;
         districtId: number;
