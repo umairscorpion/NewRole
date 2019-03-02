@@ -3,8 +3,8 @@ import { FormBuilder } from "@angular/forms";
 export class ReportFilter {
   reportType: string;
   reportTitle: string;
-  fromDate: string;
-  toDate: string;
+  fromDate: Date = new Date();
+  toDate: Date = new Date();
   jobNumber: string;
   employeeTypeId: number;
   absenceTypeId: number;
@@ -14,8 +14,8 @@ export class ReportFilter {
   employeeName: string;
   static CreateFilterFormGroup(fb: FormBuilder) {
     return fb.group({
-      fromDate: [''],
-      toDate: [0],
+      fromDate: [new Date()],
+      toDate: [new Date()],
       jobNumber: [''],
       employeeTypeId: [0],
       absenceTypeId: [0],
