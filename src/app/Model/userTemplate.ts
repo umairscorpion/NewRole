@@ -1,5 +1,7 @@
-﻿export interface IUserTemplate {
-    temmplateName: string,
-    templateClass: string,
+﻿import { Entity } from "./entity";
+
+export class UserTemplate extends Entity {
+    temmplateName: string
+    templateClass: string
     templateUrl: string
 }

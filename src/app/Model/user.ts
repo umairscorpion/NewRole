@@ -1,5 +1,6 @@
-﻿
-export interface user {
+﻿import { Entity } from "./entity";
+
+export class User extends Entity {
     id: string;
     userId: string;
     userStatusId: number;

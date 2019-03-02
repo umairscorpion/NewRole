@@ -1,6 +1,7 @@
 import { Time } from "@angular/common";
+import { Entity } from "./entity";
 
-export interface locationTime {
+export class LocationTime extends Entity  {
     startTime: Time;
     firstHalfEnd: Time;
     secondHalfStart: Time;

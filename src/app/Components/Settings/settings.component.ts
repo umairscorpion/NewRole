@@ -23,7 +23,7 @@ export class SettingComponent implements OnInit {
     ChangedPreferences: any[] = [];
     private notifier: NotifierService;
 
-    constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession : UserSession) { this.notifier = notifier; }
+    constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession: UserSession) { this.notifier = notifier; }
     ngOnInit(): void {
         this.GetSubstituteCategories();
         this.ManageDefultValuesAgainstDifferentUserRoles();
@@ -77,8 +77,8 @@ export class SettingComponent implements OnInit {
     SaveCategories(Categories: any): void {
         for (let category of Categories.options._results) {
             let model = {
-                Id: category.value,
-                IsNotificationSend: category.selected
+                OrganizationId: category.value,
+                IsEnabled: category.selected
             }
             this._dataContext.Patch('user/updateUserCategories', model).subscribe((data: any) => {
             },
@@ -92,11 +92,12 @@ export class SettingComponent implements OnInit {
     SaveCustomSettings() {
     }
 
-    SavePreferredSchoolSettings(Schools: any): void {
-        for (let School of Schools.options._results) {
+    SavePreferredSchoolSettings(AllSchools: any): void {
+        for (let School of AllSchools.options._results) {
             let model = {
-                Id: School.value,
-                IsNotificationSend: School.selected
+                OrganizationId: School.value,
+                IsEnabled: School.selected,
+                UserId: this._userSession.getUserId()
             }
             this._dataContext.Patch('user/UpdateEnabledSchools', model).subscribe((data: any) => {
             },
