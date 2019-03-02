@@ -24,7 +24,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     // For Blocking Dates Renderer for Current month when open Calendar
     SelectionFilterForAlreadyCreatedAbsences = (d: Date): boolean => {
         const day = d.getDay();
-        return (day !== 0 && day !== 6) && d.toLocaleDateString() !== "10/1/2018";
+        return  d.toLocaleDateString() !== "10/1/2018";
+        // (day !== 0 && day !== 6) &&
     }
     dateClass = (d: Date) => {
         const date = d.getDate();
