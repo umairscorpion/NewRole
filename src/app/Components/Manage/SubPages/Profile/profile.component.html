@@ -97,7 +97,16 @@
                                                 <br> Remaining choices: {{5 - FavoriteSubstututes.length}}
                                             </div>
                                             <div class="col-md-7">
-                                                <mat-form-field class="col-md-10 col-lg-10">
+                                                <mat-form-field class="col-md-5 col-lg-5">
+                                                    <input type="text" placeholder="Search Category here" aria-label="Number" (input)="SearchCategory($event.target.value)"
+                                                        matInput [matAutocomplete]="autoCompleteCategory">
+                                                    <mat-autocomplete #autoCompleteCategory="matAutocomplete">
+                                                        <mat-option (onSelectionChange)="SelectCategory(category)" *ngFor="let category of categories | async" [value]="">
+                                                            {{category.title}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                                <mat-form-field class="col-md-5 col-lg-5">
                                                     <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
                                                         matInput [matAutocomplete]="autoCom">
                                                     <mat-autocomplete #autoCom="matAutocomplete">
@@ -113,8 +122,8 @@
                                     <div style="height:175px" class="col-md-12">
                                         <div *ngIf='FavoriteSubstututes && FavoriteSubstututes.length'>
                                             <a *ngFor="let Substitute of FavoriteSubstututes">
-                                                <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="FavoriteSubstututes.splice($index,1)"
-                                                    matTooltip="Remove Substitute" matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
+                                                <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="FavoriteSubstututes.splice($index,1)" matTooltip="Remove Substitute"
+                                                    matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
                                                 <br>
                                             </a>
                                         </div>
@@ -142,8 +151,8 @@
                                     <div style="height:175px;" class="col-md-12">
                                         <div *ngIf='BlockedSubstitutes && BlockedSubstitutes.length'>
                                             <a *ngFor="let Substitute of BlockedSubstitutes">
-                                                <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="BlockedSubstitutes.splice($index,1)"
-                                                    matTooltip="Remove Substitute" matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
+                                                <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="BlockedSubstitutes.splice($index,1)" matTooltip="Remove Substitute"
+                                                    matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
                                                 <br>
                                             </a>
 
@@ -155,25 +164,38 @@
                                 </div>
                             </form>
                         </mat-tab>
-                        <!-- <mat-tab label="Additional Information">
-                            <div class="demo-tab-content">
-                                <form (ngSubmit)="onFromSubmit(officialFormGroup)" [formGroup]="officialFormGroup">
-                                    <table class="col-md-12 col-lg-12">
-                                        <tr>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr style="text-align: right">
-                                            <td colspan="2" class="content-center">
-                                                <button mat-raised-button color="primary" type="submit">Save</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </form>
+                        <!-- <mat-tab label="Add Schedule">
+                            <div class="row col-md-12" style="padding-top:10px">
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <input matInput placeholder="Name">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field >
+                                        <input matInput type="number" placeholder="Period">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <input matInput type="time" placeholder="Start Time">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <input matInput type="time" placeholder="End Time">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <input matInput type="text" placeholder="Subject">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <input matInput type="text" placeholder="Grade">
+                                    </mat-form-field>
+                                </div>
                             </div>
                         </mat-tab> -->
                     </mat-tab-group>

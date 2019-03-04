@@ -7,12 +7,17 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Lookup } from '../../../../Model/lookup';
+import { UserService } from '../../../../Services/user.service';
+import { Observable } from '../../../../../../node_modules/rxjs';
 @Component({
     templateUrl: 'profile.component.html',
     styleUrls: ['profile.component.css']
 
 })
 export class ProfileComponent implements OnInit {
+    categories :Observable<Lookup[]>;
+    SelectedCategoryId : number;
     LoginedUserId: any = 0;
     private notifier: NotifierService;
     ProfilePicture: any;
@@ -28,14 +33,14 @@ export class ProfileComponent implements OnInit {
     UserRole : number = this._userSession.getUserRoleId();
 
     constructor(private router: Router, private sanitizer: DomSanitizer, private _formBuilder: FormBuilder,
-        notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession, private _employeeService: EmployeeService,) {
+        notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession, 
+        private _employeeService: EmployeeService, private userService : UserService) {
         this.notifier = notifier
     }
     
     ngOnInit(): void {
         if (this._userSession.getUserRoleId() != 4) {
             this.GetBlockedSubstitutes();
-            this.GetFavoritSubstitutes();
         }
         this.generateForms();
     }
@@ -108,14 +113,25 @@ export class ProfileComponent implements OnInit {
 
     //Starting Functions Related To Preference Tab
 
-    //ASYNC FUNCTION TO SEARCH Substitutes
+    
     GetFavoritSubstitutes() {
         let UserId = this._userSession.getUserId();
-        this._datacontext.get('user/getFavoriteSubstitutes' + '/' + UserId ).subscribe((data: any) => {
+        this._datacontext.get('user/getFavoriteSubstitutes' + '/' + UserId + '/' + this.SelectedCategoryId).subscribe((data: any) => {
             this.FavoriteSubstututes = data;
         },
             error => this.msg = <any>error);
     }
+
+    SearchCategory(SearchText: string) {
+        let UserId = this._userSession.getUserId();
+        this.categories = this.userService.getCategory(UserId, SearchText);
+    }
+
+    SelectCategory(category: Lookup) {
+        this.SelectedCategoryId = category.id ;
+        this.GetFavoritSubstitutes();
+    }
+
 
     GetBlockedSubstitutes() {
         let UserId = this._userSession.getUserId();
@@ -125,6 +141,7 @@ export class ProfileComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
+    //ASYNC FUNCTION TO SEARCH Substitutes
     SearchSubstitutes(SearchText: string) {
         let IsSearchSubstitute = 1;
         let OrgId = this._userSession.getUserOrganizationId();
@@ -133,9 +150,10 @@ export class ProfileComponent implements OnInit {
     }
 
     SelectToAddInPreferredSubstitute(Substitute: any) {
+        Substitute.CategoryId = this.SelectedCategoryId ;
         this.SubstituteList = null;
         if (this.FavoriteSubstututes.find((obj: any) => obj.userId == Substitute.userId)) {
-            this.notifier.notify('error', 'Already added in list.');
+            this.notifier.notify('error', 'Already added in this category or other category.');
             return;
         }
         if (this.BlockedSubstitutes.find((obj: any) => obj.userId == Substitute.userId)) {
@@ -167,6 +185,7 @@ export class ProfileComponent implements OnInit {
     SaveSubstitutePreference(): void {
         let model = {
             UserId : this._userSession.getUserId(),
+            CategoryId: this.SelectedCategoryId,
             BlockedSubstituteList : JSON.stringify(this.BlockedSubstitutes),
             FavoriteSubstituteList : JSON.stringify(this.FavoriteSubstututes)
         }

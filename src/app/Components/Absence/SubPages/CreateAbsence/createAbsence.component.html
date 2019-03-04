@@ -169,15 +169,17 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="col-md-6 col-lg-6">
-                                                <mat-form-field class="col-md-10 col-lg-10">
-                                                    <textarea matInput placeholder="Payroll Notes" formControlName="PayRollNotes" matTextareaAutosize matAutosizeMinRows="2"
-                                                        matAutosizeMaxRows="5"></textarea>
+                                                <mat-form-field class="col-md-10 col-lg-10" hintLabel="Max 50 characters">
+                                                    <textarea matInput #inputPayRoll maxlength="50" placeholder="Payroll Notes" formControlName="PayRollNotes" matTextareaAutosize
+                                                        matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>
+                                                    <mat-hint align="end">{{inputPayRoll.value?.length || 0}}/50</mat-hint>
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-md-6 col-lg-6">
-                                                <mat-form-field class="col-md-10 col-lg-10">
-                                                    <textarea matInput placeholder="Notes to substitute" formControlName="NotesToSubstitute" matTextareaAutosize matAutosizeMinRows="2"
-                                                        matAutosizeMaxRows="5"></textarea>
+                                                <mat-form-field class="col-md-10 col-lg-10" hintLabel="Max 50 characters">
+                                                    <textarea matInput #inputNotes maxlength="50" placeholder="Notes to substitute" formControlName="NotesToSubstitute" matTextareaAutosize
+                                                        matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>
+                                                    <mat-hint align="end">{{inputNotes.value?.length || 0}}/50</mat-hint>
                                                 </mat-form-field>
                                             </div>
                                         </div>
@@ -237,9 +239,6 @@
                                                 <mat-panel-title>
                                                     View Preferred Substitute
                                                 </mat-panel-title>
-                                                <mat-panel-description>
-                                                    click here to view Preferred Substitutes and Notification Settings
-                                                </mat-panel-description>
                                             </mat-expansion-panel-header>
                                             <div class="row">
                                                 <div class="col-md-2" *ngFor="let Sub of PreferredSubstitutes">
@@ -249,7 +248,7 @@
 
                                             <div class="row" style="padding-top:10px">
                                                 <mat-form-field class="col-md-4">
-                                                    <mat-select [(value)]="ContactSub"  (selectionChange)="OnchangeContactSubOption()" placeholder="Contact Substitutes">
+                                                    <mat-select [(value)]="ContactSub" (selectionChange)="OnchangeContactSubOption()" placeholder="Contact Substitutes">
                                                         <mat-option value="1">All At Once</mat-option>
                                                         <mat-option value="2">One By One</mat-option>
                                                     </mat-select>
