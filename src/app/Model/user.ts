@@ -41,5 +41,5 @@ export class User extends Entity {
     speciality: string;
     teachingLevel: number;
     userLevel: number;
-
+    categoryId: number;
 }

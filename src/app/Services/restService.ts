@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 
 export abstract class RestService<T> {
 
-    private baseUrl = environment.apiUrl;
+    private baseUrl = environment.apiUrl;   
 
     constructor(
         protected httpClient: HttpClient) { }

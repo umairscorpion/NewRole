@@ -9,22 +9,28 @@ import { ErrorHandlerService } from './error-handler/error-handler.service';
 import { Observable } from '../../../node_modules/rxjs';
 import { RestService } from './restService';
 import { User } from '../Model/user';
+import { SubstitutePreference } from '../Model/substitutePreference';
 
 @Injectable()
-export class UserService extends RestService<User> {
+export class ProfileService extends RestService<User> {
   constructor(
     protected httpClient: HttpClient,
     protected errorHandler: ErrorHandlerService
   ) {
-    super(name);
+    super(httpClient);
   }
 
   getSubstituteCategoryInstance(): Entity {
     return new Lookup();
   }
 
-  getCategory(userId: string, searchText : string) :Observable<Lookup[]> {
+  getCategory(userId: string, searchText: string): Observable<Lookup[]> {
     return this.httpClient
-      .get<Lookup[]>(`${environment.apiUrl}/user/favoriteSubstituteCategory` + '/' + userId + '/' +  searchText);
+      .get<Lookup[]>(`${environment.apiUrl}/user/favoriteSubstituteCategory` + '/' + userId + '/' + searchText);
+  }
+
+  InsertCategory (subCategory: SubstitutePreference) {
+    return this.httpClient
+      .post<number>(`${environment.apiUrl}/user/insertPreferredSSubstituteCategory`, subCategory);
   }
 }
