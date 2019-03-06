@@ -1,9 +1,14 @@
 <style>
-    td, th {
-    width: 15%;
-  }
+    td,
+    th {
+        width: 15%;
+    }
+
+    .bg-color {
+        background: rgba(209, 196, 233, .3);
+    }
 </style>
-<h4>Available Jobs</h4>
+<h4>Available Jobs ({{AvailableJobs.data && AvailableJobs.data.length > 0 ? AvailableJobs.data.length : 0 }})</h4>
 <div class="row">
     <div class="row">
         <div class="col-md-12 col-lg-12">
@@ -44,12 +49,22 @@
         </div>
     </div>
     <div class="col-md-12 col-lg-12">
-        <div class="row" style="text-align: center">
-            <h4>
-                <h4>
-                    <b>Displaying Jobs For Dates</b>: {{FilterForm.value.FilterStartDate | date}} To {{FilterForm.value.FilterEndDate
-                    | date}}</h4>
-            </h4>
+        <div class="row">
+            <div class="col-md-1">
+                <button mat-button type="button" (click)="picker.open()">
+                    My Calendar
+                    <mat-icon (click)="picker.open()">calendar_today</mat-icon>
+                </button>
+            </div>
+            <div class="col-md-10">
+                <mat-form-field class="col-md-1" style="visibility:hidden;height:0px">
+                    <input matInput [matDatepicker]="picker">
+                    <mat-datepicker touchUi #picker></mat-datepicker>
+                </mat-form-field>
+                <div class="col-md-11" style="text-align: center">
+                    <h4> {{FilterForm.value.FilterStartDate | date}} - {{FilterForm.value.FilterEndDate | date}}</h4>
+                </div>
+            </div>
         </div>
         <div class="example-container mat-elevation-z8">
             <div class="example-header">
@@ -61,34 +76,42 @@
                 <!-- Position Column -->
                 <ng-container matColumnDef="AbsenceDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Absence Date </mat-header-cell>
-                        <td mat-cell *matCellDef="let Absence"> <b>{{ Absence.startDate | date }} </b> 
-                            <br> {{Absence.startTime | date:'shortTime'}}-{{Absence.endTime | date:'shortTime'}}</td>
+                    <td mat-cell *matCellDef="let Absence">
+                        <b>{{ Absence.startDate | date }} </b>
+                        <br> {{Absence.startTime | date:'shortTime'}}-{{Absence.endTime | date:'shortTime'}}</td>
                 </ng-container>
-
                 <ng-container matColumnDef="Posted">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Posted </mat-header-cell>
                     <mat-cell *matCellDef="let Absence"> {{Absence.createdDate | date}}
-                        <br> 
-                        {{Absence.createdDate | date:'shortTime'}}
+                        <br> {{Absence.createdDate | date:'shortTime'}}
                         <!-- By: {{Absence.createdByUser}}  -->
                     </mat-cell>
                 </ng-container>
-
                 <ng-container matColumnDef="Location">
                     <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
                     <mat-cell *matCellDef="let Absence">{{Absence.absenceLocation}} </mat-cell>
                 </ng-container>
-
                 <ng-container matColumnDef="Employee">
                     <mat-header-cell *matHeaderCellDef> Employee </mat-header-cell>
-                    <mat-cell *matCellDef="let Absence"> {{Absence.employeeName}} <br>
-                        {{Absence.subjectDescription ? Absence.subjectDescription : 'N/A'}},{{Absence.grade ? Absence.grade : 'N/A'}} <br>
-                    {{Absence.positionDescription}} </mat-cell>
+                    <mat-cell *matCellDef="let Absence"> {{Absence.employeeName}}
+                        <br> {{Absence.subjectDescription ? Absence.subjectDescription : 'N/A'}},{{Absence.grade ? Absence.grade
+                        : 'N/A'}}
+                        <br> {{Absence.positionDescription}} </mat-cell>
                 </ng-container>
-
                 <ng-container matColumnDef="Notes">
                     <mat-header-cell *matHeaderCellDef> Notes </mat-header-cell>
                     <mat-cell *matCellDef="let Absence"> {{Absence.substituteNotes ? Absence.substituteNotes: 'N/A'}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Attachment">
+                    <mat-header-cell *matHeaderCellDef> Attachment </mat-header-cell>
+                    <mat-cell *matCellDef="let Absence" style="cursor: pointer;" (click)="viewFile(Absence)">
+                        <div *ngIf="Absence.attachedFileName">
+                            <i class="material-icons" #tooltip="matTooltip" matTooltip="View Attachment" matTooltipPosition="below">
+                                attach_file
+                            </i>
+                        </div>
+                    </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="Action">
@@ -110,7 +133,7 @@
                     </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'bg-color': row.anyConflict === 1}"></mat-row>
             </mat-table>
             <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
             </mat-paginator>

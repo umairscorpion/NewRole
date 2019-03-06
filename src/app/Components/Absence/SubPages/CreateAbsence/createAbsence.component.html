@@ -114,19 +114,94 @@
                                                 <mat-form-field class="col-md-10 col-lg-10">
                                                     <mat-select placeholder="Substitute Option" (selectionChange)="OnchangeAbsenceScope(absenceFirstFormGroup.value.AbsenceType)"
                                                         formControlName="AbsenceType">
-                                                        <mat-option value="1">Request Specific Sub</mat-option>
+                                                        <mat-option value="1">Preferred Sub</mat-option>
                                                         <mat-option value="2">Direct Assign</mat-option>
-                                                        <mat-option value="3">Preferred Sub List</mat-option>
-                                                        <mat-option value="4">Entire Substitute Pool</mat-option>
+                                                        <mat-option value="3">My Favorites</mat-option>
+                                                        <mat-option value="4">All Subs</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-lg-6"></div>
+                                            <div class="col-md-6 col-lg-6" *ngIf='absenceFirstFormGroup.value.AbsenceType === "1" || absenceFirstFormGroup.value.AbsenceType === "2"'>
+                                                <mat-form-field *ngIf='absenceFirstFormGroup.value.AbsenceType == "1"' class="col-md-10 col-lg-10">
+                                                    <mat-select placeholder="Select Substitute" formControlName="Substitutes" multiple>
+                                                        <mat-select-trigger>
+                                                            {{absenceSecondFormGroup.value.Substitutes?.length == 1 ? absenceSecondFormGroup.value.Substitutes[0].firstName : absenceSecondFormGroup.value.Substitutes?.length
+                                                            == 2 ? absenceSecondFormGroup.value.Substitutes[0].firstName
+                                                            + ',' + absenceSecondFormGroup.value.Substitutes[1].firstName
+                                                            :''}}
+                                                            <span *ngIf="absenceSecondFormGroup.value.Substitutes?.length > 2">
+                                                                (+{{absenceSecondFormGroup.value.Substitutes.length - 2}} {{absenceSecondFormGroup.value.Substitutes?.length === 3 ? 'other'
+                                                                : 'others'}})
+                                                            </span>
+                                                        </mat-select-trigger>
+                                                        <mat-option *ngFor="let substitute of SubstituteList" [value]="substitute">
+                                                            <!-- <img [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'"  width="25" height="25"> -->
+                                                            {{substitute.firstName}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <mat-form-field *ngIf='absenceFirstFormGroup.value.AbsenceType == "2"' class="col-md-10 col-lg-10">
+                                                    <mat-select placeholder="Select Substitute" formControlName="Substitutes">
+                                                        <mat-option *ngFor="let substitute of SubstituteList" [value]="substitute">
+                                                            <!-- <img [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'"  width="25" height="25"> -->
+                                                            {{substitute.firstName}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" [hidden]='checkAbsenceScope()'>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-lg-6" *ngIf="!preferredSubPanel.expanded">
+                                            </div>
+                                            <div [ngClass]="{'col-md-6': !preferredSubPanel.expanded, 'col-md-12': preferredSubPanel.expanded }">
+                                                <mat-accordion class="col-md-10 col-lg-10">
+                                                    <mat-expansion-panel #preferredSubPanel [disabled]="true">
+                                                        <mat-expansion-panel-header>
+                                                            <mat-panel-description>
+                                                                <div class="col-md-12">
+                                                                    <div class="col-md-10" style="padding-top: 10px;">
+                                                                        View Preferred Substitute
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <button mat-icon-button color="primary" (click)="expandPannel()" [disableRipple]="true">
+                                                                            <mat-icon>{{matIcon}}</mat-icon>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-panel-description>
+                                                        </mat-expansion-panel-header>
+                                                        <div class="row">
+                                                            <div class="col-md-2" *ngFor="let Sub of PreferredSubstitutes">
+                                                                <span>{{Sub.firstName}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="padding-top:10px">
+                                                            <mat-form-field class="col-md-4">
+                                                                <mat-select [(value)]="ContactSub" (selectionChange)="OnchangeContactSubOption()" placeholder="Contact Substitutes">
+                                                                    <mat-option value="1">All At Once</mat-option>
+                                                                    <mat-option value="2">One By One</mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                            <mat-form-field class="col-md-4">
+                                                                <input matInput type="number" [disabled]="DisableContactSubTimeAccess" placeholder="Wait Time" [(value)]="ContactSubTime">
+                                                                <span matSuffix>min</span>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </mat-expansion-panel>
+                                                </mat-accordion>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row" style="text-align: right">
-                                <button mat-button type="button" (click)="goToNextForm(stepper)">Next</button>
+                                <button mat-raised-button type="button" color="primary" (click)="goToNextForm(stepper)">Next</button>
                             </div>
                         </form>
                     </mat-step>
@@ -186,32 +261,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="col-md-6 col-lg-6" *ngIf='absenceFirstFormGroup.value.AbsenceType === "1" || absenceFirstFormGroup.value.AbsenceType === "2"'>
-                                                <mat-form-field *ngIf='absenceFirstFormGroup.value.AbsenceType == "1"' class="col-md-10 col-lg-10">
-                                                    <mat-select placeholder="Select Substitute" formControlName="Substitutes" multiple>
-                                                        <mat-select-trigger>
-                                                            {{absenceSecondFormGroup.value.Substitutes?.length == 1 ? absenceSecondFormGroup.value.Substitutes[0].firstName : absenceSecondFormGroup.value.Substitutes?.length
-                                                            == 2 ? absenceSecondFormGroup.value.Substitutes[0].firstName
-                                                            + ',' + absenceSecondFormGroup.value.Substitutes[1].firstName
-                                                            :''}}
-                                                            <span *ngIf="absenceSecondFormGroup.value.Substitutes?.length > 2">
-                                                                (+{{absenceSecondFormGroup.value.Substitutes.length - 2}} {{absenceSecondFormGroup.value.Substitutes?.length === 3 ? 'other'
-                                                                : 'others'}})
-                                                            </span>
-                                                        </mat-select-trigger>
-                                                        <mat-option *ngFor="let substitute of SubstituteList" [value]="substitute">
-                                                            <!-- <img [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'"  width="25" height="25"> -->
-                                                            {{substitute.firstName}}</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <mat-form-field *ngIf='absenceFirstFormGroup.value.AbsenceType == "2"' class="col-md-10 col-lg-10">
-                                                    <mat-select placeholder="Select Substitute" formControlName="Substitutes">
-                                                        <mat-option *ngFor="let substitute of SubstituteList" [value]="substitute">
-                                                            <!-- <img [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'"  width="25" height="25"> -->
-                                                            {{substitute.firstName}}</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                            </div>
+
                                             <div class="col-md-6 col-lg-6" style="padding-left: 30px;">
                                                 Add Attachment
                                                 <button mat-button type="button" color="warn" (click)="uploadClick()">
@@ -231,40 +281,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div *ngIf='absenceFirstFormGroup.value.AbsenceType == "3"' class="row">
-                                <div class="col-md-10 col-md-offset-1">
-                                    <mat-accordion>
-                                        <mat-expansion-panel>
-                                            <mat-expansion-panel-header>
-                                                <mat-panel-title>
-                                                    View Preferred Substitute
-                                                </mat-panel-title>
-                                            </mat-expansion-panel-header>
-                                            <div class="row">
-                                                <div class="col-md-2" *ngFor="let Sub of PreferredSubstitutes">
-                                                    <span>{{Sub.firstName}}</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="row" style="padding-top:10px">
-                                                <mat-form-field class="col-md-4">
-                                                    <mat-select [(value)]="ContactSub" (selectionChange)="OnchangeContactSubOption()" placeholder="Contact Substitutes">
-                                                        <mat-option value="1">All At Once</mat-option>
-                                                        <mat-option value="2">One By One</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <mat-form-field class="col-md-4">
-                                                    <input matInput type="number" [disabled]="DisableContactSubTimeAccess" placeholder="Wait Time" [(value)]="ContactSubTime">
-                                                    <span matSuffix>min</span>
-                                                </mat-form-field>
-                                            </div>
-                                        </mat-expansion-panel>
-                                    </mat-accordion>
-                                </div>
-                            </div>
                             <div class="row" style="text-align: right">
                                 <button mat-button type="button" (click)="goBackToPreviousForm(stepper)">Back</button>
-                                <button mat-button>{{ absenceFirstFormGroup.value.AbsenceType == '2' ? 'Create And Assign' : absenceSecondFormGroup.value.AbsenceType
+                                <button style="padding-left: 10ox" mat-raised-button color="primary">{{ absenceFirstFormGroup.value.AbsenceType == '2' ? 'Create And Assign' : absenceSecondFormGroup.value.AbsenceType
                                     == '3' ? 'Post to Preferred' : 'Create Absence' }}</button>
                             </div>
                         </form>

@@ -1,5 +1,5 @@
 
-      <h4>Past Jobs</h4>
+      <h4>Past Jobs ({{PastJobs.data && PastJobs.data.length > 0 ? PastJobs.data.length : 0 }})</h4>
       <div class="row">
           <div class="row">
               <div class="col-md-12 col-lg-12">
@@ -39,7 +39,7 @@
           </div>
         <div class="col-md-12 col-lg-12">
             <div class="row" style="text-align: center">
-                <h4><h4><b>Displaying Jobs For Dates</b>: {{FilterForm.value.FilterStartDate | date}} To {{FilterForm.value.FilterEndDate | date}}</h4></h4>
+                <h4> {{FilterForm.value.FilterStartDate | date}} - {{FilterForm.value.FilterEndDate | date}}</h4>
             </div>
           <div class="example-container mat-elevation-z8">
             <div class="example-header">

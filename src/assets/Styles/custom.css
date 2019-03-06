@@ -26,3 +26,7 @@
 
 .highlightDate { background: orange;
   border-radius: 100%;}
+
+  .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}
