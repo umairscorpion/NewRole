@@ -5,6 +5,7 @@ import { DataContext } from '../../../../Services/dataContext.service';
 import { CommunicationService } from '../../../../Services/communication.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
+import { Absence } from '../../../../Model/absence';
 
 @Component({
     templateUrl: 'availableJobs.component.html'
@@ -17,7 +18,7 @@ export class AvailableJobsComponent implements OnInit {
     private notifier: NotifierService;
     msg: string;
     currentDate: Date = new Date();
-    displayedColumns = ['AbsenceDate', 'Posted', 'Location', 'Employee', 'Notes', 'Action'];
+    displayedColumns = ['AbsenceDate', 'Posted', 'Location', 'Employee', 'Notes', 'Attachment', 'Action'];
     AvailableJobs = new MatTableDataSource();
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -132,5 +133,22 @@ export class AvailableJobsComponent implements OnInit {
 
     ShowJobDetail(AbsenceDetail: any) {
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
+    }
+
+    viewFile(absence: Absence): void {
+        if (!absence.attachedFileName && !absence.fileContentType)
+        return;
+        let model = { AttachedFileName: absence.attachedFileName, FileContentType: absence.fileContentType }
+        this._dataContext.getFile('Absence/getfile', model).subscribe((blob: any) => {
+            let newBlob = new Blob([blob]);
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(newBlob);
+                return;
+            }
+            // To open in browser
+            var file = new Blob([blob], { type: absence.fileContentType });
+            window.open(URL.createObjectURL(file));
+        },
+            error => this.msg = <any>error);
     }
 }

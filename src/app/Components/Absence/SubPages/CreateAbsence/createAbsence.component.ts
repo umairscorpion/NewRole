@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
 import { EmployeeService } from '../../../../Service/Manage/employees.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { DataContext } from '../../../../Services/dataContext.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { MatStepper } from '@angular/material/stepper';
 import { IEmployee } from '../../../../Model/Manage/employee';
-import { MatRadioChange } from '@angular/material';
+import { MatRadioChange, MatExpansionPanel } from '@angular/material';
 import { HttpClient, HttpResponse, HttpEventType } from '@angular/common/http';
 import { Global } from '../../../../Shared/global';
 import { Observable } from 'rxjs/Observable';
@@ -20,11 +20,13 @@ import { NotifierService } from 'angular-notifier';
 })
 export class CreateAbsenceComponent implements OnInit, OnDestroy {
     private notifier: NotifierService;
-
+    @ViewChild('preferredSubPanel') preferredSubPanel: MatExpansionPanel;
+    matIcon = 'keyboard_arrow_down' || 'keyboard_arrow_up';
     // For Blocking Dates Renderer for Current month when open Calendar
     SelectionFilterForAlreadyCreatedAbsences = (d: Date): boolean => {
         const day = d.getDay();
-        return (day !== 0 && day !== 6) && d.toLocaleDateString() !== "10/1/2018";
+        return d.toLocaleDateString() !== "10/1/2018";
+        // (day !== 0 && day !== 6) &&
     }
     dateClass = (d: Date) => {
         const date = d.getDate();
@@ -38,8 +40,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
     // var for Preferred Sub 
     ContactSub: string = '1';
-    ContactSubTime : number = null;
-    DisableContactSubTimeAccess : boolean = true;
+    ContactSubTime: number = null;
+    DisableContactSubTimeAccess: boolean = true;
 
     PreferredSubstitutes: any;
     CurrentDate: Date = new Date();
@@ -79,6 +81,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         private _EmployeeService: EmployeeService, private _dataContext: DataContext, private _userSession: UserSession) {
         this.notifier = notifier;
     }
+
     ngOnInit(): void {
         this.GenerateForms();
         this.GetCreatedAbsencesOfEmployee(this._userSession.getUserId());
@@ -90,6 +93,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.GetOrganizations(this._userSession.getUserDistrictId());
         this.GetPositions();
         this.InitializeValues();
+        this.preferredSubPanel.expandedChange.subscribe((data) => {
+            this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+        });
     }
 
     GenerateForms(): void {
@@ -113,7 +119,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             AbsenceEndDate: ['', Validators.required],
             SubRequired: ['1'],
             PositionId: [''],
-            AbsenceType: ['4', Validators.required]
+            AbsenceType: ['4', Validators.required],
+            Substitutes: ['']
         });
 
         this.absenceSecondFormGroup = this._formBuilder.group({
@@ -122,8 +129,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             EndTime: [{ value: '16:00:00', disabled: true }],
             ScheduleType: [''],
             PayRollNotes: [''],
-            NotesToSubstitute: [''],
-            Substitutes: ['']
+            NotesToSubstitute: ['']
         });
     }
 
@@ -181,9 +187,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 this.absenceSecondFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.startTime);
                 this.absenceSecondFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.endTime);
             }
-
         },
             (err: HttpErrorResponse) => {
+
             });
     }
 
@@ -318,30 +324,30 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     OnchangeAbsenceScope(AbsenceScopetype: number) {
         if (+AbsenceScopetype === 1 || +AbsenceScopetype === 2) {
-            this.absenceSecondFormGroup.controls["Substitutes"].setValidators([Validators.required]);
-            this.absenceSecondFormGroup.controls['Substitutes'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls["Substitutes"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['Substitutes'].updateValueAndValidity();
         }
 
         else if (+AbsenceScopetype === 3) {
             this.GetPreferredSubstitutes();
-            this.absenceSecondFormGroup.controls['Substitutes'].clearValidators();
-            this.absenceSecondFormGroup.controls['Substitutes'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Substitutes'].clearValidators();
+            this.absenceFirstFormGroup.controls['Substitutes'].updateValueAndValidity();
         }
-        
+
         else {
-            this.absenceSecondFormGroup.controls['Substitutes'].clearValidators();
-            this.absenceSecondFormGroup.controls['Substitutes'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Substitutes'].clearValidators();
+            this.absenceFirstFormGroup.controls['Substitutes'].updateValueAndValidity();
         }
     }
 
     OnchangeCustomDelay(event: MatRadioChange) {
         if (event.value == 1) {
-            this.absenceSecondFormGroup.controls["Substitutes"].setValidators([Validators.required]);
-            this.absenceSecondFormGroup.controls['Substitutes'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls["Substitutes"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['Substitutes'].updateValueAndValidity();
         }
         else {
-            this.absenceSecondFormGroup.controls['Substitutes'].clearValidators();
-            this.absenceSecondFormGroup.controls['Substitutes'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Substitutes'].clearValidators();
+            this.absenceFirstFormGroup.controls['Substitutes'].updateValueAndValidity();
         }
     }
 
@@ -437,8 +443,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         if (this.absenceFirstFormGroup.valid && this.absenceSecondFormGroup.valid) {
             let Substitutes = "";
 
-            if (+FirstAbsenceForm.value.AbsenceType == 1 && SecondAbsenceForm.value.Substitutes) {
-                SecondAbsenceForm.value.Substitutes.forEach((Substitute, index, array) => {
+            if (+FirstAbsenceForm.value.AbsenceType == 1 && FirstAbsenceForm.value.Substitutes) {
+                FirstAbsenceForm.value.Substitutes.forEach((Substitute, index, array) => {
                     Substitutes += index === array.length - 1 ? Substitute.userId : Substitute.userId + ",";
                 });
             }
@@ -471,7 +477,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 SubstituteId: SecondAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 2 ? SecondAbsenceForm.value.Substitutes.userId :
                     SecondAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 1 ? Substitutes : '-1',
                 Interval: this.ContactSub == "1" ? 0 : this.ContactSubTime,
-                TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime +  this.ContactSubTime
+                TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime + this.ContactSubTime
             }
 
             if (!this.CheckDataAndTimeOverlape(AbsenceModel.StartDate as Date,
@@ -509,9 +515,16 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         return Isoverlap;
     }
 
-    OnchangeContactSubOption() : void {
-        if (this.ContactSub == "1")
-        {
+    expandPannel() {
+        this.preferredSubPanel.expanded = !this.preferredSubPanel.expanded;
+    }
+
+    checkAbsenceScope(): boolean {
+        return this.absenceFirstFormGroup.get('AbsenceType').value != "3" ? true : false;
+    }
+
+    OnchangeContactSubOption(): void {
+        if (this.ContactSub == "1") {
             this.ContactSubTime = null;
             this.DisableContactSubTimeAccess = true;
         }

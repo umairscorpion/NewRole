@@ -120,13 +120,16 @@ import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.compo
 
 //Services
 import { SideNavService } from './Components/SideNav/sideNav.service';
-import { UserService } from './Service/user.service';
 import { DistrictService } from './Service/Manage/district.service';
 import { SchoolService } from './Service/Manage/school.service';
 import { EmployeeService } from './Service/Manage/employees.service';
+import { UserService } from './Service/user.service';
 import { DataContext } from './Services/dataContext.service';
 import { UserSession } from './Services/userSession.service';
 import { CommunicationService } from './Services/communication.service';
+import { ReportService } from './Services/report.service';
+import { ErrorHandlerService } from './Services/error-handler/error-handler.service';
+import { ProfileService } from './Services/profile.service';
 
 import {
     SocialLoginModule,
@@ -134,8 +137,6 @@ import {
     GoogleLoginProvider,
 } from "angular-6-social-login";
 import { ReportFiltersComponent } from './Components/Reports/filters/filters.component';
-import { ReportService } from './Services/report.service';
-import { ErrorHandlerService } from './Services/error-handler/error-handler.service';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -246,6 +247,7 @@ const customNotifierOptions: NotifierOptions = {
     providers: [UserService, SideNavService, DistrictService, SchoolService, EmployeeService, AuthGuard, DataContext, UserSession, CommunicationService,
         ReportService,
         ErrorHandlerService,
+        ProfileService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,

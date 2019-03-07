@@ -6,10 +6,9 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import { environment } from '../../environments/environment';
 
-@Injectable()
 export abstract class RestService<T> {
 
-    private baseUrl = environment.apiUrl;
+    private baseUrl = environment.apiUrl;   
 
     constructor(
         protected httpClient: HttpClient) { }
