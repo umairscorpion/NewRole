@@ -1,0 +1,68 @@
+<div>
+
+  <mat-dialog-actions>
+    <div class="col-md-8 pr-0">
+      <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
+      <button type="button" mat-raised-button class="btn btn-default">Release</button>
+      <button type="button" mat-raised-button class="btn btn-default">Assign</button>
+      <button type="button" mat-raised-button class="btn btn-default">Resend</button>
+    </div>
+    <div class="col-md-4 pl-0">
+      <button type="button" mat-raised-button class="btn btn-warning">Delete</button>
+      <button type="button" mat-raised-button class="btn btn-info">Edit</button>
+    </div>
+  </mat-dialog-actions>
+  <hr>
+  <div class="avatar-wrapper">
+    <img class="profile-pic" src="" />
+  </div>
+  <div class="text-center">
+    <h4>{{reportDetail.employeeName}}</h4>
+  </div>
+  <div class="absence-summary-title p-5 mt-5">Absence Summary</div>
+  <br>
+  <table class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
+    <tr>
+      <td>ID:</td>
+      <td>{{reportDetail.absenceId}}</td>
+    </tr>
+    <tr>
+      <td>Reason:</td>
+      <td>{{reportDetail.reason}}</td>
+    </tr>
+    <tr>
+      <td>From:</td>
+      <td>{{reportDetail.startDate | date:'E, M/d/y'}}</td>
+    </tr>
+    <tr>
+      <td>To:</td>
+      <td>{{reportDetail.endDate | date:'E, M/d/y'}}</td>
+    </tr>
+    <tr>
+      <td>Duration:</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>Status:</td>
+      <td>{{reportDetail.statusTitle}}</td>
+    </tr>
+    <tr>
+      <td>Substitute:</td>
+      <td>{{reportDetail.substituteName}}</td>
+    </tr>
+    <tr>
+      <td>Posted:</td>
+      <td>{{reportDetail.postedOn | date:'M/d/y h:mm a'}}</td>
+    </tr>
+    <tr>
+      <td>Notes:</td>
+      <td>{{reportDetail.notes}}</td>
+    </tr>
+  </table>
+
+  <hr>
+  <mat-dialog-actions class="m-10">
+    <button type="button" mat-raised-button class="btn btn-info">Save</button>&nbsp;
+    <button type="button" mat-raised-button class="btn btn-default" (click)="onClose()">Cancel</button>
+  </mat-dialog-actions>
+</div>

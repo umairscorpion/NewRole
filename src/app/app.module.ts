@@ -130,6 +130,7 @@ import { CommunicationService } from './Services/communication.service';
 import { ReportService } from './Services/report.service';
 import { ErrorHandlerService } from './Services/error-handler/error-handler.service';
 import { ProfileService } from './Services/profile.service';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import {
     SocialLoginModule,
@@ -137,6 +138,7 @@ import {
     GoogleLoginProvider,
 } from "angular-6-social-login";
 import { ReportFiltersComponent } from './Components/Reports/filters/filters.component';
+import { ReportDetailsComponent } from './Components/Reports/popups/report-details.popup.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -193,6 +195,7 @@ const customNotifierOptions: NotifierOptions = {
 
 @NgModule({
     imports: [
+        NgxDatatableModule,
         ChartsModule,
         BrowserModule, ReactiveFormsModule, MatSidenavModule, CdkTableModule, HttpModule, routing, FormsModule,
         Ng2Bs3ModalModule, BrowserAnimationsModule, HttpClientModule,
@@ -227,24 +230,83 @@ const customNotifierOptions: NotifierOptions = {
         MatTabsModule,
         MatToolbarModule,
         SocialLoginModule,
-        MatTooltipModule, BlockUIModule.forRoot(), NotifierModule.withConfig(customNotifierOptions)],
-    declarations: [AppComponent, HomeComponent, LoginComponent,
-        SideNavComponent, DistrictsComponent, ManageComponent, OrganizationsComponent, AddOrganizationComponent,
-        AddDistrictComponent, EmployeesComponent, AddEmployeesComponent, SubstitutesComponent, SchoolSubListComponent,
-        LeavesComponent, AddLeaveComponent, AddLeaveRequestComponent,
-        ReportsComponent, DailyReportsComponent, MonthlyReportsComponent,
-        PayRollReportsComponent, PastJobsComponent, MyJobsComponent, JobComponent, AvailableJobsComponent,
-        TimeClockComponent, TimeTrackerComponent, PermissionsComponent, SettingComponent,
-        SchoolsComponent, AddSchoolComponent, ProfileComponent, ContactUsComponent, absenceComponent,
-        AddSubstituteComponent, CreateAbsenceComponent, PastAbsenceComponent,
-        UpcommingAbsenceComponent, AbortedAbsenceComponent, PopupDialogForSubstituteDetail,
-        PopupDialogForDistrictDetail, PopupDialogForSchoolDetail, PopupDialogForEmployeeDetail, PopupDialogForSearch,
-        PopupDialogForSettings, PopupDialogForOrganizationDetail, PopupDialogForAbsenceDetail, PopupDialogForJobDetail,
-        ReportFiltersComponent
+        MatTooltipModule,
+        BlockUIModule.forRoot(),
+        NotifierModule.withConfig(customNotifierOptions)
     ],
-    entryComponents: [PopupDialogForSubstituteDetail, PopupDialogForDistrictDetail, PopupDialogForSchoolDetail, PopupDialogForJobDetail,
-        PopupDialogForEmployeeDetail, PopupDialogForSearch, PopupDialogForSettings, PopupDialogForOrganizationDetail, PopupDialogForAbsenceDetail],
-    providers: [UserService, SideNavService, DistrictService, SchoolService, EmployeeService, AuthGuard, DataContext, UserSession, CommunicationService,
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        LoginComponent,
+        SideNavComponent,
+        DistrictsComponent,
+        ManageComponent,
+        OrganizationsComponent,
+        AddOrganizationComponent,
+        AddDistrictComponent,
+        EmployeesComponent,
+        AddEmployeesComponent,
+        SubstitutesComponent,
+        SchoolSubListComponent,
+        LeavesComponent,
+        AddLeaveComponent,
+        AddLeaveRequestComponent,
+        ReportsComponent,
+        DailyReportsComponent,
+        MonthlyReportsComponent,
+        PayRollReportsComponent,
+        PastJobsComponent,
+        MyJobsComponent,
+        JobComponent,
+        AvailableJobsComponent,
+        TimeClockComponent,
+        TimeTrackerComponent,
+        PermissionsComponent,
+        SettingComponent,
+        SchoolsComponent,
+        AddSchoolComponent,
+        ProfileComponent,
+        ContactUsComponent,
+        absenceComponent,
+        AddSubstituteComponent,
+        CreateAbsenceComponent,
+        PastAbsenceComponent,
+        UpcommingAbsenceComponent,
+        AbortedAbsenceComponent,
+        PopupDialogForSubstituteDetail,
+        PopupDialogForDistrictDetail,
+        PopupDialogForSchoolDetail,
+        PopupDialogForEmployeeDetail,
+        PopupDialogForSearch,
+        PopupDialogForSettings,
+        PopupDialogForOrganizationDetail,
+        PopupDialogForAbsenceDetail,
+        PopupDialogForJobDetail,
+        ReportFiltersComponent,
+        ReportDetailsComponent
+    ],
+    entryComponents: [
+        PopupDialogForSubstituteDetail,
+        PopupDialogForDistrictDetail,
+        PopupDialogForSchoolDetail,
+        PopupDialogForJobDetail,
+        PopupDialogForEmployeeDetail,
+        PopupDialogForSearch,
+        PopupDialogForSettings,
+        PopupDialogForOrganizationDetail,
+        PopupDialogForAbsenceDetail,
+        ReportDetailsComponent
+    ],
+    providers: [
+        UserService,
+        SideNavService,
+        DistrictService,
+        SchoolService,
+        EmployeeService,
+        AuthGuard,
+        DataContext,
+        UserSession,
+        CommunicationService,
         ReportService,
         ErrorHandlerService,
         ProfileService,

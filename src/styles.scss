@@ -4,7 +4,9 @@
 @import "../node_modules/angular-notifier/styles.css";
 @import "../node_modules/angular-notifier/styles/core.css";
 @import "../node_modules/angular-notifier/styles/themes/theme-material.css";
-
+@import '~@swimlane/ngx-datatable/release/index.css';
+@import '~@swimlane/ngx-datatable/release/themes/material.css';
+@import '~@swimlane/ngx-datatable/release/assets/icons.css';
 
 $sides: (top, bottom, left, right);
 @for $i from 0 to 100 {
@@ -61,3 +63,17 @@ $sides: (top, bottom, left, right);
     width: #{$space}% !important;
   }
 }
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.report-details-dialog {
+  width: 38vw;
+  height: auto;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    padding: 0;
+  }
+ }
