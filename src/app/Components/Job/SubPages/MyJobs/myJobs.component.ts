@@ -5,6 +5,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommunicationService } from '../../../../Services/communication.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
+import { ActivatedRoute, Router } from '../../../../../../node_modules/@angular/router';
+import { UserService } from '../../../../Service/user.service';
+import { environment } from '../../../../../environments/environment.prod';
+import { HttpErrorResponse } from '../../../../../../node_modules/@angular/common/http';
 
 @Component({
     templateUrl: 'myJobs.component.html'
@@ -23,8 +27,9 @@ export class MyJobsComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
 
-    constructor(private _dataContext: DataContext, private _userSession: UserSession, private _formBuilder: FormBuilder,
-        notifier: NotifierService, private _communicationService: CommunicationService) {
+    constructor(private _dataContext: DataContext, private _userSession: UserSession,
+         private _formBuilder: FormBuilder, private userService : UserService, private router: Router,
+        notifier: NotifierService, private _communicationService: CommunicationService, private activatedRoute: ActivatedRoute) {
         this.notifier = notifier;
     }
 
@@ -64,7 +69,17 @@ export class MyJobsComponent implements OnInit {
         }
     }
 
-    ngOnInit(): void {  
+    ngOnChanges()	{
+        alert("Inti");
+    }
+
+
+    ngOnInit(): void {
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params.jobId) {
+                this.AcceptJob(params.jobId)
+            }
+        })
         this.FilterForm = this._formBuilder.group({
             FilterStartDate: ['', Validators.required],
             FilterEndDate: ['', Validators.required],
@@ -74,6 +89,7 @@ export class MyJobsComponent implements OnInit {
         this.GetUpcommingJobs();
         this.GetDistricts();
         this.GetOrganizations(this._userSession.getUserDistrictId());
+        
     }
 
     GetOrganizations(DistrictId: number): void {
@@ -115,4 +131,42 @@ export class MyJobsComponent implements OnInit {
     ShowJobDetail(AbsenceDetail: any) {
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
     }
+
+    AcceptJob(jobNo : number) {
+        let confirmResult = confirm('Are you sure you want to Accept this Job?');
+        if (confirmResult) {
+            this._dataContext.get('Job/acceptJob/' + jobNo + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                this.NotifyResponse(response as string);
+                this.GetUpcommingJobs();
+            },
+                error => this.msg = <any>error);
+        }
+    }
+
+    NotifyResponse(Message: string): void {
+        if (Message == "success") {
+            this.notifier.notify('success', 'Accepted Successfully.');
+            this.GetUpcommingJobs();
+        }
+        else if (Message == "Blocked") {
+            this.notifier.notify('error', 'You Are Blocked By Employee To Accept This Job.');
+            this.GetUpcommingJobs();
+        }
+        else if (Message == "Cancelled") {
+            this.notifier.notify('error', 'Job Has Been Cancelled.');
+            this.GetUpcommingJobs();
+        }
+        else if (Message == "Accepted") {
+            this.notifier.notify('error', 'Job Already Accepted.');
+            this.GetUpcommingJobs();
+        }
+        else if (Message == "Conflict") {
+            this.notifier.notify('error', 'Already Accepted Job on This Date.');
+            this.GetUpcommingJobs();
+        }
+        else {
+            this.notifier.notify('error', 'Problem Occured While Process you Request.Please Try Again Later.');
+        }
+    }
+
 }

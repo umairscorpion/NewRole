@@ -10,11 +10,24 @@ import { Absence } from '../../../../Model/absence';
 @Component({
     templateUrl: 'availableJobs.component.html'
 })
+
 export class AvailableJobsComponent implements OnInit {
+    coloringAbsences = (d: Date) => {
+        const date = d.getDate();
+        let toSelectDefaultOptionForReason = this.myJobs.find((absence: Absence) => {
+            if (new Date(absence.startDate).toDateString() == d.toDateString()
+                || new Date(absence.endDate).toDateString() == d.toDateString()) {
+                return true;
+            }
+        });
+        return toSelectDefaultOptionForReason ? 'highlight-Jobs' : undefined;
+    }
+
     Organizations: any;
-    Districts : any;
+    Districts: any;
     CurrentDate: Date = new Date;
     FilterForm: FormGroup;
+    myJobs: any;
     private notifier: NotifierService;
     msg: string;
     currentDate: Date = new Date();
@@ -24,8 +37,9 @@ export class AvailableJobsComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
 
-    constructor(private _dataContext: DataContext, private _userSession: UserSession, private _formBuilder: FormBuilder,
-        notifier: NotifierService, private _communicationService: CommunicationService) {
+    constructor(private _dataContext: DataContext, private _userSession: UserSession,
+        private _formBuilder: FormBuilder, notifier: NotifierService,
+        private _communicationService: CommunicationService) {
         this.notifier = notifier;
     }
 
@@ -40,34 +54,35 @@ export class AvailableJobsComponent implements OnInit {
         EndDate.setDate(this.currentDate.getDate() + 30);
         let UserId = this._userSession.getUserId();
         let DistrictId = this._userSession.getUserDistrictId();
-        let Status = 1 ;
+        let Status = 1;
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
-         "/" + UserId + "/"+ "-1" + "/" + DistrictId + "/" + Status ).subscribe((data: any) => {
-            this.AvailableJobs.data = data;
-        },
-            error => this.msg = <any>error);
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + Status).subscribe((data: any) => {
+                this.AvailableJobs.data = data;
+            },
+                error => this.msg = <any>error);
     }
 
     AcceptAbsence(SelectedRow: any, StatusId: number) {
         let confirmResult = confirm('Are you sure you want to Accept this Job?');
         if (confirmResult) {
-            this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp" ).subscribe((response: any) => {
+            this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
                 this.NotifyResponse(response as string);
             },
                 error => this.msg = <any>error);
         }
     }
 
-    ngOnInit(): void {  
+    ngOnInit(): void {
         this.FilterForm = this._formBuilder.group({
             FilterStartDate: ['', Validators.required],
             FilterEndDate: ['', Validators.required],
-            DistrictId: [{ disabled: true}, Validators.required],
-            OrganizationId: ['-1', Validators.required]
+            DistrictId: [{ disabled: true }, Validators.required],
+            OrganizationId: ['-1', Validators.required],
+            Requested : ['']
         });
-        
+        this.GetMyJobs();
         this.GetDistricts();
         this.GetOrganizations(this._userSession.getUserDistrictId());
         this.GetAvailableJobs();
@@ -92,24 +107,24 @@ export class AvailableJobsComponent implements OnInit {
     GetDistricts(): void {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
-                this.FilterForm.get('DistrictId').setValue(this._userSession.getUserDistrictId());
-                this.FilterForm.controls['DistrictId'].disable();
+            this.FilterForm.get('DistrictId').setValue(this._userSession.getUserDistrictId());
+            this.FilterForm.controls['DistrictId'].disable();
         },
             error => <any>error);
     }
 
     SearchAvailableJobs(SearchFilter: any): void {
         if (this.FilterForm.valid) {
-            this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/" 
-            + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/"+ SearchFilter.value.OrganizationId + 
-            "/" + SearchFilter.getRawValue().DistrictId  + "/" + 1 ).subscribe((data: any) => {
-            this.AvailableJobs.data = data;
-        },
-            error => this.msg = <any>error);
+            this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"
+                + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +
+                "/" + SearchFilter.getRawValue().DistrictId + "/" + 1).subscribe((data: any) => {
+                    this.AvailableJobs.data = data;
+                },
+                    error => this.msg = <any>error);
         }
     }
 
-    NotifyResponse(Message: string) : void {
+    NotifyResponse(Message: string): void {
         if (Message == "success") {
             this.notifier.notify('success', 'Accepted Successfully.');
             this.GetAvailableJobs();
@@ -126,6 +141,10 @@ export class AvailableJobsComponent implements OnInit {
             this.notifier.notify('error', 'Job Already Accepted.');
             this.GetAvailableJobs();
         }
+        else if (Message == "Conflict") {
+            this.notifier.notify('error', 'Already Accepted Job on This Date.');
+            this.GetAvailableJobs();
+        }
         else {
             this.notifier.notify('error', 'Problem Occured While Process you Request.Please Try Again Later.');
         }
@@ -137,7 +156,7 @@ export class AvailableJobsComponent implements OnInit {
 
     viewFile(absence: Absence): void {
         if (!absence.attachedFileName && !absence.fileContentType)
-        return;
+            return;
         let model = { AttachedFileName: absence.attachedFileName, FileContentType: absence.fileContentType }
         this._dataContext.getFile('Absence/getfile', model).subscribe((blob: any) => {
             let newBlob = new Blob([blob]);
@@ -150,5 +169,20 @@ export class AvailableJobsComponent implements OnInit {
             window.open(URL.createObjectURL(file));
         },
             error => this.msg = <any>error);
+    }
+
+    GetMyJobs() {
+        let StartDate = new Date();
+        let EndDate = new Date();
+        StartDate.setDate(this.currentDate.getDate() - 150);
+        EndDate.setDate(this.currentDate.getDate() + 150);
+        let UserId = this._userSession.getUserId();
+        let DistrictId = this._userSession.getUserDistrictId();
+        let Status = 2;
+        this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate.toISOString() + "/" + EndDate.toISOString() +
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + Status).subscribe((data: any) => {
+                this.myJobs = data;
+            },
+                error => this.msg = <any>error);
     }
 }

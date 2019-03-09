@@ -19,14 +19,6 @@ import { MatTableDataSource, MatPaginator} from '@angular/material';
 
 })
 export class ProfileComponent implements OnInit {
-    categoriesDataSource = new MatTableDataSource();
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    categoryColumns = ['No', 'Name'];
-    categories: Observable<Lookup[]>;
-    SelectedCategoryId: number;
-    CategoryTitle = new FormControl();
-    AllSubstitutesAddedByEmplyee: Array<any> = [];
-    AllSubstituteCategories: Array<any> = [];
     LoginedUserId: any = 0;
     private notifier: NotifierService;
     ProfilePicture: any;
@@ -35,7 +27,6 @@ export class ProfileComponent implements OnInit {
     personalFormGroup: FormGroup;
     officialFormGroup: FormGroup;
     PreferencesFormGroup: FormGroup;
-    categoryForm: FormGroup;
     url: string;
     SubstituteList: any;
     FavoriteSubstututes: Array<any> = [];
@@ -45,7 +36,6 @@ export class ProfileComponent implements OnInit {
     constructor(private router: Router, private sanitizer: DomSanitizer, private _formBuilder: FormBuilder,
         notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession,
         private _employeeService: EmployeeService, private profileService: ProfileService) {
-        this.categoriesDataSource.paginator = this.paginator;
         this.notifier = notifier
     }
 
@@ -53,7 +43,6 @@ export class ProfileComponent implements OnInit {
         if (this._userSession.getUserRoleId() != 4) {
             this.GetBlockedSubstitutes();
             this.GetFavoritSubstitutes();
-            this.GetAllSubstituteCategories();
         }
         this.generateForms();
     }
@@ -97,10 +86,6 @@ export class ProfileComponent implements OnInit {
             PreferredSubstitites: ['']
         });
 
-        this.categoryForm = this._formBuilder.group({
-            categoryName : ['']
-        });
-
         this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
         let personalFormModel = {
             FirstName: this.UserClaim.firstName,
@@ -134,30 +119,10 @@ export class ProfileComponent implements OnInit {
     GetFavoritSubstitutes() {
         let UserId = this._userSession.getUserId();
         this._datacontext.get('user/getFavoriteSubstitutes' + '/' + UserId).subscribe((data: any) => {
-            this.AllSubstitutesAddedByEmplyee = data;
+            this.FavoriteSubstututes = data;
         },
             error => this.msg = <any>error);
     }
-
-    GetAllSubstituteCategories() {
-        let UserId = this._userSession.getUserId();
-        this.profileService.getCategory(UserId, "N-A").subscribe((data: any) => {
-            this.AllSubstituteCategories = data;
-            this.categoriesDataSource = data;
-        },
-            error => this.msg = <any>error);
-    }
-
-    SearchCategory(SearchText: string) {
-        let UserId = this._userSession.getUserId();
-        this.categories = this.profileService.getCategory(UserId, SearchText);
-    }
-
-    SelectCategory(category: Lookup) {
-        this.SelectedCategoryId = category.id;
-        this.FavoriteSubstututes = this.AllSubstitutesAddedByEmplyee.filter((user: User) => user.categoryId == category.id);
-    }
-
 
     GetBlockedSubstitutes() {
         let UserId = this._userSession.getUserId();
@@ -176,14 +141,9 @@ export class ProfileComponent implements OnInit {
     }
 
     SelectToAddInPreferredSubstitute(Substitute: any) {
-        Substitute.CategoryId = this.SelectedCategoryId;
         this.SubstituteList = null;
         if (this.FavoriteSubstututes.find((obj: any) => obj.userId == Substitute.userId)) {
             this.notifier.notify('error', 'Already added in this category.');
-            return;
-        }
-        if (this.AllSubstitutesAddedByEmplyee.find((obj: any) => obj.userId == Substitute.userId)) {
-            this.notifier.notify('error', 'Already added in Other category.');
             return;
         }
         if (this.BlockedSubstitutes.find((obj: any) => obj.userId == Substitute.userId)) {
@@ -192,7 +152,6 @@ export class ProfileComponent implements OnInit {
         }
         if (this.FavoriteSubstututes.length < 5) {
             this.FavoriteSubstututes.push(Substitute);
-            this.AllSubstitutesAddedByEmplyee.push(Substitute);
         }
         else
             this.notifier.notify('error', 'Already added five substitutes.');
@@ -204,7 +163,7 @@ export class ProfileComponent implements OnInit {
             this.notifier.notify('error', 'Already added in list.');
             return;
         }
-        if (this.AllSubstitutesAddedByEmplyee.find((obj: any) => obj.userId == Substitute.userId)) {
+        if (this.FavoriteSubstututes.find((obj: any) => obj.userId == Substitute.userId)) {
             this.notifier.notify('error', 'Already added in favorite list.');
             return;
         }
@@ -216,15 +175,13 @@ export class ProfileComponent implements OnInit {
 
     removePreferredSub(index: number) {
         this.FavoriteSubstututes.splice(index, 1);
-        this.AllSubstitutesAddedByEmplyee.splice(index, 1);
     }
 
     SaveSubstitutePreference(): void {
         let model = {
             UserId: this._userSession.getUserId(),
-            CategoryId: this.SelectedCategoryId,
             BlockedSubstituteList: JSON.stringify(this.BlockedSubstitutes),
-            FavoriteSubstituteList: JSON.stringify(this.AllSubstitutesAddedByEmplyee)
+            FavoriteSubstituteList: JSON.stringify(this.FavoriteSubstututes)
         }
         this._datacontext.post('user/updateSubstitutePreferrence', model).subscribe((data: any) => {
             this.notifier.notify('success', 'Updated Successfully.');

@@ -113,21 +113,21 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.absenceFirstFormGroup = this._formBuilder.group({
             EmployeeId: [''],
             Reason: [null, Validators.required],
+            StartTime: [{ value: '08:00:00', disabled: true }],
+            EndTime: [{ value: '16:00:00', disabled: true }],
+            ScheduleType: [''],
+            Duration: ['1', Validators.required],
             Location: [null, Validators.required],
             OrganizationId: [{ value: null, disabled: true }, Validators.required],
             AbsenceStartDate: ['', Validators.required],
             AbsenceEndDate: ['', Validators.required],
-            SubRequired: ['1'],
+            // SubRequired: ['1'],
             PositionId: [''],
             AbsenceType: ['4', Validators.required],
             Substitutes: ['']
         });
 
         this.absenceSecondFormGroup = this._formBuilder.group({
-            Duration: ['1', Validators.required],
-            StartTime: [{ value: '08:00:00', disabled: true }],
-            EndTime: [{ value: '16:00:00', disabled: true }],
-            ScheduleType: [''],
             PayRollNotes: [''],
             NotesToSubstitute: ['']
         });
@@ -184,8 +184,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this._dataContext.getUserLocationTime('user/getUserLocationTime', this.EmployeeIdForAbsence, userLevel).subscribe((data: any) => {
             this.loginedUserLocationTime = data;
             if (data) {
-                this.absenceSecondFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.startTime);
-                this.absenceSecondFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.endTime);
+                this.absenceFirstFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.startTime);
+                this.absenceFirstFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.endTime);
             }
         },
             (err: HttpErrorResponse) => {
@@ -197,8 +197,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         if (typeof OrganizationId != "undefined" && OrganizationId) {
             this._dataContext.get('School/getOrganizationTimeByOrganizationId' + "/" + OrganizationId).subscribe((data: any) => {
                 this.loginedUserLocationTime = data;
-                this.absenceSecondFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.startTime);
-                this.absenceSecondFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.endTime);
+                this.absenceFirstFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.startTime);
+                this.absenceFirstFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.endTime);
             },
                 (err: HttpErrorResponse) => {
                 });
@@ -296,7 +296,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls['OrganizationId'].disable();
         }
         else if (+event.value == 3) {
-            this.absenceFirstFormGroup.get('SubRequired').setValue('1');
+            // this.absenceFirstFormGroup.get('SubRequired').setValue('1');
             this.absenceFirstFormGroup.controls["PositionId"].setValidators([Validators.required]);
             this.absenceFirstFormGroup.controls['PositionId'].updateValueAndValidity();
             this.EmployeeIdForAbsence = "U000000000";
@@ -308,7 +308,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls['EmployeeId'].clearValidators();
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
         }
-
         else {
             if (this.loginedUserLevel == 1) {
                 this.absenceFirstFormGroup.controls['OrganizationId'].disable();
@@ -353,46 +352,46 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     //ON CHANGING DURATION TYPE
     onChangeDurationForAbsence(durationType: any) {
-        this.absenceSecondFormGroup.controls['StartTime'].clearValidators();
-        this.absenceSecondFormGroup.controls['EndTime'].clearValidators();
-        this.absenceSecondFormGroup.controls['StartTime'].updateValueAndValidity();
-        this.absenceSecondFormGroup.controls['EndTime'].updateValueAndValidity();
-        this.absenceSecondFormGroup.controls['ScheduleType'].clearValidators();
-        this.absenceSecondFormGroup.controls['ScheduleType'].updateValueAndValidity();
-        this.absenceSecondFormGroup.controls['StartTime'].disable();
-        this.absenceSecondFormGroup.controls['EndTime'].disable();
+        this.absenceFirstFormGroup.controls['StartTime'].clearValidators();
+        this.absenceFirstFormGroup.controls['EndTime'].clearValidators();
+        this.absenceFirstFormGroup.controls['StartTime'].updateValueAndValidity();
+        this.absenceFirstFormGroup.controls['EndTime'].updateValueAndValidity();
+        this.absenceFirstFormGroup.controls['ScheduleType'].clearValidators();
+        this.absenceFirstFormGroup.controls['ScheduleType'].updateValueAndValidity();
+        this.absenceFirstFormGroup.controls['StartTime'].disable();
+        this.absenceFirstFormGroup.controls['EndTime'].disable();
         if (durationType === "5") {
-            this.absenceSecondFormGroup.controls["ScheduleType"].setValidators([Validators.required]);
-            this.absenceSecondFormGroup.controls['ScheduleType'].updateValueAndValidity();
-            this.absenceSecondFormGroup.controls['StartTime'].clearValidators();
-            this.absenceSecondFormGroup.controls['EndTime'].clearValidators();
-            this.absenceSecondFormGroup.controls['StartTime'].updateValueAndValidity();
-            this.absenceSecondFormGroup.controls['EndTime'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls["ScheduleType"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['ScheduleType'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['StartTime'].clearValidators();
+            this.absenceFirstFormGroup.controls['EndTime'].clearValidators();
+            this.absenceFirstFormGroup.controls['StartTime'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['EndTime'].updateValueAndValidity();
         }
         else {
-            this.absenceSecondFormGroup.controls["StartTime"].setValidators([Validators.required]);
-            this.absenceSecondFormGroup.controls['StartTime'].updateValueAndValidity();
-            this.absenceSecondFormGroup.controls["EndTime"].setValidators([Validators.required]);
-            this.absenceSecondFormGroup.controls['EndTime'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls["StartTime"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['StartTime'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls["EndTime"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['EndTime'].updateValueAndValidity();
 
             if (durationType === "1") {
-                this.absenceSecondFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.startTime);
-                this.absenceSecondFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.endTime);
+                this.absenceFirstFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.startTime);
+                this.absenceFirstFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.endTime);
             }
 
             else if (durationType === "2") {
-                this.absenceSecondFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.startTime);
-                this.absenceSecondFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.firstHalfEnd);
+                this.absenceFirstFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.startTime);
+                this.absenceFirstFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.firstHalfEnd);
             }
 
             else if (durationType === "3") {
-                this.absenceSecondFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.secondHalfStart);
-                this.absenceSecondFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.endTime);
+                this.absenceFirstFormGroup.get('StartTime').setValue(this.loginedUserLocationTime.secondHalfStart);
+                this.absenceFirstFormGroup.get('EndTime').setValue(this.loginedUserLocationTime.endTime);
             }
 
             else if (durationType === "4") {
-                this.absenceSecondFormGroup.controls['StartTime'].enable();
-                this.absenceSecondFormGroup.controls['EndTime'].enable();
+                this.absenceFirstFormGroup.controls['StartTime'].enable();
+                this.absenceFirstFormGroup.controls['EndTime'].enable();
             }
         }
     }
@@ -452,21 +451,21 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             let AbsenceModel = {
                 EmployeeId: this.EmployeeIdForAbsence,
                 AbsenceCreatedByEmployeeId: this._userSession.getUserId(),
-                StartDate: FirstAbsenceForm.value.AbsenceStartDate,
-                EndDate: FirstAbsenceForm.value.AbsenceEndDate,
-                StartTime: typeof SecondAbsenceForm.value.StartTime != 'undefined' && SecondAbsenceForm.value.StartTime ?
-                    SecondAbsenceForm.value.StartTime : SecondAbsenceForm.getRawValue().StartTime,
-                EndTime: typeof SecondAbsenceForm.value.EndTime != 'undefined' && SecondAbsenceForm.value.EndTime ?
-                    SecondAbsenceForm.value.EndTime : SecondAbsenceForm.getRawValue().EndTime,
+                StartDate: new Date(FirstAbsenceForm.value.AbsenceStartDate).toLocaleDateString(),
+                EndDate: new Date(FirstAbsenceForm.value.AbsenceEndDate).toLocaleDateString(),
+                StartTime: typeof FirstAbsenceForm.value.StartTime != 'undefined' && FirstAbsenceForm.value.StartTime ?
+                    FirstAbsenceForm.value.StartTime : FirstAbsenceForm.getRawValue().StartTime,
+                EndTime: typeof FirstAbsenceForm.value.EndTime != 'undefined' && FirstAbsenceForm.value.EndTime ?
+                    FirstAbsenceForm.value.EndTime : FirstAbsenceForm.getRawValue().EndTime,
                 AbsenceReasonId: FirstAbsenceForm.value.Reason.leaveTypeId,
-                DurationType: SecondAbsenceForm.value.Duration,
+                DurationType: FirstAbsenceForm.value.Duration,
                 PositionId: this.NeedASub == true ? FirstAbsenceForm.value.PositionId : this.loginedUserType,
                 Status: +FirstAbsenceForm.value.AbsenceType == 2 && SecondAbsenceForm.value.Substitutes ? 2 : 1,
                 OrganizationId: typeof FirstAbsenceForm.value.OrganizationId != 'undefined' && FirstAbsenceForm.value.OrganizationId && (this.AbsenceForUserLevel == 3 || this.NeedASub) ? FirstAbsenceForm.value.OrganizationId :
                     FirstAbsenceForm.getRawValue().OrganizationId && (this.AbsenceForUserLevel == 3 || this.NeedASub) ? FirstAbsenceForm.getRawValue().OrganizationId : '-1',
                 DistrictId: typeof FirstAbsenceForm.value.Location != 'undefined' && FirstAbsenceForm.value.Location ? FirstAbsenceForm.value.Location :
                     FirstAbsenceForm.getRawValue().Location,
-                SubstituteRequired: FirstAbsenceForm.value.SubRequired == "1" ? true : false,
+                SubstituteRequired: +FirstAbsenceForm.value.AbsenceType == 5 ? true : false,
                 AbsenceScope: FirstAbsenceForm.value.AbsenceType,
                 PayrollNotes: SecondAbsenceForm.value.PayRollNotes,
                 SubstituteNotes: SecondAbsenceForm.value.NotesToSubstitute,
@@ -480,8 +479,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime + this.ContactSubTime
             }
 
-            if (!this.CheckDataAndTimeOverlape(AbsenceModel.StartDate as Date,
-                AbsenceModel.EndDate as Date, AbsenceModel.StartTime as string, AbsenceModel.EndTime as string)) {
+            if (!this.CheckDataAndTimeOverlape(FirstAbsenceForm.value.AbsenceStartDate as Date,
+                FirstAbsenceForm.value.AbsenceEndDate as Date, AbsenceModel.StartTime as string, AbsenceModel.EndTime as string)) {
                 this._dataContext.post('Absence/CreateAbsence', AbsenceModel).subscribe((respose: any) => {
                     if (respose == "success") {
                         this.response = 1;

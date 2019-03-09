@@ -30,3 +30,26 @@
   .mat-horizontal-stepper-header{
     pointer-events: none !important;
 }
+
+.highlight-Jobs { background:#4cae4c;
+  border-radius: 100%;
+}
+
+/* Jobs */
+.mat-column-Employee {
+  flex: 0 0 25% !important;
+  min-width: 355px !important;
+}
+
+.mat-column-Location {
+  flex: 0 0 15% !important;
+  min-width: 200px !important;
+}
+
+.mat-column-AbsenceDate, .mat-column-Posted {
+  padding-left: 24px;
+  flex: 0 0 13% !important;
+    min-width: 163px !important;
+
+}
+

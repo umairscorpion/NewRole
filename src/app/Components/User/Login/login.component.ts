@@ -5,7 +5,7 @@ import { DataContext } from '../../../Services/dataContext.service';
 import { UserSession } from '../../../Services/userSession.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Global } from '../../../Shared/global';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
 import {
@@ -19,6 +19,7 @@ import {
 })
 
 export class LoginComponent implements OnInit {
+    JobId = 0;
     Date = new Date();
     private notifier: NotifierService;
     hide = true;
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
     loginFrm: FormGroup;
     private formSubmitAttempt: boolean;
     constructor(private socialAuthService: AuthService, private ngZone: NgZone,
-        private fb: FormBuilder, private _userService: UserService, private router: Router,
+        private fb: FormBuilder, private _userService: UserService, private router: Router, private activatedRoute: ActivatedRoute,
         notifier: NotifierService, private _dataContext: DataContext, private _userSession: UserSession) {
         this.notifier = notifier;
     }
@@ -36,6 +37,20 @@ export class LoginComponent implements OnInit {
             userName: ['', Validators.required],
             password: ['', Validators.required]
         });
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params.pa && params.email && params.job) {
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userClaims');
+                this.JobId = params.job;
+                let model = {
+                    userName: params.email,
+                    password: params.pa
+                }
+                this.loginFrm.setValue(model);
+                this.onSubmit(this.loginFrm);
+
+            }
+        })
     }
 
     changeLang(lang: string) {
@@ -88,11 +103,17 @@ export class LoginComponent implements OnInit {
         this._userService.getUserClaims().subscribe((data: any) => {
             localStorage.setItem('userClaims', JSON.stringify(data));
             this._userSession.SetUserSession();
-            if (data.roleId == 4)
-                this.router.navigate(['/viewjobs']
-                ).then(() => {
-                    this.notifier.notify('success', 'Successfully Login!');
-                });
+            if (data.roleId == 4 && this.activatedRoute.snapshot.params) {
+                if (this.activatedRoute.queryParams && this.JobId > 0) {
+                    this.AcceptJob(this.JobId)
+                }
+                else {
+                    this.router.navigate(['/viewjobs']
+                    ).then(() => {
+                        this.notifier.notify('success', 'Successfully Login!');
+                    });
+                }
+            }
             else
                 this.router.navigate(['/home']
                 ).then(() => {
@@ -124,6 +145,11 @@ export class LoginComponent implements OnInit {
 
         });
     }
+
+    AcceptJob(jobId: number) {
+        this.router.navigate(['/viewjobs/myJobs'], { queryParams: { jobId: jobId } });
+    }
+
     // If Error occurred on login with Google
     private signInErrorWithGoogle(err) {
         this.notifier.notify('error', err);
