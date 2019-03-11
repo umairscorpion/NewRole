@@ -1,4 +1,4 @@
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpUserEvent, HttpEvent } from "@angular/common/http";
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpUserEvent, HttpEvent, HttpResponse } from "@angular/common/http";
 import { Observable } from "rxjs";
 import 'rxjs/add/operator/do';
 import { Injectable } from "@angular/core";
@@ -11,22 +11,23 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private router: Router) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        this.blockUI.start('Loading...');
-        if (req.headers.get('No-Auth') == "True")
-        {
+        if (!req.url.includes("getProfilePic")) {
+            this.blockUI.start('Loading...');
+        }
+        
+        if (req.headers.get('No-Auth') == "True") {
             return next.handle(req.clone())
-            .do(
-                (succ:any)=> {
-                    if(succ.status === 200)
-                        {
+                .do(
+                    (succ: any) => {
+                        if (succ.status === 200) {
                             this.blockUI.stop();
                         }
-                 },
-                err => {
-                    this.blockUI.stop();
-                    if (err.status === 401)
-                        this.router.navigateByUrl('/');
-                }
+                    },
+                    err => {
+                        this.blockUI.stop();
+                        if (err.status === 401)
+                            this.router.navigateByUrl('/');
+                    }
                 );
         }
         if (localStorage.getItem('userToken') != null) {
@@ -35,17 +36,16 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             return next.handle(clonedreq)
                 .do(
-                (succ:any)=> {
-                    if(succ.status === 200)
-                        {
+                    (succ: any) => {
+                        if (succ.status === 200) {
                             this.blockUI.stop();
                         }
-                 },
-                err => {
-                    this.blockUI.stop();
-                    if (err.status === 401)
-                        this.router.navigateByUrl('/');
-                }
+                    },
+                    err => {
+                        this.blockUI.stop();
+                        if (err.status === 401)
+                            this.router.navigateByUrl('/');
+                    }
                 );
         }
         else {

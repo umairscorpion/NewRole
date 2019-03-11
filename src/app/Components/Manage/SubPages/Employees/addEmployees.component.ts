@@ -4,13 +4,16 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { FormBuilder, FormGroup, Validators, NgForm, FormControl } from '@angular/forms';
 import { MatRadioChange } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse, HttpEventType } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
+import { FileService } from '../../../../Services/file.service';
+import { DomSanitizer } from '../../../../../../node_modules/@angular/platform-browser';
 @Component({
     templateUrl: 'addEmployees.component.html'
 })
 export class AddEmployeesComponent implements OnInit {
     userIdForUpdate: any = null;
+    profilePictureUrl : string
     profilePicture: any;
     private notifier: NotifierService;
     userTypes: any;
@@ -24,7 +27,8 @@ export class AddEmployeesComponent implements OnInit {
     showDistrict: boolean = true;
     showOrganization: boolean = false;
     constructor(private router: Router, private fb: FormBuilder, private _dataContext: DataContext,
-        notifier: NotifierService, private route: ActivatedRoute, private _userSession : UserSession) {
+        notifier: NotifierService, private route: ActivatedRoute, private _userSession: UserSession,
+        private fileService: FileService, private sanitizer : DomSanitizer) {
         this.notifier = notifier;
     }
 
@@ -33,7 +37,7 @@ export class AddEmployeesComponent implements OnInit {
             FirstName: ['', Validators.required],
             LastName: ['', Validators.required],
             UserTypeId: ['', Validators.required],
-            WorkLocaion : ['1'],
+            WorkLocaion: ['1'],
             TeachingLevel: [''],
             Speciality: [''],
             IsCertified: ['1', Validators.required],
@@ -43,19 +47,18 @@ export class AddEmployeesComponent implements OnInit {
             EmailId: ['', [Validators.required, Validators.email]],
             PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]]
         });
-        if(this._userSession.getUserRoleId() == 2)
-        {
+        if (this._userSession.getUserRoleId() == 2) {
             this.employeeForm.get('WorkLocaion').setValue('2');
             this.employeeForm.controls['WorkLocaion'].disable();
             this.showOrganization = true;
             this.showDistrict = false;
         }
-        
+
         this.GetUserTypes();
         this.GetDistricts();
         this.GetOrganiations();
         this.GetTeachingLevels();
-        
+
         this.route.queryParams.subscribe((params: any) => {
             if (params['Id']) {
                 let EmployeeId = params.Id;
@@ -77,7 +80,7 @@ export class AddEmployeesComponent implements OnInit {
                         OrganizationId: data[0].organizationId ? data[0].organizationId : '',
                         PhoneNumber: data[0].phoneNumber
                     }
-                    this.profilePicture = data[0].profilePicture ? data[0].profilePicture : 'assets/Images/noimage.png';
+                    this.getProfileImage(data[0].profilePicture);
                     this.employeeForm.setValue(EmployeeModel);
                     this.userIdForUpdate = EmployeeId;
                 },
@@ -87,6 +90,20 @@ export class AddEmployeesComponent implements OnInit {
                 this.profilePicture = 'assets/Images/noimage.png';
             }
         });
+    }
+
+    getProfileImage(ImageName: string) {
+        let model = {
+            AttachedFileName: ImageName,
+            FileContentType: ImageName.split('.')[1],
+        }
+        this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
+            let newBlob = new Blob([blob]);
+            var file = new Blob([blob], { type: blob.type });
+            let Url = URL.createObjectURL(file);
+            this.profilePicture = this.sanitizer.bypassSecurityTrustUrl(Url);
+        },
+            error => this.msg = <any>error);
     }
 
     GetUserTypes(): void {
@@ -108,7 +125,7 @@ export class AddEmployeesComponent implements OnInit {
     GetOrganiations(): void {
         this._dataContext.get('school/getSchools').subscribe((data: any) => {
             this.Organizations = data;
-            if(this._userSession.getUserRoleId() == 2) {
+            if (this._userSession.getUserRoleId() == 2) {
                 this.employeeForm.get('OrganizationId').setValue(this._userSession.getUserOrganizationId());
                 this.employeeForm.controls['OrganizationId'].disable();
             }
@@ -162,20 +179,30 @@ export class AddEmployeesComponent implements OnInit {
         }
     }
     // On Selecting Profile Image
-    onSelectProfileImage(event :any) {
+    onSelectProfileImage(event: any) {
         if (event.target.files && event.target.files[0]) {
-          var reader = new FileReader();
-          reader.readAsDataURL(event.target.files[0]);
-          reader.onload = (event : any) => {
-            this.profilePicture = event.target.result;
-          }
+            let formData = new FormData();
+            Array.from(event.target.files).forEach((file: File) => formData.append('file', file))
+            this.fileService.uploadProfilePicture(formData)
+                .subscribe(responseEvent => {
+                    if (responseEvent.type === HttpEventType.UploadProgress) {
+
+                    } else if (responseEvent instanceof HttpResponse) {
+                        this.profilePictureUrl = responseEvent.body.toString();
+                        var reader = new FileReader();
+                        reader.readAsDataURL(event.target.files[0]);
+                        reader.onload = (event: any) => {
+                            this.profilePicture = event.target.result;
+                        }
+                    }
+                });
         }
     }
 
     onSubmitEmployeeForm(form: any) {
         this.msg = "";
         if (this.employeeForm.valid) {
-            if (this.userIdForUpdate && this.userIdForUpdate !='undefined') {
+            if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
                 let model = {
                     UserId: this.userIdForUpdate,
                     FirstName: form.value.FirstName,
@@ -184,18 +211,18 @@ export class AddEmployeesComponent implements OnInit {
                     //IF USER TYPE IS 2 i.e ADMIN AND SHOW ORGANIZTION IS TRUE THAN ITS ORGANIZATION ADMIN
                     //IF USER TYPE IS 2 i.e ADMIN AND SHOW DISTRICT IS TRUE THAN ITS DISTRICT ADMIN
                     //IF BOTH SCENARIOS ARE FALSE THAN ITS EMPLOYEE ADMIN
-                    RoleId: form.value.UserTypeId === 2 && this.showOrganization == true && typeof form.getRawValue().OrganizationId !='undefined' && form.getRawValue().OrganizationId ? 2 :
-                             form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District !='undefined' && form.getRawValue().District ? 1: 3,
+                    RoleId: form.value.UserTypeId === 2 && this.showOrganization == true && typeof form.getRawValue().OrganizationId != 'undefined' && form.getRawValue().OrganizationId ? 2 :
+                        form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? 1 : 3,
                     // IF USER TYPE IS TEACHER
-                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0 ,
+                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
                     Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
                     Gender: form.value.Gender,
                     IsCertified: form.value.IsCertified,
-                    DistrictId: typeof form.getRawValue().District !='undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
+                    DistrictId: typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
                     OrganizationId: this.showOrganization == true ? form.getRawValue().OrganizationId : '',
                     Email: form.value.EmailId,
                     PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePicture
+                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png'
                 }
                 this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
                     // this.router.navigate(['/manage/substitutes']);
@@ -213,18 +240,18 @@ export class AddEmployeesComponent implements OnInit {
                     //IF USER TYPE IS 2 i.e ADMIN AND SHOW ORGANIZTION IS TRUE THAN ITS ORGANIZATION ADMIN
                     //IF USER TYPE IS 2 i.e ADMIN AND SHOW DISTRICT IS TRUE THAN ITS DISTRICT ADMIN
                     //IF BOTH SCENARIOS ARE FALSE THAN ITS EMPLOYEE ADMIN
-                    RoleId: form.value.UserTypeId === 2 && this.showOrganization == true && typeof form.getRawValue().OrganizationId !='undefined' && form.getRawValue().OrganizationId ? 2 :
-                             form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District !='undefined' && form.getRawValue().District ? 1: 3,
+                    RoleId: form.value.UserTypeId === 2 && this.showOrganization == true && typeof form.getRawValue().OrganizationId != 'undefined' && form.getRawValue().OrganizationId ? 2 :
+                        form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? 1 : 3,
                     // IF USER TYPE IS TEACHER
-                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0 ,
+                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
                     Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
                     Gender: form.value.Gender,
                     IsCertified: form.value.IsCertified,
-                    DistrictId: typeof form.getRawValue().District !='undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
+                    DistrictId: typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
                     OrganizationId: form.getRawValue().OrganizationId,
                     Email: form.value.EmailId,
                     PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePicture ? this.profilePicture : 'assets/Images/noimage.png'
+                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png'
                 }
 
                 this._dataContext.post('user/insertUser', model).subscribe((data: any) => {

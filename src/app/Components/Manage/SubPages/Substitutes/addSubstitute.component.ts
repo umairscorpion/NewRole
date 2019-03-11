@@ -6,14 +6,17 @@ import { FormBuilder, FormGroup, Validators, NgForm, FormControl } from '@angula
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IStates } from '../../../../Model/Lookups/states';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse, HttpEventType } from '@angular/common/http';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Observable } from 'rxjs/Observable';
 import { NotifierService } from 'angular-notifier';
+import { FileService } from '../../../../Services/file.service';
+import { DomSanitizer, SafeUrl } from '../../../../../../node_modules/@angular/platform-browser';
 @Component({
     templateUrl: 'addSubstitute.component.html'
 })
 export class AddSubstituteComponent implements OnInit {
+    profilePictureUrl : string
     userIdForUpdate: any = null;
     profilePicture: any;
     private notifier: NotifierService;
@@ -26,7 +29,8 @@ export class AddSubstituteComponent implements OnInit {
     msg: string;
     substituteForm: FormGroup;
     constructor(private router: Router, private fb: FormBuilder, private _dataContext: DataContext,
-        notifier: NotifierService, private route: ActivatedRoute, private _userSession : UserSession) {
+        notifier: NotifierService, private route: ActivatedRoute, private _userSession : UserSession,
+        private fileService: FileService, private sanitizer: DomSanitizer) {
         this.notifier = notifier;
     }
 
@@ -65,7 +69,7 @@ export class AddSubstituteComponent implements OnInit {
                         Speciality: data[0].speciality ? data[0].speciality : '',
                         PhoneNumber: data[0].phoneNumber
                     }
-                    this.profilePicture = data[0].profilePicture ? data[0].profilePicture : 'assets/Images/noimage.png';
+                    this.getProfileImage(data[0].profilePicture);
                     this.substituteForm.setValue(SubstituteModel);
                     this.userIdForUpdate = SubstituteId;
                 },
@@ -75,6 +79,22 @@ export class AddSubstituteComponent implements OnInit {
                 this.profilePicture = 'assets/Images/noimage.png';
             }
         });
+    }
+
+    getProfileImage(ImageName: string) {
+        let ImageURL : SafeUrl = "";
+
+        let model = {
+            AttachedFileName: ImageName,
+            FileContentType: ImageName.split('.')[1],
+        }
+        this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
+            let newBlob = new Blob([blob]);
+            var file = new Blob([blob], { type: blob.type });
+            let Url = URL.createObjectURL(file);
+            this.profilePicture = this.sanitizer.bypassSecurityTrustUrl(Url);
+        },
+            error => this.msg = <any>error);
     }
 
     GetUserTypes(): void {
@@ -119,11 +139,21 @@ export class AddSubstituteComponent implements OnInit {
     // On Selecting Profile Image
     onSelectProfileImage(event: any) {
         if (event.target.files && event.target.files[0]) {
-            var reader = new FileReader();
-            reader.readAsDataURL(event.target.files[0]);
-            reader.onload = (event: any) => {
-                this.profilePicture = event.target.result;
-            }
+            let formData = new FormData();
+            Array.from(event.target.files).forEach((file: File) => formData.append('file', file))
+            this.fileService.uploadProfilePicture(formData)
+                .subscribe(responseEvent => {
+                    if (responseEvent.type === HttpEventType.UploadProgress) {
+
+                    } else if (responseEvent instanceof HttpResponse) {
+                        this.profilePictureUrl = responseEvent.body.toString();
+                        var reader = new FileReader();
+                        reader.readAsDataURL(event.target.files[0]);
+                        reader.onload = (event: any) => {
+                            this.profilePicture = event.target.result;
+                        }
+                    }
+                });
         }
     }
 
@@ -145,7 +175,7 @@ export class AddSubstituteComponent implements OnInit {
                     DistrictId: form.getRawValue().District,
                     Email: form.value.Email,
                     PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePicture,
+                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png'
                 }
                 this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
                     this.router.navigate(['/manage/substitutes']);
@@ -169,7 +199,7 @@ export class AddSubstituteComponent implements OnInit {
                     DistrictId: form.getRawValue().District,
                     Email: form.value.Email,
                     PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePicture
+                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png'
                 }
                 this._dataContext.post('user/insertUser', model).subscribe((data: any) => {
                     this.router.navigate(['/manage/substitutes']);

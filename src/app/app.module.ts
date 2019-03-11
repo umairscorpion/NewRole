@@ -139,6 +139,7 @@ import {
 } from "angular-6-social-login";
 import { ReportFiltersComponent } from './Components/Reports/filters/filters.component';
 import { ReportDetailsComponent } from './Components/Reports/popups/report-details.popup.component';
+import { FileService } from './Services/file.service';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -310,6 +311,7 @@ const customNotifierOptions: NotifierOptions = {
         ReportService,
         ErrorHandlerService,
         ProfileService,
+        FileService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
