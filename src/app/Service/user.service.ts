@@ -7,6 +7,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import { Global } from '../Shared/global';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable()
 export class UserService {
@@ -21,20 +22,20 @@ export class UserService {
         return this.loggedIn.asObservable();
     }
     getUserClaims() {
-        return this._http.get(Global.authenticationApiUrl + 'user/reference/GetUserClaims');
+        return this._http.get(environment.apiUrl + 'user/reference/GetUserClaims');
     }
     getUserResources(resourceTypeId : number, parentResourceTypeId : number, IsAdminPortal : number) {
-        return this._http.get(Global.authenticationApiUrl + 'user/GetUserResources/' + resourceTypeId +'/'+ parentResourceTypeId+'/'+ IsAdminPortal);
+        return this._http.get(environment.apiUrl + 'user/GetUserResources/' + resourceTypeId +'/'+ parentResourceTypeId+'/'+ IsAdminPortal);
     }
     userAuthentication(url: string, model: any): Observable<any> {
         let credentials = JSON.stringify(model);
         var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json', 'No-Auth': 'True' });
-        return this._http.post(Global.authenticationApiUrl + 'auth/login', credentials, { headers: reqHeader });
+        return this._http.post(environment.apiUrl + 'auth/login', credentials, { headers: reqHeader });
     }
     userAuthenticationFromGoogle(url: string, model: any): Observable<any> {
         model = JSON.stringify(model);
         var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json', 'No-Auth': 'True' });
-        return this._http.post(Global.authenticationApiUrl + url , model, { headers: reqHeader });
+        return this._http.post(environment.apiUrl + url , model, { headers: reqHeader });
     }
 
     get(url: string): Observable<any> {
@@ -42,7 +43,7 @@ export class UserService {
     }
 
     post(url: string, model: any): Observable<any> {    
-        return this._http.patch(Global.authenticationApiUrl + url, model);
+        return this._http.patch(environment.apiUrl + url, model);
     }
 
     put(url: string, id: number, model: any): Observable<any> {
@@ -66,10 +67,5 @@ export class UserService {
     logout() {
         this.loggedIn.next(false);
     }
-
-    dailyForecast() {
-        return this._http.get("http://samples.openweathermap.org/data/2.5/history/city?q=Warren,OH&appid=b6907d289e10d714a6e88b30761fae22")
-          .map(result => result);
-      }
 
 }
