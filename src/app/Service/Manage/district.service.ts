@@ -10,20 +10,21 @@ import { IDistrict } from '../../Model/Manage/district';
 import { ICountry } from '../../Model/Lookups/country';
 import { IStates } from '../../Model/Lookups/states';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable()
 export class DistrictService {
     private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     constructor(private _http: HttpClient) { }
     // get(url: string): Observable<IDistrict> {
-    //     return this._http.get<IDistrict>(Global.baseApiUrl + url);
+    //     return this._http.get<IDistrict>(environment.apiUrl + url);
     // }
     get(url: string): Observable<any> {
-        return this._http.get<any>(Global.baseApiUrl + url);
+        return this._http.get<any>(environment.apiUrl + url);
     }
 
     post(url: string, model: Object): Observable<any> {  
-        return this._http.post(Global.baseApiUrl + url, model);
+        return this._http.post(environment.apiUrl + url, model);
     }
 
     put(url: string, id: number, model: any): Observable<any> {
@@ -32,7 +33,7 @@ export class DistrictService {
     }
 
     delete(url: string, id: number): Observable<any> {
-        return this._http.delete(Global.baseApiUrl + url + id);
+        return this._http.delete(environment.apiUrl + url + id);
     }
 
     private handleError(error: Response) {
@@ -42,10 +43,10 @@ export class DistrictService {
 
     //Lookups
     getCountries(url: string): Observable<ICountry> {
-        return this._http.get<ICountry>(Global.baseApiUrl + url);
+        return this._http.get<ICountry>(environment.apiUrl + url);
     }
     getStatesByCountryId(url: string, counrtyId : number): Observable<IStates[]> {
-        return this._http.get<IStates[]>(Global.baseApiUrl + url + "/" + counrtyId);
+        return this._http.get<IStates[]>(environment.apiUrl + url + "/" + counrtyId);
     }
 
 }

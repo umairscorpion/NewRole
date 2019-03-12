@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 // import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { SideNavService } from './sideNav.service';
 import { MatSidenav } from '@angular/material/sidenav';
+import { FileService } from '../../Services/file.service';
+
 @Component({
     selector: 'Subzz-app-SideNav',
     templateUrl: 'sideNav.component.html',
@@ -80,6 +82,7 @@ export class SideNavComponent implements OnInit {
     toggle() {
         this._sideNavService.toggle();
     }
+    
     Logout() {
         this._userService.logout();
         localStorage.removeItem('userToken');
@@ -115,12 +118,29 @@ export class PopupDialogForSettings {
     msg: string;
     UserName: string;
     ProfilePicture: any;
-    userRole : number = this._userSession.getUserRoleId();
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+    userRole: number = this._userSession.getUserRoleId();
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any, private fileService: FileService,
         public dialog: MatDialog, private sanitizer: DomSanitizer, private router: Router, private _userSession: UserSession) {
         this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
         this.UserName = this.UserClaim.firstName;
-        this.ProfilePicture = this.sanitizer.bypassSecurityTrustUrl(this.UserClaim.profilePicture ? this.UserClaim.profilePicture : 'assets/Images/noimage.png');
+        let profilePicName: string = this.UserClaim.profilePicture;
+        let model = {
+            AttachedFileName: profilePicName,
+            FileContentType: profilePicName.split('.')[1],
+            UserId: _userSession.getUserId()
+        }
+
+        this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
+            let newBlob = new Blob([blob]);
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(newBlob);
+                return;
+            }
+            var file = new Blob([blob], { type: blob.type });
+            let Url = URL.createObjectURL(file);
+            this.ProfilePicture = this.sanitizer.bypassSecurityTrustUrl(Url);
+        },
+            error => this.msg = <any>error);
 
     }
     Logout() {

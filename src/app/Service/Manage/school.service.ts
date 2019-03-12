@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import { Global } from '../../Shared/global';
+import { environment } from '../../../environments/environment.prod';
 import { ISchool } from '../../Model/Manage/schools';
 import { BehaviorSubject } from 'rxjs';
 
@@ -14,11 +14,11 @@ export class SchoolService {
     private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     constructor(private _http: HttpClient) { }
     get(url: string): Observable<ISchool> {
-        return this._http.get<ISchool>(Global.baseApiUrl + url);
+        return this._http.get<ISchool>(environment.apiUrl + url);
     }
 
     post(url: string, model: any): Observable<any> {
-        return this._http.post(Global.baseApiUrl + url, model);
+        return this._http.post(environment.apiUrl + url, model);
     }
 
     put(url: string, id: number, model: any): Observable<any> {

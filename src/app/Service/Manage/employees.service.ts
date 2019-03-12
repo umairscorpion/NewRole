@@ -5,21 +5,21 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import { Global } from '../../Shared/global';
+import { environment } from '../../../environments/environment.prod';
 import { IEmployee } from '../../Model/Manage/employee';
 @Injectable()
 export class EmployeeService {
     constructor(private _http: HttpClient) { }
     get(url: string , roleId :number , orgId :number, districtId :number): Observable<IEmployee[]> {
-        return this._http.get<IEmployee[]>(Global.baseApiUrl + url +'/' + roleId + '/' + orgId + '/' + districtId);
+        return this._http.get<IEmployee[]>(environment.apiUrl + url +'/' + roleId + '/' + orgId + '/' + districtId);
     }
 
     searchUser(url: string , SearchText :string ,IsSearchSubstitute: number, orgId :string, districtId :number): Observable<IEmployee[]> {
-        return this._http.get<IEmployee[]>(Global.baseApiUrl + url +'/' + SearchText + '/' + IsSearchSubstitute + '/' + orgId + '/' + districtId);
+        return this._http.get<IEmployee[]>(environment.apiUrl + url +'/' + SearchText + '/' + IsSearchSubstitute + '/' + orgId + '/' + districtId);
     }
 
     searchEmployee(url: string , roleId :string , orgId :string, districtId :number): Observable<IEmployee[]> {
-        return this._http.get<IEmployee[]>(Global.baseApiUrl + url +'/' + roleId + '/' + orgId + '/' + districtId);
+        return this._http.get<IEmployee[]>(environment.apiUrl + url +'/' + roleId + '/' + orgId + '/' + districtId);
     }
 
     post(url: string, model: any): Observable<any> {  
@@ -39,7 +39,7 @@ export class EmployeeService {
             NoOfEmployees:model.NoOfEmployees ,
             NoOfSubstitutes:model.NoOfSubstitutes
             }
-        return this._http.post(Global.baseApiUrl + url, districtModel);
+        return this._http.post(environment.apiUrl + url, districtModel);
     }
 
     put(url: string, id: number, model: any): Observable<any> {
