@@ -10,7 +10,7 @@ import { IDistrict } from '../../Model/Manage/district';
 import { ICountry } from '../../Model/Lookups/country';
 import { IStates } from '../../Model/Lookups/states';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from '../../../environments/environment.prod';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class DistrictService {
