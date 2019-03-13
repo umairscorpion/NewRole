@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import { environment } from '../../../environments/environment.prod';
+import { environment } from '../../../environments/environment';
 import { IEmployee } from '../../Model/Manage/employee';
 @Injectable()
 export class EmployeeService {
