@@ -1,4 +1,5 @@
 import { Entity } from "./entity";
+import { SafeUrl } from "../../../node_modules/@angular/platform-browser";
 
 export class Absence extends Entity {
     absenceId: number;
@@ -37,4 +38,7 @@ export class Absence extends Entity {
     grade: string;
     interval: number;
     totalInterval: number;
+    anyConflict: number;
+    profilePicture: string;
+    profilePictureSafeUrl: SafeUrl;
 }

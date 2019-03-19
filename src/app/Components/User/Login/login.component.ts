@@ -48,7 +48,6 @@ export class LoginComponent implements OnInit {
                 }
                 this.loginFrm.setValue(model);
                 this.onSubmit(this.loginFrm);
-
             }
         })
     }
@@ -103,21 +102,26 @@ export class LoginComponent implements OnInit {
         this._userService.getUserClaims().subscribe((data: any) => {
             localStorage.setItem('userClaims', JSON.stringify(data));
             this._userSession.SetUserSession();
-            if (data.roleId == 4 && this.activatedRoute.snapshot.params) {
+
+            if (data.roleId == 4) { // For Substitute
                 if (this.activatedRoute.queryParams && this.JobId > 0) {
                     this.AcceptJob(this.JobId)
                 }
                 else {
                     this.router.navigate(['/viewjobs']
                     ).then(() => {
-                        this.notifier.notify('success', 'Successfully Login!');
                     });
                 }
+            }
+
+            else if (data.roleId == 3) { //For Employee
+                this.router.navigate(['/absence']
+                ).then(() => {
+                });
             }
             else
                 this.router.navigate(['/home']
                 ).then(() => {
-                    this.notifier.notify('success', 'Successfully Login!');
                 });
         });
     }
@@ -142,7 +146,6 @@ export class LoginComponent implements OnInit {
                 (err: HttpErrorResponse) => {
                     this.notifier.notify('error', err.error.error_description);
                 });
-
         });
     }
 

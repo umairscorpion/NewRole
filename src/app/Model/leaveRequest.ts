@@ -7,8 +7,8 @@ export class LeaveRequest extends Entity {
     employeeId: string;
     createdById: string;
     leaveTypeId: number;
-    isApproved: number;
-    isDeniend: number;
+    isApproved: boolean;
+    isDeniend: boolean;
     leaveTypeName: string;
     description: string;
     startDate: string;
@@ -18,4 +18,5 @@ export class LeaveRequest extends Entity {
     createdDate: string;
     approvedDate: string;
     deniedDate: string;
+    isArchived: boolean;
 }

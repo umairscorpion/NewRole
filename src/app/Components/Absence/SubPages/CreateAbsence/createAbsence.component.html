@@ -179,8 +179,8 @@
                                         <div class="col-md-12">
                                             <div class="col-md-6 col-lg-6" *ngIf="!preferredSubPanel.expanded">
                                             </div>
-                                            <div [ngClass]="{'col-md-6': !preferredSubPanel.expanded, 'col-md-12': preferredSubPanel.expanded }">
-                                                <mat-accordion class="col-md-10 col-lg-10">
+                                            <div [ngClass]="{'col-md-6': !preferredSubPanel.expanded , 'col-md-12': preferredSubPanel.expanded}">
+                                                <mat-accordion [ngClass]="{'col-md-10': !preferredSubPanel.expanded }">
                                                     <mat-expansion-panel #preferredSubPanel [disabled]="true">
                                                         <mat-expansion-panel-header>
                                                             <mat-panel-description>

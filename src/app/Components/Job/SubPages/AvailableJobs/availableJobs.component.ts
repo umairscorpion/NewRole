@@ -6,6 +6,8 @@ import { CommunicationService } from '../../../../Services/communication.service
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { Absence } from '../../../../Model/absence';
+import { DomSanitizer, SafeUrl } from '../../../../../../node_modules/@angular/platform-browser';
+import { FileService } from '../../../../Services/file.service';
 
 @Component({
     templateUrl: 'availableJobs.component.html'
@@ -22,7 +24,7 @@ export class AvailableJobsComponent implements OnInit {
         });
         return toSelectDefaultOptionForReason ? 'highlight-Jobs' : undefined;
     }
-
+    ImageURL: SafeUrl = "";
     Organizations: any;
     Districts: any;
     CurrentDate: Date = new Date;
@@ -38,8 +40,8 @@ export class AvailableJobsComponent implements OnInit {
     FileStream: any;
 
     constructor(private _dataContext: DataContext, private _userSession: UserSession,
-        private _formBuilder: FormBuilder, notifier: NotifierService,
-        private _communicationService: CommunicationService) {
+        private _formBuilder: FormBuilder, notifier: NotifierService, private fileService: FileService,
+        private _communicationService: CommunicationService, private sanitizer: DomSanitizer) {
         this.notifier = notifier;
     }
 
@@ -58,20 +60,10 @@ export class AvailableJobsComponent implements OnInit {
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + Status).subscribe((data: any) => {
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + Status).subscribe((data: Absence[]) => {
                 this.AvailableJobs.data = data;
             },
                 error => this.msg = <any>error);
-    }
-
-    AcceptAbsence(SelectedRow: any, StatusId: number) {
-        let confirmResult = confirm('Are you sure you want to Accept this Job?');
-        if (confirmResult) {
-            this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
-                this.NotifyResponse(response as string);
-            },
-                error => this.msg = <any>error);
-        }
     }
 
     ngOnInit(): void {
@@ -80,7 +72,7 @@ export class AvailableJobsComponent implements OnInit {
             FilterEndDate: ['', Validators.required],
             DistrictId: [{ disabled: true }, Validators.required],
             OrganizationId: ['-1', Validators.required],
-            Requested : ['']
+            Requested: ['']
         });
         this.GetMyJobs();
         this.GetDistricts();
@@ -184,5 +176,33 @@ export class AvailableJobsComponent implements OnInit {
                 this.myJobs = data;
             },
                 error => this.msg = <any>error);
+    }
+
+    getProfilePic(ProfilePictureName: string): SafeUrl {
+        this.ImageURL = 'assets/Images/noimage.png'
+        let model = {
+            AttachedFileName: ProfilePictureName,
+            FileContentType: ProfilePictureName.split('.')[1],
+        }
+        this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
+            let newBlob = new Blob([blob]);
+            var file = new Blob([blob], { type: blob.type });
+            let Url = URL.createObjectURL(file);
+            this.ImageURL = this.sanitizer.bypassSecurityTrustUrl(Url);
+            return this.ImageURL;
+        },
+            error => this.msg = <any>error);
+        return this.ImageURL;
+    }
+
+    AcceptAbsence(SelectedRow: any) {
+        let confirmResult = confirm('Are you sure you want to Accept this Job?');
+        if (confirmResult) {
+            this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                this.NotifyResponse(response as string);
+                this.GetAvailableJobs();
+            },
+                error => this.msg = <any>error);
+        }
     }
 }

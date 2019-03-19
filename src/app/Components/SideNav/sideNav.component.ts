@@ -82,7 +82,7 @@ export class SideNavComponent implements OnInit {
     toggle() {
         this._sideNavService.toggle();
     }
-    
+
     Logout() {
         this._userService.logout();
         localStorage.removeItem('userToken');
@@ -93,6 +93,9 @@ export class SideNavComponent implements OnInit {
     GotoDashboard() {
         if (this._userSession.getUserRoleId() == 4)
             this.router.navigate(['/viewjobs']
+            );
+        else if (this._userSession.getUserRoleId() == 3)
+            this.router.navigate(['/absence']
             );
         else
             this.router.navigate(['/home']

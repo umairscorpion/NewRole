@@ -140,6 +140,7 @@ import {
 import { ReportFiltersComponent } from './Components/Reports/filters/filters.component';
 import { ReportDetailsComponent } from './Components/Reports/popups/report-details.popup.component';
 import { FileService } from './Services/file.service';
+import { AbsenceService } from './Services/absence.service';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -312,6 +313,7 @@ const customNotifierOptions: NotifierOptions = {
         ErrorHandlerService,
         ProfileService,
         FileService,
+        AbsenceService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
