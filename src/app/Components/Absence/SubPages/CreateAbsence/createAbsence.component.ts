@@ -13,6 +13,8 @@ import { HttpClient, HttpResponse, HttpEventType } from '@angular/common/http';
 import { Global } from '../../../../Shared/global';
 import { Observable } from 'rxjs/Observable';
 import { NotifierService } from 'angular-notifier';
+import { LeaveType } from '../../../../Model/leaveType';
+import { AbsenceService } from '../../../../Services/absence.service';
 
 @Component({
     templateUrl: 'createAbsence.component.html',
@@ -43,6 +45,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     ContactSubTime: number = null;
     DisableContactSubTimeAccess: boolean = true;
 
+    isApprovalNeeded: boolean = false;
     PreferredSubstitutes: any;
     CurrentDate: Date = new Date();
     EmployeeSchedule: any;
@@ -78,7 +81,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     response: number = 0;
 
     constructor(private router: Router, notifier: NotifierService, private http: HttpClient, private _formBuilder: FormBuilder,
-        private _EmployeeService: EmployeeService, private _dataContext: DataContext, private _userSession: UserSession) {
+        private _EmployeeService: EmployeeService, private _dataContext: DataContext, private _userSession: UserSession,
+        private absenceService: AbsenceService) {
         this.notifier = notifier;
     }
 
@@ -146,14 +150,22 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
 
     GetLeaveTypes(): void {
-        this._dataContext.get('Leave/GetLeaveTypes').subscribe((data: any) => {
+        let districtId = this._userSession.getUserDistrictId();
+        let organizationId = this._userSession.getUserOrganizationId() ? this._userSession.getUserOrganizationId() : '-1';
+        this.absenceService.getLeaveType(districtId, organizationId).subscribe((data: LeaveType[]) => {
             this.Leaves = data;
             // FOR DEFAULT SELECTING REASON
-            const toSelectDefaultOptionForReason = this.Leaves.find((obj: any) => obj.leaveTypeId == 1);
-            this.absenceFirstFormGroup.get('Reason').setValue(toSelectDefaultOptionForReason);
-            this.LeaveRequestForm.get('LeaveType').setValue(toSelectDefaultOptionForReason);
+            // this.absenceFirstFormGroup.get('Reason').setValue(data[0]);
+            // this.LeaveRequestForm.get('LeaveType').setValue(data[0]);
         },
             error => this.msg = <any>error);
+    }
+
+    onChangeReason(reason: LeaveType): void {
+        if (reason.isApprovalRequired)
+            this.isApprovalNeeded = true;
+        else
+            this.isApprovalNeeded = false;
     }
 
     GetEmployees(): void {
@@ -476,7 +488,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 SubstituteId: SecondAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 2 ? SecondAbsenceForm.value.Substitutes.userId :
                     SecondAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 1 ? Substitutes : '-1',
                 Interval: this.ContactSub == "1" ? 0 : this.ContactSubTime,
-                TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime + this.ContactSubTime
+                TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime + this.ContactSubTime,
+                isApprovalRequired : this.isApprovalNeeded && this.loginedUserRole === 3 ? 0 : 1
             }
 
             if (!this.CheckDataAndTimeOverlape(FirstAbsenceForm.value.AbsenceStartDate as Date,

@@ -41,4 +41,5 @@ export class Absence extends Entity {
     anyConflict: number;
     profilePicture: string;
     profilePictureSafeUrl: SafeUrl;
+    IsApprovalRequired: boolean;
 }

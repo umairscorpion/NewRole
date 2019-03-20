@@ -76,7 +76,7 @@ import { UpcommingAbsenceComponent } from './Components/Absence/SubPages/Upcommi
 import { ManageComponent } from './Components/Manage/manage.component';
 import { DistrictsComponent, PopupDialogForDistrictDetail } from './Components/Manage/SubPages/Districts/district.component';
 import { AddDistrictComponent } from './Components/Manage/SubPages/Districts/addDistrict.component';
-import { EmployeesComponent, PopupDialogForEmployeeDetail } from './Components/Manage/SubPages/Employees/employees.component';
+import { EmployeesComponent } from './Components/Manage/SubPages/Employees/employees.component';
 import { AddEmployeesComponent } from './Components/Manage/SubPages/Employees/addEmployees.component';
 import { SubstitutesComponent, PopupDialogForSubstituteDetail } from './Components/Manage/SubPages/Substitutes/substitutes.component';
 import { AddSubstituteComponent } from './Components/Manage/SubPages/Substitutes/addSubstitute.component';
@@ -141,6 +141,8 @@ import { ReportFiltersComponent } from './Components/Reports/filters/filters.com
 import { ReportDetailsComponent } from './Components/Reports/popups/report-details.popup.component';
 import { FileService } from './Services/file.service';
 import { AbsenceService } from './Services/absence.service';
+import { TimeFormatPipe } from './Shared/pipe/time.pipe';
+import { PopupDialogForEmployeeDetail } from './Components/Manage/SubPages/Employees/popups/viewEmployee.popup.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -285,7 +287,8 @@ const customNotifierOptions: NotifierOptions = {
         PopupDialogForAbsenceDetail,
         PopupDialogForJobDetail,
         ReportFiltersComponent,
-        ReportDetailsComponent
+        ReportDetailsComponent,
+        TimeFormatPipe
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

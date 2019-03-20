@@ -13,13 +13,14 @@ import { map } from 'rxjs/operators/map';
 import { startWith } from 'rxjs/operators/startWith';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { NotifierService } from 'angular-notifier';
+import { PopupDialogForEmployeeDetail } from './popups/viewEmployee.popup.component';
 
 @Component({
   templateUrl: 'employees.component.html'
 })
 export class EmployeesComponent implements OnInit {
   private notifier: NotifierService;
-  displayedColumns = ['FirstName', 'LastName', 'Email', 'PhoneNumber', 'action'];
+  displayedColumns = ['FirstName', 'LastName', 'Email', 'PhoneNumber', 'Location', 'Role', 'Approver', 'action'];
   DataSourceEmployeesObj: DataSourceEmployees | null;
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -116,16 +117,6 @@ export class DataSourceEmployees {
     let RoleId = 3;
     let OrgId = this._UserSession.getUserOrganizationId();
     let DistrictId = this._UserSession.getUserDistrictId();
-    return this._dataContext.get('user/getUsers'+'/' + RoleId + '/' + OrgId + '/' + DistrictId);
-  }
-}
-
-@Component({
-  templateUrl: 'viewEmployee.html',
-  styleUrls: ['employee.component.css']
-})
-export class PopupDialogForEmployeeDetail {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log(data);
+    return this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId);
   }
 }

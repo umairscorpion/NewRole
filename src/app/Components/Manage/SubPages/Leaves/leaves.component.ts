@@ -60,6 +60,8 @@ export class LeavesComponent implements OnInit {
         this.submittedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === false);
         this.approvedLeaveRequests = leaveRequests.filter(t => t.isApproved === true && t.isDeniend === false);
         this.deniedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === true);
+        this.archivedApprovedLeaveRequests = leaveRequests.filter(t => t.isApproved === true && t.isDeniend === false && t.isArchived === true);
+        this.archivedDeniedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === true && t.isArchived === true);
     }
 
     ngAfterViewInit() {

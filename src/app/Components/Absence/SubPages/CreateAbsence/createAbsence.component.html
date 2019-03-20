@@ -61,11 +61,12 @@
                                         <div class="col-md-12">
                                             <div class="col-md-6 col-lg-6">
                                                 <mat-form-field class="col-md-10 col-lg-10">
-                                                    <mat-select placeholder="Absence Reason" formControlName="Reason">
+                                                    <mat-select placeholder="Absence Reason" (selectionChange)="onChangeReason($event.value)" formControlName="Reason">
                                                         <mat-option *ngFor="let Leave of Leaves" [value]="Leave">
                                                             {{Leave.leaveTypeName}}
                                                         </mat-option>
                                                     </mat-select>
+                                                    <mat-hint style="color: red" *ngIf='isApprovalNeeded && loginedUserRole === 3' align="start">This Reason Requires Approval From Admin</mat-hint>
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-md-2 col-lg-2">
