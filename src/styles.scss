@@ -77,3 +77,26 @@ $sides: (top, bottom, left, right);
     padding: 0;
   }
  }
+.report-summary-bar-chart-title{
+  text-align: center;
+  font-weight: 700;
+  color: #a7a7a7;
+}
+.summary-donut-inner {
+  margin-top: -260px;
+  text-align: center;
+  h5 {
+    margin-bottom: 5px;
+    padding-top: 16px;
+    font-size: 45px;
+  }
+}
+.donut-inner {
+  margin-top: -100px;
+  margin-bottom: 45px;
+  h5 {
+    margin-bottom: 5px;
+    padding-top: 16px;
+    font-size: 45px;
+  }
+}
