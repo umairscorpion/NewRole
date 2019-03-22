@@ -11,7 +11,7 @@ export const ReportConstant = {
         },
         elements: {
           center: {
-            text: 'Desktop',
+            text: '0',
             color: '#36A2EB',
             fontStyle: 'Helvetica',
             sidePadding: 15
@@ -21,56 +21,32 @@ export const ReportConstant = {
       Colors: {
         AbsenceSummary: [
           {
-            backgroundColor: '#fce1c4', // Filled
+            backgroundColor: ['#77c498', '#73dad9', '#b1ddc4'], // Filled, Un-Filled, No Sub Required
             borderColor: '#f2ca97'
-          },
-          {
-            backgroundColor: '#73dad9', // UnFilled
-            borderColor: '#73b7b6',
-          },
-          {
-            backgroundColor: '#b1ddc4 ', // No Sub Required
-            borderColor: '#99c6b1',
           }
         ],
-
-        Total: {
+        Total: [{
           backgroundColor: '#0da0b2',
           borderColor: '#09666e',
-        },
+        }],
         Filled: [
           {
-            backgroundColor: '#fce1c4', // Filled
-            borderColor: '#f2ca97'
-          },
-          {
-            backgroundColor: '#73dad9', // UnFilled
-            borderColor: '#73b7b6',
+            backgroundColor: ['#ffffff', '#77c498'], // Total, Filled
+            borderColor: '#468d67',
           }
         ],
         unFilled: [
           {
-            backgroundColor: '#73dad9', // UnFilled
+            backgroundColor: ['#ffffff', '#73dad9'], // Total, Un-Filled
             borderColor: '#73b7b6',
-          },
-          {
-            backgroundColor: '#ffa5b6',
-            borderColor: '#efefef',
           }
         ],
         NoSubReq: [
           {
-            backgroundColor: '#b1ddc4 ', // No Sub Required
-            borderColor: '#99c6b1',
-          },
-          {
-            backgroundColor: '#ffa5b6',
-            borderColor: '#efefef',
-          },
-          {
-            backgroundColor: '#12A2FE',
-            borderColor: '#efefef',
-          }]
+            backgroundColor: ['#ffffff', '#b1ddc4'], // Total, No Sub Required
+            borderColor: '#73b7b6',
+          }
+        ]
       }
     }
   }

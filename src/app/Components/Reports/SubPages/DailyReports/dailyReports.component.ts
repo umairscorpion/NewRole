@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, ElementRef, AfterViewInit } from '@angular/core';
 import { ReportService } from 'src/app/Services/report.service';
 import { ReportFilter } from 'src/app/Model/Report/report.filter';
 import { ReportSummary } from 'src/app/Model/Report/report.summary';
@@ -7,12 +7,14 @@ import * as moment from 'moment';
 import { ReportDetail } from 'src/app/Model/Report/report.detail';
 import { MatDialog } from '@angular/material';
 import { ReportDetailsComponent } from '../../popups/report-details.popup.component';
+import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
     templateUrl: 'dailyReports.component.html'
 })
 export class DailyReportsComponent implements OnInit, AfterViewInit {
-    @ViewChild('chartTotal') chartTotal: ElementRef;
+    @ViewChildren('chartTotal') chartTotal: ElementRef;
     @ViewChild('chartFilled') chartFilled: ElementRef;
     @ViewChild('chartUnFilled') chartUnFilled: ElementRef;
     @ViewChild('chartNoSubReq') chartNoSubReq: ElementRef;
@@ -26,11 +28,12 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
     noAbsenceMessage = true;
     submitted = false;
     reportSummary: ReportSummary = new ReportSummary();
-    totalAbsence = [];
-    filledAbsence = [];
-    unFilledAbsence = [];
-    noSubReqAbsence = [];
+    totalAbsence: Array<number> = [];
+    filledAbsence: Array<number> = [];
+    unFilledAbsence: Array<number> = [];
+    noSubReqAbsence: Array<number> = [];
     absenceSummary = [];
+    totalChartOptions = {};
     totalChartColors = ReportConstant.DailyReport.Chart.Colors.Total;
     filledChartColors = ReportConstant.DailyReport.Chart.Colors.Filled;
     unFilledChartColors = ReportConstant.DailyReport.Chart.Colors.unFilled;
@@ -43,7 +46,8 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
 
     constructor(
         private reportService: ReportService,
-        private dialogRef: MatDialog
+        private dialogRef: MatDialog,
+        private sanitizer: DomSanitizer,
     ) {
     }
 
@@ -62,7 +66,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
             this.bindChart(summary[0]);
         });
         this.reportService.getDetail(filters).subscribe((details: ReportDetail[]) => {
-            console.log({ detail: details });
+            this.bindDetails(details);
         });
     }
 
@@ -87,27 +91,18 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
         if (chartSummary.totalCount <= 0) {
             this.noAbsenceMessage = true;
         } else {
+            this.reportSummary = chartSummary;
             this.noAbsenceMessage = false;
             this.totalAbsence.push(chartSummary.totalCount);
             this.filledAbsence.push(chartSummary.totalCount);
             this.filledAbsence.push(chartSummary.filled);
-            this.unFilledAbsence.push(chartSummary.filled);
+            this.unFilledAbsence.push(chartSummary.totalCount);
             this.unFilledAbsence.push(chartSummary.unfilled);
+            this.noSubReqAbsence.push(chartSummary.totalCount);
             this.noSubReqAbsence.push(chartSummary.noSubRequired);
             this.absenceSummary.push(chartSummary.filled);
             this.absenceSummary.push(chartSummary.unfilled);
             this.absenceSummary.push(chartSummary.noSubRequired);
-
-            if (this.chartTotal) {
-                const canvas = this.chartTotal.nativeElement;
-                const ctx = canvas.getContext('2d');
-                if (ctx) {
-                    ctx.font = '30px Arial';
-                    ctx.fillText('Hello World', 10, 50);
-                    ctx.save();
-                }
-            }
-            // this.chartTotal.nativeElement.getContext('2d').fillText('Hello World', 10, 50);
         }
     }
 
@@ -127,5 +122,11 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
                 data: absenceDetail
             }
         );
+    }
+
+    getImage(profileImageUrl: string) {
+        if (profileImageUrl && profileImageUrl.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrl + '/wwwroot/Profile/' + profileImageUrl);
+        }
     }
 }

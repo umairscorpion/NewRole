@@ -13,43 +13,56 @@
         <tr>
           <td class="text-center">
             <h4>Total</h4>
-            <canvas #chartTotal baseChart [legend]="false" width="150" height="100" [data]="totalAbsence" [colors]="totalChartColors" [labels]="['Total']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
+            <canvas id="myChart" #chartTotal baseChart [legend]="false" width="150" height="100" [data]="totalAbsence" [colors]="totalChartColors" [labels]="['Total']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
+            <div class="donut-inner">
+              <h5>{{reportSummary.totalCount}}</h5>
+            </div>
           </td>
           <td class="text-center">
             <h4>Filled</h4>
-            <canvas #chartFilled baseChart [legend]="false" width="150" height="100" [data]="filledAbsence" [colors]="filledChartColors" [labels]="['Filled', '']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
+            <canvas #chartFilled baseChart [legend]="false" width="150" height="100" [data]="filledAbsence" [colors]="filledChartColors" [labels]="['Total', 'Filled']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
+            <div class="donut-inner">
+              <h5>{{reportSummary.filled}}</h5>
+            </div>
           </td>
         </tr>
         <tr>
           <td class="text-center">
             <h4>Unfilled</h4>
             <canvas #chartUnFilled baseChart [legend]="false" width="150" height="100" [colors]="unFilledChartColors" [data]="unFilledAbsence" [labels]="['Unfilled', '']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
+            <div class="donut-inner">
+              <h5>{{reportSummary.unfilled}}</h5>
+            </div>
           </td>
           <td class="text-center">
             <h4>No Sub Req</h4>
             <canvas #chartNoSubReq baseChart [legend]="false" width="150" height="100" [colors]="noSubReqChartColors" [data]="noSubReqAbsence" [labels]="['No Sub Req', '']" [chartType]="'doughnut'" [options]="chartOptions"></canvas>
+            <div class="donut-inner">
+              <h5>{{reportSummary.noSubRequired}}</h5>
+            </div>
           </td>
         </tr>
       </table>
     </div>
     <div class="col-md-4">
-      <canvas baseChart [chartType]="'bar'" [data]="absenceSummary" [colors]="absenceSummaryColors" [labels]="['Filled', 'UnFilled', 'No Sub Required']" [legend]="true"></canvas>
+      <canvas baseChart [chartType]="'bar'" [legend]="false" [data]="absenceSummary" [colors]="absenceSummaryColors" [labels]="['Filled', 'UnFilled', 'No Sub Required']"></canvas>
+      <h4 class="report-summary-bar-chart-title">ABSENCES</h4>
     </div>
     <div class="col-md-4">
       <canvas baseChart [chartType]="'doughnut'" [legend]="true" width="150" height="100" [data]="absenceSummary" [colors]="absenceSummaryColors" [labels]="['Filled', 'UnFilled', 'No Sub Required']" [options]="chartOptions"></canvas>
     </div>
   </div>
-  <div class="row m-30">
+  <div class="row">
     <mat-tab-group>
       <mat-tab label="Filled">
-        <mat-card class="mt-20">
+        <div class="m-30">
           <ngx-datatable class="material" [rows]="filledAbsenceDetails" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
             <ngx-datatable-column name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <strong>{{row['employeeName']}}</strong><br>
-                  <span>{{ row['absencePosition'] }}</span><br>
-                  <span>{{ row['subject'] }}</span><br>
+                  <span>{{ row['employeeTypeTitle']}}. {{ row['subject'] }}. {{row['grade']}}</span><br>
+                  <span>{{ row['districtName'] }}</span><br>
                 </div>
               </ng-template>
             </ngx-datatable-column>
@@ -66,9 +79,16 @@
             </ngx-datatable-column>
             <ngx-datatable-column name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                <mat-icon>person</mat-icon>
-                <div class="ellipsis">
-                  {{ row['substituteName']}}
+                <div class="row">
+                  <div class="col-md-1 photo">
+                    <!-- <img [src]="getImage(row['substituteProfilePicUrl'])" /> -->
+                    <mat-icon>person</mat-icon>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="ellipsis">
+                      {{ row['substituteName']}}
+                    </div>
+                  </div>
                 </div>
               </ng-template>
             </ngx-datatable-column>
@@ -80,17 +100,17 @@
               </ng-template>
             </ngx-datatable-column>
           </ngx-datatable>
-        </mat-card>
+        </div>
       </mat-tab>
       <mat-tab label="UnFilled">
-        <mat-card class="mt-20">
+        <div class="m-30">
           <ngx-datatable class="material" [rows]="unFilledAbsenceDetails" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
             <ngx-datatable-column name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <strong>{{row['employeeName']}}</strong><br>
-                  <span>{{ row['absencePosition'] }}</span><br>
-                  <span>{{ row['subject'] }}</span><br>
+                  <span>{{ row['employeeTypeTitle']}}. {{ row['subject'] }}. {{row['grade']}}</span><br>
+                  <span>{{ row['districtName'] }}</span><br>
                 </div>
               </ng-template>
             </ngx-datatable-column>
@@ -118,17 +138,17 @@
               </ng-template>
             </ngx-datatable-column>
           </ngx-datatable>
-        </mat-card>
+        </div>
       </mat-tab>
       <mat-tab label="No Sub Req">
-        <mat-card class="mt-20">
+        <div class="m-30">
           <ngx-datatable class="material" [rows]="noSubReqAbsenceDetails" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
             <ngx-datatable-column name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <strong>{{row['employeeName']}}</strong><br>
-                  <span>{{ row['absencePosition'] }}</span><br>
-                  <span>{{ row['subject'] }}</span><br>
+                  <span>{{ row['employeeTypeTitle']}}. {{ row['subject'] }}. {{row['grade']}}</span><br>
+                  <span>{{ row['districtName'] }}</span><br>
                 </div>
               </ng-template>
             </ngx-datatable-column>
@@ -156,7 +176,7 @@
               </ng-template>
             </ngx-datatable-column>
           </ngx-datatable>
-        </mat-card>
+        </div>
       </mat-tab>
     </mat-tab-group>
   </div>

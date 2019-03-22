@@ -159,18 +159,18 @@ export function getAuthServiceConfigs() {
 const customNotifierOptions: NotifierOptions = {
     position: {
         horizontal: {
-            position: 'right',
+            position: 'middle',
             distance: 12
         },
         vertical: {
             position: 'top',
-            distance: 22,
+            distance: 70,
             gap: 10
         }
     },
     theme: 'material',
     behaviour: {
-        autoHide: 1000,
+        autoHide: 5000,
         onClick: 'hide',
         onMouseover: 'pauseAutoHide',
         showDismissButton: true,
