@@ -35,14 +35,24 @@
 <div class="row">
   <div class="col-md-12 col-lg-12">
     <div class="example-container mat-elevation-z8">
-      <div class="example-header">
-        <mat-form-field>
-          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-        </mat-form-field>
+      <div class="row example-header">
+        <div class="col-md-3">
+            <mat-form-field>
+                <input matInput #inputName [(ngModel)]="employeeName" placeholder="Search Employee">
+              </mat-form-field>
+        </div>
+        <div class="col-md-3">
+            <mat-form-field>
+                <input matInput #inputLoc [(ngModel)]="location" placeholder="Search Location">
+              </mat-form-field>
+        </div>
+        <div>
+            <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit" (click)="applyFilter(inputName, inputLoc)">Search</button>
+        </div>
       </div>
       <mat-table #table [dataSource]="dataSource" matSort>
         <!-- Position Column -->
-        <ng-container matColumnDef="FirstName">
+        <ng-container matColumnDef="firstName">
           <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
           <mat-cell *matCellDef="let iEmployee"> {{iEmployee.firstName}} </mat-cell>
         </ng-container>
@@ -61,7 +71,7 @@
           <mat-header-cell *matHeaderCellDef> Phone No </mat-header-cell>
           <mat-cell *matCellDef="let iEmployee"> {{iEmployee.phoneNumber}} </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="Location">
+        <ng-container matColumnDef="location">
           <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
           <mat-cell *matCellDef="let iEmployee"> {{iEmployee.organizationName ? iEmployee.organizationName: iEmployee.districtName}} </mat-cell>
         </ng-container>

@@ -12,6 +12,39 @@
                             <mat-tab label="Custom Settings">
 
                             </mat-tab>
+                            <mat-tab label="Lists">
+                                <div style="padding-top:10px ">
+                                    <div class="row col-md-12">
+                                        <div class="col-md-6" style="text-align:right">
+                                            <mat-form-field *ngIf='showDetail'>
+                                                <input matInput type="text" placeholder="List Name">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6" style="text-align:right">
+                                            <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="button" (click)="showDetail = !showDetail">Create List</button>
+                                        </div>
+                                    </div>
+                                    <div *ngIf='showDetail' class="row col-md-12">
+                                        <div class="row" *ngFor="let sub of substituteList">
+                                            <mat-form-field class="col-md-3">
+                                                <input matInput type="text" [(ngModel)]="sub.firstName" placeholder="first name">
+                                            </mat-form-field>
+                                            <mat-form-field class="col-md-3">
+                                                <input matInput disabled type="text" [(ngModel)]="sub.lastName" placeholder="last name">
+                                            </mat-form-field>
+                                            <mat-form-field class="col-md-3">
+                                                <input matInput disabled type="text" [(ngModel)]="sub.phoneNumber" placeholder="phone">
+                                            </mat-form-field>
+                                            <mat-form-field class="col-md-3">
+                                                <input matInput type="text" [(ngModel)]="sub.tag" placeholder="tags">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div *ngIf='showDetail' style="text-align: right" class="row col-md-12">
+                                            <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="button" (click)="saveSubstituteList(substituteList)">Save</button>
+                                    </div>
+                                </div>
+                            </mat-tab>
                             <mat-tab label="Notification Settings">
                                 <div class="row col-md-8 col-md-offset-2">
                                     <div class="row">

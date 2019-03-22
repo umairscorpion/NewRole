@@ -148,23 +148,14 @@
                                         <div class="col-md-12">
                                             <div class="col-md-6 col-lg-6"></div>
                                             <div class="col-md-6 col-lg-6" *ngIf='absenceFirstFormGroup.value.AbsenceType === "1" || absenceFirstFormGroup.value.AbsenceType === "2"'>
-                                                <mat-form-field *ngIf='absenceFirstFormGroup.value.AbsenceType == "1"' class="col-md-10 col-lg-10">
-                                                    <mat-select placeholder="Select Substitute" formControlName="Substitutes" multiple>
-                                                        <mat-select-trigger>
-                                                            {{absenceFirstFormGroup.value.Substitutes?.length == 1 ? absenceFirstFormGroup.value.Substitutes[0].firstName : absenceFirstFormGroup.value.Substitutes?.length
-                                                            == 2 ? absenceFirstFormGroup.value.Substitutes[0].firstName
-                                                            + ',' + absenceFirstFormGroup.value.Substitutes[1].firstName
-                                                            :''}}
-                                                            <span *ngIf="absenceSecondFormGroup.value.Substitutes?.length > 2">
-                                                                (+{{absenceFirstFormGroup.value.Substitutes.length - 2}} {{absenceFirstFormGroup.value.Substitutes?.length === 3 ? 'other'
-                                                                : 'others'}})
-                                                            </span>
-                                                        </mat-select-trigger>
-                                                        <mat-option *ngFor="let substitute of SubstituteList" [value]="substitute">
-                                                            <!-- <img [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'"  width="25" height="25"> -->
-                                                            {{substitute.firstName}}</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
+
+                                                <mat-selection-list *ngIf='absenceFirstFormGroup.value.AbsenceType == "1"' formControlName="Substitutes" class="col-md-10 col-lg-10"
+                                                    #Category>
+                                                    <mat-list-option *ngFor="let substitute of SubstituteList" [value]="substitute">
+                                                        <!-- <img [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'"  width="25" height="25"> -->
+                                                        {{substitute.firstName}}
+                                                    </mat-list-option>
+                                                </mat-selection-list>
                                                 <mat-form-field *ngIf='absenceFirstFormGroup.value.AbsenceType == "2"' class="col-md-10 col-lg-10">
                                                     <mat-select placeholder="Select Substitute" formControlName="Substitutes">
                                                         <mat-option *ngFor="let substitute of SubstituteList" [value]="substitute">
@@ -234,7 +225,6 @@
                                     <!-- <div class="row">
                                         <div class="col-md-12">
                                             <div class="col-md-6 col-lg-6">
-
                                             </div>
                                         </div>
                                     </div> -->
@@ -347,7 +337,7 @@
                     </mat-step>
                 </mat-horizontal-stepper>
             </mat-tab>
-            <mat-tab label="Create Leave">
+            <mat-tab *ngIf='loginedUserRole == 8' label="Create Leave">
                 <form class="col-md-8 col-md-offset-2" [formGroup]="LeaveRequestForm" (ngSubmit)="onSubmitLeaveRequestForm(LeaveRequestForm)">
                     <h4 style="text-align:center">Add New Leave Request</h4>
                     <mat-form-field class="col-md-12">

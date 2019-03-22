@@ -20,11 +20,13 @@ import { PopupDialogForEmployeeDetail } from './popups/viewEmployee.popup.compon
 })
 export class EmployeesComponent implements OnInit {
   private notifier: NotifierService;
-  displayedColumns = ['FirstName', 'LastName', 'Email', 'PhoneNumber', 'Location', 'Role', 'Approver', 'action'];
+  displayedColumns = ['firstName', 'LastName', 'Email', 'PhoneNumber', 'location', 'Role', 'Approver', 'action'];
   DataSourceEmployeesObj: DataSourceEmployees | null;
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  employeeName : string = '';
+  location : string = '';
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
@@ -33,6 +35,8 @@ export class EmployeesComponent implements OnInit {
     public dialog: MatDialog, private _dataContext: DataContext, notifier: NotifierService) {
     this.notifier = notifier;
   }
+
+
   ngOnInit(): void {
     this.DataSourceEmployeesObj = new DataSourceEmployees(this._dataContext, this._userSession);
 
@@ -58,15 +62,29 @@ export class EmployeesComponent implements OnInit {
           this.isLoadingResults = false;
           return observableOf([]);
         })
-      ).subscribe((data: any) =>
-        this.dataSource.data = data);
-    // this.GetEmployees();
+      ).subscribe((data: any) => this.dataSource.data = data);
+
+    this.dataSource.filterPredicate = (data: any, filtersJson: string) => {
+      const matchFilter = [];
+      const filters = JSON.parse(filtersJson);
+      
+        const schoolTile = 'organizationName';
+        const districtTitle = 'districtName';
+        const nameTitle = 'firstName';
+        const sch = data[schoolTile] === null ? '' : data[schoolTile];
+        const dis = data[districtTitle] === null ? '' : data[districtTitle];
+        const name = data[nameTitle] === null ? '' : data[nameTitle];
+       matchFilter.push((sch.toLowerCase().includes(this.location.toLowerCase()) || dis.toLowerCase().includes(this.location.toLowerCase())) && (name.toLowerCase().includes(this.employeeName.toLowerCase())));
+      
+      return matchFilter.every(Boolean);
+    };
   }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
+
   // GetEmployees(): void {
   //     let RoleId = 3;
   //     let OrgId = -1;
@@ -76,10 +94,40 @@ export class EmployeesComponent implements OnInit {
   //     },
   //         error => this.msg = <any>error);
   // }
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase();
-    this.dataSource.filter = filterValue;
+
+  applyFilter(employeeName: any, Location: any) {
+    const tableFilters = [];
+    tableFilters.push({
+      id: 'organizationName',
+      value: Location.value
+    });
+
+    tableFilters.push({
+      id: 'districtName',
+      value: Location.value
+    });
+
+    tableFilters.push({
+      id: 'firstName',
+      value: employeeName.value
+    });
+
+    this.dataSource.filter = JSON.stringify(tableFilters);
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  applyFilterOnName(filterValue: string) {
+    const tableFilters = [];
+    tableFilters.push({
+      id: 'firstName',
+      value: filterValue
+    });
+    this.dataSource.filter = JSON.stringify(tableFilters);
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   DeleteEmployee(SelectedRow: any) {

@@ -4,6 +4,8 @@ import { UserSession } from '../../Services/userSession.service';
 import { MatTableDataSource } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { HttpErrorResponse } from '@angular/common/http';
+import { User } from '../../Model/user';
+import { SocialUser } from '../../../../node_modules/angular-6-social-login';
 @Component({
     templateUrl: 'settings.component.html',
     styleUrls: ['settings.component.css']
@@ -11,6 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class SettingComponent implements OnInit {
     displayedColumns: string[] = ['event', 'email', 'text', 'voice'];
     dataSource = ELEMENT_DATA;
+    substituteList: User[] = Array<User>();
     UserClaim: any = JSON.parse(localStorage.getItem('userClaims'));
     TimeCustomDelay: string;
     isSubstitute: boolean = false;
@@ -25,6 +28,10 @@ export class SettingComponent implements OnInit {
 
     constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession: UserSession) { this.notifier = notifier; }
     ngOnInit(): void {
+        for (let i = 0; i <= 4; i++ )
+        {
+            this.substituteList.push(new User());
+        }
         this.GetSubstituteCategories();
         this.ManageDefultValuesAgainstDifferentUserRoles();
     }
@@ -106,6 +113,10 @@ export class SettingComponent implements OnInit {
                 });
         }
         this.notifier.notify('success', 'Updated Successfully');
+    }
+
+    saveSubstituteList(substituteList: any): void {
+        console.log(this.substituteList);
     }
 }
 export interface PeriodicElement {
