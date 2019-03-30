@@ -52,7 +52,7 @@
               <ng-container matColumnDef="AbsenceDate">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Absence Date </mat-header-cell>
                 <mat-cell *matCellDef="let Absence"> {{Absence.startDate | date}}
-                  <br> {{Absence.startTime}}-{{Absence.endTime}} </mat-cell>
+                  <br> {{Absence.startTime | convertFrom24HourTo12HourFormat}}-{{Absence.endTime | convertFrom24HourTo12HourFormat}} </mat-cell>
               </ng-container>
       
               <ng-container matColumnDef="Posted">
@@ -63,8 +63,8 @@
       
               <ng-container matColumnDef="Location">
                 <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
-                <mat-cell *matCellDef="let Absence"> {{Absence.employeeName}}
-                  <br> {{Absence.absenceLocation}} </mat-cell>
+                <mat-cell *matCellDef="let Absence"> {{Absence.organizationName ? Absence.organizationName : Absence.absenceLocation }}
+                    <br> {{Absence.organizationName ? Absence.organizationAddress : Absence.districtAddress }} </mat-cell>
               </ng-container>
       
               <ng-container matColumnDef="Status">

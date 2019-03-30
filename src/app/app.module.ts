@@ -106,7 +106,7 @@ import { PermissionsComponent } from './Components/Permissions/permissions.compo
 import { ContactUsComponent } from './Components/Contact/contactUs.component'
 
 //Jobs Component
-import { JobComponent, PopupDialogForJobDetail } from './Components/Job/job.component';
+import { JobComponent } from './Components/Job/job.component';
 import { AvailableJobsComponent } from './Components/Job/SubPages/AvailableJobs/availableJobs.component';
 import { MyJobsComponent } from './Components/Job/SubPages/MyJobs/myJobs.component';
 import { PastJobsComponent } from './Components/Job/SubPages/PastJobs/pastJobs.component';
@@ -143,6 +143,7 @@ import { FileService } from './Services/file.service';
 import { AbsenceService } from './Services/absence.service';
 import { TimeFormatPipe } from './Shared/pipe/time.pipe';
 import { PopupDialogForEmployeeDetail } from './Components/Manage/SubPages/Employees/popups/viewEmployee.popup.component';
+import { PopupDialogForJobDetail } from './Components/Job/popus/jobDetail.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(

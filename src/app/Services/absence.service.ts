@@ -14,7 +14,7 @@ import { LeaveType } from '../Model/leaveType';
 import { LeaveRequest } from '../Model/leaveRequest';
 
 @Injectable()
-export class AbsenceService extends RestService<User> {
+export class AbsenceService extends RestService<LeaveType> {
   constructor(
     protected httpClient: HttpClient,
     protected errorHandler: ErrorHandlerService

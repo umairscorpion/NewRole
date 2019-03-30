@@ -12,7 +12,6 @@ import { SocialUser } from '../../../../node_modules/angular-6-social-login';
 })
 export class SettingComponent implements OnInit {
     displayedColumns: string[] = ['event', 'email', 'text', 'voice'];
-    dataSource = ELEMENT_DATA;
     substituteList: User[] = Array<User>();
     UserClaim: any = JSON.parse(localStorage.getItem('userClaims'));
     TimeCustomDelay: string;
@@ -26,10 +25,11 @@ export class SettingComponent implements OnInit {
     ChangedPreferences: any[] = [];
     private notifier: NotifierService;
 
-    constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession: UserSession) { this.notifier = notifier; }
+    constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession: UserSession) { 
+        this.notifier = notifier; 
+    }
     ngOnInit(): void {
-        for (let i = 0; i <= 4; i++ )
-        {
+        for (let i = 0; i <= 4; i++) {
             this.substituteList.push(new User());
         }
         this.GetSubstituteCategories();
@@ -39,6 +39,7 @@ export class SettingComponent implements OnInit {
     ManageDefultValuesAgainstDifferentUserRoles() {
         //Show substitute Categories only to substitutes
         if (this.UserClaim.roleId === 4) {
+            this.getPreferredSchools();
             this.isSubstitute = true;
         }
     }
@@ -59,9 +60,7 @@ export class SettingComponent implements OnInit {
     }
 
     onChangeTab(tab: any) {
-        if (tab.index == 3) {
-            this.getPreferredSchools();
-        }
+
     }
 
     ChangeNotificationPreference(row: any, type: string): void {
@@ -119,14 +118,3 @@ export class SettingComponent implements OnInit {
         console.log(this.substituteList);
     }
 }
-export interface PeriodicElement {
-    Event: string;
-    Email: boolean;
-    Text: boolean;
-    voice: boolean;
-}
-const ELEMENT_DATA: PeriodicElement[] = [
-    { Event: 'Job Approved', Email: true, Text: true, voice: true },
-    { Event: 'Job Denied', Email: false, Text: true, voice: true },
-    { Event: 'Job Posted', Email: true, Text: true, voice: false },
-];

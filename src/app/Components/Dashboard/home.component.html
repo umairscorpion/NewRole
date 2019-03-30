@@ -12,95 +12,121 @@
                 <div class="row">
                     <div class="col-xs-3">
                         <div class="ibox">
-                            <div class="ibox-title">
-                                <span class="stat-percent" style="font-size: 20px;margin-right:10px">25</span>
-                                <h5 class="label label-success" style="line-height:2px!important;font-size: 92%!important;">Total Absences</h5>
+                            <div class="ibox-title" style="background-color: #008C9D">
+                                <span class="stat-percent" style="font-size: 20px;margin-right:10px;color: white">25</span>
+                                <h5 class="label label-success" style="line-height:2px!important;font-size: 92%!important; background-color: #1F99A8">Total Absences</h5>
                             </div>
-                            <div class="ibox-content">
-                                <div class="stat-percent font-bold text-success">98%
+                            <div class="ibox-content" style="background-color: #0FA2B2;">
+                                <div class="stat-percent font-bold text-success" style="color: white">98%
                                     <i class="fa fa-level-up"></i>
                                 </div>
-                                <small>Previous Day</small>
-                                <div>3</div>
+                                <small style="color: white">Previous Day</small>
+                                <div style="color: white">3</div>
                             </div>
 
                         </div>
                     </div>
                     <div class="col-xs-3">
                         <div class="ibox">
-                            <div class="ibox-title">
-                                <span class="stat-percent" style="font-size: 20px;margin-right:10px">25</span>
-                                <h5 class="label label-info" style="line-height:2px!important;font-size: 92%!important;">Filled</h5>
+                            <div class="ibox-title" style="background-color: #4DB278;">
+                                <span class="stat-percent" style="font-size: 20px;margin-right:10px;color: white">25</span>
+                                <h5 class="label label-info" style="line-height:2px!important;font-size: 92%!important; background-color: #5FBB88">Filled</h5>
                             </div>
-                            <div class="ibox-content">
-                                <div class="stat-percent font-bold text-info">20%
+                            <div class="ibox-content" style="background-color:#76C598;">
+                                <div class="stat-percent font-bold text-info" style="color: white">20%
                                     <i class="fa fa-level-up"></i>
                                 </div>
-                                <small>Previous Day</small>
-                                <div>3</div>
+                                <small style="color: white">Previous Day</small>
+                                <div style="color: white">3</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-3">
                         <div class="ibox ">
-                            <div class="ibox-title">
-                                <span class="stat-percent" style="font-size: 20px;margin-right:10px">25</span>
-                                <h5 class="label label-primary" style="line-height:2px!important;font-size: 92%!important;">Unfilled</h5>
+                            <div class="ibox-title" style="background-color:#12C0C9;">
+                                <span class="stat-percent" style="font-size: 20px;margin-right:10px;color: white">25</span>
+                                <h5 class="label label-primary" style="line-height:2px!important;font-size: 92%!important;background-color: #2FC6D1">Unfilled</h5>
                             </div>
-                            <div class="ibox-content">
-                                <div class="stat-percent font-bold text-navy">44%
-                                    <i class="fa fa-level-up"></i>
+                            <div class="ibox-content" style="background-color:#57D4DA;">
+                                <div class="stat-percent font-bold text-navy" style="color: white">44%
+                                    <i class="fa fa-level-up" style="color: white"></i>
                                 </div>
-                                <small>Previous Day</small>
-                                <div>3</div>
+                                <small style="color: white">Previous Day</small>
+                                <div style="color: white">3</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-3">
                         <div class="ibox ">
-                            <div class="ibox-title">
-                                <span class="stat-percent" style="font-size: 20px;margin-right:10px">25</span>
-                                <h5 class="label label-danger" style="line-height:2px!important;font-size: 92%!important;">No Sub Required</h5>
+                            <div class="ibox-title" style="background-color: #548E90;">
+                                <span class="stat-percent" style="font-size: 20px;margin-right:10px;color: white">25</span>
+                                <h5 class="label label-danger" style="line-height:2px!important;font-size: 92%!important;background-color: #6899A0">No Sub Required</h5>
                             </div>
-                            <div class="ibox-content">
-                                <div class="stat-percent font-bold text-danger">38%
+                            <div class="ibox-content" style="background-color:#74A4A8;">
+                                <div class="stat-percent font-bold text-danger" style="color: white">38%
                                     <i class="fa fa-level-up"></i>
                                 </div>
-                                <small>Previous Day</small>
-                                <div>3</div>
+                                <small style="color: white">Previous Day</small>
+                                <div style="color: white">3</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-8">
-                        <div class="col-md-6">
-                            <div class="ibox-title">
-                                Absence Summary
-                            </div>
-                            <div>
-                                <canvas id="absenceSummary">{{ absenceSummary }}</canvas>
-                            </div>
+                    <div class="col-md-4">
+                        <div class="ibox-title">
+                            Absence Summary
                         </div>
-                        <div class="col-md-6">
-                            <div class="ibox-title">
-                                Absence Reason
-                            </div>
-                            <div>
-                                <canvas id="absenceReason">{{ absenceReason }}</canvas>
-                            </div>
+                        <div>
+                            <canvas id="absenceSummary">{{ absenceSummary }}</canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="ibox-title">
+                            Absence Reason
+                        </div>
+                        <div>
+                            <canvas id="absenceReason">{{ absenceReason }}</canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="ibox-title">
+                            Absence Requests
+                        </div>
+                        <div>
+                            <mat-list>
+                                <mat-list-item style="height: 76px;" *ngFor="let leave of submittedLeaveRequests">
+                                    <div class="col-md-1">
+                                        <img class="img-circle" src="assets/Images/noimage.png" height="30" width="25" />
+                                    </div>
+                                    <div style="font-size: 10px" class="col-md-4">
+                                        <b>{{leave.employeeName}}</b>
+                                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days' :
+                                        'Day'}}
+                                    </div>
+                                    <div style="font-size: 11px" class="col-md-4">
+                                        {{ leave.startDate | date:'E, M/d/y' }}
+                                        <br> {{ leave.endDate | date:'E, M/d/y' }}
+                                    </div>
+                                    <div class="col-md-3">
+                                        <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="Accept"
+                                            matTooltipPosition="below" (click)="onApproveClick(leave.leaveRequestId)">check</i>
+                                        <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;" #tooltip="matTooltip" matTooltip="Reject"
+                                            matTooltipPosition="below" (click)="onDenyClick(leave.leaveRequestId)">close</i>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                </mat-list-item>
+                            </mat-list>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="col-md-12">
-                            <div class="col-md-12 ibox-title">
-                                Filled / Unfilled 10 Day Trend
-                            </div>
-                            <div class="col-md-12">
-                                <canvas height="100" id="filledunfilledAbsence">{{ filledunfilledAbsence }}</canvas>
-                            </div>
+                        <div class=" ibox-title">
+                            Filled / Unfilled 10 Day Trend
+                        </div>
+                        <div>
+                            <canvas height="100" id="filledunfilledAbsence">{{ filledunfilledAbsence }}</canvas>
                         </div>
                     </div>
                 </div>

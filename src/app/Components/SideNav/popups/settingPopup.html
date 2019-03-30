@@ -4,15 +4,20 @@
         <div class="col-md-8 col-xs-8" style="padding: 24px">
             <div class="col-md-6">
                 <div>
-                    <b>Subzz</b>
+                    <!-- <b>Subzz</b> -->
                 </div>
-                <div style="margin-top: 18px">Your Organization</div>
+                <div style="margin-top: 30px">
+                    <b>Subzz School District</b>
+                </div>
+                <div *ngIf="userRole != 4 && userRole != 3" style="margin-top: 20px">
+                    <a (click)="OpenSettingsPage()">Account Settings</a>
+                </div>
                 <div style="margin-top: 20px">
-                    <a (click)="OpenSettingsPage()">Account And Settings</a>
+                    <a (click)="OpenSettingsPage()">My Settings</a>
                 </div>
-                <div *ngIf="userRole != 4" style="margin-top: 20px;">
-                    <a>Manage Users</a>
-                </div>
+                <!-- <div *ngIf="userRole != 4" style="margin-top: 20px;">
+                <a>Manage Users</a>
+                </div> -->
             </div>
             <div style="margin-top:10px" class="col-md-6">
                 <div style="margin-top: 20px">
@@ -21,7 +26,7 @@
                 <div *ngIf="userRole != 4" style="margin-top:20px">
                     <a>Audit Log</a>
                 </div>
-                <div  style="margin-top:20px">
+                <div style="margin-top:20px">
                     <a>Calendar</a>
                 </div>
                 <div *ngIf="userRole != 4" style="margin-top:20px">

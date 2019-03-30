@@ -25,8 +25,8 @@ export class EmployeesComponent implements OnInit {
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  employeeName : string = '';
-  location : string = '';
+  employeeName: string = '';
+  location: string = '';
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
@@ -67,15 +67,14 @@ export class EmployeesComponent implements OnInit {
     this.dataSource.filterPredicate = (data: any, filtersJson: string) => {
       const matchFilter = [];
       const filters = JSON.parse(filtersJson);
-      
-        const schoolTile = 'organizationName';
-        const districtTitle = 'districtName';
-        const nameTitle = 'firstName';
-        const sch = data[schoolTile] === null ? '' : data[schoolTile];
-        const dis = data[districtTitle] === null ? '' : data[districtTitle];
-        const name = data[nameTitle] === null ? '' : data[nameTitle];
-       matchFilter.push((sch.toLowerCase().includes(this.location.toLowerCase()) || dis.toLowerCase().includes(this.location.toLowerCase())) && (name.toLowerCase().includes(this.employeeName.toLowerCase())));
-      
+
+      const schoolTile = 'organizationName';
+      const districtTitle = 'districtName';
+      const nameTitle = 'firstName';
+      const sch = data[schoolTile] === null ? '' : data[schoolTile];
+      const dis = data[districtTitle] === null ? '' : data[districtTitle];
+      const name = data[nameTitle] === null ? '' : data[nameTitle];
+      matchFilter.push((sch.toLowerCase().includes(this.location.toLowerCase()) || dis.toLowerCase().includes(this.location.toLowerCase())) && (name.toLowerCase().includes(this.employeeName.toLowerCase())));
       return matchFilter.every(Boolean);
     };
   }

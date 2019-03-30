@@ -6,13 +6,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserSession } from '../../../../Services/userSession.service';
 import { AbsenceService } from '../../../../Services/absence.service';
 import { LeaveType } from '../../../../Model/leaveType';
-import { DataContext } from '../../../../Services/dataContext.service';
 import { LeaveRequest } from '../../../../Model/leaveRequest';
-// import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { NotifierService } from 'angular-notifier';
+import { Router } from '../../../../../../node_modules/@angular/router';
 @Component({
     templateUrl: 'leaves.component.html'
 })
 export class LeavesComponent implements OnInit {
+    private notifier: NotifierService;
     msg: string;
     tabClicked: number;
     displayedColumnsForLeaveTypes = ['LeaveTypeName', 'Allowance', 'Approval', 'Visible', 'CreatedDate', 'action'];
@@ -28,9 +29,9 @@ export class LeavesComponent implements OnInit {
     deniedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
     archivedDeniedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
     archivedApprovedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
-    
-    constructor(private _districtService: DistrictService, private userSession: UserSession,
-        private absenceService: AbsenceService, private dataContext: DataContext) { }
+
+    constructor(private _districtService: DistrictService, private userSession: UserSession, private router: Router,
+        private absenceService: AbsenceService, notifier: NotifierService) { this.notifier = notifier; }
 
     ngOnInit(): void {
         this.GetLeaveTypes();
@@ -52,14 +53,14 @@ export class LeavesComponent implements OnInit {
         let organizationId = this.userSession.getUserOrganizationId() ? this.userSession.getUserOrganizationId() : '-1';
         this.absenceService.getLeaveRequests(districtId, organizationId).subscribe((leaveRequests: LeaveRequest[]) => {
             this.bindData(leaveRequests);
-            },
-                error => this.msg = <any>error);
+        },
+            error => this.msg = <any>error);
     }
 
     bindData(leaveRequests: LeaveRequest[]) {
         this.submittedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === false);
-        this.approvedLeaveRequests = leaveRequests.filter(t => t.isApproved === true && t.isDeniend === false);
-        this.deniedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === true);
+        this.approvedLeaveRequests = leaveRequests.filter(t => t.isApproved === true && t.isDeniend === false && t.isArchived === false);
+        this.deniedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === true && t.isArchived === false);
         this.archivedApprovedLeaveRequests = leaveRequests.filter(t => t.isApproved === true && t.isDeniend === false && t.isArchived === true);
         this.archivedDeniedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === true && t.isArchived === true);
     }
@@ -85,7 +86,8 @@ export class LeavesComponent implements OnInit {
         let leaveStatusModel = {
             LeaveRequestId: leaveRequestId,
             IsApproved: 1,
-            IsDeniend: 0
+            IsDeniend: 0,
+            isArchived: 0
         }
         this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
             this.selection.clear();
@@ -109,8 +111,36 @@ export class LeavesComponent implements OnInit {
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
             isApproved: 0,
-            isDeniend: 1
+            isDeniend: 1,
+            isArchived: 0
         }
+        this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+            this.selection.clear();
+            if (this.tabClicked == 0) {
+                this.GetLeaveRequests();
+            }
+            else if (this.tabClicked == 1) {
+                this.GetLeaveRequests();
+            }
+            else {
+                this.GetLeaveRequests();
+            }
+            // this.toastr.success('Status Updated Successfully!', 'Success!');
+        },
+            (err: HttpErrorResponse) => {
+                // this.toastr.error(err.error.error_description, 'Oops!');
+            });
+    }
+
+    onArchiveRequest(leaveRequestId: number) {
+
+        let leaveStatusModel = {
+            leaveRequestId: leaveRequestId,
+            isApproved: 0,
+            isDeniend: 1,
+            isArchived: 1
+        }
+
         this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
             this.selection.clear();
             if (this.tabClicked == 0) {
@@ -146,5 +176,21 @@ export class LeavesComponent implements OnInit {
         if (this.dataSourceForLeaveTypes.paginator) {
             this.dataSourceForLeaveTypes.paginator.firstPage();
         }
+    }
+
+    deleteLeaveType(leaveTypeId: number): void {
+        var confirmResult = confirm('Are you sure you want to delete Leave type?');
+        if (confirmResult) {
+            this.absenceService.delete('Leave/deleteLeaveType/', leaveTypeId).subscribe((response: any) => {
+                if (response === -1) {
+                    this.notifier.notify('success', 'Deleted Successfully');
+                    this.GetLeaveTypes();
+                }
+            });
+        }
+    }
+
+    editLeaveType(leaveTypeId: number): void {
+            this.router.navigate(['/manage/leave/AddLeave'], { queryParams: { Id: leaveTypeId } });
     }
 }

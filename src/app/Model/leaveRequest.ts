@@ -19,4 +19,5 @@ export class LeaveRequest extends Entity {
     approvedDate: string;
     deniedDate: string;
     isArchived: boolean;
+    totalDays: string;
 }

@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild ,ChangeDetectorRef, HostBinding, Inject } from '@angular/core';
 import { UserService } from '../../Service/user.service';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { DataContext } from '../../Services/dataContext.service';
+import { SideNavService } from '../SideNav/sideNav.service'; 
 import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { CommunicationService } from '../../Services/communication.service';
+import { PopupDialogForJobDetail } from './popus/jobDetail.component';
 
 @Component({
     templateUrl: 'job.component.html',
@@ -13,16 +14,23 @@ import { CommunicationService } from '../../Services/communication.service';
 export class JobComponent implements OnInit {
     sideNavMenu: any;
     msg :string;
+    isOpen = true;
     @HostBinding('class.is-open')
     mobileQuery: MediaQueryList;
     private _mobileQueryListener: () => void;
     constructor(private router: Router, private _userService: UserService, changeDetectorRef: ChangeDetectorRef, 
-        media: MediaMatcher, public matDialog: MatDialog, private _communicationService: CommunicationService) {
+        media: MediaMatcher, public matDialog: MatDialog, private _communicationService: CommunicationService, 
+        private sideNavService: SideNavService) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
      }
     ngOnInit(): void {
+        this.sideNavService.change.subscribe((isOpen: any) => {
+            this.isOpen = isOpen;
+        });
+
+
         this._communicationService.AbsenceDetail.subscribe((AbsenceDetail: any) => {
             this.JobDetail(AbsenceDetail);
         });
@@ -41,7 +49,7 @@ export class JobComponent implements OnInit {
         this.matDialog.closeAll();
         this.matDialog.open(PopupDialogForJobDetail, {
             data,
-            height: '500px',
+            height: '600px',
             width: '750px',
             panelClass: 'AbsenceDetail-popup',
         });
@@ -49,39 +57,5 @@ export class JobComponent implements OnInit {
 
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this._mobileQueryListener);
-    }
-}
-
-@Component({
-    templateUrl: 'jobDetail.html',
-    styleUrls: ['job.component.css']
-})
-export class PopupDialogForJobDetail {
-    msg: string;
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any, private _dataContext: DataContext) {
-    }
-
-    DownloadFile(): void {
-        let model = { AttachedFileName: this.data.attachedFileName, FileContentType: this.data.fileContentType }
-        this._dataContext.getFile('Absence/getfile', model).subscribe((blob: any) => {
-            let newBlob = new Blob([blob]);
-            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(newBlob);
-                return;
-            }
-            // To open in browser
-            var file = new Blob([blob], { type: this.data.fileContentType });
-            window.open(URL.createObjectURL(file));
-            //To Download
-            // let data = window.URL.createObjectURL(newBlob);
-            // let link = document.createElement('a');
-            // link.href = data;
-            // link.download = this.data.attachedFileName;
-            // link.click();
-            // setTimeout(() => {
-            //     window.URL.revokeObjectURL(data);
-            // }, 100);
-        },
-            error => this.msg = <any>error);
     }
 }
