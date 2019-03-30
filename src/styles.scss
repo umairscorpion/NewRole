@@ -7,6 +7,7 @@
 @import '~@swimlane/ngx-datatable/release/index.css';
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
+@import "../node_modules/fullcalendar/dist/fullcalendar.min.css";
 
 $sides: (top, bottom, left, right);
 @for $i from 0 to 100 {
@@ -99,4 +100,24 @@ $sides: (top, bottom, left, right);
     padding-top: 16px;
     font-size: 45px;
   }
+}
+
+.availability-edit-dialog {
+  width: 40vw;
+  height: auto;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+}
+.availability-status-unavailable {
+  background-color: #f3b677;
+}
+
+.availability-status-vacations {
+  background-color: #76c598;
+}
+
+.availability-status-recurring {
+  background-color: #5e9eca;
 }

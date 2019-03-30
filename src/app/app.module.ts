@@ -144,6 +144,10 @@ import { AbsenceService } from './Services/absence.service';
 import { TimeFormatPipe } from './Shared/pipe/time.pipe';
 import { PopupDialogForEmployeeDetail } from './Components/Manage/SubPages/Employees/popups/viewEmployee.popup.component';
 import { PopupDialogForJobDetail } from './Components/Job/popus/jobDetail.component';
+import { SubstituteCalendarComponent } from './Components/Dashboard/substitute-calendar.component';
+import { AvailabilityService } from './Services/availability.service';
+import { LookupService } from './Services/lookup.service';
+import { UnAvailabilityComponent } from './Components/Dashboard/unavailability/unavailability.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -289,7 +293,9 @@ const customNotifierOptions: NotifierOptions = {
         PopupDialogForJobDetail,
         ReportFiltersComponent,
         ReportDetailsComponent,
-        TimeFormatPipe
+        TimeFormatPipe,
+        SubstituteCalendarComponent,
+        UnAvailabilityComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -301,7 +307,8 @@ const customNotifierOptions: NotifierOptions = {
         PopupDialogForSettings,
         PopupDialogForOrganizationDetail,
         PopupDialogForAbsenceDetail,
-        ReportDetailsComponent
+        ReportDetailsComponent,
+        UnAvailabilityComponent
     ],
     providers: [
         UserService,
@@ -328,7 +335,10 @@ const customNotifierOptions: NotifierOptions = {
             //For Google Account
             provide: AuthServiceConfig,
             useFactory: getAuthServiceConfigs
-        }],
+        },
+        LookupService,
+        AvailabilityService
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

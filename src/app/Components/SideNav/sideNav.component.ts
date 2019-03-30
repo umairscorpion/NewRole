@@ -162,5 +162,10 @@ export class PopupDialogForSettings {
         this.dialog.closeAll();
         this.router.navigate(['/profile']);
     }
+
+    openCalendar() {
+        this.dialog.closeAll();
+        this.router.navigate(['/calendar']);
+    }
 }
 
