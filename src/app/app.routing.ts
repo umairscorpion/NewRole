@@ -55,6 +55,7 @@ import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.compo
 
 //Routing Authentication
 import { AuthGuard } from './Authentication/auth.guard';
+import { SubstituteCalendarComponent } from './Components/Dashboard/substitute-calendar.component';
 
 
 const appRoutes: Routes = [
@@ -84,7 +85,8 @@ const appRoutes: Routes = [
         { path: 'leave/AddLeave', component: AddLeaveComponent },
         { path: 'leave/AddLeaveRequest', component: AddLeaveRequestComponent },
         { path: 'schools', component: SchoolsComponent },
-        { path: 'schools/AddSchool', component: AddSchoolComponent }
+        { path: 'schools/AddSchool', component: AddSchoolComponent },
+        { path: 'substitutes/calendar', component: SubstituteCalendarComponent }
         ]
     },
     {
@@ -93,6 +95,7 @@ const appRoutes: Routes = [
         { path: 'myJobs', component: MyJobsComponent },
         { path: 'availableJobs', component: AvailableJobsComponent },
         { path: 'pastJobs', component: PastJobsComponent }
+
         ]
     },
     {
@@ -108,8 +111,8 @@ const appRoutes: Routes = [
     { path: 'settings', component: SettingComponent, canActivate: [AuthGuard] },
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'permissions', component: PermissionsComponent, canActivate: [AuthGuard] },
-    { path: 'contactUs', component: ContactUsComponent, canActivate: [AuthGuard] }
-
+    { path: 'contactUs', component: ContactUsComponent, canActivate: [AuthGuard] },
+    { path: 'calendar', component: SubstituteCalendarComponent, canActivate: [AuthGuard] }
 ];
 
 export const routing: ModuleWithProviders =

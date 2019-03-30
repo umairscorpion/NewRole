@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:61137/api/
+
+
+###
+# @name login
+POST {{baseUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+{"userName":"taimoorali921@gmail.com","password":"11111111111"}
+###
+@authToken= Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJVMDAwMDAwMDIwIiwiZXhwIjoxNTUzOTU2ODk4fQ.uvOtD4t9Du3VIgGJkc92bpbaDy_gERusUG5p075GE_E
+###
+
+# @name Get
+GET {{baseUrl}}/user/availability HTTP/1.1
+Content-Type: application/json
+{{authToken}}
+
+###
+# @name insert
+POST {{baseUrl}}/user/availability HTTP/1.1
+Content-Type: application/json
+{{authToken}}
+
+{"availabilityId":0,"userId":"","userTypeId":0,"availabilityStatusId":"1","title":"sdfsdfdfdfd","startDate":"2019-03-04","endDate":"2019-03-05","startTime":"12:00 AM","endTime":"12:00 AM","isAllDayOut":false,"isRepeat":"","repeatType":"","repeatValue":"","repeatOnWeekDays":"","isEndsNever":"","endsOnAfterNumberOfOccurrance":"","endsOnUntilDate":""}
+###
+
+# @name delete
+DELETE {{baseUrl}}/user/availability HTTP/1.1
+Content-Type: application/json
+{{authToken}}
+
+###
+
+# @name update
+PUT {{baseUrl}}/user/availability HTTP/1.1
+Content-Type: application/json
+{{authToken}}
+
+{
+	"RequestPath": "/sak09",
+	"DestinationPath": "/ContactUs"
+}
