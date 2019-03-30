@@ -1,0 +1,120 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate>
+  <div class="p-10 mt-1">
+    <div class="row">
+      <div class="col-md-11">
+      </div>
+      <div class="col-md-1 text-right pull-right">
+        <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-11 p-0">
+        <mat-form-field>
+          <input matInput placeholder="Add title" formControlName="title">
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <div class="row mt-5">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-10 p-0">
+
+        <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="availabilityStatusId">
+          <mat-button-toggle value="1" class="availability-status-unavailable">
+            Unavailable
+          </mat-button-toggle>
+          <mat-button-toggle value="2" class="availability-status-vacations">
+            Vacations
+          </mat-button-toggle>
+          <mat-button-toggle value="3" class="availability-status-recurring">
+            Recurring
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-md-1">
+        <mat-icon>schedule</mat-icon>
+      </div>
+      <div class="col-md-10 p-0">
+        <div class="row">
+          <div class="col-md-3">
+            <mat-form-field>
+              <input placeholder="Start Date" matInput [matDatepicker]="startDatePicker" formControlName="startDate" />
+              <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker></mat-datepicker>
+            </mat-form-field>
+            <div class="form-error-content" *ngIf="submitted">
+              <span *ngIf="form.get('startDate').errors?.required">
+                Start Date is required
+              </span>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="ht-30">
+              <input type="text" placeholder="Start Time" matInput formControlName="startTime" [matAutocomplete]="startTimePicker" (input)="timeChanged('startTime')" />
+              <mat-autocomplete #startTimePicker="matAutocomplete" (optionSelected)="timeChanged('startTime')">
+                <mat-option *ngFor="let option of times" [value]="option">
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <div class="form-error-content" *ngIf="submitted">
+              <span *ngIf="form.get('startTime').errors?.required">
+                Start Time is required
+              </span>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field [ngClass]="{
+            'appointment-edit-has-error':
+              form.hasError('notValid') ||
+              form.get('endDate').errors?.required
+          }">
+              <input placeholder="End Date" matInput [matDatepicker]="endDatePicker" formControlName="endDate" />
+              <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #endDatePicker></mat-datepicker>
+            </mat-form-field>
+            <div class="form-error-content">
+              <span *ngIf="form.get('endDate').errors?.required">
+                End Date is required
+              </span>
+              <span *ngIf="form.hasError('notValid')">*Invalid Date/Time</span>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="ht-30">
+              <input type="text" placeholder="End Time" matInput formControlName="endTime" [matAutocomplete]="endTimePicker" (input)="timeChanged('endTime')" />
+              <mat-autocomplete #endTimePicker="matAutocomplete" (optionSelected)="timeChanged('endTime')">
+                <mat-option *ngFor="let option of endTimes" [value]="option">
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <div class="form-error-content">
+              <span *ngIf="form.get('endTime').errors?.required && submitted">
+                End Time is required
+              </span>
+              <span *ngIf="form.hasError('notValid')">*Invalid Date/Time</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <mat-checkbox formControlName="isAllDayOut">
+        All Day
+      </mat-checkbox>
+    </section>
+    <section>
+      <button class="btn btn-success">Save</button>
+    </section>
+  </div>
+</form>

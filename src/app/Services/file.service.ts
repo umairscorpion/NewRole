@@ -15,12 +15,11 @@ export class FileService extends RestService<FileManager> {
     super(httpClient);
   }
 
-  l
   uploadProfilePicture(model: FormData): Observable<any> {
-    return this.httpClient.post(environment.apiUrl + 'fileSystem/uploadProfilePicture' , model, { reportProgress: true, observe: 'events' })
+    return this.httpClient.post(environment.apiUrl + 'fileSystem/uploadProfilePicture', model, { reportProgress: true, observe: 'events' })
   }
 
   getProfilePic(model: any): Observable<any> {
-    return this.httpClient.post(environment.apiUrl + 'fileSystem/getProfilePic', model, {responseType: 'blob' })
+    return this.httpClient.post(environment.apiUrl + 'fileSystem/getProfilePic', model, { responseType: 'blob' });
   }
 }

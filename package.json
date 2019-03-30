@@ -39,7 +39,10 @@
     "ng2-charts": "2.0.0-beta.21",
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.3.2",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.8.26",
+    "jquery": "3.2.1",
+    "moment": "2.22.1",
+    "fullcalendar-scheduler": "^1.9.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",
@@ -48,6 +51,7 @@
     "@angular/language-service": "^6.1.0",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
+    "@types/jquery": "^3.2.7",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.2.1",
     "jasmine-core": "~2.99.1",
