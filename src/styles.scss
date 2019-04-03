@@ -57,12 +57,13 @@ $sides: (top, bottom, left, right);
     margin-left: -#{$i}px !important;
     margin-right: -#{$i}px !important;
   }
-}
-
-@for $space from 0 to 100 {
-  .w-#{$space} {
-    width: #{$space}% !important;
+  .w-#{$i} {
+    width: #{$i}% !important;
   }
+}
+.form-error-content{
+  color: red !important;
+  font-size: 11px;
 }
 
 .cursor-pointer {
@@ -103,7 +104,15 @@ $sides: (top, bottom, left, right);
 }
 
 .availability-edit-dialog {
-  width: 40vw;
+  width: 45vw;
+  height: auto;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+}
+.availability-recurrence-dialog {
+  width: 35vw;
   height: auto;
   .mat-dialog-container {
     overflow-x: hidden !important;
@@ -120,4 +129,45 @@ $sides: (top, bottom, left, right);
 
 .availability-status-recurring {
   background-color: #5e9eca;
+}
+
+#Unavailable {
+  .mat-form-field {
+    width: 100% !important;
+ }
+ .dt-picker
+ {
+   background: #f0f1f4;
+   border-radius: 5px;
+   border:solid 1px #f0f1f4;
+ }
+}
+
+.vertical-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+#recurrence {
+.mat-button-toggle {
+  border: 1px solid #f28628;
+  border-radius: 4px;
+  margin-left: 3px;
+  margin-right:3px;
+  width: 30px;
+  height: 30px;
+  font-family: 'Nunito Semibold', sans-serif;
+  font-size: 14px;
+  font-style: bold;
+}
+
+.mat-button-toggle-disabled{
+  border: 1px solid #c5c0c7;
+  background-color: #e1dde5;
+}
+
+div.center-text{
+ margin-left: -8px;
+ margin-top: -3px;
+}
 }

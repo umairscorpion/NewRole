@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:61137/api/'
-  //apiUrl: 'http://162.241.138.178/plesk-site-preview/sapi.loginsubzz.com/api/'
+  // apiUrl: 'http://localhost:61137/api/'
+  apiUrl: 'http://162.241.138.178/plesk-site-preview/sapi.loginsubzz.com/api/'
 };
 
 /*

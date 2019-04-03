@@ -88,7 +88,7 @@ export class SubstituteCalendarComponent implements OnInit {
               this.doOpen = false;
               this.dialogRef.openDialogs.pop();
               this.availabilityService
-                .get(Number(event.id))
+                .get(event.id.toString())
                 .subscribe((availability: any) => {
                   const dialogRef = this.dialogRef.open(
                     UnAvailabilityComponent,

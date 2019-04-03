@@ -148,6 +148,7 @@ import { SubstituteCalendarComponent } from './Components/Dashboard/substitute-c
 import { AvailabilityService } from './Services/availability.service';
 import { LookupService } from './Services/lookup.service';
 import { UnAvailabilityComponent } from './Components/Dashboard/unavailability/unavailability.component';
+import { RecurringComponent } from './Components/Dashboard/unavailability/recurring/recurring.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -295,7 +296,8 @@ const customNotifierOptions: NotifierOptions = {
         ReportDetailsComponent,
         TimeFormatPipe,
         SubstituteCalendarComponent,
-        UnAvailabilityComponent
+        UnAvailabilityComponent,
+        RecurringComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -308,7 +310,8 @@ const customNotifierOptions: NotifierOptions = {
         PopupDialogForOrganizationDetail,
         PopupDialogForAbsenceDetail,
         ReportDetailsComponent,
-        UnAvailabilityComponent
+        UnAvailabilityComponent,
+        RecurringComponent
     ],
     providers: [
         UserService,
