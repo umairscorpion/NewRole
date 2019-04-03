@@ -1,0 +1,43 @@
+<mat-toolbar>
+  Custom Recurrence
+  <span class="mat-dialog-toolbar-icon"></span>
+  <mat-icon class="mat-dialog-toolbar-spacer text-align-right cursor-pointer" title="Close" (click)="onClose()"> &nbsp;&nbsp;clear</mat-icon>
+</mat-toolbar>
+<div md-dialog-actions id="recurrence">
+  <section>
+    <label>Repeat every</label>
+    <mat-form-field>
+      <input matInput type="number" formControlName="repeatValue" min="1">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select>
+        <mat-option value="day">day</mat-option>
+        <mat-option value="week">week</mat-option>
+        <mat-option value="month">month</mat-option>
+        <mat-option value="year">year</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+
+  <section class="mt-15">
+    <label>Repeat on</label>
+    <mat-button-toggle-group multiple="true">
+      <mat-button-toggle color="default" class="mr-8">S</mat-button-toggle>
+      <mat-button-toggle color="default" class="mr-8">M</mat-button-toggle>
+      <mat-button-toggle color="default" class="mr-8">T</mat-button-toggle>
+      <mat-button-toggle color="default" class="mr-8">W</mat-button-toggle>
+      <mat-button-toggle color="default" class="mr-8">T</mat-button-toggle>
+      <mat-button-toggle color="default" class="mr-8">F</mat-button-toggle>
+      <mat-button-toggle color="default" class="mr-8">S</mat-button-toggle>
+    </mat-button-toggle-group>
+  </section>
+
+  <section class="mt-15">
+    <label>Ends</label>
+    <mat-radio-group class="vertical-radio-group">
+      <mat-radio-button value="never">Never</mat-radio-button>
+      <mat-radio-button value="on">On</mat-radio-button>
+      <mat-radio-button value="after">After</mat-radio-button>
+    </mat-radio-group>
+  </section>
+</div>
