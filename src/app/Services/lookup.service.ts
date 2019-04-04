@@ -15,7 +15,7 @@ export class LookupService extends RestService<Lookup> {
     protected httpClient: HttpClient,
     protected errorHandler: ErrorHandlerService
   ) {
-    super(httpClient, errorHandler);
+    super(httpClient);
   }
 
   getId(model: Lookup): number {

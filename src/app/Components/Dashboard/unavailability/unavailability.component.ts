@@ -44,7 +44,7 @@ export class UnAvailabilityComponent implements OnInit {
         endTime: [this.availability.endTime, Validators.required],
         isAllDayOut: [this.availability.isAllDayOut || false],
         isRepeat: [this.availability.isRepeat || false],
-        repeatType: [this.availability.repeatType || ''],
+        repeatType: [this.availability.repeatType || 'week'],
         repeatValue: [this.availability.repeatValue || 0],
         repeatOnWeekDays: [this.availability.repeatOnWeekDays || ''],
         isEndsNever: [this.availability.isEndsNever || false],
@@ -71,6 +71,8 @@ export class UnAvailabilityComponent implements OnInit {
     if (this.doOpen) {
       this.doOpen = false;
       this.dialog.openDialogs.pop();
+      this.form.get('isRepeat').setValue(true);
+
       const dialogRef = this.dialog.open(
         RecurringComponent,
         {
@@ -80,7 +82,7 @@ export class UnAvailabilityComponent implements OnInit {
       );
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          console.log({ result });
+          this.form.patchValue({ ...result.availability });
         }
       });
       this.doOpen = true;
@@ -94,8 +96,8 @@ export class UnAvailabilityComponent implements OnInit {
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
     if (!formGroup.invalid) {
-      // this.dialogRef.close({ action: 'Submit', availability: formGroup.value });
-      // this.submitted = false;
+      this.dialogRef.close({ action: 'Submit', availability: formGroup.value });
+      this.submitted = false;
     }
   }
 
