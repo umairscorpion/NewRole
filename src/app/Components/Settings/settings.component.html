@@ -79,17 +79,13 @@
                                                             <span style="padding-top:5px ">Email Alert</span>
                                                         </span>
                                                     </th>
-
                                                     <td mat-cell *matCellDef="let row ;let i = index;">
                                                         <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="$event ? ChangeNotificationPreference(row, 'Email') : null"
                                                             [checked]="row.Email">
                                                         </mat-checkbox>
                                                         {{row.Email}}
                                                     </td>
-
                                                 </ng-container>
-
-                                                <!-- Symbol Column -->
                                                 <ng-container matColumnDef="text">
                                                     <th mat-header-cell *matHeaderCellDef>
                                                         <span class="HeaderAlignment">

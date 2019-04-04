@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DistrictService } from '../../../../Service/Manage/district.service';
-import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserSession } from '../../../../Services/userSession.service';
@@ -9,8 +9,10 @@ import { LeaveType } from '../../../../Model/leaveType';
 import { LeaveRequest } from '../../../../Model/leaveRequest';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '../../../../../../node_modules/@angular/router';
+import { AllowanceComponent } from './popups/add-allowance.popup.component';
 @Component({
-    templateUrl: 'leaves.component.html'
+    templateUrl: 'leaves.component.html',
+    styleUrls: ['leave.component.css']
 })
 export class LeavesComponent implements OnInit {
     private notifier: NotifierService;
@@ -31,7 +33,7 @@ export class LeavesComponent implements OnInit {
     archivedApprovedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
 
     constructor(private _districtService: DistrictService, private userSession: UserSession, private router: Router,
-        private absenceService: AbsenceService, notifier: NotifierService) { this.notifier = notifier; }
+        private absenceService: AbsenceService, notifier: NotifierService, public dialog: MatDialog) { this.notifier = notifier; }
 
     ngOnInit(): void {
         this.GetLeaveTypes();
@@ -136,8 +138,6 @@ export class LeavesComponent implements OnInit {
 
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
-            isApproved: 0,
-            isDeniend: 1,
             isArchived: 1
         }
 
@@ -193,4 +193,10 @@ export class LeavesComponent implements OnInit {
     editLeaveType(leaveTypeId: number): void {
             this.router.navigate(['/manage/leave/AddLeave'], { queryParams: { Id: leaveTypeId } });
     }
+
+    onOpenAllowancePopup(SelectedRow: any) {
+        this.dialog.open(AllowanceComponent, {
+            panelClass: 'report-details-dialog'
+        });
+      }
 }

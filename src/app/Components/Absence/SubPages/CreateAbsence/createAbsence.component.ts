@@ -10,11 +10,11 @@ import { MatStepper } from '@angular/material/stepper';
 import { IEmployee } from '../../../../Model/Manage/employee';
 import { MatRadioChange, MatExpansionPanel } from '@angular/material';
 import { HttpClient, HttpResponse, HttpEventType } from '@angular/common/http';
-import { Global } from '../../../../Shared/global';
 import { Observable } from 'rxjs/Observable';
 import { NotifierService } from 'angular-notifier';
 import { LeaveType } from '../../../../Model/leaveType';
 import { AbsenceService } from '../../../../Services/absence.service';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
     templateUrl: 'createAbsence.component.html',
@@ -430,7 +430,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.AttachedFileExtention = files[0].name.split('.')[1];
         let formData = new FormData();
         Array.from(files).forEach(file => formData.append('file', file))
-        this.http.post(Global.baseApiUrl + 'Absence/uploadFile', formData, { reportProgress: true, observe: 'events' })
+        this.http.post(environment.apiUrl + 'Absence/uploadFile', formData, { reportProgress: true, observe: 'events' })
             .subscribe(event => {
                 if (event.type === HttpEventType.UploadProgress) {
                     this.CompletedPercentage = Math.round(100 * event.loaded / event.total);

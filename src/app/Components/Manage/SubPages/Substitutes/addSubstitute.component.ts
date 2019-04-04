@@ -16,7 +16,7 @@ import { DomSanitizer, SafeUrl } from '../../../../../../node_modules/@angular/p
     templateUrl: 'addSubstitute.component.html'
 })
 export class AddSubstituteComponent implements OnInit {
-    profilePictureUrl : string
+    profilePictureUrl: string
     userIdForUpdate: any = null;
     profilePicture: any;
     private notifier: NotifierService;
@@ -29,7 +29,7 @@ export class AddSubstituteComponent implements OnInit {
     msg: string;
     substituteForm: FormGroup;
     constructor(private router: Router, private fb: FormBuilder, private _dataContext: DataContext,
-        notifier: NotifierService, private route: ActivatedRoute, private _userSession : UserSession,
+        notifier: NotifierService, private route: ActivatedRoute, private _userSession: UserSession,
         private fileService: FileService, private sanitizer: DomSanitizer) {
         this.notifier = notifier;
     }
@@ -46,7 +46,9 @@ export class AddSubstituteComponent implements OnInit {
             Gender: ['M', Validators.required],
             District: ['', Validators.required],
             Email: ['', [Validators.required, Validators.email]],
-            PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]]
+            PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+            PayRate: [''],
+            HourLimit: ['']
         });
         this.GetUserTypes();
         this.GetDistricts();
@@ -67,7 +69,9 @@ export class AddSubstituteComponent implements OnInit {
                         Email: data[0].email,
                         TeachingLevel: data[0].teachingLevel,
                         Speciality: data[0].speciality ? data[0].speciality : '',
-                        PhoneNumber: data[0].phoneNumber
+                        PhoneNumber: data[0].phoneNumber,
+                        PayRate: data[0].PayRate,
+                        HourLimit: data[0].HourLimit
                     }
                     this.getProfileImage(data[0].profilePicture);
                     this.substituteForm.setValue(SubstituteModel);
@@ -82,7 +86,7 @@ export class AddSubstituteComponent implements OnInit {
     }
 
     getProfileImage(ImageName: string) {
-        let ImageURL : SafeUrl = "";
+        let ImageURL: SafeUrl = "";
 
         let model = {
             AttachedFileName: ImageName,
@@ -160,7 +164,7 @@ export class AddSubstituteComponent implements OnInit {
     onSubmitSubstituteForm(form: any) {
         this.msg = "";
         if (this.substituteForm.valid) {
-            if (this.userIdForUpdate && this.userIdForUpdate !='undefined') {
+            if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
                 let model = {
                     UserId: this.userIdForUpdate,
                     FirstName: form.value.FirstName,
@@ -168,14 +172,16 @@ export class AddSubstituteComponent implements OnInit {
                     UserTypeId: form.value.UserTypeId,
                     RoleId: 4,
                     // IF USER TYPE IS TEACHER
-                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0 ,
+                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
                     Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
                     Gender: form.value.Gender,
                     IsCertified: form.value.IsCertified,
                     DistrictId: form.getRawValue().District,
                     Email: form.value.Email,
                     PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png'
+                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
+                    PayRate: form.value.PayRate,
+                    HourLimit: form.value.HourLimit
                 }
                 this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
                     this.router.navigate(['/manage/substitutes']);
@@ -192,14 +198,16 @@ export class AddSubstituteComponent implements OnInit {
                     UserTypeId: form.value.UserTypeId,
                     RoleId: 4,
                     // IF USER TYPE IS TEACHER
-                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0 ,
+                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
                     Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
                     Gender: form.value.Gender,
                     IsCertified: form.value.IsCertified,
                     DistrictId: form.getRawValue().District,
                     Email: form.value.Email,
                     PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png'
+                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
+                    PayRate: form.value.PayRate,
+                    HourLimit: form.value.HourLimit
                 }
                 this._dataContext.post('user/insertUser', model).subscribe((data: any) => {
                     this.router.navigate(['/manage/substitutes']);

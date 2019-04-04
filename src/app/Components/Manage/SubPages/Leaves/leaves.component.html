@@ -5,12 +5,10 @@
       <mat-tab label="Leave">
         <div class="demo-tab-content">
           <h3>Leave Type</h3>
-          <div>
-              <div class="row col-md-12 col-lg-12" style="text-align: right">
-                <a routerLink="./AddLeave">
-                  <button mat-raised-button color="primary">Add Leave</button>
-                </a>
-              </div>
+          <div class="row col-md-12 col-lg-12" style="text-align: right">
+            <a routerLink="./AddLeave">
+              <button mat-raised-button color="primary">Add Leave</button>
+            </a>
           </div>
           <div class="row col-md-12 col-lg-12">
             <div class="example-container mat-elevation-z8">
@@ -87,18 +85,18 @@
                       </div>
                       <div class="col-md-5">
                         {{leave.employeeName}}
-                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays }} {{ leave.totalDays > 1 ? 'Days' : 'Day'}}
+                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
                       </div>
                     </div>
                     <div class="col-md-3">
-                        {{ leave.startDate | date:'E, M/d/y' }}
-                        <br> {{ leave.endDate | date:'E, M/d/y' }}
+                      {{ leave.startDate | date:'E, M/d/y' }}
+                      <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId)">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="color:#00B945;font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId)">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
                       </button>
                     </div>
@@ -113,22 +111,22 @@
                         <img class="img-circle" src="assets/Images/noimage.png" height="40" width="40" />
                       </div>
                       <div class="col-md-5">
-                          {{leave.employeeName}}
-                          <br> {{leave.leaveTypeName}}-{{ leave.totalDays }} {{ leave.totalDays > 1 ? 'Days' : 'Day'}}
+                        {{leave.employeeName}}
+                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
                       </div>
                     </div>
                     <div class="col-md-3">
-                        {{ leave.startDate | date:'E, M/d/y' }}
-                        <br> {{ leave.endDate | date:'E, M/d/y' }}
+                      {{ leave.startDate | date:'E, M/d/y' }}
+                      <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId)">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="color:#00B945;font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId)">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
                       </button>
-                      <button mat-icon-button>
+                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
                         <i style="color:#05B0E6;font-size: 20px;" class="fa fa-mail-forward"></i>
                       </button>
                     </div>
@@ -142,22 +140,23 @@
                         <img class="img-circle" src="assets/Images/noimage.png" height="40" width="40" />
                       </div>
                       <div class="col-md-5">
-                          {{leave.employeeName}}
-                          <br> {{leave.leaveTypeName}}-{{ leave.totalDays }} {{ leave.totalDays > 1 ? 'Days' : 'Day'}}
+                        {{leave.employeeName}}
+                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
                       </div>
                     </div>
                     <div class="col-md-3">
-                        {{ leave.startDate | date:'E, M/d/y' }}
-                        <br> {{ leave.endDate | date:'E, M/d/y' }}
+                      {{ leave.startDate | date:'E, M/d/y' }}
+                      <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="AcceptAbsence(Absence)">
+                      <button mat-icon-button (click)="AcceptAbsence(Absence)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="color:#00B945;font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button>
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
                       </button>
-                      <button mat-icon-button>
+                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below"
+                        #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
                         <i style="color:#05B0E6;font-size: 20px;" class="fa fa-mail-forward"></i>
                       </button>
                     </div>
@@ -177,7 +176,7 @@
                         <img class="img-circle" src="assets/Images/noimage.png" height="40" width="40" />
                       </div>
                       <div class="col-md-5">
-                        {{leave.employeeName}}
+                        {{ leave.employeeName }}
                         <br> {{leave.createdDate | date}}
                       </div>
                     </div>
@@ -186,16 +185,13 @@
                       <br> {{leave.createdDate | date}}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId)">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="color:#00B945;font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId)">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId)">
-                        <i style="color:#05B0E6;font-size: 20px;" class="fa fa-mail-forward"></i>
-                      </button>
-                    </div>
+                    </div>,
                     <mat-divider></mat-divider>
                   </mat-list-item>
                   <mat-divider></mat-divider>
@@ -222,14 +218,11 @@
                       <br> {{leave.createdDate | date}}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId)">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="color:#00B945;font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId)">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
-                      </button>
-                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId)">
-                        <i style="color:#05B0E6;font-size: 20px;" class="fa fa-mail-forward"></i>
                       </button>
                     </div>
                     <mat-divider></mat-divider>
@@ -240,6 +233,32 @@
             </div>
           </mat-tab>
         </mat-tab-group>
+      </mat-tab>
+      <mat-tab label="Allowances">
+        <div class="row col-lg-12"> 
+          <div class="ol-md-12 vertical-center" >
+            <div class="col-lg-10 vertical-center">
+               <span> Allowances </span>
+            </div>
+            <div class="col-lg-2 vertical-center" style="text-align: right">
+                <a>
+                  <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#04C0BF;color: white">Create Allowance</button>
+                </a>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-12">
+              <mat-divider></mat-divider>
+            <div style="height: 76px;"  class="row vertical-center">
+                  <div class="col-md-9">
+                      Vacation
+                      <br> Yearly Allowance 14
+                  </div>
+                  <div class="col-md-3">
+                      <mat-slide-toggle style="padding-top:10px "  color="primary"></mat-slide-toggle>
+                  </div>
+            </div>
+          </div>
+        </div>
       </mat-tab>
     </mat-tab-group>
   </mat-card-content>

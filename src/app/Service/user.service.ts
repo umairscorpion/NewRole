@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import { Global } from '../Shared/global';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 

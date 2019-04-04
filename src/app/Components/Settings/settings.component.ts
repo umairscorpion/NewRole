@@ -86,6 +86,7 @@ export class SettingComponent implements OnInit {
                 OrganizationId: category.value,
                 IsEnabled: category.selected
             }
+            
             this._dataContext.Patch('user/updateUserCategories', model).subscribe((data: any) => {
             },
                 (err: HttpErrorResponse) => {

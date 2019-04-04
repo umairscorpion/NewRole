@@ -58,20 +58,30 @@
                             </mat-form-field>
                         </div>
                         <div class="row">
-                            <div class="col-md-2 col-lg-2">
-                                <label class="col-md-6 col-lg-6" for="mat-radio-group" style="margin-top:10px">Certified</label>
-                                <mat-radio-group class="col-md-6 col-lg-6" style="margin-top:10px" formControlName="IsCertified" #radioGroup="matRadioGroup">
-                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="0">No</mat-radio-button>
-                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="1">Yes</mat-radio-button>
+                            <div class="col-md-3 col-lg-3">
+                                <label class="col-md-5 col-lg-5" for="mat-radio-group" style="margin-top:10px">Certified</label>
+                                <mat-radio-group class="col-md-5 col-lg-5" style="margin-top:10px" formControlName="IsCertified" #radioGroup="matRadioGroup">
+                                    <mat-radio-button color="primary" class="col-md-5 col-lg-5" value="0">No</mat-radio-button>
+                                    <mat-radio-button color="primary" class="col-md-5 col-lg-5" value="1">Yes</mat-radio-button>
                                 </mat-radio-group>
                             </div>
-                            <div class="col-md-2 col-lg-2">
-                                <label class="col-md-6 col-lg-6" style="margin-top:10px">Gender</label>
-                                <mat-radio-group class="col-md-6 col-lg-6" style="margin-top:10px" formControlName="Gender">
-                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="M">Male</mat-radio-button>
-                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="F">Female</mat-radio-button>
+                            <div class="col-md-3 col-lg-3">
+                                <label class="col-md-6 col-lg-5" style="margin-top:10px">Gender</label>
+                                <mat-radio-group class="col-md-5 col-lg-5" style="margin-top:10px" formControlName="Gender">
+                                    <mat-radio-button color="primary" class="col-md-5 col-lg-5" value="M">Male</mat-radio-button>
+                                    <mat-radio-button color="primary" class="col-md-5 col-lg-5" value="F">Female</mat-radio-button>
                                 </mat-radio-group>
                             </div>
+                            <mat-form-field class="col-md-2 col-lg-2">
+                                <input matInput placeholder="Payrate" type="number" formControlName="PayRate">
+                                <span matPrefix>$&nbsp;</span>
+                                <span matSuffix>/ hour</span>
+                            </mat-form-field>
+                            <mat-form-field class="col-md-4 col-lg-4">
+                                <mat-select placeholder="Weekily Time Limit" formControlName="HourLimit">
+                                    <mat-option value="1">39 hour per week</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                     </div>
                 </div>

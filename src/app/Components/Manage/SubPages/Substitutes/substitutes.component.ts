@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
 import { IDistrict } from '../../../../Model/Manage/district';
 import { DistrictService } from '../../../../Service/Manage/district.service';
 import { EmployeeService } from '../../../../Service/Manage/employees.service';
@@ -8,38 +8,54 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { HttpErrorResponse } from '../../../../../../node_modules/@angular/common/http';
+import { FormGroup, Validators, FormBuilder } from '../../../../../../node_modules/@angular/forms';
+import { AllowanceComponent } from '../Leaves/popups/add-allowance.popup.component';
 
 @Component({
-    templateUrl: 'substitutes.component.html'
+  templateUrl: 'substitutes.component.html',
+  styleUrls: ['substitutes.component.css']
 })
 export class SubstitutesComponent implements OnInit {
   displayedColumns = ['FirstName', 'LastName', 'Email', 'PhoneNumber', 'action'];
-  SubstituteDetail : any;
+  SubstituteDetail: any;
   private notifier: NotifierService;
   District: IDistrict;
+  positions: any;
+  weeklyLimitSettings: FormGroup;
   substituteDataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  Employees : any
+  pos
+  Employees: any
   msg: string;
   constructor(private router: Router, private _districtService: DistrictService, public dialog: MatDialog,
-     private _employeeService: EmployeeService, notifier: NotifierService, private _dataContext : DataContext,
-     public sanitizer:DomSanitizer, private _userSession: UserSession) {
-      this.notifier = notifier;
+    private _employeeService: EmployeeService, notifier: NotifierService, private _dataContext: DataContext,
+    public sanitizer: DomSanitizer, private _userSession: UserSession, private fb: FormBuilder) {
+    this.notifier = notifier;
   }
   ngOnInit(): void {
+    this.intializeForms();
     this.GetSustitutes();
+    this.GetPositions();
   }
   ngAfterViewInit() {
     this.substituteDataSource.sort = this.sort;
     this.substituteDataSource.paginator = this.paginator;
   }
 
+  intializeForms() {
+    this.weeklyLimitSettings = this.fb.group({
+      WeeklyHourLimit: [{ value: '', disabled: true }],
+      IsWeeklyLimitApplicable: [{ value: false, disabled: true }]
+    });
+  }
+
   GetSustitutes(): void {
     let RoleId = 4;
     let OrgId = -1;
     let DistrictId = this._userSession.getUserDistrictId();
-    this._employeeService.get('user/getUsers',RoleId, OrgId, DistrictId).subscribe((data: any) => {
+    this._employeeService.get('user/getUsers', RoleId, OrgId, DistrictId).subscribe((data: any) => {
       this.substituteDataSource.data = data;
     },
       error => this.msg = <any>error);
@@ -55,28 +71,71 @@ export class SubstitutesComponent implements OnInit {
     var confirmResult = confirm('Are you sure you want to delete Substitute?');
     if (confirmResult) {
       this._districtService.delete('user/', SelectedRow.userId).subscribe((data: any) => {
-        this.notifier.notify( 'success', 'Deleted Successfully' );
+        this.notifier.notify('success', 'Deleted Successfully');
         this.GetSustitutes();
       },
         error => this.msg = <any>error);
     }
   }
-  
+
   EditSubstitute(SelectedRow: any) {
     this.router.navigate(['/manage/substitutes/addSubstitute'], { queryParams: { Id: SelectedRow.userId } });
   }
 
   ViewSubstituteDetail(SelectedRow: any) {
-
     this._dataContext.getById('user/getUserById', SelectedRow.userId).subscribe((data: any) => {
       this.dialog.open(PopupDialogForSubstituteDetail, {
         data,
         height: '500px',
         width: '750px',
-       
-    });
+      });
     },
-        error => <any>error);
+      error => <any>error);
+  }
+  
+  GetPositions(): void {
+    this._dataContext.get('user/getUserTypes').subscribe((data: any) => {
+      this.positions = data;
+    },
+      error => <any>error);
+  }
+
+  onUpdateweeklyLimitSetting(settings: FormGroup) {
+    if (settings.valid) {
+      let model = {
+        DistrictId: this._userSession.getUserDistrictId(),
+        WeeklyHourLimit: settings.value.WeeklyHourLimit,
+        IsWeeklyLimitApplicable: settings.value.IsWeeklyLimitApplicable,
+      }
+      this._districtService.post('District/updateSettings', model).subscribe((data: any) => {
+        this.notifier.notify('success', 'Updated Successfully');
+      },
+        (err: HttpErrorResponse) => {
+          this.notifier.notify('error', err.error.error_description);
+        });
+    }
+  }
+
+  onTabChanged(tab: any) {
+    if (tab.index === 1) {
+      this._districtService.getById('district/getDistrictById', this._userSession.getUserDistrictId()).subscribe((data: any) => {
+        let hourlySettings = {
+          WeeklyHourLimit: data[0].weeklyHourLimit,
+          IsWeeklyLimitApplicable: data[0].isWeeklyLimitApplicable
+        }
+        this.weeklyLimitSettings.setValue(hourlySettings);
+      },
+        error => this.msg = <any>error);
+    }
+  }
+
+  onEditHourLimit() {
+    this.weeklyLimitSettings.controls['WeeklyHourLimit'].enable();
+    this.weeklyLimitSettings.controls['IsWeeklyLimitApplicable'].enable();
+  }
+
+  getSettings() {
+
   }
 }
 
@@ -85,7 +144,7 @@ export class SubstitutesComponent implements OnInit {
   styleUrls: ['substitute.component.css']
 })
 export class PopupDialogForSubstituteDetail {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public sanitizer:DomSanitizer) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public sanitizer: DomSanitizer) {
     console.log(data);
   }
 }

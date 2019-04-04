@@ -14,7 +14,7 @@ export abstract class RestService<T> {
         protected httpClient: HttpClient) { }
 
 
-    get(url: string): Observable<any> {
+    get(url: any): Observable<any> {
         return this.httpClient.get(this.baseUrl + url);
     }
 

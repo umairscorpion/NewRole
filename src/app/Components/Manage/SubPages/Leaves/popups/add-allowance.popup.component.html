@@ -1,0 +1,78 @@
+<div>
+    <mat-dialog-actions style="margin-bottom:0px!important">
+        <div class="col-md-11 pr-0">
+            Allowance
+        </div>
+        <div class="col-md-1">
+            <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onCloseDialog()" mat-dialog-close>clear</mat-icon>
+        </div>
+    </mat-dialog-actions>
+    <mat-divider></mat-divider>
+    <mat-dialog-content class="mat-typography" style="padding-top: 10px">
+        <div class="row">
+            <div class="col-md-12 vertical-center">
+                <mat-form-field class="col-md-7">
+                    <input matInput type="number" placeholder="Title">
+                </mat-form-field>
+                <div class="col-md-2">
+                    <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="save"
+                        matTooltipPosition="below" (click)="onApproveClick(leave.leaveRequestId)">check</i>
+                    <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;" #tooltip="matTooltip" matTooltip="delete"
+                        matTooltipPosition="below" (click)="onDenyClick(leave.leaveRequestId)">close</i>
+                </div>
+                <div class="col-md-3" style="text-align: right;">
+                    <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#FFCC9A;color: #4C2500">Deactivate</button>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="row">
+            <div class="col-md-12 vertical-center">
+                <div class="col-md-7">
+                    Settings
+                </div>
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-4" style="text-align: right;">
+                    <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#79C499;color:white">Save</button>
+                    <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#BFD9EA;color: #0E4772; margin-left: 10px;">cancel</button>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="row">
+            <div class="col-md-12 vertical-center">
+                <mat-form-field class="col-md-12">
+                    <input matInput type="number" placeholder="Yearly Allowance">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <mat-checkbox class="col-md-12" color="primary">
+                    Employees are allowed to have a negative allowance
+                </mat-checkbox>
+            </div>
+            <div class="col-md-12">
+                <mat-checkbox class="col-md-12" color="primary">
+                    The residual days will be taken over into the new year (e.g residual vacation leave)
+                </mat-checkbox>
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-12 vertical-center">
+                    <div class="col-md-7">
+                        Expiration Rules
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-3" style="text-align: right;">
+                        <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#E6E4E7;color: #89878A;">New Rule</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+</div>

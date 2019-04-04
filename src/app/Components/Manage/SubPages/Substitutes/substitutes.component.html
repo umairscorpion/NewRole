@@ -1,88 +1,129 @@
-<style>
-  /* Structure */
+<mat-card>
+  <mat-card-content>
+    <h2>Substitutes</h2>
+    <mat-tab-group (selectedTabChange)="onTabChanged($event)">
+      <mat-tab label="Substitutes">
+        <div class="row col-md-12 col-lg-12" style="text-align: right">
+          <a routerLink="/manage/substitutes/addSubstitute">
+            <button mat-raised-button color="primary">Add</button>
+          </a>
+        </div>
+        <div class="row col-md-12 col-lg-12">
+          <div class="mat-elevation-z8">
+            <div class="example-header">
+              <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+              </mat-form-field>
+            </div>
+            <mat-table #table [dataSource]="substituteDataSource" matSort>
+              <!-- Position Column -->
+              <ng-container matColumnDef="FirstName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+                <mat-cell *matCellDef="let Substitute"> {{Substitute.firstName}} </mat-cell>
+              </ng-container>
 
-  .example-container {
-    display: flex;
-    flex-direction: column;
-    min-width: 300px;
-  }
+              <ng-container matColumnDef="LastName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+                <mat-cell *matCellDef="let Substitute"> {{Substitute.lastName}} </mat-cell>
+              </ng-container>
 
-  .example-header {
-    min-height: 64px;
-    padding: 8px 24px 0;
-  }
+              <ng-container matColumnDef="Email">
+                <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                <mat-cell *matCellDef="let Substitute"> {{Substitute.email}} </mat-cell>
+              </ng-container>
 
-  .mat-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
-
-  .mat-table {
-    overflow: auto;
-    max-height: 500px;
-  }
-</style>
-<h3>Substitutes</h3>
-<div>
-  <div class="row">
-    <div class="col-md-12 col-lg-12" style="text-align: right">
-      <a routerLink="/manage/substitutes/addSubstitute">
-        <button mat-raised-button color="primary">Add</button>
-      </a>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12 col-lg-12">
-    <div class="example-container mat-elevation-z8">
-      <div class="example-header">
-        <mat-form-field>
-          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-        </mat-form-field>
-      </div>
-      <mat-table #table [dataSource]="substituteDataSource" matSort>
-        <!-- Position Column -->
-        <ng-container matColumnDef="FirstName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-          <mat-cell *matCellDef="let Substitute"> {{Substitute.firstName}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="LastName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-          <mat-cell *matCellDef="let Substitute"> {{Substitute.lastName}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="Email">
-          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-          <mat-cell *matCellDef="let Substitute"> {{Substitute.email}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="PhoneNumber">
-          <mat-header-cell *matHeaderCellDef> Phone No </mat-header-cell>
-          <mat-cell *matCellDef="let Substitute"> {{Substitute.phoneNumber}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="action">
-          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-          <mat-cell *matCellDef="let row">
-            <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Substitute" matTooltipPosition="below">
-              <i class="material-icons" (click)="DeleteSubstitute(row)">delete_sweep</i>
-            </a>
-            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute" matTooltipPosition="below">
-              <i class="material-icons" (click)="EditSubstitute(row)">edit</i>
-            </a>
-            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
-              <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
-            </a>
-          </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
-      <mat-paginator #paginator
-      [pageSize]="10"
-      [pageSizeOptions]="[1, 10, 20]"
-      [showFirstLastButtons]="true">
-      </mat-paginator>
-    </div>
-  </div>
-</div>
+              <ng-container matColumnDef="PhoneNumber">
+                <mat-header-cell *matHeaderCellDef> Phone No </mat-header-cell>
+                <mat-cell *matCellDef="let Substitute"> {{Substitute.phoneNumber}} </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Substitute" matTooltipPosition="below">
+                    <i class="material-icons" (click)="DeleteSubstitute(row)">delete_sweep</i>
+                  </a>
+                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute" matTooltipPosition="below">
+                    <i class="material-icons" (click)="EditSubstitute(row)">edit</i>
+                  </a>
+                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
+                    <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
+                  </a>
+                </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+            </mat-paginator>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Weekly Time Limits" >
+        <div class="col-md-12 col-lg-12">
+          <div class="row vertical-center">
+            <div class="col-md-5 col-lg-5">
+              Weekly Time Limits
+            </div>
+            <div class="col-md-7 col-lg-7">
+              Recurring Weekly Limits
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <form (ngSubmit)="onUpdateweeklyLimitSetting(weeklyLimitSettings)" [formGroup]="weeklyLimitSettings">
+            <div class="row vertical-center" style="min-height: 10vh !important;">
+              <div class="col-md-5 col-lg-5">
+                Current Weekly Limit: {{weeklyLimitSettings.value.WeeklyHourLimit}} hours per week
+              </div>
+              <div class="col-md-2 col-lg-2">
+                <mat-form-field>
+                  <input matInput formControlName="WeeklyHourLimit" type="number" placeholder="Hours per week">
+                </mat-form-field>
+                <br>
+                <mat-checkbox formControlName="IsWeeklyLimitApplicable" >No weekly limit</mat-checkbox>
+              </div>
+              <div class="col-md-5 col-lg-5" style="text-align: right;">
+                <button mat-raised-button type="submit" style="background-color: #04C0BF">Save</button>
+                <button mat-raised-button type="button" (click)="onEditHourLimit()" style="margin-left:3px;background-color: #C3DEF1">Edit</button>
+                <button mat-raised-button type="button" style="margin-left:3px;background-color: #FFCB97">Remove</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+      <mat-tab label="Payrates">
+        <div class="col-md-12 col-lg-12">
+          <div class="row vertical-center">
+            <div class="col-md-5 col-lg-5">
+              Role
+            </div>
+            <div class="col-md-7 col-lg-7">
+              Payments
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="row vertical-center">
+            <div class="col-md-5 col-lg-5">
+              <div class="row col-md-6 col-lg-6">
+                <mat-form-field>
+                  <mat-select placeholder="Position">
+                    <mat-option>--</mat-option>
+                    <mat-option *ngFor="let position of positions" [value]="position.id">
+                      {{position.title}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-7 col-lg-7">
+              <mat-form-field>
+                <input matInput type="number" placeholder="Hours per week">
+              </mat-form-field>
+              <br>
+              <mat-checkbox>No weekly limit</mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>

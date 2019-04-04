@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import { Global } from '../../Shared/global';
 import { IDistrict } from '../../Model/Manage/district';
 import { ICountry } from '../../Model/Lookups/country';
 import { IStates } from '../../Model/Lookups/states';
@@ -39,6 +38,10 @@ export class DistrictService {
     private handleError(error: Response) {
         console.error(error);
         return Observable.throw(error.json().error || 'Server error');
+    }
+
+    getById(url: string, Id: number): Observable<any> {
+        return this._http.get(environment.apiUrl + url + "/" + Id);
     }
 
     //Lookups

@@ -4,7 +4,6 @@ import { UserService } from '../../../Service/user.service';
 import { DataContext } from '../../../Services/dataContext.service';
 import { UserSession } from '../../../Services/userSession.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Global } from '../../../Shared/global';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
@@ -12,6 +11,7 @@ import {
     AuthService,
     GoogleLoginProvider
 } from 'angular-6-social-login';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     templateUrl: 'login.component.html',
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
     onSubmit(formData: any) {
         this.msg = "";
         if (this.loginFrm.valid) {
-            this._userService.userAuthentication(Global.authenticationApiUrl, formData.value).subscribe((data: any) => {
+            this._userService.userAuthentication(environment.apiUrl, formData.value).subscribe((data: any) => {
                 localStorage.setItem('userToken', data.token);
                 this.GetUserClaims();
                 // let promise = Promise.resolve(this.GetUserClaims());
