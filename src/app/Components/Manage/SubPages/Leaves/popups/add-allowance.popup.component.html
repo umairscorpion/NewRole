@@ -9,57 +9,59 @@
     </mat-dialog-actions>
     <mat-divider></mat-divider>
     <mat-dialog-content class="mat-typography" style="padding-top: 10px">
-        <div class="row">
-            <div class="col-md-12 vertical-center">
-                <mat-form-field class="col-md-7">
-                    <input matInput type="number" placeholder="Title">
-                </mat-form-field>
-                <div class="col-md-2">
-                    <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="save"
-                        matTooltipPosition="below" (click)="onApproveClick(leave.leaveRequestId)">check</i>
-                    <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;" #tooltip="matTooltip" matTooltip="delete"
-                        matTooltipPosition="below" (click)="onDenyClick(leave.leaveRequestId)">close</i>
-                </div>
-                <div class="col-md-3" style="text-align: right;">
-                    <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#FFCC9A;color: #4C2500">Deactivate</button>
+        <form>
+            <div class="row">
+                <div class="col-md-12 vertical-center">
+                    <mat-form-field class="col-md-7">
+                        <input matInput type="number" placeholder="Title">
+                    </mat-form-field>
+                    <div class="col-md-2">
+                        <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="save"
+                            matTooltipPosition="below" (click)="onApproveClick(leave.leaveRequestId)">check</i>
+                        <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;" #tooltip="matTooltip" matTooltip="delete"
+                            matTooltipPosition="below" (click)="onDenyClick(leave.leaveRequestId)">close</i>
+                    </div>
+                    <div class="col-md-3" style="text-align: right;">
+                        <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#FFCC9A;color: #4C2500">Deactivate</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <mat-divider></mat-divider>
-        <div class="row">
-            <div class="col-md-12 vertical-center">
-                <div class="col-md-7">
-                    Settings
-                </div>
-                <div class="col-md-1">
+            <mat-divider></mat-divider>
+            <div class="row" style="background-color: #F3F3F3">
+                <div class="col-md-12 vertical-center">
+                    <div class="col-md-7">
+                        Settings
+                    </div>
+                    <div class="col-md-1">
 
+                    </div>
+                    <div class="col-md-4" style="text-align: right;">
+                        <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#79C499;color:white">Save</button>
+                        <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#BFD9EA;color: #0E4772; margin-left: 10px;">cancel</button>
+                    </div>
                 </div>
-                <div class="col-md-4" style="text-align: right;">
-                    <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#79C499;color:white">Save</button>
-                    <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#BFD9EA;color: #0E4772; margin-left: 10px;">cancel</button>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="row">
+                <div class="col-md-12 vertical-center">
+                    <mat-form-field class="col-md-12">
+                        <input matInput type="number" placeholder="Yearly Allowance">
+                    </mat-form-field>
                 </div>
             </div>
-        </div>
-        <mat-divider></mat-divider>
-        <div class="row">
-            <div class="col-md-12 vertical-center">
-                <mat-form-field class="col-md-12">
-                    <input matInput type="number" placeholder="Yearly Allowance">
-                </mat-form-field>
+            <div class="row">
+                <div class="col-md-12">
+                    <mat-checkbox class="col-md-12" color="primary">
+                        Employees are allowed to have a negative allowance
+                    </mat-checkbox>
+                </div>
+                <div class="col-md-12">
+                    <mat-checkbox class="col-md-12" color="primary">
+                        The residual days will be taken over into the new year (e.g residual vacation leave)
+                    </mat-checkbox>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <mat-checkbox class="col-md-12" color="primary">
-                    Employees are allowed to have a negative allowance
-                </mat-checkbox>
-            </div>
-            <div class="col-md-12">
-                <mat-checkbox class="col-md-12" color="primary">
-                    The residual days will be taken over into the new year (e.g residual vacation leave)
-                </mat-checkbox>
-            </div>
-        </div>
+        </form>
         <div>
             <div class="row">
                 <div class="col-md-12 vertical-center">
@@ -69,9 +71,57 @@
                     <div class="col-md-2">
                     </div>
                     <div class="col-md-3" style="text-align: right;">
-                        <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#E6E4E7;color: #89878A;">New Rule</button>
+
                     </div>
                 </div>
+            </div>
+            <div class="row col-md-10 col-md-offset-1 mat-elevation-z8" style="margin-bottom: 15px;">
+                <table cellpadding="3" cellspacing="3" width="100%">
+                    <tr>
+                        <th>
+                            Valid from
+                        </th>
+                        <th>
+                            Residual leave expires on
+                        </th>
+                        <th>
+                            Does not expire
+                        </th>
+                        <th>
+                            Expire at end of year
+                        </th>
+                    </tr>
+                    <mat-divider></mat-divider>
+                    <tr>
+                        <td>
+                            <mat-form-field style="width: 100px;">
+                                <input matInput [matDatepicker]="startDatePicker" placeholder="valid from">
+                                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #startDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field style="width: 100px;">
+                                <input matInput [matDatepicker]="endDatePicker" placeholder="expires on">
+                                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #endDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-checkbox color="primary">
+                            </mat-checkbox>
+                        </td>
+                        <td>
+                            <mat-checkbox color="primary">
+                            </mat-checkbox>
+                        </td>
+                        <td style="display: inline;">
+                            <i class="material-icons" (click)="EditSubstitute(row)">edit</i>
+                            <i class="material-icons" (click)="ViewSubstituteDetail(row)">delete_sweep</i>
+                        </td>
+                    </tr>
+
+                </table>
             </div>
         </div>
     </mat-dialog-content>
