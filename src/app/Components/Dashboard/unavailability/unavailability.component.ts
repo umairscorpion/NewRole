@@ -13,8 +13,6 @@ import { RecurringComponent } from './recurring/recurring.component';
   templateUrl: 'unavailability.component.html'
 })
 export class UnAvailabilityComponent implements OnInit {
-  times: any;
-  endTimes: any;
   availability: any;
   submitted = false;
   form: FormGroup;
@@ -101,10 +99,6 @@ export class UnAvailabilityComponent implements OnInit {
       this.dialogRef.close({ action: 'Submit', availability: formGroup.value });
       this.submitted = false;
     }
-  }
-
-  timeChanged(time:any) {
-
   }
 
   checkDates(group: FormGroup) {
