@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-md-8">
+    <h4>Custom Recurrence</h4>
+  </div>
+  <div class="col-md-4 text-align-right">
+    <mat-icon class="pull-right cursor-pointer" title="Close" (click)="onClose()"> &nbsp;&nbsp;clear</mat-icon>
+  </div>
+</div>
+<hr>
+<form [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate>
+  <div md-dialog-actions id="recurrence">
+    <div class="row">
+      <label class="col-md-3 pr-0 mt-15 mr-0">Repeat every</label>
+      <mat-form-field class="col-md-2 pl-0">
+        <input matInput type="number" class="text-align-right" formControlName="repeatValue" min="1" max="99">
+      </mat-form-field>
+      <mat-form-field class="col-md-3">
+        <mat-select formControlName="repeatType">
+          <mat-option [value]="'day'">day</mat-option>
+          <mat-option [value]="'week'">week</mat-option>
+          <mat-option [value]="'month'">month</mat-option>
+          <mat-option [value]="'year'">year</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row mt-15">
+      <label class="col-md-4">Repeat on</label>
+      <mat-button-toggle-group multiple="true" class="col-md-8">
+        <mat-button-toggle color="default" class="mr-8" value="Sun">S</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" value="Mon">M</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" value="Tue">T</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" value="Wed">W</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" value="Thu">T</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" value="Fri">F</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" value="Sat">S</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <section class="mt-25">
+      <label>Ends</label>
+      <mat-radio-group class="vertical-radio-group m-0" [(ngModel)]="endsOn" [ngModelOptions]="{standalone: true}">
+        <mat-radio-button value="never">Never</mat-radio-button>
+        <mat-radio-button value="on">On&nbsp;
+          <mat-form-field class="w-50">
+            <input matInput [matDatepicker]="endsOnDatePicker" formControlName="endsOnUntilDate" (disabled)="endsOn != 'on'" />
+            <mat-datepicker-toggle matSuffix [for]="endsOnDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endsOnDatePicker></mat-datepicker>
+          </mat-form-field>
+        </mat-radio-button>
+        <mat-radio-button value="after">After
+          &nbsp;
+          <mat-form-field class="w-20">
+            <input matInput type="number" class="text-align-right" formControlName="endsOnAfterNumberOfOccurrance" min="10" max="99" (disabled)="endsOn != 'after'"> occurrences
+          </mat-form-field>
+        </mat-radio-button>
+      </mat-radio-group>
+    </section>
+
+    <div class="row mt-5">
+      <div class="col-md-5 pull-right">
+        <button class="btn btn-success" type="submit">Done</button>&nbsp;
+        <button class="btn btn-primary" type="button" (click)="onClose()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</form>

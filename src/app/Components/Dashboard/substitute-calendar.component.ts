@@ -58,6 +58,11 @@ export class SubstituteCalendarComponent implements OnInit {
           eventRender: (event, element) => {
           },
           select: (start, end, jsEvent, view, resource) => {
+            if (end.isBefore(moment().add(1, 'hour').format())) {
+              $('#calendar').fullCalendar('unselect');
+              alert('You can not set unavailability in past dates !');
+              return false;
+            }
             const availability = new UserAvailability();
             availability.startDate = moment(start).format('YYYY-MM-DD');
             availability.startTime = moment(start).format('hh:mm A');
@@ -88,7 +93,7 @@ export class SubstituteCalendarComponent implements OnInit {
               this.doOpen = false;
               this.dialogRef.openDialogs.pop();
               this.availabilityService
-                .get(Number(event.id))
+                .get(event.id.toString())
                 .subscribe((availability: any) => {
                   const dialogRef = this.dialogRef.open(
                     UnAvailabilityComponent,

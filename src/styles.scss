@@ -57,12 +57,13 @@ $sides: (top, bottom, left, right);
     margin-left: -#{$i}px !important;
     margin-right: -#{$i}px !important;
   }
-}
-
-@for $space from 0 to 100 {
-  .w-#{$space} {
-    width: #{$space}% !important;
+  .w-#{$i} {
+    width: #{$i}% !important;
   }
+}
+.form-error-content{
+  color: red !important;
+  font-size: 11px;
 }
 
 .cursor-pointer {
@@ -101,9 +102,19 @@ $sides: (top, bottom, left, right);
     font-size: 45px;
   }
 }
-
+.text-align-right {
+  text-align: right;
+}
 .availability-edit-dialog {
-  width: 40vw;
+  width: 45vw;
+  height: auto;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+}
+.availability-recurrence-dialog {
+  width: 25vw;
   height: auto;
   .mat-dialog-container {
     overflow-x: hidden !important;
@@ -122,6 +133,7 @@ $sides: (top, bottom, left, right);
   background-color: #5e9eca;
 }
 
+<<<<<<< HEAD
 .allowance-popup-dialog {
   width: 38vw;
   height: auto;
@@ -131,3 +143,60 @@ $sides: (top, bottom, left, right);
     padding: 0;
   }
  }
+=======
+#Unavailable {
+  .mat-form-field {
+    width: 100% !important;
+ }
+ .dt-picker
+ {
+   background: #f0f1f4;
+   border-radius: 5px;
+   border:solid 1px #f0f1f4;
+ }
+}
+
+.vertical-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+#recurrence {
+  label {
+    font-weight: 100;
+    margin-right: 25px;
+  }
+.mat-button-toggle {
+  border: 1px solid #bbbbbb;
+  border-radius: 28px;
+  margin-left: 3px;
+  margin-right:3px;
+  width: 30px;
+  height: 30px;
+  font-family: 'Nunito Semibold', sans-serif;
+  font-size: 14px;
+  font-style: bold;
+}
+.mat-button-toggle-checked{
+  background-color: #5f9ec9;
+  color: #ffffff;
+}
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 31px !important;
+  padding: 0 7px !important;
+  border-radius: 50px !important;
+}
+.mat-button-toggle-group-appearance-standard, .mat-button-toggle-standalone.mat-button-toggle-appearance-standard {
+  border:none !important;
+}
+.mat-button-toggle-disabled{
+  border: 1px solid #c5c0c7;
+  background-color: #e1dde5;
+}
+
+div.center-text{
+ margin-left: -8px;
+ margin-top: -3px;
+}
+}
+>>>>>>> 77488ad15beaa482e1f1d9b9e832e018df2ff1d4
