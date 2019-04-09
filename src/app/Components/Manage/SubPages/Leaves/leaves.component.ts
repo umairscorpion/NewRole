@@ -10,6 +10,7 @@ import { LeaveRequest } from '../../../../Model/leaveRequest';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '../../../../../../node_modules/@angular/router';
 import { AllowanceComponent } from './popups/add-allowance.popup.component';
+import { Allowance } from '../../../../Model/Manage/allowance.detail';
 @Component({
     templateUrl: 'leaves.component.html',
     styleUrls: ['leave.component.css']
@@ -18,6 +19,7 @@ export class LeavesComponent implements OnInit {
     private notifier: NotifierService;
     msg: string;
     tabClicked: number;
+    allowances: Allowance[];
     displayedColumnsForLeaveTypes = ['LeaveTypeName', 'Allowance', 'Approval', 'Visible', 'CreatedDate', 'action'];
     displayedColumnsForLeaveRequests = ['select', 'CreatedDate', 'EmployeeName', 'Description', 'EndDate', 'EndTime', 'LeaveTypeName', 'Status'];
     selection = new SelectionModel<any>(true, []);
@@ -39,6 +41,7 @@ export class LeavesComponent implements OnInit {
         this.GetLeaveTypes();
         this.tabClicked = 0;
         this.GetLeaveRequests();
+        this.getAllowances();
     }
 
     GetLeaveTypes(): void {
@@ -191,12 +194,52 @@ export class LeavesComponent implements OnInit {
     }
 
     editLeaveType(leaveTypeId: number): void {
-            this.router.navigate(['/manage/leave/AddLeave'], { queryParams: { Id: leaveTypeId } });
+        this.router.navigate(['/manage/leave/AddLeave'], { queryParams: { Id: leaveTypeId } });
     }
 
-    onOpenAllowancePopup(SelectedRow: any) {
-        this.dialog.open(AllowanceComponent, {
+    getAllowances() {
+        this._districtService.getById('District/getAllowances', this.userSession.getUserDistrictId()).subscribe((allowances: Allowance[]) => {
+            this.allowances = allowances;
+        },
+            (err: HttpErrorResponse) => {
+            });
+    }
+
+    updateAllowance(allowance: Allowance) {
+        allowance.isEnalbled = !allowance.isEnalbled;
+        if(+allowance.id > 0) {
+            this._districtService.Patch('District/allowances/', allowance).subscribe((data: any) => {
+            },
+                error => this.msg = <any>error);
+        }
+    }
+
+    onOpenAllowancePopup() {
+        const dialogRef = this.dialog.open(AllowanceComponent, {
             panelClass: 'report-details-dialog'
+        }); 
+        dialogRef.afterClosed().subscribe(result => {
+            this.getAllowances();
         });
-      }
+    }
+
+    editAllowance(allowance: Allowance) {
+        const dialogRef = this.dialog.open(AllowanceComponent, {
+            data: allowance,
+            panelClass: 'report-details-dialog'
+        }); 
+        dialogRef.afterClosed().subscribe(result => {
+            this.getAllowances();
+        });
+    }
+
+    deleteAllowance(id: number): void {
+        var confirmResult = confirm('Are you sure you want to delete allowance?');
+        if (confirmResult) {
+            this.absenceService.delete('District/deleteAllowance/', id).subscribe((response: any) => {
+                    this.notifier.notify('success', 'Deleted Successfully');
+                    this.getAllowances();
+            });
+        }
+    }
 }

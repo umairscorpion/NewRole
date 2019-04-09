@@ -1,8 +1,10 @@
-export class Allowance {
-    Id: number;
-    Title: string;
-    YearlyAllowance: string;
-    IsDeductAllowance: boolean;
-    IsResidualDays: boolean;
-    CreatedDate: Date | string;
+export interface Allowance {
+    id: number;
+    districtId: number;
+    title: string;
+    yearlyAllowance: string;
+    isDeductAllowance: boolean;
+    isResidualDays: boolean;
+    isEnalbled: boolean;
+    createdDate: Date | string;
 }

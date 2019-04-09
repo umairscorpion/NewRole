@@ -141,7 +141,7 @@ export class SubstitutesComponent implements OnInit {
 
 @Component({
   templateUrl: 'viewSubstitute.html',
-  styleUrls: ['substitute.component.css']
+  styleUrls: ['substitutes.component.css']
 })
 export class PopupDialogForSubstituteDetail {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public sanitizer: DomSanitizer) {

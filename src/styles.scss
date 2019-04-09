@@ -133,7 +133,6 @@ $sides: (top, bottom, left, right);
   background-color: #5e9eca;
 }
 
-<<<<<<< HEAD
 .allowance-popup-dialog {
   width: 38vw;
   height: auto;
@@ -143,7 +142,6 @@ $sides: (top, bottom, left, right);
     padding: 0;
   }
  }
-=======
 #Unavailable {
   .mat-form-field {
     width: 100% !important;
@@ -199,4 +197,41 @@ div.center-text{
  margin-top: -3px;
 }
 }
->>>>>>> 77488ad15beaa482e1f1d9b9e832e018df2ff1d4
+
+//for toggle thumb and bar
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: #04c0be;
+  
+  }
+  .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: #04c0be;
+  }
+  .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #04c0be;
+  }
+  .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: #04c0be91;
+  }
+  .mat-slide-toggle-bar {
+  background-color: #828484;
+  }
+  
+  //radio button
+  .mat-radio-button.mat-primary .mat-radio-inner-circle, .mat-radio-button.mat-primary .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-primary.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-primary:active .mat-radio-persistent-ripple {
+  background-color: #3ab7a9;
+  }
+  .mat-radio-button.mat-primary.mat-radio-checked .mat-radio-outer-circle {
+  border-color:#3ab7a9;
+  }
+
+  .mat-tab-group.mat-primary .mat-ink-bar {
+    background-color: #0ea2b3;
+  }
+    .mat-tab-label:selected{
+    background-color:#f5f5f5;
+  }
+
+  .active {
+    background: rgba(209,196,233,.3) !important;
+    border-left: 4px solid #309e21 !important;
+  }

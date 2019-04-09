@@ -9,25 +9,25 @@
     </mat-dialog-actions>
     <mat-divider></mat-divider>
     <mat-dialog-content class="mat-typography" style="padding-top: 10px">
-        <form>
+        <form [formGroup]="allowance" (ngSubmit)="submitAllowance(allowance)">
             <div class="row">
                 <div class="col-md-12 vertical-center">
                     <mat-form-field class="col-md-7">
-                        <input matInput type="number" placeholder="Title">
+                        <input matInput type="text" formControlName="title" placeholder="Title">
                     </mat-form-field>
                     <div class="col-md-2">
                         <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="save"
-                            matTooltipPosition="below" (click)="onApproveClick(leave.leaveRequestId)">check</i>
+                            matTooltipPosition="below" (click)="submitAllowance(allowance)">check</i>
                         <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;" #tooltip="matTooltip" matTooltip="delete"
-                            matTooltipPosition="below" (click)="onDenyClick(leave.leaveRequestId)">close</i>
+                            matTooltipPosition="below">close</i>
                     </div>
                     <div class="col-md-3" style="text-align: right;">
-                        <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#FFCC9A;color: #4C2500">Deactivate</button>
+                        <button mat-raised-button style="background-color:#FFCC99; color: #4f2800; border:1px solid #f19f4d;">Deactivate</button>
                     </div>
                 </div>
             </div>
             <mat-divider></mat-divider>
-            <div class="row" style="background-color: #F3F3F3">
+            <div class="row" style="background-color: #F4F3F3">
                 <div class="col-md-12 vertical-center">
                     <div class="col-md-7">
                         Settings
@@ -36,8 +36,8 @@
 
                     </div>
                     <div class="col-md-4" style="text-align: right;">
-                        <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#79C499;color:white">Save</button>
-                        <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#BFD9EA;color: #0E4772; margin-left: 10px;">cancel</button>
+                        <button mat-raised-button type="submit" style="background-color:#75c598; color:white">Save</button>
+                        <button mat-raised-button style="background-color:#bfd8ea; color: #0c4872; border:1px solid #9ec3dc; margin-left: 10px;">cancel</button>
                     </div>
                 </div>
             </div>
@@ -45,24 +45,24 @@
             <div class="row">
                 <div class="col-md-12 vertical-center">
                     <mat-form-field class="col-md-12">
-                        <input matInput type="number" placeholder="Yearly Allowance">
+                        <input matInput type="number" formControlName="yearlyAllowance" placeholder="Yearly Allowance">
                     </mat-form-field>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <mat-checkbox class="col-md-12" color="primary">
+                    <mat-checkbox class="col-md-12" formControlName="isDeductAllowance" color="primary">
                         Employees are allowed to have a negative allowance
                     </mat-checkbox>
                 </div>
                 <div class="col-md-12">
-                    <mat-checkbox class="col-md-12" color="primary">
+                    <mat-checkbox class="col-md-12" formControlName="isResidualDays" color="primary">
                         The residual days will be taken over into the new year (e.g residual vacation leave)
                     </mat-checkbox>
                 </div>
             </div>
         </form>
-        <div>
+        <div [hidden]="!allowance.value.isResidualDays">
             <div class="row">
                 <div class="col-md-12 vertical-center">
                     <div class="col-md-7">
@@ -116,8 +116,8 @@
                             </mat-checkbox>
                         </td>
                         <td style="display: inline;">
-                            <i class="material-icons" (click)="EditSubstitute(row)">edit</i>
-                            <i class="material-icons" (click)="ViewSubstituteDetail(row)">delete_sweep</i>
+                            <i class="material-icons">edit</i>
+                            <i class="material-icons">delete_sweep</i>
                         </td>
                     </tr>
 

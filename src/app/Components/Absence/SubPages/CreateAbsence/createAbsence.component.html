@@ -213,7 +213,7 @@
                                 </div>
                             </div>
                             <div class="row" style="text-align: right">
-                                <button mat-raised-button type="button" color="primary" (click)="goToNextForm(stepper)">Next</button>
+                                <button mat-raised-button type="button" color="primary" style="background-color:#04c0be" (click)="goToNextForm(stepper)">Next</button>
                             </div>
                         </form>
                     </mat-step>
@@ -252,7 +252,7 @@
                                             <div class="col-md-6 col-lg-6" style="padding-left: 30px;">
                                                 Add Attachment
                                                 <button mat-button type="button" color="warn" (click)="uploadClick()">
-                                                    <mat-icon>file_upload</mat-icon>
+                                                    <mat-icon style="color: #8fc903;">file_upload</mat-icon>
                                                     {{FileName}}
                                                 </button>
                                                 <i *ngIf='FileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip" matTooltip="Remove Attachment"
@@ -269,8 +269,8 @@
                                 </div>
                             </div>
                             <div class="row" style="text-align: right">
-                                <button mat-button type="button" (click)="goBackToPreviousForm(stepper)">Back</button>
-                                <button style="padding-left: 10ox" mat-raised-button color="primary">{{ absenceFirstFormGroup.value.AbsenceType == '2' ? 'Create And Assign' : absenceSecondFormGroup.value.AbsenceType
+                                <button mat-button type="button" style="background-color:#dfdede;margin-right: 10px" (click)="goBackToPreviousForm(stepper)">Back</button>
+                                <button style="padding-left: 10px; background-color: #04c0be;" mat-raised-button color="primary">{{ absenceFirstFormGroup.value.AbsenceType == '2' ? 'Create And Assign' : absenceSecondFormGroup.value.AbsenceType
                                     == '3' ? 'Post to Preferred' : 'Create Absence' }}</button>
                             </div>
                         </form>
@@ -332,7 +332,7 @@
                         </div>
                         <div style="text-align: right">
                             <!-- <button mat-button matStepperPrevious>Back</button> -->
-                            <button mat-button (click)="stepper.reset()">Finish</button>
+                            <button type="button" style="padding-left: 10px; background-color: #04c0be;" mat-raised-button color="primary" (click)="resetForm(stepper)">Finish</button>
                         </div>
                     </mat-step>
                 </mat-horizontal-stepper>

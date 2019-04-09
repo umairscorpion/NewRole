@@ -31,14 +31,19 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         // (day !== 0 && day !== 6) &&
     }
     dateClass = (d: Date) => {
-        const date = d.getDate();
-        let toSelectDefaultOptionForReason = this.EmployeeSchedule.find((absence: any) => {
-            if (new Date(absence.startDate).toDateString() == d.toDateString()
-                || new Date(absence.endDate).toDateString() == d.toDateString()) {
-                return true;
-            }
-        });
-        return toSelectDefaultOptionForReason ? 'highlightDate' : undefined;
+        if (this.EmployeeSchedule) {
+            const date = d.getDate();
+            let toSelectDefaultOptionForReason = this.EmployeeSchedule.find((absence: any) => {
+                if (new Date(absence.startDate).toDateString() == d.toDateString()
+                    || new Date(absence.endDate).toDateString() == d.toDateString()) {
+                    return true;
+                }
+            });
+            return toSelectDefaultOptionForReason ? 'highlightDate' : undefined;
+        }
+        else {
+            return undefined;
+        }
     }
     // var for Preferred Sub 
     ContactSub: string = '1';
@@ -88,7 +93,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.GenerateForms();
-        this.GetCreatedAbsencesOfEmployee(this._userSession.getUserId());
         this.GetLeaveTypes();
         this.GetDistricts();
         this.GetDistricts();
@@ -187,6 +191,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.loginedUserLevel = this._userSession.getUserLevelId();
         this.loginedUserRole = this._userSession.getUserRoleId();
         this.loginedUserType = this._userSession.getUserTypeId();
+        this.GetCreatedAbsencesOfEmployee(this.EmployeeIdForAbsence);
         this.AbsenceForUserLevel = this.loginedUserLevel;
         this.GetLocationTime(this.EmployeeIdForAbsence, this.loginedUserLevel)
     }
@@ -223,6 +228,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.EmployeeIdForAbsence = EmployeeDetail.userId;
         this.loginedUserType = EmployeeDetail.userTypeId;
         this.AbsenceForUserLevel = EmployeeDetail.userLevel;
+        this.GetCreatedAbsencesOfEmployee(this.EmployeeIdForAbsence);
         if (this.AbsenceForUserLevel == 3) {
             this.absenceFirstFormGroup.get('OrganizationId').setValue(EmployeeDetail.organizationId);
         }
@@ -313,6 +319,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls['PositionId'].updateValueAndValidity();
             this.EmployeeIdForAbsence = "U000000000";
             this.NeedASub = true;
+            this.EmployeeSchedule = null
             if (this.loginedUserLevel == 1) {
                 this.absenceFirstFormGroup.controls['OrganizationId'].enable();
                 // this.absenceFirstFormGroup.get['OrganizationId'].setValue(this.Organizations[0].schoolId);
@@ -489,7 +496,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                     SecondAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 1 ? Substitutes : '-1',
                 Interval: this.ContactSub == "1" ? 0 : this.ContactSubTime,
                 TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime + this.ContactSubTime,
-                isApprovalRequired : this.isApprovalNeeded && this.loginedUserRole === 3 ? 0 : 1
+                isApprovalRequired: this.isApprovalNeeded && this.loginedUserRole === 3 ? 0 : 1
             }
 
             if (!this.CheckDataAndTimeOverlape(FirstAbsenceForm.value.AbsenceStartDate as Date,
@@ -552,6 +559,12 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     goBackToPreviousForm(stepper: MatStepper) {
         stepper.previous();
+    }
+
+    resetForm(stepper: MatStepper) {
+        this.response = 0;
+        this.ngOnInit();
+        stepper.reset();
     }
 
     GetPositionText(): any {

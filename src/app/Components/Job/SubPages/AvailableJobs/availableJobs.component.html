@@ -38,7 +38,7 @@
                     </mat-select>
                 </mat-form-field>
                 <section class="col-md-2 col-lg-2">
-                    Fliter
+                    Filter
                     <br>
                     <mat-checkbox color="primary" formControlName="Requested">I'm Requested(0)</mat-checkbox>
                 </section>
@@ -52,7 +52,7 @@
     <div class="col-md-12 col-lg-12">
         <div class="row">
             <div class="col-md-1">
-                <button type="button" mat-raised-button class="btn btn-success" style="background:white;color:black" (click)="picker.open()">
+                <button type="button" mat-raised-button class="btn btn-success" style="background:#ffffff; border: 1px solid #f2f2f2" (click)="picker.open()">
                     <i class="material-icons">
                         calendar_today
                     </i>
@@ -83,7 +83,7 @@
                         <mat-header-cell *matHeaderCellDef> Posted </mat-header-cell>
                         <mat-cell *matCellDef="let Absence"> {{Absence.createdDate | date}}
                             <br> {{Absence.createdDate | date:'shortTime'}}
-                            <!-- By: {{Absence.createdByUser}}  -->
+                            <!-- By: {{Absence.createdByUser}} -->
                         </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Location">
@@ -106,9 +106,10 @@
 
                     <ng-container matColumnDef="Attachment">
                         <mat-header-cell *matHeaderCellDef> Attachment </mat-header-cell>
-                        <mat-cell *matCellDef="let Absence" style="cursor: pointer;" (click)="viewFile(Absence)">
+                        <mat-cell *matCellDef="let Absence" style="cursor: pointer;" (click)="ShowAttachment(Absence)">
                             <div *ngIf="Absence.attachedFileName">
-                                <i class="material-icons" #tooltip="matTooltip" matTooltip="View Attachment" matTooltipPosition="below">
+                                <i class="material-icons" #tooltip="matTooltip" style="color:#0da8e9" matTooltip="View Attachment" (click)="ShowAttachment(Absence)"
+                                    matTooltipPosition="below">
                                     attach_file
                                 </i>
                             </div>
@@ -118,17 +119,19 @@
                     <ng-container matColumnDef="Action">
                         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                         <mat-cell *matCellDef="let Absence">
-                        <button mat-icon-button (click)="AcceptAbsence(Absence)">
-                        <mat-icon style="color:#00B945;font-weight: bold; cursor: pointer; margin-left: 10px" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="above">check</mat-icon>
-                        </button>
-                        <button mat-icon-button>
-                        <mat-icon style="color:#D70812;font-weight: bold;cursor: pointer; margin-left: 10px" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="above">close</mat-icon>
-                        </button>
-                        <button mat-icon-button (click)="ShowJobDetail(Absence)" >
-                        <mat-icon style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View" matTooltipPosition="above">visibility</mat-icon>
-                        </button>
+                            <button mat-icon-button (click)="AcceptAbsence(Absence)">
+                                <mat-icon style="color:#04b54a;font-weight: bold; cursor: pointer; margin-left: 10px" #tooltip="matTooltip" matTooltip="Accept"
+                                    matTooltipPosition="above">check</mat-icon>
+                            </button>
+                            <button mat-icon-button>
+                                <mat-icon style="color:#d20e0f;font-weight: bold;cursor: pointer; margin-left: 10px" #tooltip="matTooltip" matTooltip="Reject"
+                                    matTooltipPosition="above">close</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="ShowJobDetail(Absence)">
+                                <mat-icon style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View" matTooltipPosition="above">visibility</mat-icon>
+                            </button>
                         </mat-cell>
-                        </ng-container>
+                    </ng-container>
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;" #tooltip="matTooltip" [matTooltip]="row.anyConflict > 1 ? 'Conflict' : ''"
                         matTooltipPosition="left" [ngClass]="{'bg-color': row.anyConflict > 1}"></mat-row>

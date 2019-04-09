@@ -10,11 +10,13 @@ import { ICountry } from '../../Model/Lookups/country';
 import { IStates } from '../../Model/Lookups/states';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { RestService } from '../../Services/restService';
+import { District } from '../../Model/district';
 
 @Injectable()
-export class DistrictService {
+export class DistrictService extends RestService<District> {
     private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    constructor(private _http: HttpClient) { }
+    constructor(private _http: HttpClient) { super(_http); }
     // get(url: string): Observable<IDistrict> {
     //     return this._http.get<IDistrict>(environment.apiUrl + url);
     // }

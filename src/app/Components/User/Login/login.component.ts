@@ -7,11 +7,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
+import { environment } from '../../../../environments/environment';
 import {
     AuthService,
     GoogleLoginProvider
 } from 'angular-6-social-login';
-import { environment } from '../../../../environments/environment';
 
 @Component({
     templateUrl: 'login.component.html',

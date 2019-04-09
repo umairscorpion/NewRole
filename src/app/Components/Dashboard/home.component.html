@@ -12,11 +12,11 @@
                 <div class="row">
                     <div class="col-xs-3">
                         <div class="ibox">
-                            <div class="ibox-title" style="background-color: #008C9D">
+                            <div class="ibox-title" style="background-color: #018c9c;">
                                 <span class="stat-percent" style="font-size: 20px;margin-right:10px;color: white">25</span>
                                 <h5 class="label label-success" style="line-height:2px!important;font-size: 92%!important; background-color: #1F99A8">Total Absences</h5>
                             </div>
-                            <div class="ibox-content" style="background-color: #0FA2B2;">
+                            <div class="ibox-content" style="background-color: #0ea2b3;">
                                 <div class="stat-percent font-bold text-success" style="color: white">98%
                                     <i class="fa fa-level-up"></i>
                                 </div>
@@ -28,11 +28,11 @@
                     </div>
                     <div class="col-xs-3">
                         <div class="ibox">
-                            <div class="ibox-title" style="background-color: #4DB278;">
+                            <div class="ibox-title" style="background-color: #4cb278;">
                                 <span class="stat-percent" style="font-size: 20px;margin-right:10px;color: white">25</span>
                                 <h5 class="label label-info" style="line-height:2px!important;font-size: 92%!important; background-color: #5FBB88">Filled</h5>
                             </div>
-                            <div class="ibox-content" style="background-color:#76C598;">
+                            <div class="ibox-content" style="background-color:#75c598;">
                                 <div class="stat-percent font-bold text-info" style="color: white">20%
                                     <i class="fa fa-level-up"></i>
                                 </div>
@@ -43,11 +43,11 @@
                     </div>
                     <div class="col-xs-3">
                         <div class="ibox ">
-                            <div class="ibox-title" style="background-color:#12C0C9;">
+                            <div class="ibox-title" style="background-color:#11c0c9;">
                                 <span class="stat-percent" style="font-size: 20px;margin-right:10px;color: white">25</span>
                                 <h5 class="label label-primary" style="line-height:2px!important;font-size: 92%!important;background-color: #2FC6D1">Unfilled</h5>
                             </div>
-                            <div class="ibox-content" style="background-color:#57D4DA;">
+                            <div class="ibox-content" style="background-color:#57d3d9;">
                                 <div class="stat-percent font-bold text-navy" style="color: white">44%
                                     <i class="fa fa-level-up" style="color: white"></i>
                                 </div>
@@ -58,11 +58,11 @@
                     </div>
                     <div class="col-xs-3">
                         <div class="ibox ">
-                            <div class="ibox-title" style="background-color: #548E90;">
+                            <div class="ibox-title" style="background-color: #548e91;">
                                 <span class="stat-percent" style="font-size: 20px;margin-right:10px;color: white">25</span>
                                 <h5 class="label label-danger" style="line-height:2px!important;font-size: 92%!important;background-color: #6899A0">No Sub Required</h5>
                             </div>
-                            <div class="ibox-content" style="background-color:#74A4A8;">
+                            <div class="ibox-content" style="background-color:#74A4A7;">
                                 <div class="stat-percent font-bold text-danger" style="color: white">38%
                                     <i class="fa fa-level-up"></i>
                                 </div>
@@ -101,18 +101,18 @@
                                     </div>
                                     <div style="font-size: 10px" class="col-md-4">
                                         <b>{{leave.employeeName}}</b>
-                                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days' :
-                                        'Day'}}
+                                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days'
+                                        : 'Day'}}
                                     </div>
                                     <div style="font-size: 11px" class="col-md-4">
                                         {{ leave.startDate | date:'E, M/d/y' }}
                                         <br> {{ leave.endDate | date:'E, M/d/y' }}
                                     </div>
                                     <div class="col-md-3">
-                                        <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="Accept"
-                                            matTooltipPosition="below" (click)="onApproveClick(leave.leaveRequestId)">check</i>
-                                        <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;" #tooltip="matTooltip" matTooltip="Reject"
-                                            matTooltipPosition="below" (click)="onDenyClick(leave.leaveRequestId)">close</i>
+                                        <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="Approve"
+                                            matTooltipPosition="above" (click)="onApproveClick(leave.leaveRequestId)">check</i>
+                                        <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;" #tooltip="matTooltip" matTooltip="Deny"
+                                            matTooltipPosition="above" (click)="onDenyClick(leave.leaveRequestId)">close</i>
                                     </div>
                                     <mat-divider></mat-divider>
                                 </mat-list-item>

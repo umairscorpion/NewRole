@@ -21,7 +21,7 @@
   }
   
   .vertical-center {  
-    min-height: 10vh;
+    min-height: 5vh;
     display: flex;
     align-items: center;
   }
