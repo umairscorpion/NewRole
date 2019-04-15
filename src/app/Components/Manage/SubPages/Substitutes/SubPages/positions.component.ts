@@ -17,14 +17,14 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
     styleUrls: ['positions.component.scss']
 })
 export class PositionsComponent implements OnInit {
-    displayedColumns = ['FirstName', 'LastName', 'Email', 'PhoneNumber', 'action'];
+    displayedColumns = ['Title', 'Visibility', 'action'];
     SubstituteDetail: any;
     private notifier: NotifierService;
     District: IDistrict;
     positions: any;
     weeklyLimitSettings: FormGroup;
     substituteDataSource = new MatTableDataSource();
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatPaginator) paginator: MatPaginator;   
     @ViewChild(MatSort) sort: MatSort;
     Employees: any
     msg: string;
