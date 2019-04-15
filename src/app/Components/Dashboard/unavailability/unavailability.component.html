@@ -14,7 +14,6 @@
       <div class="col-md-11 p-0">
         <mat-form-field>
           <input matInput placeholder="Add title" formControlName="title">
-          <mat-hint class="form-error-content" *ngIf="form.get('title').errors?.required && submitted">Title is required</mat-hint>
         </mat-form-field>
       </div>
     </div>
@@ -23,22 +22,11 @@
       <div class="col-md-1">
       </div>
       <div class="col-md-10 p-0">
-        <mat-radio-group formControlName="floatLabel">
+        <mat-radio-group formControlName="availabilityStatusId">
           <mat-radio-button value="1" class="btn btn-sm availability-status-unavailable">Unavailable</mat-radio-button>
           <mat-radio-button value="2" class="btn btn-sm availability-status-vacations ml-2 mr-2">Vacations</mat-radio-button>
           <mat-radio-button value="3" class="btn btn-sm availability-status-recurring" (click)="recurrence()">Recurring</mat-radio-button>
         </mat-radio-group>
-        <!-- <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="availabilityStatusId">
-          <mat-button-toggle value="1" class="availability-status-unavailable">
-            Unavailable
-          </mat-button-toggle>
-          <mat-button-toggle value="2" class="availability-status-vacations ml-2 mr-2">
-            Vacations
-          </mat-button-toggle>
-          <mat-button-toggle value="3" class="availability-status-recurring" (click)="recurrence()">
-            Recurring
-          </mat-button-toggle>
-        </mat-button-toggle-group> -->
       </div>
     </div>
 
@@ -57,17 +45,6 @@
               <mat-hint class="form-error-content" *ngIf="form.hasError('notValid') && submitted">Enter a valid Date</mat-hint>
             </mat-form-field>
           </div>
-          <div class="col-md-2 pr-0 m-5" *ngIf="time">
-            <mat-form-field class="ht-30">
-              <input type="text" placeholder="Start Time" matInput formControlName="startTime" [matAutocomplete]="startTimePicker" (input)="timeChanged('startTime')" />
-              <mat-autocomplete #startTimePicker="matAutocomplete" (optionSelected)="timeChanged('startTime')">
-                <mat-option *ngFor="let option of times" [value]="option">
-                  {{ option }}
-                </mat-option>
-              </mat-autocomplete>
-              <mat-hint class="form-error-content" *ngIf="form.get('startTime').errors?.required && submitted">Start Time is required</mat-hint>
-            </mat-form-field>
-          </div>
           <div class="col-md-3 pr-0 m-5">
             <mat-form-field [ngClass]="{
             'appointment-edit-has-error':
@@ -81,6 +58,18 @@
               <mat-hint class="form-error-content" *ngIf="form.hasError('notValid') && submitted">Enter a valid Date</mat-hint>
             </mat-form-field>
           </div>
+          <div class="col-md-2 pr-0 m-5" *ngIf="time">
+            <mat-form-field class="ht-30">
+              <input type="text" placeholder="Start Time" matInput formControlName="startTime" [matAutocomplete]="startTimePicker" (input)="timeChanged('startTime')" />
+              <mat-autocomplete #startTimePicker="matAutocomplete" (optionSelected)="timeChanged('startTime')">
+                <mat-option *ngFor="let option of times" [value]="option">
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-hint class="form-error-content" *ngIf="form.get('startTime').errors?.required && submitted">Start Time is required</mat-hint>
+            </mat-form-field>
+          </div>
+
           <div class="col-md-2 pr-0 m-5" *ngIf="time">
             <mat-form-field class="ht-30">
               <input type="text" placeholder="End Time" matInput formControlName="endTime" [matAutocomplete]="endTimePicker" (input)="timeChanged('endTime')" />
@@ -109,7 +98,8 @@
     <div class="row mt-5">
       <div class="col-md-1">
       </div>
-      <button class="btn btn-success">Save</button>
+      <button class="btn btn-success">Save</button>&nbsp;
+      <button class="btn btn-danger" type="button" (click)="delete()" *ngIf="availability.availabilityId > 0">Delete</button>
     </div>
   </div>
 </form>

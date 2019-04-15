@@ -148,11 +148,9 @@ import { SubstituteCalendarComponent } from './Components/Dashboard/substitute-c
 import { AvailabilityService } from './Services/availability.service';
 import { LookupService } from './Services/lookup.service';
 import { UnAvailabilityComponent } from './Components/Dashboard/unavailability/unavailability.component';
-<<<<<<< HEAD
 import { AllowanceComponent } from './Components/Manage/SubPages/Leaves/popups/add-allowance.popup.component';
-=======
 import { RecurringComponent } from './Components/Dashboard/unavailability/recurring/recurring.component';
->>>>>>> 77488ad15beaa482e1f1d9b9e832e018df2ff1d4
+import { SubstituteAvailabilityComponent } from './Components/Dashboard/substitute-availability.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -301,11 +299,8 @@ const customNotifierOptions: NotifierOptions = {
         TimeFormatPipe,
         SubstituteCalendarComponent,
         UnAvailabilityComponent,
-<<<<<<< HEAD
-        AllowanceComponent
-=======
-        RecurringComponent
->>>>>>> 77488ad15beaa482e1f1d9b9e832e018df2ff1d4
+        RecurringComponent,
+        SubstituteAvailabilityComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -319,11 +314,8 @@ const customNotifierOptions: NotifierOptions = {
         PopupDialogForAbsenceDetail,
         ReportDetailsComponent,
         UnAvailabilityComponent,
-<<<<<<< HEAD
-        AllowanceComponent
-=======
+        AllowanceComponent,
         RecurringComponent
->>>>>>> 77488ad15beaa482e1f1d9b9e832e018df2ff1d4
     ],
     providers: [
         UserService,
