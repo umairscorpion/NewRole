@@ -151,6 +151,7 @@ import { UnAvailabilityComponent } from './Components/Dashboard/unavailability/u
 import { AllowanceComponent } from './Components/Manage/SubPages/Leaves/popups/add-allowance.popup.component';
 import { RecurringComponent } from './Components/Dashboard/unavailability/recurring/recurring.component';
 import { PositionsComponent } from './Components/Manage/SubPages/Substitutes/SubPages/positions.component';
+import { SubstituteAvailabilityComponent } from './Components/Dashboard/substitute-availability.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -301,7 +302,8 @@ const customNotifierOptions: NotifierOptions = {
         UnAvailabilityComponent,
         AllowanceComponent,
         RecurringComponent,
-        PositionsComponent
+        PositionsComponent,
+        SubstituteAvailabilityComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
