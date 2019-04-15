@@ -150,6 +150,7 @@ import { LookupService } from './Services/lookup.service';
 import { UnAvailabilityComponent } from './Components/Dashboard/unavailability/unavailability.component';
 import { AllowanceComponent } from './Components/Manage/SubPages/Leaves/popups/add-allowance.popup.component';
 import { RecurringComponent } from './Components/Dashboard/unavailability/recurring/recurring.component';
+import { PositionsComponent } from './Components/Manage/SubPages/Substitutes/SubPages/positions.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -299,7 +300,8 @@ const customNotifierOptions: NotifierOptions = {
         SubstituteCalendarComponent,
         UnAvailabilityComponent,
         AllowanceComponent,
-        RecurringComponent
+        RecurringComponent,
+        PositionsComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

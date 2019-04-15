@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse, HttpResponse, HttpEventType } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
-import { DomSanitizer } from '../../../../../../node_modules/@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
     templateUrl: 'addEmployees.component.html'
 })

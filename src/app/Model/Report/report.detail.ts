@@ -23,4 +23,9 @@ export class ReportDetail extends Entity {
   substituteName: string;
   substituteProfilePicUrl: string;
   notes: string;
+  attachedFileName: string;
+  fileContentType: string;
+  anyAttachment: boolean;
+  substituteRequired: boolean;
+  durationType: string;
 }

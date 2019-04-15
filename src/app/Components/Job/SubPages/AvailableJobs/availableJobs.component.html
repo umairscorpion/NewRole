@@ -44,7 +44,7 @@
                 </section>
 
                 <div class="col-md-2 col-lg-2" style="padding-top: 10px">
-                    <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit">Search</button>
+                    <button mat-raised-button class="btn btn-success" style="background: #3CCCD1; color: white;" type="submit">Search</button>
                 </div>
             </form>
         </div>
@@ -108,7 +108,7 @@
                         <mat-header-cell *matHeaderCellDef> Attachment </mat-header-cell>
                         <mat-cell *matCellDef="let Absence" style="cursor: pointer;" (click)="ShowAttachment(Absence)">
                             <div *ngIf="Absence.attachedFileName">
-                                <i class="material-icons" #tooltip="matTooltip" style="color:#0da8e9" matTooltip="View Attachment" (click)="ShowAttachment(Absence)"
+                                <i class="material-icons" #tooltip="matTooltip" style="color:#0da8e9" matTooltip="View Attachment" 
                                     matTooltipPosition="below">
                                     attach_file
                                 </i>

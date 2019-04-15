@@ -4,9 +4,9 @@ import { FormBuilder, FormGroup, Validators , FormControl, NgForm} from '@angula
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbsenceService } from '../../../../Services/absence.service';
 import { UserSession } from '../../../../Services/userSession.service';
-import { ActivatedRoute } from '../../../../../../node_modules/@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { LeaveType } from '../../../../Model/leaveType';
-import { NotifierService } from '../../../../../../node_modules/angular-notifier';
+import { NotifierService } from 'angular-notifier';
 // import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 @Component({
     templateUrl: 'addLeave.component.html'

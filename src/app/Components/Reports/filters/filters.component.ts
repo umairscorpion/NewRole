@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MatExpansionPanel, MatDatepickerInputEvent } from '@angular/material';
-import { DataContext } from 'src/app/Services/dataContext.service';
+import { DataContext } from '../../../Services/dataContext.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ReportFilter } from 'src/app/Model/Report/report.filter';
+import { ReportFilter } from '../../../Model/Report/report.filter';
 import * as moment from 'moment';
 
 @Component({

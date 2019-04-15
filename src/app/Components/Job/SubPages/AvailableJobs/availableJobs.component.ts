@@ -6,7 +6,7 @@ import { CommunicationService } from '../../../../Services/communication.service
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { Absence } from '../../../../Model/absence';
-import { DomSanitizer, SafeUrl } from '../../../../../../node_modules/@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FileService } from '../../../../Services/file.service';
 
 @Component({
@@ -143,6 +143,12 @@ export class AvailableJobsComponent implements OnInit {
     }
 
     ShowJobDetail(AbsenceDetail: any) {
+        AbsenceDetail.isShowAttachment = false;
+        this._communicationService.ViewAbsenceDetail(AbsenceDetail);
+    
+    }
+    ShowAttachment(AbsenceDetail: any) {
+        AbsenceDetail.isShowAttachment = true;
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
     }
 

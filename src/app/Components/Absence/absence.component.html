@@ -1,14 +1,37 @@
 <div class="example-container">
-    <Subzz-app-SideNav ></Subzz-app-SideNav>
+    <Subzz-app-SideNav></Subzz-app-SideNav>
     <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
         <mat-sidenav class="col-md-2" opened="{{isOpen}}" [mode]="mobileQuery.matches ? 'over' : 'side'"
             [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-                     <mat-nav-list *ngIf='sideNavMenu && sideNavMenu.length' fixedTopGap="56">
-                        <a mat-list-item [routerLinkActive]="['active']" routerLink="{{sideNavMenuObj.stateMachine}}" *ngFor="let sideNavMenuObj of sideNavMenu">{{sideNavMenuObj.name}}</a>
-                        </mat-nav-list>
+            <mat-nav-list *ngIf='sideNavMenu && sideNavMenu.length' fixedTopGap="56">
+                    <div *ngIf="userRole != 3"><a mat-list-item [routerLinkActive]="['active']" routerLink="{{sideNavMenuObj.stateMachine}}"
+                        *ngFor="let sideNavMenuObj of sideNavMenu">{{sideNavMenuObj.name}}</a></div>
+                    <div *ngIf="userRole == 3"><a mat-list-item [routerLinkActive]="['active']" routerLink="{{sideNavMenuObj.stateMachine}}"
+                        *ngFor="let sideNavMenuObj of sideNavMenu">Absences</a></div>
+            </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content class="col-md-10">
-            <router-outlet></router-outlet>
+            <div  *ngIf="userRole != 3">
+                <router-outlet></router-outlet>
+            </div>
+            <div *ngIf="userRole == 3">
+                <mat-card>
+                    <mat-card-content>
+                        <h2 class="example-h2">Absences</h2>
+                        <mat-tab-group class="demo-tab-group">
+                            <mat-tab label="New">
+                                <create-absence></create-absence>
+                            </mat-tab>
+                            <mat-tab label="Upcoming">
+                                <upcoming-absences></upcoming-absences>
+                            </mat-tab>
+                            <mat-tab label="Past">
+                                <past-absences></past-absences>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </mat-card-content>
+                </mat-card>
+            </div>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

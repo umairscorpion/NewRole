@@ -1,17 +1,18 @@
 import { Component, OnInit, ViewChild, ViewChildren, ElementRef, AfterViewInit } from '@angular/core';
-import { ReportService } from 'src/app/Services/report.service';
-import { ReportFilter } from 'src/app/Model/Report/report.filter';
-import { ReportSummary } from 'src/app/Model/Report/report.summary';
+import { ReportService } from '../../../../Services/report.service';
+import { ReportFilter } from '../../../../Model/Report/report.filter';
+import { ReportSummary } from '../../../../Model/Report/report.summary';
 import { ReportConstant } from '../../constants/report.constants';
 import * as moment from 'moment';
-import { ReportDetail } from 'src/app/Model/Report/report.detail';
+import { ReportDetail } from '../../../../Model/Report/report.detail';
 import { MatDialog } from '@angular/material';
 import { ReportDetailsComponent } from '../../popups/report-details.popup.component';
 import { DomSanitizer } from '@angular/platform-browser';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 
 @Component({
+    selector:'monthly-reports',
     templateUrl: 'monthlyReports.component.html'
 })
 export class MonthlyReportsComponent implements OnInit, AfterViewInit {
@@ -25,7 +26,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     indLoading = false;
     modalTitle: string;
     modalBtnTitle: string;
-    date: string = moment().format('dddd, DD/MM/YYYY');
+    date: string = moment().format('dddd, MM/DD/YYYY');
     noAbsenceMessage = true;
     submitted = false;
     reportSummary: ReportSummary = new ReportSummary();
@@ -64,7 +65,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         const date = new Date();
         filters.fromDate = moment(new Date(date.getFullYear(), date.getMonth(), 1)).format('YYYY-MM-DD');
         filters.toDate = moment(new Date(date.getFullYear(), date.getMonth() + 1, 0)).format('YYYY-MM-DD');
-        this.date = moment(filters.fromDate).format('dddd, DD/MM/YYYY');
+        this.date = moment(filters.fromDate).format('dddd, MM/DD/YYYY');
         this.reportService.getSummary(filters).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
             this.bindChart(summary[0]);
@@ -75,7 +76,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     onSubmit($event) {
-        this.date = moment($event.formValue.fromDate).format('dddd, DD/MM/YYYY');
+        this.date = moment($event.formValue.fromDate).format('dddd, MM/DD/YYYY');
         this.reportService.getSummary($event.formValue).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
             this.bindChart(summary[0]);
@@ -87,8 +88,8 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
 
     bindDetails(details: ReportDetail[]) {
         this.filledAbsenceDetails = details.filter(t => t.statusId === 2 || t.statusId === 3);
-        this.unFilledAbsenceDetails = details.filter(t => t.statusId === 1);
-        this.noSubReqAbsenceDetails = details.filter(t => t.statusId === 0);
+        this.unFilledAbsenceDetails = details.filter(t => t.statusId === 1 && t.substituteRequired === true);
+        this.noSubReqAbsenceDetails = details.filter(t => t.substituteRequired === false);
     }
 
     bindChart(chartSummary: ReportSummary) {

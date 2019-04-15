@@ -99,12 +99,12 @@ const appRoutes: Routes = [
         ]
     },
     {
-        path: 'reports', component: ReportsComponent, canActivate: [AuthGuard],
-        children: [{ path: '', redirectTo: 'dailyReports', pathMatch: 'full' },
-        { path: 'dailyReports', component: DailyReportsComponent },
-        { path: 'monthlyReports', component: MonthlyReportsComponent },
-        { path: 'payRollReports', component: PayRollReportsComponent }
-        ]
+        path: 'reports', component: ReportsComponent, canActivate: [AuthGuard]
+        // children: [{ path: '', redirectTo: 'dailyReports', pathMatch: 'full' },
+        // { path: 'dailyReports', component: DailyReportsComponent },
+        // { path: 'monthlyReports', component: MonthlyReportsComponent },
+        // { path: 'payRollReports', component: PayRollReportsComponent }
+        // ]
     },
     { path: 'timetracker', component: TimeTrackerComponent, canActivate: [AuthGuard] },
     { path: 'timeclock', component: TimeClockComponent, canActivate: [AuthGuard] },

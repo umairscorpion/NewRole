@@ -9,7 +9,7 @@ import { NotifierService } from 'angular-notifier';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Lookup } from '../../../../Model/lookup';
 import { ProfileService } from '../../../../Services/profile.service';
-import { Observable } from '../../../../../../node_modules/rxjs';
+import { Observable } from 'rxjs';
 import { User } from '../../../../Model/user';
 import { SubstitutePreference } from '../../../../Model/substitutePreference';
 import { MatTableDataSource, MatPaginator} from '@angular/material';

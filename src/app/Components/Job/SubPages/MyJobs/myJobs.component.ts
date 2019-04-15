@@ -5,10 +5,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommunicationService } from '../../../../Services/communication.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
-import { ActivatedRoute, Router } from '../../../../../../node_modules/@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../../Service/user.service';
 import { environment } from '../../../../../environments/environment.prod';
-import { HttpErrorResponse } from '../../../../../../node_modules/@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     templateUrl: 'myJobs.component.html'
@@ -129,7 +129,9 @@ export class MyJobsComponent implements OnInit {
     }
 
     ShowJobDetail(AbsenceDetail: any) {
+        AbsenceDetail.isShowAttachment = false;
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
+    
     }
 
     AcceptJob(jobNo : number) {

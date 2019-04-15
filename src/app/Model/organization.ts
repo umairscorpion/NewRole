@@ -1,4 +1,4 @@
-import { Time } from "../../../node_modules/@angular/common";
+import { Time } from "@angular/common";
 import { Entity } from "./entity";
 
 export class Organization extends Entity {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, ResponseContentType  } from '@angular/http';
-import { HttpClient, HttpHeaders,  } from '@angular/common/http';
+import { Http, Response, Headers, RequestOptions, ResponseContentType } from '@angular/http';
+import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
@@ -24,8 +24,8 @@ export class DataContext {
     getUserClaims() {
         return this._http.get(this.baseUrl + 'user/reference/GetUserClaims');
     }
-    getUserResources(resourceTypeId : number, parentResourceTypeId : number,IsAdminPortal: number) {
-        return this._http.get(this.baseUrl + 'user/GetUserResources/' + resourceTypeId +'/'+ parentResourceTypeId +'/'+ IsAdminPortal);
+    getUserResources(resourceTypeId: number, parentResourceTypeId: number, IsAdminPortal: number) {
+        return this._http.get(this.baseUrl + 'user/GetUserResources/' + resourceTypeId + '/' + parentResourceTypeId + '/' + IsAdminPortal);
     }
     userAuthentication(url: string, model: any): Observable<any> {
         let body = "username=" + model.userName + "&password=" + model.password + "&grant_type=password";
@@ -34,19 +34,19 @@ export class DataContext {
     }
     //Funtions For crud operations
     get(url: string): Observable<any> {
-        return this._http.get(this.baseUrl + url );
+        return this._http.get(this.baseUrl + url);
     }
 
     getById(url: string, Id: number): Observable<any> {
         return this._http.get(this.baseUrl + url + "/" + Id);
     }
 
-    post(url: string, model: any): Observable<any> {    
+    post(url: string, model: any): Observable<any> {
         return this._http.post(this.baseUrl + url, model);
     }
 
     Patch(url: string, model: any): Observable<any> {
-        return this._http.patch(this.baseUrl + url , model);
+        return this._http.patch(this.baseUrl + url, model);
     }
 
     put(url: string, id: number, model: any): Observable<any> {
@@ -59,7 +59,7 @@ export class DataContext {
     }
 
     //miscellaneous Functions
-    getUserLocationTime(url: string, userId: string,  userLevel: number): Observable<any> {
+    getUserLocationTime(url: string, userId: string, userLevel: number): Observable<any> {
         return this._http.get(this.baseUrl + url + "/" + userId + "/" + userLevel);
     }
 
@@ -72,13 +72,17 @@ export class DataContext {
         return Observable.throw(error.json().error || 'Server error');
     }
     login() {
-            this.loggedIn.next(true);
+        this.loggedIn.next(true);
     }
     logout() {
         this.loggedIn.next(false);
     }
 
     getFile(url: string, model: any) {
-        return this._http.post(this.baseUrl + url, model , {responseType: 'blob' } );
+        return this._http.post(this.baseUrl + url, model, { responseType: 'blob' });
+    }
+
+    UpdateAbsenceStatusAndSub(url: string, AbsenceId: number, StatusId: number, UpdateStatusDate: string, userId: string, SubstituteId: string, SubstituteRequired: boolean): Observable<any> {
+        return this._http.get(this.baseUrl + url + "/" + AbsenceId + "/" + StatusId + "/" + UpdateStatusDate + "/" + userId + "/" + SubstituteId + "/" + SubstituteRequired);
     }
 }

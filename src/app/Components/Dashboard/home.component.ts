@@ -7,7 +7,7 @@ import { Chart } from 'chart.js'
 import { LeaveRequest } from "../../Model/leaveRequest";
 import { AbsenceService } from "../../Services/absence.service";
 import { UserSession } from "../../Services/userSession.service";
-import { HttpErrorResponse } from "../../../../node_modules/@angular/common/http";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
     selector: 'Subzz-app-dashboard',

@@ -6,6 +6,7 @@
         </div>
     </mat-dialog-actions>
     <hr>
+    <div *ngIf='data.isShowAttachment == false' >
     <div class="avatar-wrapper">
         <img class="profile-pic" src="" />
     </div>
@@ -62,4 +63,8 @@
                 </td>
             </tr>
     </table>
+    </div>
+    <div *ngIf='data.isShowAttachment == true'>
+        <iframe [src]='attachFileUrl' style="height: 460px; width:730px;margin-left: 15px;"></iframe>
+       </div>
 </div>

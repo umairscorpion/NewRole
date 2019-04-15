@@ -1,68 +1,223 @@
-<div>
-
-  <mat-dialog-actions>
-    <div class="col-md-8 pr-0">
-      <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
-      <button type="button" mat-raised-button class="btn btn-default">Release</button>
-      <button type="button" mat-raised-button class="btn btn-default">Assign</button>
-      <button type="button" mat-raised-button class="btn btn-default">Resend</button>
-    </div>
-    <div class="col-md-4 pl-0">
-      <button type="button" mat-raised-button class="btn btn-warning">Delete</button>
-      <button type="button" mat-raised-button class="btn btn-info">Edit</button>
-    </div>
-  </mat-dialog-actions>
-  <hr>
-  <div class="avatar-wrapper">
-    <img class="profile-pic" src="" />
+<form [formGroup]="absenceForm" (onSubmit)="onSubmit(absenceForm)">
+  <div>
+    <mat-dialog-actions>
+      <div class="col-md-8 pr-0">
+        <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
+        <button [disabled]="reportDetail.statusId == 1 || !reportDetail.substituteRequired" type="button" mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
+        <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default" (click)="performAction('assign')">Assign</button>
+        <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default" (click)="performAction('resend')">Resend</button>
+      </div>
+      <div class="col-md-4 pl-0">
+        <button type="button" mat-raised-button class="btn btn-warning" (click)="performAction('delete')">Cancel</button>
+        <button type="button" mat-raised-button class="btn btn-info" (click)="performAction('edit')">Edit</button>
+      </div>
+    </mat-dialog-actions>
+    <hr>
+    <mat-dialog-content>
+      <div class="avatar-wrapper">
+        <img class="profile-pic" src="" />
+      </div>
+      <div class="text-center">
+        <h4>{{reportDetail.employeeName}}</h4>
+      </div>
+      <div class="absence-summary-title p-2 mt-2">Absence Summary</div>
+      <br>
+      <table *ngIf="menuAction=='view'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
+        <tr>
+          <td>ID:</td>
+          <td>{{reportDetail.absenceId}}</td>
+        </tr>
+        <tr>
+          <td>Reason:</td>
+          <td>{{reportDetail.reason}}</td>
+        </tr>
+        <tr>
+          <td>From:</td>
+          <td>{{reportDetail.startDate | date:'E, M/d/y'}}</td>
+        </tr>
+        <tr>
+          <td>To:</td>
+          <td>{{reportDetail.endDate | date:'E, M/d/y'}}</td>
+        </tr>
+        <tr>
+          <td>Duration:</td>
+          <td>{{reportDetail.startTime | convertFrom24HourTo12HourFormat}} - {{reportDetail.endTime | convertFrom24HourTo12HourFormat}}</td>   
+        </tr>
+        <tr *ngIf="reportDetail.substituteRequired == false">
+          <td>Status:</td>
+          <td>{{reportDetail.statusTitle}}</td>
+        </tr>
+        <tr *ngIf='reportDetail.substituteId != -1'>
+          <td>Substitute:</td>        
+          <td>{{reportDetail.substituteName}}</td>
+        </tr>
+        <tr *ngIf='reportDetail.substituteId == -1'>
+          <td>Substitute:</td>
+          <td >No Substitute</td>
+        </tr>        
+        <tr>
+          <td>Posted:</td>
+          <td>{{reportDetail.postedOn | date:'M/d/y h:mm a'}}</td>
+        </tr>
+        <tr>
+          <td>Notes:</td>
+          <td>{{reportDetail.notes}}</td>
+        </tr>
+        <tr>
+          <td>Attachment:</td>
+          <td *ngIf="reportDetail.anyAttachment == true">
+            <div style="text-align: left">
+              <button mat-button type="button" color="warn" (click)="DownloadFile()">
+                Download Attachment
+                <mat-icon>download</mat-icon>                       
+              </button>
+            </div>
+          </td>
+          <td *ngIf="reportDetail.anyAttachment == false">No Attachment</td>
+        </tr>
+      </table>
+      <table *ngIf="menuAction=='edit'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
+        <tr>
+          <td>ID:</td>
+          <td>{{reportDetail.absenceId}}</td>
+        </tr>
+        <tr>
+          <td>Reason:</td>
+          <td>
+            <mat-form-field>
+              <mat-select formControlName="absenceReasonId" (selectionChange)="onChangeReason($event.value)" >
+                <mat-option *ngFor="let Leave of Leaves" [value]="Leave.leaveTypeId">
+                  {{Leave.leaveTypeName}}
+                </mat-option>
+              </mat-select>             
+            </mat-form-field>  
+          </td>       
+        </tr>
+        <tr>
+          <td>From:</td>
+          <td>
+            <mat-form-field>
+              <input matInput [max]="absenceForm.value.AbsenceEndDate" [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
+                [matDatepicker]="StartDatePicker" placeholder="Start Date" formControlName="startDate"
+                (dateChange)="SetEndDateValue(absenceForm.value.startDate,absenceForm.value.endDate)">
+              <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker [dateClass]="dateClass" #StartDatePicker></mat-datepicker>
+            </mat-form-field>                      
+          </td>       
+        </tr>
+        <tr>
+          <td>To:</td>
+          <td>
+            <mat-form-field>
+              <input matInput [max]="absenceForm.value.AbsenceEndDate" [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
+                [matDatepicker]="EndDatePicker" placeholder="Start Date" formControlName="endDate"
+                (dateChange)="SetEndDateValue(absenceForm.value.startDate,absenceForm.value.endDate)">
+              <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker [dateClass]="dateClass" #EndDatePicker></mat-datepicker>
+            </mat-form-field>              
+          </td>  
+        </tr>
+        <tr>
+          <td>Duration:</td>
+          <td>
+            <mat-form-field class="col-md-4">
+              <mat-select formControlName="durationType" (selectionChange)="onChangeDurationForAbsence($event.value,absenceForm)">
+                  <mat-option [value]="1">Full Day</mat-option>
+                  <mat-option [value]="2">Half Day AM</mat-option>
+                  <mat-option [value]="3">Half Day PM</mat-option>
+                  <mat-option [value]="4">Enter Time Manually</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+              <input matInput type="time" placeholder="Start Time" formControlName="startTime">
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+              <input matInput type="time" placeholder="End Time" formControlName="endTime">
+            </mat-form-field>  
+          </td>
+        </tr>
+        <tr *ngIf="reportDetail.substituteRequired == true">
+          <td>Status:</td>
+          <td>
+              {{reportDetail.statusTitle}}
+          </td>
+        </tr>    
+        <tr>
+          <td>Substitute:</td>
+          <td *ngIf='reportDetail.statusId == 2'>{{reportDetail.substituteName}}</td>
+          <td *ngIf='reportDetail.statusId != 2'>
+            <mat-form-field>
+              <input type="text" placeholder="Search Substitute Name" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
+                matInput formControlName="substituteId" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName" multiple>
+                <mat-option (onSelectionChange)="substututeSelection(substutute)" (click)="substututeSelection(substutute)" *ngFor="let substutute of Substututes | async"
+                  [value]="substutute">
+                  {{substutute.firstName}}
+                </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+          </td>        
+        </tr>            
+        <tr>
+          <td>Posted:</td>
+          <td>{{reportDetail.postedOn | date:'M/d/y h:mm a'}}</td>
+        </tr>
+        <tr>
+          <td>Notes:</td>
+          <td>
+            <mat-form-field>
+              <input matInput formControlName="substituteNotes">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <div *ngIf="reportDetail.anyAttachment == 1">
+              <button mat-button type="button" color="warn" (click)="DownloadFile()">
+                Download Attachment
+                <mat-icon>download</mat-icon>                       
+              </button>          
+            </div>
+          </td>
+        </tr>          
+        <tr>           
+          <td>Add Attachment</td>               
+          <td>         
+            <button  mat-button type="button" color="warn" (click)="uploadClick()">
+              <mat-icon>file_upload</mat-icon>
+                {{FileName}}
+            </button>
+            <i *ngIf='FileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip" matTooltip="Remove Attachment"
+                matTooltipPosition="right" (click)="removeAttachedFile()">
+                cancel
+            </i>
+            <input type="file" id="UploadButton" (change)="upload($event.target.files)" style="display: none" />
+          </td>               
+        </tr>
+      </table>
+      <table *ngIf="menuAction=='assign'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">            
+        <tr>
+          <div class="col-md-6 col-lg-6">
+            <mat-form-field class="col-md-10 col-lg-10">
+              <input type="text" placeholder="Search Substitute Name" (input)="SearchSubstitutes($event.target.value)"
+                matInput formControlName="substituteId" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName" multiple>
+              <mat-option (onSelectionChange)="substututeSelection(substutute)" (click)="substututeSelection(substutute)" *ngFor="let substutute of Substututes | async"
+                [value]="substutute">
+                {{substutute.firstName}}
+              </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <button type="button" mat-raised-button class="btn btn-info" (click)="onAssign(absenceForm)">Direct Assign</button> 
+        </tr>         
+      </table>
+      <hr>
+    </mat-dialog-content>
+    <mat-dialog-actions class="m-10">
+      <button *ngIf="menuAction=='edit'" type="submit" mat-raised-button class="btn btn-info" (click)="onSubmit(absenceForm)">Save</button>&nbsp;
+      <button type="button" mat-raised-button class="btn btn-default" (click)="onClose()">Cancel</button>
+    </mat-dialog-actions>
   </div>
-  <div class="text-center">
-    <h4>{{reportDetail.employeeName}}</h4>
-  </div>
-  <div class="absence-summary-title p-5 mt-5">Absence Summary</div>
-  <br>
-  <table class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
-    <tr>
-      <td>ID:</td>
-      <td>{{reportDetail.absenceId}}</td>
-    </tr>
-    <tr>
-      <td>Reason:</td>
-      <td>{{reportDetail.reason}}</td>
-    </tr>
-    <tr>
-      <td>From:</td>
-      <td>{{reportDetail.startDate | date:'E, M/d/y'}}</td>
-    </tr>
-    <tr>
-      <td>To:</td>
-      <td>{{reportDetail.endDate | date:'E, M/d/y'}}</td>
-    </tr>
-    <tr>
-      <td>Duration:</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td>Status:</td>
-      <td>{{reportDetail.statusTitle}}</td>
-    </tr>
-    <tr>
-      <td>Substitute:</td>
-      <td>{{reportDetail.substituteName}}</td>
-    </tr>
-    <tr>
-      <td>Posted:</td>
-      <td>{{reportDetail.postedOn | date:'M/d/y h:mm a'}}</td>
-    </tr>
-    <tr>
-      <td>Notes:</td>
-      <td>{{reportDetail.notes}}</td>
-    </tr>
-  </table>
-
-  <hr>
-  <mat-dialog-actions class="m-10">
-    <button type="button" mat-raised-button class="btn btn-info">Save</button>&nbsp;
-    <button type="button" mat-raised-button class="btn btn-default" (click)="onClose()">Cancel</button>
-  </mat-dialog-actions>
-</div>
+</form>

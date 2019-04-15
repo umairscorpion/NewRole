@@ -11,7 +11,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Observable } from 'rxjs/Observable';
 import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
-import { DomSanitizer, SafeUrl } from '../../../../../../node_modules/@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 @Component({
     templateUrl: 'addSubstitute.component.html'
 })

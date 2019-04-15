@@ -61,68 +61,68 @@
                     </mat-checkbox>
                 </div>
             </div>
-        </form>
-        <div [hidden]="!allowance.value.isResidualDays">
-            <div class="row">
-                <div class="col-md-12 vertical-center">
-                    <div class="col-md-7">
-                        Expiration Rules
-                    </div>
-                    <div class="col-md-2">
-                    </div>
-                    <div class="col-md-3" style="text-align: right;">
 
+            <div [hidden]="!allowance.value.isResidualDays">
+                <div class="row">
+                    <div class="col-md-12 vertical-center">
+                        <div class="col-md-7">
+                            Expiration Rules
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-3" style="text-align: right;">
+
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row col-md-10 col-md-offset-1 mat-elevation-z8" style="margin-bottom: 15px;">
-                <table cellpadding="3" cellspacing="3" width="100%">
-                    <tr>
-                        <th>
-                            Valid from
-                        </th>
-                        <th>
-                            Residual leave expires on
-                        </th>
-                        <th>
-                            Does not expire
-                        </th>
-                        <th>
-                            Expire at end of year
-                        </th>
-                    </tr>
-                    <mat-divider></mat-divider>
-                    <tr>
-                        <td>
-                            <mat-form-field style="width: 100px;">
-                                <input matInput [matDatepicker]="startDatePicker" placeholder="valid from">
-                                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                                <mat-datepicker #startDatePicker></mat-datepicker>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field style="width: 100px;">
-                                <input matInput [matDatepicker]="endDatePicker" placeholder="expires on">
-                                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-                                <mat-datepicker #endDatePicker></mat-datepicker>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-checkbox color="primary">
-                            </mat-checkbox>
-                        </td>
-                        <td>
-                            <mat-checkbox color="primary">
-                            </mat-checkbox>
-                        </td>
-                        <td style="display: inline;">
-                            <i class="material-icons">edit</i>
-                            <i class="material-icons">delete_sweep</i>
-                        </td>
-                    </tr>
+                <div class="row col-md-10 col-md-offset-1 mat-elevation-z8" style="margin-bottom: 15px;">
+                    <table cellpadding="3" cellspacing="3" width="100%">
+                        <tr>
+                            <th>
+                                Valid from
+                            </th>
+                            <th>
+                                Residual leave expires on
+                            </th>
+                            <th>
+                                Does not expire
+                            </th>
+                            <th>
+                                Expire at end of year
+                            </th>
+                        </tr>
+                        <mat-divider></mat-divider>
+                        <tr>
+                            <td>
+                                <mat-form-field style="width: 100px;">
+                                    <input matInput [matDatepicker]="startDatePicker" placeholder="valid from" formControlName="expirationStartDate">
+                                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #startDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field style="width: 100px;">
+                                    <input matInput [matDatepicker]="endDatePicker" placeholder="expires on" formControlName="expirationEndDate">
+                                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #endDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-checkbox color="primary" formControlName="isExpired">
+                                </mat-checkbox>
+                            </td>
+                            <td>
+                                <mat-checkbox color="primary" formControlName="isExpiredAtEndOfYear">
+                                </mat-checkbox>
+                            </td>
+                            <td style="display: inline;">
+                                <i class="material-icons">edit</i>
+                            </td>
+                        </tr>
 
-                </table>
+                    </table>
+                </div>
             </div>
-        </div>
+        </form>
     </mat-dialog-content>
 </div>

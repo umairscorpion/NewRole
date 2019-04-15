@@ -8,9 +8,8 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HttpErrorResponse } from '../../../../../../node_modules/@angular/common/http';
-import { FormGroup, Validators, FormBuilder } from '../../../../../../node_modules/@angular/forms';
-import { AllowanceComponent } from '../Leaves/popups/add-allowance.popup.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   templateUrl: 'substitutes.component.html',

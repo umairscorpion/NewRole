@@ -8,7 +8,7 @@ import { AbsenceService } from '../../../../Services/absence.service';
 import { LeaveType } from '../../../../Model/leaveType';
 import { LeaveRequest } from '../../../../Model/leaveRequest';
 import { NotifierService } from 'angular-notifier';
-import { Router } from '../../../../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 import { AllowanceComponent } from './popups/add-allowance.popup.component';
 import { Allowance } from '../../../../Model/Manage/allowance.detail';
 @Component({

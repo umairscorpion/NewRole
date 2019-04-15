@@ -22,8 +22,8 @@ export class ReportsComponent implements OnInit {
         this.LoadSideNavMenu();
     }
     LoadSideNavMenu(): void {
-        let resourceTypeId = 3;
-        let parentResourceTypeId = 6;
+        let resourceTypeId = 2;
+        let parentResourceTypeId = -1;
         this._userService.getUserResources(resourceTypeId,parentResourceTypeId,0).subscribe((data: any) => {
             this.sideNavMenu = data;
         },

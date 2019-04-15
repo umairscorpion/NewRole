@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormBuilder, Validators, FormGroup } from '../../../../../../../node_modules/@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { DistrictService } from '../../../../../Service/Manage/district.service';
 import { UserSession } from '../../../../../Services/userSession.service';
 
@@ -28,7 +28,11 @@ export class AllowanceComponent implements OnInit {
             yearlyAllowance: ['', Validators.required],
             isDeductAllowance: [false],
             isResidualDays: [false],
-            isEnalbled: [false]
+            isEnalbled: [false],
+            expirationStartDate: [new Date()],
+            expirationEndDate: [new Date()],
+            isExpired: [false],
+            isExpiredAtEndOfYear: [false]
         });
         if (this.data) {
             this.allowance.patchValue({...this.data});
@@ -37,6 +41,8 @@ export class AllowanceComponent implements OnInit {
 
     submitAllowance(allowance: FormGroup) {
         if(allowance.valid) {
+            allowance.value.expirationStartDate = new Date(allowance.value.expirationStartDate).toLocaleDateString();
+            allowance.value.expirationEndDate = new Date(allowance.value.expirationEndDate).toLocaleDateString();
             if (allowance.value.id > 0) {
                 this.districtService.Patch('District/allowances/', allowance.value).subscribe((data: any) => {
                     this.dialogRef.close();

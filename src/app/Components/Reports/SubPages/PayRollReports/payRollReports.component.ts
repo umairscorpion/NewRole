@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 @Component({
+    selector:'payroll-reports',
     templateUrl: 'payRollReports.component.html'
 })
 export class PayRollReportsComponent implements OnInit {

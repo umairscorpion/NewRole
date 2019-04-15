@@ -7,4 +7,8 @@ export interface Allowance {
     isResidualDays: boolean;
     isEnalbled: boolean;
     createdDate: Date | string;
+    expirationStartDate: Date | string;
+    expirationEndDate: Date | string;
+    isExpired: boolean;
+    isExpiredAtEndOfYear: boolean;
 }

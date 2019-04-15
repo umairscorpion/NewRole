@@ -4,11 +4,27 @@
         <mat-sidenav class="col-md-2" opened="true" [mode]="mobileQuery.matches ? 'side' : 'side'"
             [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
                      <mat-nav-list *ngIf='sideNavMenu && sideNavMenu.length' fixedTopGap="56">
-                        <a mat-list-item routerLink="{{sideNavMenuObj.stateMachine}}" *ngFor="let sideNavMenuObj of sideNavMenu">{{sideNavMenuObj.name}}</a>
+                        <a mat-list-item routerLink="../{{sideNavMenuObj.stateMachine}}" [routerLinkActive]="['active']" *ngFor="let sideNavMenuObj of sideNavMenu">{{sideNavMenuObj.name}}</a>
                         </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content class="col-md-10">
-            <router-outlet></router-outlet>
+            <mat-card>
+                <mat-card-content>
+                  <h2 class="example-h2">Reports</h2>
+                  <mat-tab-group class="demo-tab-group">
+                <mat-tab label="Daily">
+                    <daily-reports></daily-reports>
+                </mat-tab>
+                <mat-tab label="Monthly">
+                        <monthly-reports></monthly-reports>
+                </mat-tab>
+                <mat-tab label="Payroll">
+                        <payroll-reports></payroll-reports>
+                </mat-tab>
+                <mat-tab label="Activity"></mat-tab>    
+                </mat-tab-group>
+                </mat-card-content>
+              </mat-card>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

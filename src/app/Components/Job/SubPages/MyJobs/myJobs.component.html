@@ -32,7 +32,7 @@
                           </mat-select>
                       </mat-form-field>
                       <div class="col-md-2 col-lg-2">
-                              <button mat-button type="submit">Search</button>
+                              <button mat-button type="submit" style="background: #3CCCD1; color: white;">Search</button>
                       </div>
                   </form>
               </div>
@@ -51,7 +51,7 @@
               <!-- Position Column -->
               <ng-container matColumnDef="AbsenceDate">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Absence Date </mat-header-cell>
-                <mat-cell *matCellDef="let Absence"> {{Absence.startDate | date}}
+                <mat-cell *matCellDef="let Absence"> {{Absence.startDate | date:'E, M/d/y'}}
                   <br> {{Absence.startTime | convertFrom24HourTo12HourFormat}}-{{Absence.endTime | convertFrom24HourTo12HourFormat}} </mat-cell>
               </ng-container>
       

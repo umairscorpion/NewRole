@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { catchError, map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { Entity } from '../Model/entity';
 import { HttpClient } from '@angular/common/http';
 import { ErrorHandlerService } from './error-handler/error-handler.service';

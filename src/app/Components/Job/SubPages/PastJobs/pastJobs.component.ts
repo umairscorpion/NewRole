@@ -90,6 +90,8 @@ export class PastJobsComponent implements OnInit {
     }
 
     ShowJobDetail(AbsenceDetail: any) {
+        AbsenceDetail.isShowAttachment = false;
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
+    
     }
 }

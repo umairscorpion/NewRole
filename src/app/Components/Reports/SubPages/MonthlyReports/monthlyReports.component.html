@@ -61,8 +61,7 @@
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <strong>{{row['employeeName']}}</strong><br>
-                  <span>{{ row['employeeTypeTitle']}}. {{ row['subject'] }}. {{row['grade']}}</span><br>
-                  <span>{{ row['districtName'] }}</span><br>
+                  <span>{{ row['districtName']!=null ? row['districtName'] : 'N/A' }}, {{ row['subject'] != null ? row['subject'] : 'N/A'}}, {{row['grade'] != null ? row['grade'] : 'N/A'}}</span><br>
                 </div>
               </ng-template>
             </ngx-datatable-column>
@@ -70,6 +69,7 @@
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis">{{ row['endDate'] | date:'E, M/d/y' }}</div>
+                <div class="ellipsis">{{ row['startTime'] | convertFrom24HourTo12HourFormat }}-{{ row['endTime'] | convertFrom24HourTo12HourFormat}} </div>
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
@@ -109,8 +109,7 @@
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <strong>{{row['employeeName']}}</strong><br>
-                  <span>{{ row['employeeTypeTitle']}}. {{ row['subject'] }}. {{row['grade']}}</span><br>
-                  <span>{{ row['districtName'] }}</span><br>
+                  <span>{{ row['districtName']!=null ? row['districtName'] : 'N/A' }}, {{ row['subject'] != null ? row['subject'] : 'N/A'}}, {{row['grade'] != null ? row['grade'] : 'N/A'}}</span><br>
                 </div>
               </ng-template>
             </ngx-datatable-column>
@@ -118,6 +117,7 @@
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis">{{ row['endDate'] | date:'E, M/d/y' }}</div>
+                <div class="ellipsis">{{ row['startTime'] | convertFrom24HourTo12HourFormat }}-{{ row['endTime'] | convertFrom24HourTo12HourFormat}} </div>
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
@@ -147,8 +147,7 @@
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <strong>{{row['employeeName']}}</strong><br>
-                  <span>{{ row['employeeTypeTitle']}}. {{ row['subject'] }}. {{row['grade']}}</span><br>
-                  <span>{{ row['districtName'] }}</span><br>
+                  <span>{{ row['districtName']!=null ? row['districtName'] : 'N/A' }}, {{ row['subject'] != null ? row['subject'] : 'N/A'}}, {{row['grade'] != null ? row['grade'] : 'N/A'}}</span><br>
                 </div>
               </ng-template>
             </ngx-datatable-column>
@@ -156,6 +155,7 @@
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis">{{ row['endDate'] | date:'E, M/d/y' }}</div>
+                <div class="ellipsis">{{ row['startTime'] | convertFrom24HourTo12HourFormat }}-{{ row['endTime'] | convertFrom24HourTo12HourFormat}} </div>
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">

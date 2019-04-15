@@ -7,6 +7,7 @@ import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 @Component({
+    selector: 'past-absences',
     templateUrl: 'pastAbsence.component.html'
 })
 export class PastAbsenceComponent implements OnInit {

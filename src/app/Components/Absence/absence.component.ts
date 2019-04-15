@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { SideNavService } from '../SideNav/sideNav.service';
 import { CommunicationService } from '../../Services/communication.service';
+import { UserSession } from '../../Services/userSession.service';
 
 @Component({
     templateUrl: 'absence.component.html',
@@ -14,12 +15,14 @@ import { CommunicationService } from '../../Services/communication.service';
 export class absenceComponent {
     sideNavMenu: any;
     msg: string;
+    userRole: number = this._userSession.getUserRoleId();
     @HostBinding('class.is-open')
     mobileQuery: MediaQueryList;
     private _mobileQueryListener: () => void;
     isOpen = true;
     constructor(private router: Router, private _userService: UserService, public dialog: MatDialog,
         private sideNavService: SideNavService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
+        private _userSession: UserSession,
         private _communicationService: CommunicationService) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();

@@ -1,5 +1,5 @@
 import { Entity } from "./entity";
-import { SafeUrl } from "../../../node_modules/@angular/platform-browser";
+import { SafeUrl } from "@angular/platform-browser";
 
 export class Absence extends Entity {
     absenceId: number;

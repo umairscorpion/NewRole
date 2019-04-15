@@ -11,10 +11,10 @@ import * as $ from 'jquery';
 import * as moment from 'moment';
 import 'fullcalendar';
 import 'fullcalendar-scheduler';
-import { AvailabilityService } from 'src/app/Services/availability.service';
+import { AvailabilityService } from '../../Services/availability.service';
 import { MatDialog } from '@angular/material';
 import { UnAvailabilityComponent } from './unavailability/unavailability.component';
-import { UserAvailability } from 'src/app/Model/userAvailability';
+import { UserAvailability } from '../../Model/userAvailability';
 
 @Component({
   selector: 'app-substitute-calendar',
