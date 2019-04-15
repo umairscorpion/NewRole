@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 
 export abstract class RestService<T> {
 
-    private baseUrl = environment.apiUrl;   
+    private baseUrl = environment.apiUrl;
 
     constructor(
         protected httpClient: HttpClient) { }
@@ -31,7 +31,7 @@ export abstract class RestService<T> {
     }
 
     put(url: string, id: number, model: any): Observable<T> {
-        return this.httpClient.put<T>(url + id, model);
+        return this.httpClient.put<T>(this.baseUrl + url + id, model);
     }
 
     delete(url: string, id: number): Observable<T> {

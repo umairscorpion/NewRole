@@ -7,6 +7,7 @@ import {
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { RecurringComponent } from './recurring/recurring.component';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-unavailability-component',
@@ -37,7 +38,7 @@ export class UnAvailabilityComponent implements OnInit {
         availabilityId: [this.availability.availabilityId || 0],
         userId: [this.availability.userId || ''],
         availabilityStatusId: [this.availability.availabilityStatusId || 1],
-        title: [this.availability.title || '', Validators.required],
+        title: [this.availability.title || ''],
         startDate: [this.availability.startDate, Validators.required],
         endDate: [this.availability.endDate, Validators.required],
         startTime: [this.availability.startTime, Validators.required],
@@ -96,9 +97,28 @@ export class UnAvailabilityComponent implements OnInit {
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
     if (!formGroup.invalid) {
-      this.dialogRef.close({ action: 'Submit', availability: formGroup.value });
+      this.dialogRef.close({ action: 'Submit', id: this.availability.availabilityId, availability: formGroup.value });
       this.submitted = false;
     }
+  }
+
+  delete() {
+    swal.fire({
+      title: 'Delete',
+      text:
+        'Are you sure, you want to delete?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-danger',
+      cancelButtonClass: 'btn btn-success',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      buttonsStyling: false
+    }).then(r => {
+      if (r.value) {
+        this.dialogRef.close({ action: 'Delete', id: this.availability.availabilityId });
+      }
+    });
   }
 
   checkDates(group: FormGroup) {

@@ -15,6 +15,7 @@ import { AvailabilityService } from 'src/app/Services/availability.service';
 import { MatDialog } from '@angular/material';
 import { UnAvailabilityComponent } from './unavailability/unavailability.component';
 import { UserAvailability } from 'src/app/Model/userAvailability';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-substitute-calendar',
@@ -90,10 +91,9 @@ export class SubstituteCalendarComponent implements OnInit {
           },
           eventClick: event => {
             if (this.doOpen) {
-              this.doOpen = false;
               this.dialogRef.openDialogs.pop();
               this.availabilityService
-                .get(event.id.toString())
+                .get(`availability/${event.id}`)
                 .subscribe((availability: any) => {
                   const dialogRef = this.dialogRef.open(
                     UnAvailabilityComponent,
@@ -102,12 +102,22 @@ export class SubstituteCalendarComponent implements OnInit {
                       data: availability
                     }
                   );
+                  this.doOpen = false;
                   dialogRef.afterClosed().subscribe(result => {
                     if (result) {
                       console.log({ result });
+                      if (result.action === 'Submit') {
+                        this.availabilityService.put('availability/', result.id, result.availability).subscribe(t => {
+                          this.reloadCalendar();
+                        });
+                      } else if (result.action === 'Delete') {
+                        this.availabilityService.delete('availability/', result.id).subscribe(t => {
+                          this.reloadCalendar();
+                        });
+                      }
+                      this.doOpen = true;
                     }
                   });
-                  this.doOpen = true;
                 });
             }
           }
