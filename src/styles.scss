@@ -8,6 +8,9 @@
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
 @import "../node_modules/fullcalendar/dist/fullcalendar.min.css";
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~saturn-datepicker/bundle.css';
 
 $sides: (top, bottom, left, right);
 @for $i from 0 to 100 {
@@ -133,6 +136,7 @@ $sides: (top, bottom, left, right);
   background-color: #5e9eca;
 }
 
+
 .allowance-popup-dialog {
   width: 38vw;
   height: auto;
@@ -142,6 +146,7 @@ $sides: (top, bottom, left, right);
     padding: 0;
   }
  }
+
 #Unavailable {
   .mat-form-field {
     width: 100% !important;
@@ -247,6 +252,8 @@ div.center-text{
   background-repeat: no-repeat;
   background-size: contain;
   height: 28px;
+  margin-left: 20px;
+  margin-top: 10px;
 }
 .substitute-is-unavailable
 {
@@ -254,6 +261,8 @@ div.center-text{
   background-repeat: no-repeat;
   background-size: contain;
   height: 28px;
+  margin-left: 20px;
+  margin-top: 10px;
 }
 .substitute-is-vacations
 {
@@ -261,4 +270,37 @@ div.center-text{
   background-repeat: no-repeat;
   background-size: contain;
   height: 28px;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+.substitute-availability  {
+  .fc-widget-header {
+  color: #7e7e7e;
+  font-weight: normal;
+  text-align: left !important;
+  padding-left: 10px;
+  border-left-style: none !important;
+    border-right-style: none !important;
+  }
+  .fc-timeline .fc-divider {
+    width: 0px;
+    border-style: none;
+  }
+  td.fc-today {
+    background: none !important;
+  }
+  .fc-head, .fc-body {
+    border: solid 1px #dddddd !important;
+  }
+  td.fc-widget-content {
+    border-left-style: none !important;
+    border-right-style: none !important;
+  }
+}
+.substitute-availability-profile-image {
+  float: left;
+  padding: 7px;
+}
+.ng-select .ng-select-container {
+  min-height: 38.5px !important;
 }
