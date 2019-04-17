@@ -19,7 +19,7 @@
             <div class="col-md-5 col-lg-5">
                 <div class="row col-md-6 col-lg-6">
                     <mat-form-field>
-                        <mat-select placeholder="Position">
+                        <mat-select placeholder="Position" [(ngModel)]="payRate.positionId">
                             <mat-option>--</mat-option>
                             <mat-option *ngFor="let position of positions" [value]="position.id">
                                 {{position.title}}
@@ -29,22 +29,22 @@
                 </div>
             </div>
             <div class="col-md-1 col-lg-1">
-                Daily:
+                {{payRate.period == '1' ? 'Daily' : 'Hourly'}}:
             </div>
             <div class="col-md-1 col-lg-1">
                 <mat-form-field>
-                    <input matInput type="number" placeholder="rate">
+                    <input matInput [(ngModel)]="payRate.payRate" type="number" placeholder="rate">
                 </mat-form-field>
             </div>
             <div class="col-md-1 col-lg-1">
-                <mat-select placeholder="period">
+                <mat-select placeholder="period" [(ngModel)]="payRate.period">
                     <mat-option value="1">Daily</mat-option>
                     <mat-option value="2">Hourly</mat-option>
                 </mat-select>
             </div>
             <div class="col-md-3 col-lg-3">
                 <div class="col-md-12 col-lg-12" style="text-align: left;">
-                    <button mat-raised-button type="submit" style="background-color: #04C0BF; color: white">Save</button>
+                    <button mat-raised-button type="button" (click)="postPayRate(payRate)" style="background-color: #04C0BF; color: white">Save</button>
                     <button mat-raised-button type="button" (click)="onEditHourLimit()" style="margin-left:3px;background-color: #C3DEF1">Edit</button>
                 </div>
             </div>
@@ -65,10 +65,10 @@
             <div class="col-md-12">Payrate</div>
         </div>
         <mat-divider></mat-divider>
-        <div class="row vertical-center">
+        <div class="row vertical-center" *ngFor="let payRateRule of payRateRules">
             <div class="col-md-3">
                 <mat-form-field>
-                    <mat-select placeholder="Position">
+                    <mat-select placeholder="Position" [(ngModel)]="payRateRule.positionId">
                         <mat-option>--</mat-option>
                         <mat-option *ngFor="let position of positions" [value]="position.id">
                             {{position.title}}
@@ -78,84 +78,18 @@
             </div>
             <div class="col-md-3">
                 <mat-form-field>
-                    <input matInput type="number" placeholder="Increase After">
+                    <input matInput type="number" [(ngModel)]="payRateRule.increaseAfterDays" placeholder="Increase After">
                     <span matSuffix>Days</span>
                 </mat-form-field>
             </div>
             <div class="col-md-2">
                 <mat-form-field>
-                    <input matInput type="number" placeholder="Payment">
+                    <input matInput type="number" [(ngModel)]="payRateRule.payRate" placeholder="Payment">
                     <span matPrefix>$&nbsp;</span>
                 </mat-form-field>
             </div>
             <div class="col-md-2">
-                <button mat-raised-button type="submit" style="background-color: #04C0BF;color: white">
-                    <mat-icon style="font-size: 20px">check</mat-icon>OK</button>
-            </div>
-            <div class="col-md-2">
-                <button mat-raised-button type="button" style="background-color: #F1F1F3">
-                    <mat-icon style="color:#d20e0f;font-size:15px;font-weight: bold;">close</mat-icon>
-                </button>
-            </div>
-        </div>
-        <div class="row vertical-center">
-            <div class="col-md-3">
-                <mat-form-field>
-                    <mat-select placeholder="Position">
-                        <mat-option>--</mat-option>
-                        <mat-option *ngFor="let position of positions" [value]="position.id">
-                            {{position.title}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-md-3">
-                <mat-form-field>
-                    <input matInput type="number" placeholder="Increase After">
-                    <span matSuffix>Days</span>
-                </mat-form-field>
-            </div>
-            <div class="col-md-2">
-                <mat-form-field>
-                    <input matInput type="number" placeholder="Payment">
-                    <span matPrefix>$&nbsp;</span>
-                </mat-form-field>
-            </div>
-            <div class="col-md-2">
-                <button mat-raised-button type="submit" style="background-color: #04C0BF;color: white">
-                    <mat-icon style="font-size: 20px">check</mat-icon>OK</button>
-            </div>
-            <div class="col-md-2">
-                <button mat-raised-button type="button" style="background-color: #F1F1F3">
-                    <mat-icon style="color:#d20e0f;font-size:15px;font-weight: bold;">close</mat-icon>
-                </button>
-            </div>
-        </div>
-        <div class="row vertical-center">
-            <div class="col-md-3">
-                <mat-form-field>
-                    <mat-select placeholder="Position">
-                        <mat-option>--</mat-option>
-                        <mat-option *ngFor="let position of positions" [value]="position.id">
-                            {{position.title}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-md-3">
-                <mat-form-field>
-                    <input matInput type="number" placeholder="Increase After">
-                    <span matSuffix>Days</span>
-                </mat-form-field>
-            </div>
-            <div class="col-md-2">
-                <mat-form-field>
-                    <input matInput type="number" placeholder="Payment">
-                    <span matPrefix>$&nbsp;</span>
-                </mat-form-field>
-            </div>
-            <div class="col-md-2">
-                <button mat-raised-button type="submit" style="background-color: #04C0BF;color: white">
+                <button mat-raised-button type="button" (click)="postPayRateRule(payRateRule)" style="background-color: #04C0BF;color: white">
                     <mat-icon style="font-size: 20px">check</mat-icon>OK</button>
             </div>
             <div class="col-md-2">

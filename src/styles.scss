@@ -73,15 +73,15 @@ $sides: (top, bottom, left, right);
   cursor: pointer !important;
 }
 
- .report-details-dialog {
+.report-details-dialog {
   width: 38vw;
   height: 650px;
   .mat-dialog-container {
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    padding: 0;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 0;
   }
- }
+}
 
  .position-details-dialog {
   width: 38vw;
@@ -92,29 +92,32 @@ $sides: (top, bottom, left, right);
   }
  }
 
-.report-summary-bar-chart-title{
+ .report-summary-bar-chart-title{
   text-align: center;
   font-weight: 700;
   color: #a7a7a7;
-}
-.summary-donut-inner {
-  margin-top: -260px;
-  text-align: center;
-  h5 {
+  }
+
+  .summary-donut-inner {
+    margin-top: -260px;
+    text-align: center;
+    h5 {
     margin-bottom: 5px;
     padding-top: 16px;
     font-size: 45px;
-  }
-}
-.donut-inner {
-  margin-top: -100px;
-  margin-bottom: 45px;
-  h5 {
-    margin-bottom: 5px;
-    padding-top: 16px;
-    font-size: 45px;
-  }
-}
+    }
+    }
+
+    .donut-inner {
+      margin-top: -100px;
+      margin-bottom: 45px;
+      h5 {
+      margin-bottom: 5px;
+      padding-top: 16px;
+      font-size: 45px;
+      }
+      }
+      
 .text-align-right {
   text-align: right;
 }
@@ -329,3 +332,17 @@ div.center-text{
   .mat-radio-label-content {
     font-weight: 100;
     }
+    .report-summary-donut-fillrate{
+      text-align: center;
+      margin-top: 90px;
+      font-weight: 700;
+      color: #a7a7a7;
+      }
+      .donut-inner-for-fill-rate {
+        margin-top: -150px;
+        h5 {
+        margin-bottom: 5px;
+        padding-top: 16px;
+        font-size: 45px;
+        }
+        }

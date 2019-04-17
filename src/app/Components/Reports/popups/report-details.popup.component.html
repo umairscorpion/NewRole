@@ -3,7 +3,7 @@
     <mat-dialog-actions>
       <div class="col-md-8 pr-0">
         <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
-        <button [disabled]="reportDetail.statusId == 1 || !reportDetail.substituteRequired" type="button" mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
+        <button [disabled]="reportDetail.statusId == 1 || reportDetail.substituteRequired == 0" type="button" mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
         <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default" (click)="performAction('assign')">Assign</button>
         <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default" (click)="performAction('resend')">Resend</button>
       </div>
@@ -13,7 +13,7 @@
       </div>
     </mat-dialog-actions>
     <hr>
-    <mat-dialog-content>
+    <div>
       <div class="avatar-wrapper">
         <img class="profile-pic" src="" />
       </div>
@@ -85,7 +85,7 @@
           <td>Reason:</td>
           <td>
             <mat-form-field>
-              <mat-select formControlName="absenceReasonId" (selectionChange)="onChangeReason($event.value)" >
+              <mat-select formControlName="absenceReasonId">
                 <mat-option *ngFor="let Leave of Leaves" [value]="Leave.leaveTypeId">
                   {{Leave.leaveTypeName}}
                 </mat-option>
@@ -97,7 +97,7 @@
           <td>From:</td>
           <td>
             <mat-form-field>
-              <input matInput [max]="absenceForm.value.AbsenceEndDate" [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
+              <input matInput
                 [matDatepicker]="StartDatePicker" placeholder="Start Date" formControlName="startDate"
                 (dateChange)="SetEndDateValue(absenceForm.value.startDate,absenceForm.value.endDate)">
               <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
@@ -109,9 +109,8 @@
           <td>To:</td>
           <td>
             <mat-form-field>
-              <input matInput [max]="absenceForm.value.AbsenceEndDate" [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
-                [matDatepicker]="EndDatePicker" placeholder="Start Date" formControlName="endDate"
-                (dateChange)="SetEndDateValue(absenceForm.value.startDate,absenceForm.value.endDate)">
+              <input matInput [min]="absenceForm.value.startDate"
+                [matDatepicker]="EndDatePicker" placeholder="Start Date" formControlName="endDate">
               <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
               <mat-datepicker [dateClass]="dateClass" #EndDatePicker></mat-datepicker>
             </mat-form-field>              
@@ -214,7 +213,7 @@
         </tr>         
       </table>
       <hr>
-    </mat-dialog-content>
+    </div>
     <mat-dialog-actions class="m-10">
       <button *ngIf="menuAction=='edit'" type="submit" mat-raised-button class="btn btn-info" (click)="onSubmit(absenceForm)">Save</button>&nbsp;
       <button type="button" mat-raised-button class="btn btn-default" (click)="onClose()">Cancel</button>

@@ -114,19 +114,20 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
         this.noSubReqAbsence = [];
         this.absenceSummary = [];
     }
-
+    
     reportDetails(absenceDetail: ReportDetail) {
         const dialogEdit = this.dialogRef.open(
             ReportDetailsComponent,
-            {
+            {                
                 panelClass: 'report-details-dialog',
-                data: absenceDetail
+                data: absenceDetail                                                   
             }
         );
 
         dialogEdit.afterClosed().subscribe(result => {
-            if (result == 'Reload') {
-                this.loadReportSummary();
+            if(result == 'Reload')
+            { 
+                this.loadReportSummary();                          
             }
         });
     }
