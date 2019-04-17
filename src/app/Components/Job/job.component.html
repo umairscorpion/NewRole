@@ -1,14 +1,36 @@
 <div class="example-container">
     <Subzz-app-SideNav></Subzz-app-SideNav>
     <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-        <mat-sidenav class="col-md-2" opened="{{isOpen}}" [mode]="mobileQuery.matches ? 'over' : 'side'"
-            [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-                     <mat-nav-list *ngIf='sideNavMenu && sideNavMenu.length' fixedTopGap="56">
-                        <a mat-list-item [routerLinkActive]="['active']" routerLink="{{sideNavMenuObj.stateMachine}}" *ngFor="let sideNavMenuObj of sideNavMenu">{{sideNavMenuObj.name}}</a>
-                        </mat-nav-list>
+        <mat-sidenav class="col-md-2" opened="{{isOpen}}" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+            fixedTopGap="56">
+            <mat-nav-list *ngIf='userRole == 5 && sideNavMenu && sideNavMenu.length' fixedTopGap="56">
+                <div>
+                    <a mat-list-item [routerLinkActive]="['active']" routerLink="../{{sideNavMenuObj.stateMachine}}" *ngFor="let sideNavMenuObj of sideNavMenu">{{sideNavMenuObj.name}}</a>
+                </div>
+            </mat-nav-list>
+            <mat-nav-list *ngIf="userRole == 4" fixedTopGap="56">
+                <div>
+                    <a mat-list-item [routerLinkActive]="['active']" routerLink="availableJobs">Jobs</a>
+                </div>
+            </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content class="col-md-10">
-            <router-outlet></router-outlet>
+            <mat-card>
+                <mat-card-content>
+                    <h2 class="example-h2">Jobs</h2>
+                    <mat-tab-group class="demo-tab-group">
+                        <mat-tab label="Open">
+                            <available-jobs></available-jobs>
+                        </mat-tab>
+                        <mat-tab label="My Jobs">
+                            <my-jobs></my-jobs>
+                        </mat-tab>
+                        <mat-tab label="Past">
+                            <past-jobs></past-jobs>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card-content>
+            </mat-card>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

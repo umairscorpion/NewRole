@@ -10,6 +10,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FileService } from '../../../../Services/file.service';
 
 @Component({
+    selector: 'available-jobs',
     templateUrl: 'availableJobs.component.html'
 })
 

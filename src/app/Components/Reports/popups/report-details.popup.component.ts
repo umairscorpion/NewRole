@@ -169,8 +169,6 @@ export class ReportDetailsComponent implements OnInit {
     let confirmResult = confirm('Are you sure you want to assign this job?');
     let StatusId = 2;
       if (confirmResult) {
-          if ((this.reportDetail.startDate as Date) <= this.currentDate)
-          { this.notifier.notify('error','Not aBle to release now') ; return;}
           this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
               if (response == "success") {
                 this.dialogRef.close('Reload');

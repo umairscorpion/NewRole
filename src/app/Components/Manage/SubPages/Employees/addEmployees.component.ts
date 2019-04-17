@@ -13,7 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class AddEmployeesComponent implements OnInit {
     userIdForUpdate: any = null;
-    profilePictureUrl : string
+    profilePictureUrl: string
     profilePicture: any;
     private notifier: NotifierService;
     userTypes: any;
@@ -28,7 +28,7 @@ export class AddEmployeesComponent implements OnInit {
     showOrganization: boolean = false;
     constructor(private router: Router, private fb: FormBuilder, private _dataContext: DataContext,
         notifier: NotifierService, private route: ActivatedRoute, private _userSession: UserSession,
-        private fileService: FileService, private sanitizer : DomSanitizer) {
+        private fileService: FileService, private sanitizer: DomSanitizer) {
         this.notifier = notifier;
     }
 
@@ -41,6 +41,8 @@ export class AddEmployeesComponent implements OnInit {
             TeachingLevel: [''],
             Speciality: [''],
             IsCertified: ['1', Validators.required],
+            IsSubscribedEmail: ['1', Validators.required],
+            IsSubscribedSMS: ['1', Validators.required],
             Gender: ['M', Validators.required],
             District: ['', Validators.required],
             OrganizationId: [''],
@@ -75,6 +77,8 @@ export class AddEmployeesComponent implements OnInit {
                         Speciality: data[0].speciality ? data[0].speciality : '',
                         WorkLocaion: data[0].organizationId ? '2' : '1',
                         IsCertified: String(data[0].isCertified),
+                        IsSubscribedEmail: data[0].isSubscribedEmail ? '1' : '0',
+                        IsSubscribedSMS: data[0].isSubscribedSMS ? '1' : '0',
                         Gender: String(data[0].gender),
                         District: data[0].districtId,
                         OrganizationId: data[0].organizationId ? data[0].organizationId : '',
@@ -218,6 +222,8 @@ export class AddEmployeesComponent implements OnInit {
                     Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
                     Gender: form.value.Gender,
                     IsCertified: form.value.IsCertified,
+                    IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
+                    IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
                     DistrictId: typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
                     OrganizationId: this.showOrganization == true ? form.getRawValue().OrganizationId : '',
                     Email: form.value.EmailId,
@@ -247,6 +253,8 @@ export class AddEmployeesComponent implements OnInit {
                     Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
                     Gender: form.value.Gender,
                     IsCertified: form.value.IsCertified,
+                    IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
+                    IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
                     DistrictId: typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
                     OrganizationId: form.getRawValue().OrganizationId,
                     Email: form.value.EmailId,

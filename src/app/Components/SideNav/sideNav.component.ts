@@ -163,6 +163,11 @@ export class PopupDialogForSettings {
         this.router.navigate(['/profile']);
     }
 
+    openSubstituteUnavailabilityCalendar() {
+        this.dialog.closeAll();
+        this.router.navigate(['/availability']);
+    }
+
     openCalendar() {
         this.dialog.closeAll();
         this.router.navigate(['/calendar']);

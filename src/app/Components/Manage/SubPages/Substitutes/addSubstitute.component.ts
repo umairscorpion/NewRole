@@ -43,12 +43,14 @@ export class AddSubstituteComponent implements OnInit {
             TeachingLevel: [''],
             Speciality: [''],
             IsCertified: ['1', Validators.required],
+            IsSubscribedEmail: ['1', Validators.required],
+            IsSubscribedSMS: ['1', Validators.required],
             Gender: ['M', Validators.required],
             District: ['', Validators.required],
             Email: ['', [Validators.required, Validators.email]],
             PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
-            PayRate: [''],
-            HourLimit: ['']
+            PayRate: ['0'],
+            HourLimit: ['0']
         });
         this.GetUserTypes();
         this.GetDistricts();
@@ -64,14 +66,16 @@ export class AddSubstituteComponent implements OnInit {
                         LastName: data[0].lastName,
                         UserTypeId: data[0].userTypeId,
                         IsCertified: String(data[0].isCertified),
+                        IsSubscribedEmail: String(data[0].isSubscribedEmail),
+                        IsSubscribedSMS: String(data[0].isSubscribedSMS),
                         Gender: String(data[0].gender),
                         District: data[0].districtId,
                         Email: data[0].email,
                         TeachingLevel: data[0].teachingLevel,
                         Speciality: data[0].speciality ? data[0].speciality : '',
                         PhoneNumber: data[0].phoneNumber,
-                        PayRate: data[0].PayRate,
-                        HourLimit: data[0].HourLimit
+                        PayRate: 0,
+                        HourLimit: 0
                     }
                     this.getProfileImage(data[0].profilePicture);
                     this.substituteForm.setValue(SubstituteModel);
@@ -128,15 +132,11 @@ export class AddSubstituteComponent implements OnInit {
     onChangeEmployeeType(value: any) {
         if (value === 1) {
             this.substituteForm.controls["TeachingLevel"].setValidators([Validators.required]);
-            this.substituteForm.controls["Speciality"].setValidators([Validators.required]);
             this.substituteForm.controls['TeachingLevel'].updateValueAndValidity();
-            this.substituteForm.controls['Speciality'].updateValueAndValidity();
         }
         else {
             this.substituteForm.controls['TeachingLevel'].clearValidators();
-            this.substituteForm.controls['Speciality'].clearValidators();
             this.substituteForm.controls['TeachingLevel'].updateValueAndValidity();
-            this.substituteForm.controls['Speciality'].updateValueAndValidity();
         }
     }
 
@@ -176,12 +176,14 @@ export class AddSubstituteComponent implements OnInit {
                     Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
                     Gender: form.value.Gender,
                     IsCertified: form.value.IsCertified,
+                    IsSubscribedEmail: form.value.IsSubscribedEmail,
+                    IsSubscribedSMS: form.value.IsSubscribedSMS,
                     DistrictId: form.getRawValue().District,
                     Email: form.value.Email,
                     PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
-                    PayRate: form.value.PayRate,
-                    HourLimit: form.value.HourLimit
+                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png'
+                    // PayRate: form.value.PayRate,
+                    // HourLimit: form.value.HourLimit
                 }
                 this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
                     this.router.navigate(['/manage/substitutes']);
@@ -202,6 +204,8 @@ export class AddSubstituteComponent implements OnInit {
                     Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
                     Gender: form.value.Gender,
                     IsCertified: form.value.IsCertified,
+                    IsSubscribedEmail: form.value.IsSubscribedEmail,
+                    IsSubscribedSMS: form.value.IsSubscribedSMS,
                     DistrictId: form.getRawValue().District,
                     Email: form.value.Email,
                     PhoneNumber: form.value.PhoneNumber,

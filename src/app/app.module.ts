@@ -154,6 +154,8 @@ import { PositionsComponent } from './Components/Manage/SubPages/Substitutes/Sub
 import { SubstituteAvailabilityComponent } from './Components/Dashboard/substitute-availability.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
+import { PositionComponent } from './Components/Manage/SubPages/Substitutes/SubPages/popups/position-detail.popup.component';
+import { PayRateComponent } from './Components/Manage/SubPages/Substitutes/SubPages/PayRate/payRate-detail.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -309,7 +311,9 @@ const customNotifierOptions: NotifierOptions = {
         RecurringComponent,
         PositionsComponent,
         SubstituteAvailabilityComponent,
-        AllowanceComponent
+        AllowanceComponent,
+        PositionComponent,
+        PayRateComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -324,7 +328,8 @@ const customNotifierOptions: NotifierOptions = {
         ReportDetailsComponent,
         UnAvailabilityComponent,
         AllowanceComponent,
-        RecurringComponent
+        RecurringComponent,
+        PositionComponent
     ],
     providers: [
         UserService,

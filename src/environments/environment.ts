@@ -5,10 +5,6 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:61137/api/'
-<<<<<<< HEAD
-=======
-  // apiUrl: 'http://162.241.138.178/plesk-site-preview/sapi.loginsubzz.com/api/'
->>>>>>> 7ad0e5cc676a81324b8112d971f233c5e078ef5a
 };
 
 /*
