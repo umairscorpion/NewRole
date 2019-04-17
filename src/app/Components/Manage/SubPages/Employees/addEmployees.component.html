@@ -48,7 +48,8 @@
 
                         <div class="row">
                             <div class="col-md-6 col-lg-6" style="margin-top: 10px">
-                                Work Location <br>
+                                Work Location
+                                <br>
                                 <mat-radio-group (change)="OnchangeWorkLocation($event)" formControlName="WorkLocaion" #radioGroupForLocation="matRadioGroup">
                                     <mat-radio-button color="primary" value="1">District Level</mat-radio-button>
                                     <mat-radio-button style="padding-left:10px" color="primary" value="2">Campus/Building</mat-radio-button>
@@ -71,7 +72,7 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <mat-form-field class="col-md-6 col-lg-6" hintLabel="Max 11 characters">
                                 <input matInput #input maxlength="11" formControlName="PhoneNumber" placeholder="Contact Number">
                                 <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
@@ -91,10 +92,41 @@
                                     <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="F">Female</mat-radio-button>
                                 </mat-radio-group>
                             </div>
+                        </div> -->
+                        <div class="row">
+                            <mat-form-field style="margin-top:10px;" class="col-md-6 col-lg-6" hintLabel="Max 11 characters">
+                                <input matInput #input maxlength="11" formControlName="PhoneNumber" placeholder="Contact Number">
+                                <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
+                                <mat-error *ngIf="employeeForm.controls['PhoneNumber'].hasError('pattern')">Only numbers allowed
+                                </mat-error>
+                            </mat-form-field>
+                            <div class="col-md-3 col-lg-3" style="margin-left:-16px">
+                                <label class="col-md-8 col-lg-8" for="mat-radio-group" style="margin-top:10px;font-weight:100;">Email Alerts:
+                                </label>
+                                <mat-radio-group class="col-md-3 col-lg-3" style="margin-top:10px" formControlName="IsSubscribedEmail" #radioGroup="matRadioGroup">
+                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="0">No
+                                    </mat-radio-button>
+                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="1">Yes
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-md-3 col-lg-3">
+                                <label class="col-md-8 col-lg-8" for="mat-radio-group" style="margin-top:10px;font-weight:100;">Text Alerts:
+                                </label>
+                                <mat-radio-group class="col-md-3 col-lg-3" style="margin-top:10px" formControlName="IsSubscribedSMS" #radioGroup="matRadioGroup">
+                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="0">No
+                                    </mat-radio-button>
+                                    <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="1">Yes
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-2 col-lg-2">
+                    <div>
+                        <h4 style="text-align:center">Profile Picture</h4>
+                    </div>
                     <div class="row">
                         <img [src]="profilePicture" width="200" height="200">
                     </div>

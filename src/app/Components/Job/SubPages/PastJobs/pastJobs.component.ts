@@ -7,6 +7,7 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 
 @Component({
+    selector: 'past-jobs',
     templateUrl: 'pastJobs.component.html'
 })
 

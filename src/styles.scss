@@ -70,15 +70,25 @@ $sides: (top, bottom, left, right);
   cursor: pointer !important;
 }
 
-.report-details-dialog {
+ .report-details-dialog {
+  width: 38vw;
+  height: 650px;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 0;
+  }
+ }
+
+ .position-details-dialog {
   width: 38vw;
   height: auto;
   .mat-dialog-container {
     overflow-x: hidden !important;
     overflow-y: hidden !important;
-    padding: 0;
   }
  }
+
 .report-summary-bar-chart-title{
   text-align: center;
   font-weight: 700;
@@ -262,3 +272,18 @@ div.center-text{
   background-size: contain;
   height: 28px;
 }
+
+.donut-inner-total {
+  margin-top: -180px;
+  margin-bottom: 45px;
+  margin-left: 165px;
+  h5 {
+  margin-bottom: 5px;
+  padding-top: 16px;
+  font-size: 35px;
+  }
+  }
+
+  .mat-radio-label-content {
+    font-weight: 100;
+    }

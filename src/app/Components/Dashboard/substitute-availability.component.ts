@@ -85,7 +85,7 @@ export class SubstituteAvailabilityComponent implements OnInit {
             }
           },
           header: {
-            left: 'previousWeekBtn, nextWeekBtn',
+            left: 'prev, next',
             center: '', // 'title',
             right: '' // 'timelineDay, timelineWeek, month'
           },

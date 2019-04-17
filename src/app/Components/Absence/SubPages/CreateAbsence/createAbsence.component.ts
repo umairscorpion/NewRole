@@ -581,6 +581,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     //Check Absence Overlapping
     CheckDataAndTimeOverlape(startDate: Date, endDate: Date, startTime: string, EndTime: string): boolean {
         let Isoverlap: boolean = false;
+        if (this.NeedASub)
+        return Isoverlap;
         this.EmployeeSchedule.forEach((Absence) => {
             if ((startDate.setHours(0, 0, 0, 0) >= new Date(Absence.startDate).setHours(0, 0, 0, 0)
                 && startDate.setHours(0, 0, 0, 0) <= new Date(Absence.endDate).setHours(0, 0, 0, 0)) ||

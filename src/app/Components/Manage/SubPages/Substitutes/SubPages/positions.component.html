@@ -1,47 +1,46 @@
 <div class="row">
-        <div class="row col-md-12 col-lg-12" style="text-align: right">
-                <a routerLink="/manage/substitutes/addSubstitute">
-                  <button mat-raised-button style="background: #3CCCD1; color: white;">Add</button>
-                </a>
-              </div>
-              <div class="row col-md-12 col-lg-12">
-                <div class="mat-elevation-z8">
-                  <div class="example-header">
-                    <mat-form-field>
-                      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-                    </mat-form-field>
-                  </div>
-                  <mat-table #table [dataSource]="positionsDataSource" matSort>
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="Title">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
-                      <mat-cell *matCellDef="let Substitute">  </mat-cell>
-                    </ng-container>
-      
-                    <ng-container matColumnDef="Visibility">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header> Visibility </mat-header-cell>
-                      <mat-cell *matCellDef="let Substitute">  </mat-cell>
-                    </ng-container>
-                    
-                    <ng-container matColumnDef="action">
-                      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-                      <mat-cell *matCellDef="let row">
-                        <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Substitute" matTooltipPosition="below">
-                          <i class="material-icons" (click)="DeleteSubstitute(row)">delete_sweep</i>
-                        </a>
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute" matTooltipPosition="below">
-                          <i class="material-icons" (click)="EditSubstitute(row)">edit</i>
-                        </a>
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
-                          <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
-                        </a>
-                      </mat-cell>
-                    </ng-container>
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                  </mat-table>
-                  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
-                  </mat-paginator>
-                </div>
-              </div>
+  <div class="col-md-12 col-lg-12" style="text-align: right">
+    <a >
+      <button mat-raised-button (click)="onOpenPositionPopup()" style="background: #3CCCD1; color: white;">Add position</button>
+    </a>
+  </div>
+  <div class="col-md-12 col-lg-12">
+    <div class="mat-elevation-z8">
+      <!-- <div class="example-header">
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+      </div> -->
+      <mat-table #table [dataSource]="positionsDataSource" matSort>
+        <!-- Position Column -->
+        <ng-container matColumnDef="Title">
+          <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+          <mat-cell *matCellDef="let postion"> {{postion.title}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Visibility">
+          <mat-header-cell *matHeaderCellDef> Visibility </mat-header-cell>
+          <mat-cell *matCellDef="let postion"> 
+              <i class="material-icons">
+                  {{postion.isVisible ? 'check' : 'close' }}
+                </i>  
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+              <i class="material-icons" style="cursor: pointer; color: #448ac9" #tooltip="matTooltip" matTooltip="Delete Position" matTooltipPosition="below"
+                (click)="deletePosition(row.id)">delete_sweep</i>
+              <i class="material-icons" style="cursor: pointer;margin-left: 10px; color: #f19f4d" #tooltip="matTooltip" matTooltip="Edit Position"
+                matTooltipPosition="below" (click)="editPosition(row)">edit</i>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+      </mat-paginator>
+    </div>
+  </div>
 </div>

@@ -11,6 +11,7 @@ import { environment } from '../../../../../environments/environment.prod';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
+    selector:'my-jobs',
     templateUrl: 'myJobs.component.html'
 })
 export class MyJobsComponent implements OnInit {

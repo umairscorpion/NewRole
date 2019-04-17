@@ -152,6 +152,8 @@ import { AllowanceComponent } from './Components/Manage/SubPages/Leaves/popups/a
 import { RecurringComponent } from './Components/Dashboard/unavailability/recurring/recurring.component';
 import { PositionsComponent } from './Components/Manage/SubPages/Substitutes/SubPages/positions.component';
 import { SubstituteAvailabilityComponent } from './Components/Dashboard/substitute-availability.component';
+import { PositionComponent } from './Components/Manage/SubPages/Substitutes/SubPages/popups/position-detail.popup.component';
+import { PayRateComponent } from './Components/Manage/SubPages/Substitutes/SubPages/PayRate/payRate-detail.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -303,7 +305,9 @@ const customNotifierOptions: NotifierOptions = {
         AllowanceComponent,
         RecurringComponent,
         PositionsComponent,
-        SubstituteAvailabilityComponent
+        SubstituteAvailabilityComponent,
+        PositionComponent,
+        PayRateComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -318,7 +322,8 @@ const customNotifierOptions: NotifierOptions = {
         ReportDetailsComponent,
         UnAvailabilityComponent,
         AllowanceComponent,
-        RecurringComponent
+        RecurringComponent,
+        PositionComponent
     ],
     providers: [
         UserService,

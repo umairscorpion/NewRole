@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { PositionComponent } from './popups/position-detail.popup.component';
 
 @Component({
     selector: 'position-table',
@@ -23,8 +24,8 @@ export class PositionsComponent implements OnInit {
     District: IDistrict;
     positions: any;
     weeklyLimitSettings: FormGroup;
-    substituteDataSource = new MatTableDataSource();
-    @ViewChild(MatPaginator) paginator: MatPaginator;   
+    positionsDataSource = new MatTableDataSource();
+    @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     Employees: any
     msg: string;
@@ -35,11 +36,11 @@ export class PositionsComponent implements OnInit {
     }
     ngOnInit(): void {
         this.intializeForms();
-        this.GetSustitutes();
+        this.getpositions();
     }
     ngAfterViewInit() {
-        this.substituteDataSource.sort = this.sort;
-        this.substituteDataSource.paginator = this.paginator;
+        this.positionsDataSource.sort = this.sort;
+        this.positionsDataSource.paginator = this.paginator;
     }
 
     intializeForms() {
@@ -49,12 +50,10 @@ export class PositionsComponent implements OnInit {
         });
     }
 
-    GetSustitutes(): void {
-        let RoleId = 4;
-        let OrgId = -1;
+    getpositions(): void {
         let DistrictId = this._userSession.getUserDistrictId();
-        this._employeeService.get('user/getUsers', RoleId, OrgId, DistrictId).subscribe((data: any) => {
-            this.substituteDataSource.data = data;
+        this._districtService.getById('user/positions', DistrictId).subscribe((data: any) => {
+            this.positionsDataSource.data = data; 
         },
             error => this.msg = <any>error);
     }
@@ -62,24 +61,37 @@ export class PositionsComponent implements OnInit {
     applyFilter(filterValue: string) {
         filterValue = filterValue.trim();
         filterValue = filterValue.toLowerCase();
-        this.substituteDataSource.filter = filterValue;
+        this.positionsDataSource.filter = filterValue;
     }
 
-    DeleteSubstitute(SelectedRow: any) {
-        var confirmResult = confirm('Are you sure you want to delete Substitute?');
+    onOpenPositionPopup() {
+        const dialogRef = this.dialog.open(PositionComponent, {
+            panelClass: 'position-details-dialog'
+        }); 
+        dialogRef.afterClosed().subscribe(result => {
+            this.getpositions();
+        });
+    }
+
+    editPosition(position: any) {
+        const dialogRef = this.dialog.open(PositionComponent, {
+            data: position,
+            panelClass: 'position-details-dialog'
+        }); 
+        dialogRef.afterClosed().subscribe(result => {
+            this.getpositions();
+        });
+    }
+
+    deletePosition(id: number): void {
+        var confirmResult = confirm('Are you sure you want to delete position?');
         if (confirmResult) {
-            this._districtService.delete('user/', SelectedRow.userId).subscribe((data: any) => {
-                this.notifier.notify('success', 'Deleted Successfully');
-                this.GetSustitutes();
-            },
-                error => this.msg = <any>error);
+            this._districtService.delete('user/deletePosition/', id).subscribe((response: any) => {
+                    this.notifier.notify('success', 'Deleted Successfully');
+                    this.getpositions();
+            });
         }
     }
-
-    EditSubstitute(SelectedRow: any) {
-        this.router.navigate(['/manage/substitutes/addSubstitute'], { queryParams: { Id: SelectedRow.userId } });
-    }
-
 
 }
 

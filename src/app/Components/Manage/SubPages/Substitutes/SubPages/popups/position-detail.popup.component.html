@@ -1,0 +1,25 @@
+<div>
+    <mat-dialog-content class="mat-typography" style="padding-top: 10px">
+        <form [formGroup]="position" (ngSubmit)="onSubmitPosition(position)">
+            <div class="row" style="text-align: center">
+                    <h4>Add Position Type</h4>
+            </div>
+            <div>
+                <mat-form-field class="col-md-12">
+                    <input matInput placeholder="Position Name" formControlName="title" required>
+                </mat-form-field>
+            </div>
+            <div style="text-align: left">
+                <mat-checkbox class="col-md-12" color="primary" formControlName="isVisible">
+                    This position type is visible to all users scheduling absence
+                </mat-checkbox>
+            </div>
+            <div class="row" style="text-align: center">
+                <a (click)="onCloseDialog()" style="padding-right: 5px">
+                    <button mat-raised-button style="background-color: #04c0be; color: white;">Back</button>
+                </a>
+                <button mat-raised-button style="background-color: #74a4a7; color: white;">Save</button>
+            </div>
+        </form>
+    </mat-dialog-content>
+</div>
