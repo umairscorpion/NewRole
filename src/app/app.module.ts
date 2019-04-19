@@ -157,6 +157,7 @@ import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
 import { PositionComponent } from './Components/Manage/SubPages/Substitutes/SubPages/popups/position-detail.popup.component';
 import { PayRateComponent } from './Components/Manage/SubPages/Substitutes/SubPages/PayRate/payRate-detail.component';
 import { PayRollComponent } from './Components/Payroll/payroll.component';
+import { ExcelService } from './Services/excel.service';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -349,6 +350,7 @@ const customNotifierOptions: NotifierOptions = {
         ProfileService,
         FileService,
         AbsenceService,
+        ExcelService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,

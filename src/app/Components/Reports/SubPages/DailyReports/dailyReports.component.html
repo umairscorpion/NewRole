@@ -119,7 +119,7 @@
       </mat-tab>
       <mat-tab label="UnFilled">
         <div class="m-30">
-          <ngx-datatable class="material" [rows]="unFilledAbsenceDetails" [columnMode]="'standard'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
+          <ngx-datatable id="dailyReports" class="material" [rows]="unFilledAbsenceDetails" [columnMode]="'standard'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
             <ngx-datatable-column [width]="260" name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
