@@ -11,6 +11,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { DataContext } from 'src/app/Services/dataContext.service';
 import { NotifierService } from 'angular-notifier';
+import * as jspdf from 'jspdf';  
+import html2canvas from 'html2canvas'; 
 
 @Component({
     selector: 'daily-reports',
