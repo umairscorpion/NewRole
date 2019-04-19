@@ -52,15 +52,6 @@
       <canvas baseChart [chartType]="'bar'" [legend]="false" [data]="absenceSummary" [colors]="absenceSummaryColors" [labels]="['Filled', 'UnFilled', 'No Sub Required']"></canvas>
       <h4 class="report-summary-bar-chart-title">ABSENCES</h4>
     </div>
-<<<<<<< HEAD
-    <div class="col-md-4">
-      <canvas baseChart [chartType]="'doughnut'" [legend]="true" width="150" height="100" [data]="absenceSummary" [colors]="absenceSummaryColors"
-        [options]="chartOptions"></canvas>
-      <div class="donut-inner-total">
-        <h5>{{reportSummary.filled / reportSummary.totalCount * 100 | number:'1.0-1'}}%</h5>
-      </div>
-      <div class="text-center" style="margin-top: 125px; font-size: 18px;">Fill Rate</div>
-=======
     <div class="col-md-4">  
       <table>
         <td class="text-center">
@@ -71,21 +62,14 @@
           <div class="report-summary-donut-fillrate">Fill Rate</div>
         </td>
       </table>
->>>>>>> d24debe9e87d9ef5169e63c941c6a6eb84961ca3
     </div>
   </div>
   <div class="row">
     <mat-tab-group>
       <mat-tab label="Filled">
         <div class="m-30">
-<<<<<<< HEAD
-          <ngx-datatable class="material" [rows]="filledAbsenceDetails" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50"
-            [rowHeight]="'auto'" [limit]="10">
-            <ngx-datatable-column name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle" [draggable]="false">
-=======
           <ngx-datatable class="material" [rows]="filledAbsenceDetails" [columnMode]="'standard'"  [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
             <ngx-datatable-column [width]="260" name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle" [draggable]="false">
->>>>>>> d24debe9e87d9ef5169e63c941c6a6eb84961ca3
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <strong>{{row['employeeName']}}</strong>
@@ -99,14 +83,8 @@
             <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
-<<<<<<< HEAD
-                <div class="ellipsis">{{ row['endDate'] | date:'E, M/d/y' }}</div>
-                <div class="ellipsis">{{ row['startTime'] | convertFrom24HourTo12HourFormat }}-{{ row['endTime'] | convertFrom24HourTo12HourFormat}}
-                  </div>
-=======
                 <div class="ellipsis" *ngIf="row['endDate']!=row['startDate']">{{ row['endDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis">{{ row['startTime'] | convertFrom24HourTo12HourFormat }}-{{ row['endTime'] | convertFrom24HourTo12HourFormat}} </div>
->>>>>>> d24debe9e87d9ef5169e63c941c6a6eb84961ca3
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column [width]="240" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
@@ -141,14 +119,8 @@
       </mat-tab>
       <mat-tab label="UnFilled">
         <div class="m-30">
-<<<<<<< HEAD
-          <ngx-datatable class="material" [rows]="unFilledAbsenceDetails" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50"
-            [rowHeight]="'auto'" [limit]="10">
-            <ngx-datatable-column name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle" [draggable]="false">
-=======
           <ngx-datatable class="material" [rows]="unFilledAbsenceDetails" [columnMode]="'standard'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
             <ngx-datatable-column [width]="260" name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle" [draggable]="false">
->>>>>>> d24debe9e87d9ef5169e63c941c6a6eb84961ca3
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <strong>{{row['employeeName']}}</strong>
@@ -188,14 +160,8 @@
       </mat-tab>
       <mat-tab label="No Sub Req">
         <div class="m-30">
-<<<<<<< HEAD
-          <ngx-datatable class="material" [rows]="noSubReqAbsenceDetails" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50"
-            [rowHeight]="'auto'" [limit]="10">
-            <ngx-datatable-column name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle" [draggable]="false">
-=======
           <ngx-datatable class="material" [rows]="noSubReqAbsenceDetails" [columnMode]="'standard'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
             <ngx-datatable-column [width]="260" name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle" [draggable]="false">
->>>>>>> d24debe9e87d9ef5169e63c941c6a6eb84961ca3
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <strong>{{row['employeeName']}}</strong>
@@ -209,14 +175,8 @@
             <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
-<<<<<<< HEAD
-                <div class="ellipsis">{{ row['endDate'] | date:'E, M/d/y' }}</div>
-                <div class="ellipsis">{{ row['startTime'] | convertFrom24HourTo12HourFormat }}-{{ row['endTime'] | convertFrom24HourTo12HourFormat}}
-                  </div>
-=======
                 <div class="ellipsis" *ngIf="row['endDate']!=row['startDate']">{{ row['endDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis">{{ row['startTime'] | convertFrom24HourTo12HourFormat }}-{{ row['endTime'] | convertFrom24HourTo12HourFormat}} </div>
->>>>>>> d24debe9e87d9ef5169e63c941c6a6eb84961ca3
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column [width]="240" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">

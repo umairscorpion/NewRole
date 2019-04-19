@@ -315,7 +315,8 @@ const customNotifierOptions: NotifierOptions = {
         AllowanceComponent,
         PositionComponent,
         PayRateComponent,
-        PayRateComponent
+        PayRateComponent,
+        PayRollComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
