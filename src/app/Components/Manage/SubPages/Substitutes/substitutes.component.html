@@ -58,41 +58,6 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab label="Weekly Time Limits">
-        <div class="col-md-12 col-lg-12">
-          <div class="row vertical-center">
-            <div class="col-md-5 col-lg-5">
-              Weekly Time Limits
-            </div>
-            <div class="col-md-7 col-lg-7">
-              Recurring Weekly Limits
-            </div>
-          </div>
-          <mat-divider></mat-divider>
-          <form (ngSubmit)="onUpdateweeklyLimitSetting(weeklyLimitSettings)" [formGroup]="weeklyLimitSettings">
-            <div class="row vertical-center" style="min-height: 10vh !important;">
-              <div class="col-md-5 col-lg-5">
-                Current Weekly Limit: {{weeklyLimitSettings.value.WeeklyHourLimit}} hours per week
-              </div>
-              <div class="col-md-2 col-lg-2">
-                <mat-form-field>
-                  <input matInput formControlName="WeeklyHourLimit" type="number" placeholder="Hours per week">
-                </mat-form-field>
-                <br>
-                <mat-checkbox formControlName="IsWeeklyLimitApplicable">No weekly limit</mat-checkbox>
-              </div>
-              <div class="col-md-5 col-lg-5" style="text-align: right;">
-                <button mat-raised-button type="submit" style="background-color: #04C0BF">Save</button>
-                <button mat-raised-button type="button" (click)="onEditHourLimit()" style="margin-left:3px;background-color: #C3DEF1">Edit</button>
-                <button mat-raised-button type="button" style="margin-left:3px;background-color: #FFCB97">Remove</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </mat-tab>
-      <mat-tab label="Payrates">
-          <payRate-details></payRate-details>
-      </mat-tab>
       <mat-tab label="Positions">
         <position-table></position-table>
       </mat-tab>

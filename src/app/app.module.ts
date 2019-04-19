@@ -152,8 +152,11 @@ import { AllowanceComponent } from './Components/Manage/SubPages/Leaves/popups/a
 import { RecurringComponent } from './Components/Dashboard/unavailability/recurring/recurring.component';
 import { PositionsComponent } from './Components/Manage/SubPages/Substitutes/SubPages/positions.component';
 import { SubstituteAvailabilityComponent } from './Components/Dashboard/substitute-availability.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
 import { PositionComponent } from './Components/Manage/SubPages/Substitutes/SubPages/popups/position-detail.popup.component';
 import { PayRateComponent } from './Components/Manage/SubPages/Substitutes/SubPages/PayRate/payRate-detail.component';
+import { PayRollComponent } from './Components/Payroll/payroll.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -247,7 +250,10 @@ const customNotifierOptions: NotifierOptions = {
         SocialLoginModule,
         MatTooltipModule,
         BlockUIModule.forRoot(),
-        NotifierModule.withConfig(customNotifierOptions)
+        NotifierModule.withConfig(customNotifierOptions),
+        NgSelectModule,
+        SatDatepickerModule,
+        SatNativeDateModule
     ],
     declarations: [
         AppComponent,
@@ -306,7 +312,9 @@ const customNotifierOptions: NotifierOptions = {
         RecurringComponent,
         PositionsComponent,
         SubstituteAvailabilityComponent,
+        AllowanceComponent,
         PositionComponent,
+        PayRateComponent,
         PayRateComponent
     ],
     entryComponents: [

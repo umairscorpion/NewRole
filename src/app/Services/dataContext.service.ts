@@ -85,4 +85,8 @@ export class DataContext {
     UpdateAbsenceStatusAndSub(url: string, AbsenceId: number, StatusId: number, UpdateStatusDate: string, userId: string, SubstituteId: string, SubstituteRequired: boolean): Observable<any> {
         return this._http.get(this.baseUrl + url + "/" + AbsenceId + "/" + StatusId + "/" + UpdateStatusDate + "/" + userId + "/" + SubstituteId + "/" + SubstituteRequired);
     }
+
+    CancelAbsences(url: string, data: string): Observable<any> {
+        return this._http.get(this.baseUrl + url + "/" + data);
+    }
 }

@@ -19,7 +19,7 @@
             </div>
             <div class="col-md-4 text-right">
               <button type="button" mat-raised-button class="btn btn-success">Print</button>&nbsp;
-              <button type="button" mat-raised-button class="btn btn-default">Cancel</button>
+              <button type="cancel" mat-raised-button class="btn btn-default" (click)="onCancel(reportFilterForm)">Cancel</button>
             </div>
           </div>
         </mat-panel-description>
@@ -36,7 +36,7 @@
       </div>
       <div class="row">
         <div class="col-md-4 text-right">
-          <label>Employee Type:</label>
+          <label>Absence Type:</label>
         </div>
         <div class="col-md-6">
           <mat-form-field class="w-100">
@@ -51,7 +51,7 @@
       </div>
       <div class="row">
         <div class="col-md-4 text-right">
-          <label>Absence Type:</label>
+          <label>Duration Type:</label>
         </div>
         <div class="col-md-6">
           <mat-form-field class="w-100">
@@ -84,7 +84,7 @@
         <div class="col-md-6">
           <mat-form-field class="w-100">
             <mat-select placeholder="Select..." formControlName="reasonId">
-              <mat-option *ngFor="let Leave of leaveReasons" [value]="Leave">
+              <mat-option *ngFor="let Leave of Leaves" [value]="Leave.leaveTypeId">
                 {{Leave.leaveTypeName}}
               </mat-option>
             </mat-select>
@@ -106,7 +106,7 @@
         </div>
         <div class="col-md-6">
           <button type="submit" mat-raised-button class="btn btn-success">View Reports</button>&nbsp;
-          <button type="button" mat-raised-button class="btn btn-danger">Reset</button>
+          <button type="button" mat-raised-button class="btn btn-danger" (click)=onReset()>Reset</button>
         </div>
       </div>
     </mat-expansion-panel>

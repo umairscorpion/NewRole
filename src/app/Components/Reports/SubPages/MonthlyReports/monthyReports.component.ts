@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild, ViewChildren, ElementRef, AfterViewInit } from '@angular/core';
-import { ReportService } from '../../../../Services/report.service';
-import { ReportFilter } from '../../../../Model/Report/report.filter';
-import { ReportSummary } from '../../../../Model/Report/report.summary';
+import { ReportService } from 'src/app/Services/report.service';
+import { ReportFilter } from 'src/app/Model/Report/report.filter';
+import { ReportSummary } from 'src/app/Model/Report/report.summary';
 import { ReportConstant } from '../../constants/report.constants';
 import * as moment from 'moment';
-import { ReportDetail } from '../../../../Model/Report/report.detail';
+import { ReportDetail } from 'src/app/Model/Report/report.detail';
 import { MatDialog } from '@angular/material';
 import { ReportDetailsComponent } from '../../popups/report-details.popup.component';
 import { DomSanitizer } from '@angular/platform-browser';
-import { environment } from '../../../../../environments/environment';
-import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
+import { environment } from 'src/environments/environment';
+import { NotifierService } from 'angular-notifier';
+import { DataContext } from 'src/app/Services/dataContext.service';
 
 @Component({
     selector:'monthly-reports',
@@ -45,11 +46,14 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     filledAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
     unFilledAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
     noSubReqAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
+    allAbsencesInCurrentState: ReportDetail[] = Array<ReportDetail>();
 
     constructor(
         private reportService: ReportService,
         private dialogRef: MatDialog,
         private sanitizer: DomSanitizer,
+        private notifier: NotifierService,
+        private _dataContext: DataContext
     ) {
     }
 
@@ -82,8 +86,24 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
             this.bindChart(summary[0]);
         });
         this.reportService.getDetail($event.formValue).subscribe((details: ReportDetail[]) => {
+            this.allAbsencesInCurrentState = details;
             this.bindDetails(details);
         });
+        if ($event.actionName == "cancel") {
+            let data = "";
+            for (var i in this.allAbsencesInCurrentState) {
+                data = data + this.allAbsencesInCurrentState[i].absenceId + ",";
+            }
+            let confirmResult = confirm('Are you sure you want to cancel these jobs?');
+            if (confirmResult) { 
+                this._dataContext.CancelAbsences('reports/deleteAbsences', data).subscribe((response: any) => {  
+                    if (response == "success") {
+                        this.loadReportSummary();
+                        this.notifier.notify('success', 'Cancel Successfully.');                           
+                    }           
+                });
+            }
+        }
     }
 
     bindDetails(details: ReportDetail[]) {
@@ -120,13 +140,18 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     reportDetails(absenceDetail: ReportDetail) {
-        this.dialogRef.open(
+        const dialogEdit = this.dialogRef.open(
             ReportDetailsComponent,
             {
                 panelClass: 'report-details-dialog',
                 data: absenceDetail
             }
         );
+        dialogEdit.afterClosed().subscribe(result => {
+            if (result == 'Reload') {
+                this.loadReportSummary();
+            }
+        });
     }
 
     getImage(profileImageUrl: string) {

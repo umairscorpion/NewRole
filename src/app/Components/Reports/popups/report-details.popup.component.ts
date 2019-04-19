@@ -1,20 +1,19 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatDialog } from '@angular/material';
-import { ReportDetail } from '../../../Model/Report/report.detail';
+import { ReportDetail } from 'src/app/Model/Report/report.detail';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AbsenceService } from '../../../Services/absence.service';
+import { AbsenceService } from 'src/app/Services/absence.service';
 import { HttpErrorResponse, HttpResponse, HttpEventType, HttpClient } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
-import { DataContext } from '../../../Services/dataContext.service';
-import { UserSession } from '../../../Services/userSession.service';
-import { EmployeeService } from '../../../Service/Manage/employees.service';
+import { DataContext } from 'src/app/Services/dataContext.service';
+import { UserSession } from 'src/app/Services/userSession.service';
+import { EmployeeService } from 'src/app/Service/Manage/employees.service';
 import { LeaveType } from '../../../Model/leaveType';
-import { environment } from '../../../../environments/environment';
-import { IEmployee } from '../../../Model/Manage/employee';
+import { environment } from 'src/environments/environment';
+import { IEmployee } from 'src/app/Model/Manage/employee';
 import { Observable } from 'rxjs/Observable';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { FileService } from '../../../Services/file.service';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { DomSanitizer, SafeUrl } from '../../../../../node_modules/@angular/platform-browser';
+import { FileService } from 'src/app/Services/file.service';
 
 @Component({
   selector: 'report-details',
@@ -22,17 +21,12 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
   styleUrls: ['report-details.popup.component.scss']
 })
 export class ReportDetailsComponent implements OnInit {
-  SelectionFilterForAlreadyCreatedAbsences = (d: Date): boolean => {
-    const day = d.getDay();
-    return d.toLocaleDateString() !== "10/1/2018";
-    // (day !== 0 && day !== 6) &&
-}
   reportDetail: ReportDetail = new ReportDetail();
   menuAction = 'view';
   absenceForm: FormGroup;
   currentDate: Date = new Date();
-  SubstituteList : any;
-  EmployeeSchedule : any;
+  SubstituteList: any;
+  EmployeeSchedule: any;
   loginedUserLocationTime: any = null;
   loginedUserLevel: number = 0;
   AbsenceForUserLevel: number = 0;
@@ -66,7 +60,7 @@ export class ReportDetailsComponent implements OnInit {
     private _EmployeeService: EmployeeService,
     private fileService: FileService,
     private sanitizer: DomSanitizer,
- 
+
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.reportDetail = data;
@@ -80,7 +74,7 @@ export class ReportDetailsComponent implements OnInit {
     this.GetSustitutes();
 
     this.absenceForm = this._formBuilder.group({
-      absenceCreatedByEmployeeId:[''],
+      absenceCreatedByEmployeeId: [''],
       absenceId: [''],
       absenceLocation: [''],
       absenceReasonDescription: [''],
@@ -130,67 +124,58 @@ export class ReportDetailsComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  performAction(action: string){
+  performAction(action: string) {
     this.absenceForm.reset();
-    this.menuAction = action;   
-    if(action === 'edit') {
+    this.menuAction = action;
+    if (action === 'edit') {
       this.absenceService.getById('Absence', this.reportDetail.absenceId).subscribe((data: any) => {
-        console.log({absence: data});
-        this.absenceForm.patchValue({...data});    
+        console.log({ absence: data });
+        this.absenceForm.patchValue({ ...data });
       });
-      
     }
-    else if(action === 'delete') {    
+    else if (action === 'delete') {
       let confirmResult = confirm('Are you sure you want to cancel this absence?');
       let StatusId = 4;
-        if (confirmResult) {
-            this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-              this.dialogRef.close('Reload');
-              this.notifier.notify('success', 'Cancelled Successfully.');
-            });
-        }
+      if (confirmResult) {
+        this._dataContext.UpdateAbsenceStatus('reports/deleteAbsences', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+          this.dialogRef.close('Reload');
+          this.notifier.notify('success', 'Cancelled Successfully.');
+        });
+      }
     }
-    else if(action === 'release')
-    {
+    else if (action === 'release') {
       let confirmResult = confirm('Are you sure you want to release this job?');
       let StatusId = 1;
-        if (confirmResult) {         
-          this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-            if (response == "success") {
-              this.dialogRef.close('Reload');
-              this.notifier.notify('success', 'Released Successfully.');                           
-            }
-          });
-        }       
-    }  
-  } 
-  
+      if (confirmResult) {
+        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+          if (response == "success") {
+            this.dialogRef.close('Reload');
+            this.notifier.notify('success', 'Released Successfully.');
+          }
+        });
+      }
+    }
+  }
+
   onAssign(formGroup: FormGroup) {
     let confirmResult = confirm('Are you sure you want to assign this job?');
     let StatusId = 2;
-      if (confirmResult) {
-          this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
-              if (response == "success") {
-                this.dialogRef.close('Reload');
-                this.notifier.notify('success', 'Assign Successfully.');                  
-              }
-          });
-      }       
+    if (confirmResult) {
+      this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
+        if (response == "success") {
+          this.dialogRef.close('Reload');
+          this.notifier.notify('success', 'Assign Successfully.');
+        }
+      });
+    }
   }
- 
+
   GetLeaveTypes(): void {
     let districtId = this._userSession.getUserDistrictId();
     let organizationId = this._userSession.getUserOrganizationId() ? this._userSession.getUserOrganizationId() : '-1';
     this.absenceService.getLeaveType(districtId, organizationId).subscribe((data: LeaveType[]) => {
-        this.Leaves = data;   
+      this.Leaves = data;
     });
-  }
-
-  onChangeReason(reason: LeaveType): void {
-      if (reason.isApprovalRequired)
-          this.isApprovalNeeded = true;
-      else
-          this.isApprovalNeeded = false;
   }
 
   //ASYNC FUNCTION TO SEARCH SUBSTITUTE
@@ -209,39 +194,65 @@ export class ReportDetailsComponent implements OnInit {
     this.loginedUserType = SubstututesDetail.userTypeId;
     this.AbsenceForUserLevel = SubstututesDetail.userLevel;
     if (this.AbsenceForUserLevel == 3) {
-        this.absenceForm.get('OrganizationId').setValue(SubstututesDetail.organizationId);
+      this.absenceForm.get('OrganizationId').setValue(SubstututesDetail.organizationId);
     }
     this.GetLocationTime(this.EmployeeIdForAbsence, this.AbsenceForUserLevel);
   }
 
   onSubmit(formGroup: FormGroup) {
     if (!formGroup.invalid) {
-
-      formGroup.get('startDate').setValue( new Date(formGroup.value.startDate).toLocaleDateString());
-      formGroup.get('endDate').setValue( new Date(formGroup.value.endDate).toLocaleDateString());    
-
-      if(this.AttachedFileName != null)
-      {
+      if (this.AttachedFileName != null) {
         formGroup.get('anyAttachment').setValue(1);
         formGroup.get('attachedFileName').setValue(this.AttachedFileName);
         formGroup.get('fileExtention').setValue(this.AttachedFileExtention);
         formGroup.get('fileContentType').setValue(this.AttachedFileType);
       }
-
-      if(formGroup.value.substituteId != -1) {
-        formGroup.get('substituteId').setValue(formGroup.value.substituteId.userId);
+      if (formGroup.value.substituteId != -1) {
+        if (formGroup.value.status == 2) {
+          formGroup.get('substituteId').setValue(formGroup.value.substituteId);
+        }
+        else {
+          formGroup.get('substituteId').setValue(formGroup.value.substituteId.userId);
+        }
         formGroup.get('status').setValue('2');
+        formGroup.get('substituteRequired').setValue(1);
       }
-     
-      this.absenceService.Patch('/Absence/updateAbsence/',formGroup.getRawValue()).subscribe((respose: any) => {     
+      let AbsenceModel = {
+        employeeId: formGroup.value.employeeId,
+        absenceCreatedByEmployeeId: formGroup.value.absenceCreatedByEmployeeId,
+        absenceId: formGroup.value.absenceId,
+        startDate: new Date(formGroup.value.startDate).toLocaleDateString(),
+        endDate: new Date(formGroup.value.endDate).toLocaleDateString(),
+        startTime: formGroup.getRawValue().startTime,
+        endTime: formGroup.getRawValue().endTime,
+        absenceReasonId: formGroup.value.absenceReasonId,
+        durationType: formGroup.value.durationType,
+        positionId: formGroup.value.positionId,
+        status: formGroup.value.status,
+        organizationId: formGroup.value.organizationId,
+        districtId: formGroup.value.districtId,
+        substituteRequired: formGroup.value.substituteRequired,
+        absenceScope: formGroup.value.absenceScope,
+        payrollNotes: formGroup.value.payrollNotes,
+        substituteNotes: formGroup.value.substituteNotes,
+        anyAttachment: formGroup.value.anyAttachment,
+        attachedFileName: formGroup.value.attachedFileName,
+        fileContentType: formGroup.value.fileContentType,
+        fileExtention: formGroup.value.fileExtention,
+        substituteId: formGroup.value.substituteId,
+        interval: formGroup.value.interval,
+        totalInterval: formGroup.value.totalInterval,
+        isApprovalRequired: formGroup.value.isApprovalRequired
+      }     
+      this.absenceService.Patch('/Absence/updateAbsence/', AbsenceModel).subscribe((respose: any) => {
         if (respose == "success") {
-          this.dialogRef.close('Reload');  
+          this.dialogRef.close('Reload');
           this.notifier.notify('success', 'Updated Successfully');
         }
         else {
           this.notifier.notify('error', 'Absence overlapping please select different date or time.');
-        }       
-      });  
+        }
+      });
     }
   }
 
@@ -258,15 +269,15 @@ export class ReportDetailsComponent implements OnInit {
   //Get Location Time For User
   GetLocationTime(userId: string, userLevel: number): void {
     this._dataContext.getUserLocationTime('user/getUserLocationTime', this.EmployeeIdForAbsence, userLevel).subscribe((data: any) => {
-        this.loginedUserLocationTime = data;
-        if (data) {
-          this.absenceForm.controls['startTime'].setValue(this.loginedUserLocationTime.startTime);
-          this.absenceForm.controls['endTime'].setValue(this.loginedUserLocationTime.endTime);
-        }
+      this.loginedUserLocationTime = data;
+      if (data) {
+        this.absenceForm.controls['startTime'].setValue(this.loginedUserLocationTime.startTime);
+        this.absenceForm.controls['endTime'].setValue(this.loginedUserLocationTime.endTime);
+      }
     },
-        (err: HttpErrorResponse) => {
+      (err: HttpErrorResponse) => {
 
-        });
+      });
   }
 
   onChangeDurationForAbsence(durationType: any) {
@@ -276,7 +287,7 @@ export class ReportDetailsComponent implements OnInit {
     this.absenceForm.controls['endTime'].updateValueAndValidity();
     this.absenceForm.controls['startTime'].disable();
     this.absenceForm.controls['endTime'].disable();
-  
+
     this.absenceForm.controls["startTime"].setValidators([Validators.required]);
     this.absenceForm.controls['startTime'].updateValueAndValidity();
     this.absenceForm.controls["endTime"].setValidators([Validators.required]);
@@ -300,19 +311,19 @@ export class ReportDetailsComponent implements OnInit {
       this.absenceForm.controls['startTime'].enable();
       this.absenceForm.controls['endTime'].enable();
     }
-  
+
   }
 
   GetSustitutes(): void {
     let RoleId = 4;
     let OrgId = -1;
     let DistrictId = this._userSession.getUserDistrictId();
-    this._employeeService.get('user/getUsers',RoleId, OrgId, DistrictId).subscribe((data: any) => {
+    this._employeeService.get('user/getUsers', RoleId, OrgId, DistrictId).subscribe((data: any) => {
       this.SubstituteList = data;
-      
+
     });
   }
-  
+
   //For Selecting End Date Automatically
   SetEndDateValue(startDate: Date, endDate: Date) {
     this.absenceForm.get('endDate').setValue(startDate);
@@ -324,9 +335,9 @@ export class ReportDetailsComponent implements OnInit {
     let EndDate = new Date();
     EndDate.setMonth(this.currentDate.getMonth() + 6)
     this._dataContext.get('Absence/getAbsencesScheduleEmployee/' + StartDate.toISOString() + "/" + EndDate.toISOString()
-        + "/" + employeeId).subscribe((data: any) => {
-            this.EmployeeSchedule = data;
-        });
+      + "/" + employeeId).subscribe((data: any) => {
+        this.EmployeeSchedule = data;
+      });
   }
 
   //UPLOAD ATTACHEMNT
@@ -336,65 +347,65 @@ export class ReportDetailsComponent implements OnInit {
   }
 
   upload(files: File[]) {
-      this.uploadAndProgress(files);
+    this.uploadAndProgress(files);
   }
 
   removeAttachedFile() {
-      this.AllAttachedFiles = null;
-      this.FileName = null;     
+    this.AllAttachedFiles = null;
+    this.FileName = null;
   }
 
   uploadAndProgress(files: File[]) {
-      this.AllAttachedFiles = files;
-      this.AttachedFileType = files[0].type;
-      this.FileName = this.AllAttachedFiles[0].name;
-      this.AttachedFileExtention = files[0].name.split('.')[1];
-      let formData = new FormData();
-      Array.from(files).forEach(file => formData.append('file', file))
-      this.http.post(environment.apiUrl + 'Absence/uploadFile', formData)
-          .subscribe(event =>{
-            this.SuccessMessage = true;
-            this.AttachedFileName = event.toString();          
-          });
+    this.AllAttachedFiles = files;
+    this.AttachedFileType = files[0].type;
+    this.FileName = this.AllAttachedFiles[0].name;
+    this.AttachedFileExtention = files[0].name.split('.')[1];
+    let formData = new FormData();
+    Array.from(files).forEach(file => formData.append('file', file))
+    this.http.post(environment.apiUrl + 'Absence/uploadFile', formData)
+      .subscribe(event => {
+        this.SuccessMessage = true;
+        this.AttachedFileName = event.toString();
+      });
   }
 
   DownloadFile(): void {
     const model = { AttachedFileName: this.reportDetail.attachedFileName, FileContentType: this.reportDetail.fileContentType };
     this._dataContext.getFile('Absence/getfile', model).subscribe((blob: any) => {
-        const newBlob = new Blob([blob]);
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(newBlob);
-            return;
-        }
-        // To open in browser
-        //const file = new Blob([blob], { type: this.data.fileContentType });
-        //window.open(URL.createObjectURL(file));   
-        // To Download
-        let data = window.URL.createObjectURL(newBlob);
-        let link = document.createElement('a');
-        link.href = data;
-        link.download = this.data.attachedFileName;
-        link.click();
-        setTimeout(() => {
+      const newBlob = new Blob([blob]);
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(newBlob);
+        return;
+      }
+      // To open in browser
+      //const file = new Blob([blob], { type: this.data.fileContentType });
+      //window.open(URL.createObjectURL(file));   
+      // To Download
+      let data = window.URL.createObjectURL(newBlob);
+      let link = document.createElement('a');
+      link.href = data;
+      link.download = this.data.attachedFileName;
+      link.click();
+      setTimeout(() => {
         window.URL.revokeObjectURL(data);
-        }, 100); 
+      }, 100);
     });
   }
 
   getProfilePic(ProfilePictureName: string): SafeUrl {
     this.ImageURL = 'assets/Images/noimage.png'
     let model = {
-        AttachedFileName: ProfilePictureName,
-        FileContentType: ProfilePictureName.split('.')[1],
+      AttachedFileName: ProfilePictureName,
+      FileContentType: ProfilePictureName.split('.')[1],
     }
     this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
-        let newBlob = new Blob([blob]);
-        var file = new Blob([blob], { type: blob.type });
-        let Url = URL.createObjectURL(file);
-        this.ImageURL = this.sanitizer.bypassSecurityTrustUrl(Url);
-        return this.ImageURL;
+      let newBlob = new Blob([blob]);
+      var file = new Blob([blob], { type: blob.type });
+      let Url = URL.createObjectURL(file);
+      this.ImageURL = this.sanitizer.bypassSecurityTrustUrl(Url);
+      return this.ImageURL;
     },
-        error => this.msg = <any>error);
+      error => this.msg = <any>error);
     return this.ImageURL;
   }
 

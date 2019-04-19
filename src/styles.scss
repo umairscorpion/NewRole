@@ -8,6 +8,9 @@
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
 @import "../node_modules/fullcalendar/dist/fullcalendar.min.css";
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~saturn-datepicker/bundle.css';
 
 $sides: (top, bottom, left, right);
 @for $i from 0 to 100 {
@@ -82,6 +85,16 @@ $sides: (top, bottom, left, right);
 
  .position-details-dialog {
   width: 38vw;
+  height: 650px;
+  .mat-dialog-container {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 0;
+  }
+}
+
+ .position-details-dialog {
+  width: 38vw;
   height: auto;
   .mat-dialog-container {
     overflow-x: hidden !important;
@@ -89,29 +102,32 @@ $sides: (top, bottom, left, right);
   }
  }
 
-.report-summary-bar-chart-title{
+ .report-summary-bar-chart-title{
   text-align: center;
   font-weight: 700;
   color: #a7a7a7;
-}
-.summary-donut-inner {
-  margin-top: -260px;
-  text-align: center;
-  h5 {
+  }
+
+  .summary-donut-inner {
+    margin-top: -260px;
+    text-align: center;
+    h5 {
     margin-bottom: 5px;
     padding-top: 16px;
     font-size: 45px;
-  }
-}
-.donut-inner {
-  margin-top: -100px;
-  margin-bottom: 45px;
-  h5 {
-    margin-bottom: 5px;
-    padding-top: 16px;
-    font-size: 45px;
-  }
-}
+    }
+    }
+
+    .donut-inner {
+      margin-top: -100px;
+      margin-bottom: 45px;
+      h5 {
+      margin-bottom: 5px;
+      padding-top: 16px;
+      font-size: 45px;
+      }
+      }
+      
 .text-align-right {
   text-align: right;
 }
@@ -143,6 +159,7 @@ $sides: (top, bottom, left, right);
   background-color: #5e9eca;
 }
 
+
 .allowance-popup-dialog {
   width: 38vw;
   height: auto;
@@ -152,6 +169,7 @@ $sides: (top, bottom, left, right);
     padding: 0;
   }
  }
+
 #Unavailable {
   .mat-form-field {
     width: 100% !important;
@@ -257,6 +275,8 @@ div.center-text{
   background-repeat: no-repeat;
   background-size: contain;
   height: 28px;
+  margin-left: 20px;
+  margin-top: 10px;
 }
 .substitute-is-unavailable
 {
@@ -264,6 +284,8 @@ div.center-text{
   background-repeat: no-repeat;
   background-size: contain;
   height: 28px;
+  margin-left: 20px;
+  margin-top: 10px;
 }
 .substitute-is-vacations
 {
@@ -271,6 +293,39 @@ div.center-text{
   background-repeat: no-repeat;
   background-size: contain;
   height: 28px;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+.substitute-availability  {
+  .fc-widget-header {
+  color: #7e7e7e;
+  font-weight: normal;
+  text-align: left !important;
+  padding-left: 10px;
+  border-left-style: none !important;
+    border-right-style: none !important;
+  }
+  .fc-timeline .fc-divider {
+    width: 0px;
+    border-style: none;
+  }
+  td.fc-today {
+    background: none !important;
+  }
+  .fc-head, .fc-body {
+    border: solid 1px #dddddd !important;
+  }
+  td.fc-widget-content {
+    border-left-style: none !important;
+    border-right-style: none !important;
+  }
+}
+.substitute-availability-profile-image {
+  float: left;
+  padding: 7px;
+}
+.ng-select .ng-select-container {
+  min-height: 38.5px !important;
 }
 
 .donut-inner-total {
@@ -287,3 +342,17 @@ div.center-text{
   .mat-radio-label-content {
     font-weight: 100;
     }
+    .report-summary-donut-fillrate{
+      text-align: center;
+      margin-top: 90px;
+      font-weight: 700;
+      color: #a7a7a7;
+      }
+      .donut-inner-for-fill-rate {
+        margin-top: -150px;
+        h5 {
+        margin-bottom: 5px;
+        padding-top: 16px;
+        font-size: 45px;
+        }
+        }

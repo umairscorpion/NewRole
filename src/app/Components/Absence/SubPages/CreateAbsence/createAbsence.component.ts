@@ -23,7 +23,7 @@ import { User } from '../../../../Model/user';
     encapsulation: ViewEncapsulation.None,
 })
 export class CreateAbsenceComponent implements OnInit, OnDestroy {
-    private notifier: NotifierService; autoSubz
+    private notifier: NotifierService;
     @ViewChild('preferredSubPanel') preferredSubPanel: MatExpansionPanel;
     matIcon = 'keyboard_arrow_down' || 'keyboard_arrow_up';
     // For Blocking Dates Renderer for Current month when open Calendar
