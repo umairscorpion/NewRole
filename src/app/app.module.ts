@@ -156,6 +156,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
 import { PositionComponent } from './Components/Manage/SubPages/Substitutes/SubPages/popups/position-detail.popup.component';
 import { PayRateComponent } from './Components/Manage/SubPages/Substitutes/SubPages/PayRate/payRate-detail.component';
+import { PayRollComponent } from './Components/Payroll/payroll.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -313,7 +314,8 @@ const customNotifierOptions: NotifierOptions = {
         SubstituteAvailabilityComponent,
         AllowanceComponent,
         PositionComponent,
-        PayRateComponent
+        PayRateComponent,
+        PayRollComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

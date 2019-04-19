@@ -3,6 +3,8 @@ export class PayRateSettings {
     positionId: string;
     payRate: number;
     period: string;
+    isArchived: boolean;
+    archivedBy: string;
 
     // constructor (id: number, positionId: string, payRate: number, period: string ) {
     //     this.id = id;
@@ -10,5 +12,5 @@ export class PayRateSettings {
     //     this.payRate = payRate;
     //     this.period = period;
     // }
-    
+
 }

@@ -3,7 +3,7 @@
     <mat-dialog-actions>
       <div class="col-md-8 pr-0">
         <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
-        <button [disabled]="reportDetail.statusId == 1 || reportDetail.substituteRequired == 0" type="button" mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
+        <button [disabled]="reportDetail.statusId == 1 || !reportDetail.substituteRequired" type="button" mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
         <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default" (click)="performAction('assign')">Assign</button>
         <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default" (click)="performAction('resend')">Resend</button>
       </div>
@@ -110,7 +110,7 @@
           <td>
             <mat-form-field>
               <input matInput [min]="absenceForm.value.startDate"
-                [matDatepicker]="EndDatePicker" placeholder="Start Date" formControlName="endDate">
+                [matDatepicker]="EndDatePicker" placeholder="End Date" formControlName="endDate">
               <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
               <mat-datepicker [dateClass]="dateClass" #EndDatePicker></mat-datepicker>
             </mat-form-field>              

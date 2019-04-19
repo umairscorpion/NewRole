@@ -76,12 +76,27 @@ export class ReportFiltersComponent implements OnInit {
     if (!formGroup.invalid) {  
       if(formGroup.value.reasonId != 0){  
         formGroup.get('reasonId').setValue(formGroup.value.reasonId);  
-      }   
-     
+      }       
       formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
       formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));    
       const action = {
         actionName: 'submit',
+        formValue: formGroup.value
+      };
+      this.formAction.emit(action);
+    }
+  }
+
+  onCancel(formGroup: FormGroup) {
+    this.submitted = true;
+    if (!formGroup.invalid) {  
+      if(formGroup.value.reasonId != 0){  
+        formGroup.get('reasonId').setValue(formGroup.value.reasonId);  
+      }       
+      formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+      formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));    
+      const action = {
+        actionName: 'cancel',
         formValue: formGroup.value
       };
       this.formAction.emit(action);

@@ -12,6 +12,8 @@ import { NotifierService } from 'angular-notifier';
 })
 
 export class PastJobsComponent implements OnInit {
+    PastJobCount:any;
+    @Output() PastCountEvent = new EventEmitter<string>();
     Organizations: any;
     Districts : any;
     CurrentDate: Date = new Date;
@@ -47,6 +49,9 @@ export class PastJobsComponent implements OnInit {
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate.toISOString() + "/" + EndDate +
          "/" + UserId + "/"+ "-1" + "/" + DistrictId + "/" + Status ).subscribe((data: any) => {
             this.PastJobs.data = data;
+            this.PastJobCount = data.length
+                this.PastCountEvent.emit(this.PastJobCount)
+            
         },
             error => this.msg = <any>error);
     }
@@ -85,6 +90,8 @@ export class PastJobsComponent implements OnInit {
             + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/"+ SearchFilter.value.OrganizationId + 
             "/" + SearchFilter.getRawValue().DistrictId  + "/" + 2 ).subscribe((data: any) => {
             this.PastJobs.data = data;
+            this.PastJobCount = data.length
+                this.PastCountEvent.emit(this.PastJobCount)
         },
             error => this.msg = <any>error);
         }

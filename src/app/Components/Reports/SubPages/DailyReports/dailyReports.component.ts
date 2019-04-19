@@ -1,14 +1,16 @@
 import { Component, OnInit, ViewChild, ViewChildren, ElementRef, AfterViewInit } from '@angular/core';
-import { ReportService } from '../../../../Services/report.service';
-import { ReportFilter } from '../../../../Model/Report/report.filter';
-import { ReportSummary } from '../../../../Model/Report/report.summary';
+import { ReportService } from 'src/app/Services/report.service';
+import { ReportFilter } from 'src/app/Model/Report/report.filter';
+import { ReportSummary } from 'src/app/Model/Report/report.summary';
 import { ReportConstant } from '../../constants/report.constants';
 import * as moment from 'moment';
-import { ReportDetail } from '../../../../Model/Report/report.detail';
-import { MatDialog } from '@angular/material';
+import { ReportDetail } from 'src/app/Model/Report/report.detail';
+import { MatDialog} from '@angular/material';
 import { ReportDetailsComponent } from '../../popups/report-details.popup.component';
 import { DomSanitizer } from '@angular/platform-browser';
-import { environment } from '../../../../../environments/environment';
+import { environment } from 'src/environments/environment';
+import { DataContext } from 'src/app/Services/dataContext.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
     selector: 'daily-reports',
@@ -21,6 +23,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
     @ViewChild('chartNoSubReq') chartNoSubReq: ElementRef;
     context: CanvasRenderingContext2D;
 
+    currentDate: Date = new Date();
     msg: string;
     indLoading = false;
     modalTitle: string;
@@ -44,11 +47,14 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
     filledAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
     unFilledAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
     noSubReqAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
+    allAbsencesInCurrentState: ReportDetail[] = Array<ReportDetail>();
 
     constructor(
         private reportService: ReportService,
         private dialogRef: MatDialog,
         private sanitizer: DomSanitizer,
+        private _dataContext: DataContext,
+        private notifier: NotifierService
     ) {
     }
 
@@ -72,14 +78,31 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
     }
 
     onSubmit($event) {
+
         this.date = moment($event.formValue.fromDate).format('dddd, MM/DD/YYYY');
         this.reportService.getSummary($event.formValue).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
             this.bindChart(summary[0]);
         });
         this.reportService.getDetail($event.formValue).subscribe((details: ReportDetail[]) => {
+            this.allAbsencesInCurrentState = details;
             this.bindDetails(details);
         });
+        if ($event.actionName == "cancel") {
+            let data = "";
+            for (var i in this.allAbsencesInCurrentState) {
+                data = data + this.allAbsencesInCurrentState[i].absenceId + ",";
+            }
+            let confirmResult = confirm('Are you sure you want to cancel these jobs?');
+            if (confirmResult) { 
+                this._dataContext.CancelAbsences('reports/deleteAbsences', data).subscribe((response: any) => {  
+                    if (response == "success") {
+                        this.loadReportSummary();
+                        this.notifier.notify('success', 'Cancel Successfully.');                           
+                    }           
+                });
+            }
+        }
     }
 
     bindDetails(details: ReportDetail[]) {
@@ -114,20 +137,18 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
         this.noSubReqAbsence = [];
         this.absenceSummary = [];
     }
-    
+
     reportDetails(absenceDetail: ReportDetail) {
         const dialogEdit = this.dialogRef.open(
             ReportDetailsComponent,
-            {                
+            {
                 panelClass: 'report-details-dialog',
-                data: absenceDetail                                                   
+                data: absenceDetail
             }
         );
-
         dialogEdit.afterClosed().subscribe(result => {
-            if(result == 'Reload')
-            { 
-                this.loadReportSummary();                          
+            if (result == 'Reload') {
+                this.loadReportSummary();
             }
         });
     }

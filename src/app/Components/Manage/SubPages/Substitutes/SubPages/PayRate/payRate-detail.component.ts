@@ -5,6 +5,7 @@ import { DistrictService } from '../../../../../../Service/Manage/district.servi
 import { UserSession } from '../../../../../../Services/userSession.service';
 import { PayRateSettings } from '../../../../../../Model/payRateSettings';
 import { PayRateRule } from '../../../../../../Model/payRateRule';
+import { NotifierService } from '../../../../../../../../node_modules/angular-notifier';
 
 @Component({
     selector: 'payRate-details',
@@ -12,23 +13,21 @@ import { PayRateRule } from '../../../../../../Model/payRateRule';
     styleUrls: ['payRate-detail.component.scss']
 })
 export class PayRateComponent implements OnInit {
+    private notifier: NotifierService;
     payRates: PayRateSettings[] = Array<PayRateSettings>();
     payRateRules: PayRateRule[] = Array<PayRateRule>();
     position: FormGroup;
     msg: string;
     positions: PayRateSettings[];
-    constructor(private fb: FormBuilder, private districtService: DistrictService,
+    constructor(private fb: FormBuilder, notifier: NotifierService, private districtService: DistrictService,
         private userSession: UserSession) {
+            this.notifier = notifier;
     }
 
     ngOnInit() {
         this.getpositions();
-        for (let i = 0; i < 1; i++) {
-            this.payRates.push(new PayRateSettings());
-        }
-        for (let i = 0; i < 3; i++) {
-            this.payRateRules.push(new PayRateRule());
-        }
+        this.getPayRates();
+        this.getPayRatesRule();
     }
 
     addNewPayRate() {
@@ -47,15 +46,41 @@ export class PayRateComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
+    getPayRates(): void {
+        let DistrictId = this.userSession.getUserDistrictId();
+        this.districtService.getById('user/getPayRate', DistrictId).subscribe((data: any) => {
+            this.payRates = data;
+            for (let i = 0; i < 1; i++) {
+                this.payRates.push(new PayRateSettings());
+            }
+        },
+            error => this.msg = <any>error);
+    }
+
+    getPayRatesRule(): void {
+        let DistrictId = this.userSession.getUserDistrictId();
+        this.districtService.getById('user/getPayRateRule', DistrictId).subscribe((data: any) => {
+            this.payRateRules = data;
+            for (let i = 0; i < 3; i++) {
+                this.payRateRules.push(new PayRateRule());
+            }
+        },
+            error => this.msg = <any>error);
+    }
+
     postPayRate(payRate: any) {
         payRate.districtId = this.userSession.getUserDistrictId();
         if (payRate.id > 0) {
             this.districtService.Patch('user/payRate/', payRate).subscribe((data: any) => {
+                this.getPayRates();
+                this.notifier.notify('success', 'Updated Successfully!');
             },
                 error => this.msg = <any>error);
         }
         else {
             this.districtService.post('user/payRate/', payRate).subscribe((data: any) => {
+                this.getPayRates();
+                this.notifier.notify('success', 'Saved Successfully!');
             },
                 error => this.msg = <any>error);
         }
@@ -65,30 +90,34 @@ export class PayRateComponent implements OnInit {
         payRateRule.districtId = this.userSession.getUserDistrictId();
         if (payRateRule.id > 0) {
             this.districtService.Patch('user/payRateRule/', payRateRule).subscribe((data: any) => {
+                this.notifier.notify('success', 'Updated Successfully!');
+                this.getPayRatesRule();
             },
                 error => this.msg = <any>error);
         }
         else {
             this.districtService.post('user/payRateRule/', payRateRule).subscribe((data: any) => {
+                this.getPayRatesRule();
+                this.notifier.notify('success', 'Saved Successfully!');
             },
                 error => this.msg = <any>error);
         }
     }
 
-    onSubmitPosition(position: FormGroup) {
-        if (position.valid) {
-            if (position.value.id > 0) {
-                position.value.districtId = this.userSession.getUserDistrictId();
-                this.districtService.Patch('user/positions/', position.value).subscribe((data: any) => {
-                },
-                    error => this.msg = <any>error);
-            }
-            else {
-                this.districtService.post('user/positions/', position.value).subscribe((data: any) => {
-                },
-                    error => this.msg = <any>error);
-            }
-        }
+    onDeletePayRate(id: number) {
+        this.districtService.delete('user/deletePayRate/', id).subscribe((data: any) => {
+            this.getPayRates();
+            this.notifier.notify('success', 'Deleted Successfully!');
+        },
+            error => this.msg = <any>error);
+    }
+
+    onDeletePayRateRule(id: number) {
+        this.districtService.delete('user/deletePayRateRule/', id).subscribe((data: any) => {
+            this.getPayRatesRule();
+            this.notifier.notify('success', 'Deleted Successfully!');
+        },
+            error => this.msg = <any>error);
     }
 
 }

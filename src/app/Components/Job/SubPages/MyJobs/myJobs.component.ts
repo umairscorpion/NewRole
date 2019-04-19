@@ -5,16 +5,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommunicationService } from '../../../../Services/communication.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '../../../../../../node_modules/@angular/router';
 import { UserService } from '../../../../Service/user.service';
 import { environment } from '../../../../../environments/environment.prod';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '../../../../../../node_modules/@angular/common/http';
 
 @Component({
     selector:'my-jobs',
     templateUrl: 'myJobs.component.html'
 })
 export class MyJobsComponent implements OnInit {
+    UpcomingJobCount:any;
+    @Output() UpcomingCountEvent = new EventEmitter<string>();
     Organizations: any;
     Districts : any;
     CurrentDate: Date = new Date;
@@ -51,6 +53,8 @@ export class MyJobsComponent implements OnInit {
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
          "/" + UserId + "/"+ "-1" + "/" + DistrictId + "/" + Status ).subscribe((data: any) => {
             this.UpcommingJobs.data = data;
+            this.UpcomingJobCount = data.length
+                this.UpcomingCountEvent.emit(this.UpcomingJobCount)
         },
             error => this.msg = <any>error);
     }
@@ -64,6 +68,7 @@ export class MyJobsComponent implements OnInit {
                 if (response == "success") {
                     this.notifier.notify('success', 'Released Successfully.');
                     this.GetUpcommingJobs();
+                    // this.availableJobs.GetAvailableJobs();
                 }
             },
                 error => this.msg = <any>error);
@@ -124,6 +129,8 @@ export class MyJobsComponent implements OnInit {
             + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/"+ SearchFilter.value.OrganizationId + 
             "/" + SearchFilter.getRawValue().DistrictId  + "/" + 2 ).subscribe((data: any) => {
             this.UpcommingJobs.data = data;
+            this.UpcomingJobCount = data.length
+                this.UpcomingCountEvent.emit(this.UpcomingJobCount)
         },
             error => this.msg = <any>error);
         }

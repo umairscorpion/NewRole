@@ -3,8 +3,9 @@
         background: rgba(209, 196, 233, .3);
     }
 </style>
-<h4>Available Jobs ({{AvailableJobs.data && AvailableJobs.data.length > 0 ? AvailableJobs.data.length : 0 }})</h4>
-<div class="row">
+
+<!-- <h4>Available Jobs ({{AvailableJobs.data && AvailableJobs.data.length > 0 ? AvailableJobs.data.length : 0 }})</h4> -->
+<div style="margin-top:30px;" class="row">
     <div class="row">
         <div class="col-md-12 col-lg-12">
             <form [formGroup]="FilterForm" (ngSubmit)="SearchAvailableJobs(FilterForm)">
@@ -124,7 +125,7 @@
                                     matTooltipPosition="above">check</mat-icon>
                             </button>
                             <button mat-icon-button>
-                                <mat-icon style="color:#d20e0f;font-weight: bold;cursor: pointer; margin-left: 10px" #tooltip="matTooltip" matTooltip="Reject"
+                                <mat-icon style="color:#d20e0f;font-weight: bold;cursor: pointer; margin-left: 10px" #tooltip="matTooltip" matTooltip="Decline"
                                     matTooltipPosition="above">close</mat-icon>
                             </button>
                             <button mat-icon-button (click)="ShowJobDetail(Absence)">

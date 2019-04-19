@@ -99,38 +99,8 @@ export class SubstitutesComponent implements OnInit {
       error => <any>error);
   }
 
-  onUpdateweeklyLimitSetting(settings: FormGroup) {
-    if (settings.valid) {
-      let model = {
-        DistrictId: this._userSession.getUserDistrictId(),
-        WeeklyHourLimit: settings.value.WeeklyHourLimit,
-        IsWeeklyLimitApplicable: settings.value.IsWeeklyLimitApplicable,
-      }
-      this._districtService.post('District/updateSettings', model).subscribe((data: any) => {
-        this.notifier.notify('success', 'Updated Successfully');
-      },
-        (err: HttpErrorResponse) => {
-          this.notifier.notify('error', err.error.error_description);
-        });
-    }
-  }
-
   onTabChanged(tab: any) {
-    if (tab.index === 1) {
-      this._districtService.getById('district/getDistrictById', this._userSession.getUserDistrictId()).subscribe((data: any) => {
-        let hourlySettings = {
-          WeeklyHourLimit: data[0].weeklyHourLimit,
-          IsWeeklyLimitApplicable: data[0].isWeeklyLimitApplicable
-        }
-        this.weeklyLimitSettings.setValue(hourlySettings);
-      },
-        error => this.msg = <any>error);
-    }
-  }
-
-  onEditHourLimit() {
-    this.weeklyLimitSettings.controls['WeeklyHourLimit'].enable();
-    this.weeklyLimitSettings.controls['IsWeeklyLimitApplicable'].enable();
+    
   }
 
   getSettings() {

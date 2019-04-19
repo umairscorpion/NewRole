@@ -6,8 +6,11 @@ import { CommunicationService } from '../../../../Services/communication.service
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { Absence } from '../../../../Model/absence';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '../../../../../../node_modules/@angular/platform-browser';
 import { FileService } from '../../../../Services/file.service';
+import { ChangeDetectorRef } from '@angular/core';
+import {  ChangeDetectionStrategy } from '@angular/core';
+import { MyJobsComponent } from '../MyJobs/myJobs.component';
 
 @Component({
     selector: 'available-jobs',
@@ -25,6 +28,9 @@ export class AvailableJobsComponent implements OnInit {
         });
         return toSelectDefaultOptionForReason ? 'highlight-Jobs' : undefined;
     }
+    @ViewChild(MyJobsComponent) private upcomingJobs: MyJobsComponent;
+    AvailableJobCount:any;
+    @Output() AvailableCountEvent = new EventEmitter<string>();
     ImageURL: SafeUrl = "";
     Organizations: any;
     Districts: any;
@@ -42,10 +48,9 @@ export class AvailableJobsComponent implements OnInit {
 
     constructor(private _dataContext: DataContext, private _userSession: UserSession,
         private _formBuilder: FormBuilder, notifier: NotifierService, private fileService: FileService,
-        private _communicationService: CommunicationService, private sanitizer: DomSanitizer) {
+        private _communicationService: CommunicationService, private sanitizer: DomSanitizer,private ref: ChangeDetectorRef) {
         this.notifier = notifier;
     }
-
     ngAfterViewInit() {
         this.AvailableJobs.sort = this.sort;
         this.AvailableJobs.paginator = this.paginator;
@@ -63,6 +68,8 @@ export class AvailableJobsComponent implements OnInit {
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
             "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + Status).subscribe((data: Absence[]) => {
                 this.AvailableJobs.data = data;
+                this.AvailableJobCount = data.length;
+                this.AvailableCountEvent.emit(this.AvailableJobCount);
             },
                 error => this.msg = <any>error);
     }
@@ -112,6 +119,8 @@ export class AvailableJobsComponent implements OnInit {
                 + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +
                 "/" + SearchFilter.getRawValue().DistrictId + "/" + 1).subscribe((data: any) => {
                     this.AvailableJobs.data = data;
+                    this.AvailableJobCount = data.length;
+                    this.AvailableCountEvent.emit(this.AvailableJobCount)
                 },
                     error => this.msg = <any>error);
         }
@@ -207,7 +216,8 @@ export class AvailableJobsComponent implements OnInit {
         if (confirmResult) {
             this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
                 this.NotifyResponse(response as string);
-                this.GetAvailableJobs();
+                this.GetAvailableJobs()
+                this.upcomingJobs.GetUpcommingJobs();
             },
                 error => this.msg = <any>error);
         }

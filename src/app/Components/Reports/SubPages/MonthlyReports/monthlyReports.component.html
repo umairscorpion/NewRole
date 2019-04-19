@@ -4,7 +4,7 @@
 </div>
 <app-report-filters (formAction)="onSubmit($event)"></app-report-filters>
 <div class="row mt-30" *ngIf="noAbsenceMessage">
-  <div class="alert-warning m-20 p-20">No Absences have been created so far.</div>
+  <div class="alert-warning m-20 p-20">No Absences have been found.</div>
 </div>
 <div *ngIf="!noAbsenceMessage">
   <div class="row mt-30">
@@ -76,7 +76,7 @@
             <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
-                <div class="ellipsis">{{ row['endDate'] | date:'E, M/d/y' }}</div>
+                <div class="ellipsis" *ngIf="row['endDate']!=row['startDate']">{{ row['endDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis">{{ row['startTime'] | convertFrom24HourTo12HourFormat }}-{{ row['endTime'] | convertFrom24HourTo12HourFormat}} </div>
               </ng-template>
             </ngx-datatable-column>
@@ -124,7 +124,7 @@
             <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
-                <div class="ellipsis">{{ row['endDate'] | date:'E, M/d/y' }}</div>
+                <div class="ellipsis" *ngIf="row['endDate']!=row['startDate']">{{ row['endDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis">{{ row['startTime'] | convertFrom24HourTo12HourFormat }}-{{ row['endTime'] | convertFrom24HourTo12HourFormat}} </div>
               </ng-template>
             </ngx-datatable-column>
@@ -162,7 +162,7 @@
             <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
-                <div class="ellipsis">{{ row['endDate'] | date:'E, M/d/y' }}</div>
+                <div class="ellipsis" *ngIf="row['endDate']!=row['startDate']">{{ row['endDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis">{{ row['startTime'] | convertFrom24HourTo12HourFormat }}-{{ row['endTime'] | convertFrom24HourTo12HourFormat}} </div>
               </ng-template>
             </ngx-datatable-column>
