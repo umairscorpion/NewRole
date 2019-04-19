@@ -1,10 +1,4 @@
 export class PayRateSettings {
-<<<<<<< HEAD
-    Id: number;
-    PositionId: number;
-    PayRate: number;
-    Period: number;
-=======
     id: number;
     positionId: string;
     payRate: number;
@@ -19,5 +13,4 @@ export class PayRateSettings {
     //     this.period = period;
     // }
 
->>>>>>> d24debe9e87d9ef5169e63c941c6a6eb84961ca3
 }
