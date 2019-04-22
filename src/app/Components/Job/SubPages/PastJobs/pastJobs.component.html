@@ -71,15 +71,20 @@
                     </mat-cell>
                 </ng-container>
 
+                <ng-container matColumnDef="Employee">
+                        <mat-header-cell *matHeaderCellDef> Employee </mat-header-cell>
+                        <mat-cell *matCellDef="let Absence"> {{Absence.employeeName}} </mat-cell>
+                    </ng-container>
+
                 <ng-container matColumnDef="Status">
                     <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
                     <mat-cell *matCellDef="let Absence"> {{Absence.status == 2 || Absence.status == 3 ? 'Completed': 'Not Completed'}} </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="Substitute">
+                <!-- <ng-container matColumnDef="Substitute">
                     <mat-header-cell *matHeaderCellDef> Substitute </mat-header-cell>
                     <mat-cell *matCellDef="let Absence"> {{Absence.substituteName ? Absence.substituteName: 'N/A'}} </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <ng-container matColumnDef="Action">
                     <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>

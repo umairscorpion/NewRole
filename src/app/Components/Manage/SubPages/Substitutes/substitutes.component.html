@@ -12,7 +12,7 @@
           <div class="mat-elevation-z8">
             <div class="example-header">
               <mat-form-field>
-                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Substitutes">
               </mat-form-field>
             </div>
             <mat-table #table [dataSource]="substituteDataSource" matSort>
@@ -27,6 +27,11 @@
                 <mat-cell *matCellDef="let Substitute"> {{Substitute.lastName}} </mat-cell>
               </ng-container>
 
+              <ng-container matColumnDef="Position">
+                <mat-header-cell *matHeaderCellDef> Position </mat-header-cell>
+                <mat-cell *matCellDef="let Substitute"> {{Substitute.userTypeDescription}} </mat-cell>
+              </ng-container>
+
               <ng-container matColumnDef="Email">
                 <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
                 <mat-cell *matCellDef="let Substitute"> {{Substitute.email}} </mat-cell>
@@ -36,6 +41,12 @@
                 <mat-header-cell *matHeaderCellDef> Phone No </mat-header-cell>
                 <mat-cell *matCellDef="let Substitute"> {{Substitute.phoneNumber}} </mat-cell>
               </ng-container>
+
+              <ng-container matColumnDef="Active">
+                <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
+                <mat-cell *matCellDef="let Substitute"> 7 days ago </mat-cell>
+              </ng-container>
+
               <ng-container matColumnDef="action">
                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                 <mat-cell *matCellDef="let row">
@@ -48,6 +59,8 @@
                   <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
                     <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
                   </a>
+                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above"
+                  [checked]="row.isActive" (change)="updateSubstitute(row)" color=""></mat-slide-toggle>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
