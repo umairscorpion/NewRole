@@ -4,9 +4,9 @@
         <div class="col-md-10 col-md-offset-1">
             <mat-card style="min-height: 600px">
                 <mat-card-content>
-                    <h2 class="example-h2">Profile Settings</h2>
+                    <h2 class="example-h2">Profile</h2>
                     <mat-tab-group class="demo-tab-group">
-                        <mat-tab label="Personal Information">
+                        <mat-tab label="Personal Info">
                             <div class="demo-tab-content">
                                 <form (ngSubmit)="onSubmitPersonalForm(personalFormGroup)" [formGroup]="personalFormGroup">
                                     <table class="col-md-12 col-lg-12">
@@ -36,6 +36,7 @@
                                         </tr>
                                         <tr>
                                             <td>
+                                                    <h4 style="margin-left: 40px;">Profile Picture</h4>
                                                 <img [src]="ProfilePicture" width="200" height="200">
                                                 <br/>
                                                 <input type='file' (change)="onSelectFile($event)">
@@ -50,7 +51,13 @@
                                 </form>
                             </div>
                         </mat-tab>
-                        <mat-tab label="Official Information">
+                        <mat-tab *ngIf='UserRole == 4' label="Files">
+
+                        </mat-tab>
+                        <mat-tab *ngIf='UserRole == 4' label="Change Password">
+
+                        </mat-tab>
+                        <mat-tab *ngIf='UserRole != 4' label="Official Information">
                             <div class="demo-tab-content">
                                 <form (ngSubmit)="onFromSubmit(officialFormGroup)" [formGroup]="officialFormGroup">
                                     <table class="col-md-12 col-lg-12">
