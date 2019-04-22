@@ -20,6 +20,7 @@ import { User } from '../../../../Model/user';
 @Component({
     selector: 'create-absence',
     templateUrl: 'createAbsence.component.html',
+    styleUrls: ['createAbsence.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
 export class CreateAbsenceComponent implements OnInit, OnDestroy {
@@ -88,7 +89,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     // for checking that if absence is for need a sub or not
     NeedASub: boolean = false;
     response: number = 0;
-    substituteId: any;
     constructor(private router: Router, notifier: NotifierService, private http: HttpClient, private _formBuilder: FormBuilder,
         private _EmployeeService: EmployeeService, private _dataContext: DataContext, private _userSession: UserSession,
         private absenceService: AbsenceService) {
@@ -138,7 +138,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             // SubRequired: ['1'],
             PositionId: [''],
             AbsenceType: ['4', Validators.required],
-            Substitutes: ['']
+            Substitutes: [[], []]
         });
 
         this.absenceSecondFormGroup = this._formBuilder.group({
@@ -314,10 +314,18 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             // });
     }
 
-    //Select Substitute For Direct Assign
+    //Select Substitute For Direct Assign And Preferred Substitutes
     SelectSubstituteForDirectAssign(user: User) {
-        this.substituteId = user.userId;
-        this.absenceFirstFormGroup.get('Substitutes').setValue(user.firstName);
+        if (this.absenceFirstFormGroup.value.Substitutes.length > 0 && this.absenceFirstFormGroup.value.AbsenceType === 2) {
+            this.notifier.notify('error', 'You can select only one substitute in direct Assign.')
+        }
+        let alreadyAdded = this.absenceFirstFormGroup.value.Substitutes.filter((obj: User) => obj.userId === user.userId);
+        if(alreadyAdded.length > 0) {
+            this.notifier.notify('error', 'Already Selected')
+            return;
+        }
+        this.absenceFirstFormGroup.value.Substitutes.push(user);
+        this.availableSubstitutes = new Observable<User[]>();
     }
 
     //For Display Substitute name in text box
@@ -524,7 +532,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         if (this.absenceFirstFormGroup.valid && this.absenceSecondFormGroup.valid) {
             let Substitutes = "";
 
-            if (+FirstAbsenceForm.value.AbsenceType == 1 && FirstAbsenceForm.value.Substitutes) {
+            if ((+FirstAbsenceForm.value.AbsenceType == 1 || +FirstAbsenceForm.value.AbsenceType == 2) && (FirstAbsenceForm.value.Substitutes)) {
                 FirstAbsenceForm.value.Substitutes.forEach((Substitute, index, array) => {
                     Substitutes += index === array.length - 1 ? Substitute.userId : Substitute.userId + ",";
                 });
@@ -555,7 +563,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 AttachedFileName: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileName : 'N/A',
                 FileContentType: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileType : 'N/A',
                 FileExtention: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileExtention : 'N/A',
-                SubstituteId: FirstAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 2 ? this.substituteId :
+                SubstituteId: FirstAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 2 ? Substitutes :
                     FirstAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 1 ? Substitutes : '-1',
                 Interval: this.ContactSub == "1" ? 0 : this.ContactSubTime,
                 TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime + this.ContactSubTime,

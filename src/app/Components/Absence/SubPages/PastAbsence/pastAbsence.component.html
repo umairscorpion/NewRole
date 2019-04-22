@@ -71,7 +71,7 @@
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
-                            <button (click)="UpdateStatus(Absence, 4)" mat-menu-item>
+                            <button *ngIf="loginUserRole !== 3" (click)="UpdateStatus(Absence, 4)" mat-menu-item>
                                 <mat-icon>cancel</mat-icon>
                                 <span>Cancel</span>
                             </button>

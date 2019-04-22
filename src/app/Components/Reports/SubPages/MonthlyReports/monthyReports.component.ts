@@ -93,6 +93,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
             this.bindDetails(details);
         });
         if ($event.actionName == "print") {
+            this.allAbsencesInCurrentState = this.allAbsencesInCurrentState.filter(t => t.statusId !== 4);
             this.allAbsencesInCurrentState = this.allAbsencesInCurrentState.filter(function (absence) {
                 delete absence.substituteId;
                 delete absence.absencePosition;

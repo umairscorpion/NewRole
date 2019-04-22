@@ -68,10 +68,10 @@ export class PayRollComponent implements OnInit {
 
     intializeForms() {
         this.weeklyLimitSettings = this.fb.group({
-            WeeklyHourLimit: [{ value: '', disabled: true }],
-            IsWeeklyLimitApplicable: [{ value: false, disabled: true }],
-            DeductAfterTime: [{ value: '1' }],
-            IsDeductOnBreak: [{ value: false }]
+            weeklyHourLimit: [{ value: '', disabled: true }],
+            isWeeklyLimitApplicable: [{ value: false, disabled: true }],
+            deductAfterTime: [{ value: '1' }],
+            isDeductOnBreak: [{ value: false }]
         });
     }
 
@@ -86,10 +86,10 @@ export class PayRollComponent implements OnInit {
         if (settings.valid) {
             let model = {
                 districtId: this._userSession.getUserDistrictId(),
-                weeklyHourLimit: settings.value.WeeklyHourLimit,
-                isWeeklyLimitApplicable: settings.value.IsWeeklyLimitApplicable,
-                deductAfterTime: settings.value.DeductAfterTime,
-                isDeductOnBreak: settings.value.IsDeductOnBreak
+                weeklyHourLimit: settings.value.weeklyHourLimit,
+                isWeeklyLimitApplicable: settings.value.isWeeklyLimitApplicable,
+                deductAfterTime: settings.value.deductAfterTime,
+                isDeductOnBreak: settings.value.isDeductOnBreak
             }
             this._districtService.post('District/updateSettings', model).subscribe((data: any) => {
                 this.notifier.notify('success', 'Updated Successfully');
@@ -103,19 +103,15 @@ export class PayRollComponent implements OnInit {
     onTabChanged(tab: any) {
         if (tab.index === 1) {
             this._districtService.getById('district/getDistrictById', this._userSession.getUserDistrictId()).subscribe((data: any) => {
-                let hourlySettings = {
-                    WeeklyHourLimit: data[0].weeklyHourLimit,
-                    IsWeeklyLimitApplicable: data[0].isWeeklyLimitApplicable
-                }
-                this.weeklyLimitSettings.setValue(hourlySettings);
+                this.weeklyLimitSettings.patchValue({...data[0]});
             },
                 error => this.msg = <any>error);
         }
     }
 
     onEditHourLimit() {
-        this.weeklyLimitSettings.controls['WeeklyHourLimit'].enable();
-        this.weeklyLimitSettings.controls['IsWeeklyLimitApplicable'].enable();
+        this.weeklyLimitSettings.controls['weeklyHourLimit'].enable();
+        this.weeklyLimitSettings.controls['isWeeklyLimitApplicable'].enable();
     }
 
     toggle() {

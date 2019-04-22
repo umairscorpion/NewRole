@@ -14,6 +14,7 @@ import { HomeComponent } from './Components/Dashboard/home.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { ChartsModule } from 'ng2-charts';
 import { BlockUIModule } from 'ng-block-ui';
+import { TagInputModule } from 'ngx-chips';
 import {
     MatAutocompleteModule,
     MatButtonModule,
@@ -214,6 +215,7 @@ const customNotifierOptions: NotifierOptions = {
 
 @NgModule({
     imports: [
+        TagInputModule,
         NgxDatatableModule,
         ChartsModule,
         BrowserModule, ReactiveFormsModule, MatSidenavModule, CdkTableModule, HttpModule, routing, FormsModule,

@@ -7,7 +7,7 @@
                 <div *ngIf="userRole == 5"><a mat-list-item [routerLinkActive]="['active']"
                         routerLink="{{sideNavMenuObj.stateMachine}}"
                         *ngFor="let sideNavMenuObj of sideNavMenu">{{sideNavMenuObj.name}}</a></div>
-                <div *ngIf="userRole == 4"><a mat-list-item [routerLinkActive]="['active']"
+                <div *ngIf="userRole == 4"><a mat-list-item class="active" [routerLinkActive]="['active']"
                         routerLink="{{sideNavMenuObj.stateMachine}}" *ngFor="let sideNavMenuObj of sideNavMenu">Jobs</a>
                 </div>
             </mat-nav-list>

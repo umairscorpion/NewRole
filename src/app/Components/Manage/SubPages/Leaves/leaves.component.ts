@@ -216,7 +216,7 @@ export class LeavesComponent implements OnInit {
 
     onOpenAllowancePopup() {
         const dialogRef = this.dialog.open(AllowanceComponent, {
-            panelClass: 'report-details-dialog'
+            panelClass: 'allowance-popup-dialog'
         }); 
         dialogRef.afterClosed().subscribe(result => {
             this.getAllowances();
@@ -226,7 +226,7 @@ export class LeavesComponent implements OnInit {
     editAllowance(allowance: Allowance) {
         const dialogRef = this.dialog.open(AllowanceComponent, {
             data: allowance,
-            panelClass: 'report-details-dialog'
+            panelClass: 'allowance-popup-dialog'
         }); 
         dialogRef.afterClosed().subscribe(result => {
             this.getAllowances();

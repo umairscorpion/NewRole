@@ -7,6 +7,7 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { ActivatedRoute } from '@angular/router';
 import { LeaveType } from '../../../../Model/leaveType';
 import { NotifierService } from 'angular-notifier';
+import { Allowance } from '../../../../Model/Manage/allowance.detail';
 // import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 @Component({
     templateUrl: 'addLeave.component.html'
@@ -14,21 +15,22 @@ import { NotifierService } from 'angular-notifier';
 export class AddLeaveComponent implements OnInit {
     private notifier: NotifierService;
     msg: string;
+    allowances: Allowance[];
     leaveIdForEdit: number = 0;
     LeaveForm: FormGroup;
-    constructor(private _FormBuilder: FormBuilder, private userSession : UserSession,
+    constructor(private _FormBuilder: FormBuilder, private userSession : UserSession, private districtService: DistrictService,
         private absenceService: AbsenceService, private route: ActivatedRoute,  notifier: NotifierService) { 
             this.notifier = notifier;
          }
     ngOnInit(): void {
         this.LeaveForm = this._FormBuilder.group({
             leaveTypeName: ['', Validators.required],
-            // startingBalance: [''],
+            allowance: [''],
             isSubtractAllowance: [''],
             isApprovalRequired: [''],
             isVisible: ['']
         });
-
+        this.getAllowances();
         this.editLeave();
     }
 
@@ -49,6 +51,14 @@ export class AddLeaveComponent implements OnInit {
                     error => <any>error);
             }
         });
+    }
+
+    getAllowances() {
+        this.districtService.getById('District/getAllowances', this.userSession.getUserDistrictId()).subscribe((allowances: Allowance[]) => {
+            this.allowances = allowances;
+        },
+            (err: HttpErrorResponse) => {
+            });
     }
 
     onSubmit(form : any) {

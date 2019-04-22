@@ -1,0 +1,43 @@
+<style>
+        /* Structure */
+    
+        .example-container {
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+        }
+    
+        .example-header {
+            min-height: 64px;
+            padding: 8px 24px 0;
+        }
+    
+        .mat-form-field {
+            font-size: 14px;
+            width: 100%;
+        }
+    
+        .mat-table {
+            overflow: auto;
+            max-height: 500px;
+        }
+    </style>
+    <h3>Activity Reports</h3>
+    <div class="row example-header">
+        <div class="col-md-3">
+            <mat-form-field>
+                <input matInput #inputName placeholder="Search Job #">
+            </mat-form-field>
+        </div>
+        <div class="col-md-3">
+            <mat-form-field>
+                <input matInput [matDatepicker]="datePickerFrom" placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="datePickerFrom"></mat-datepicker-toggle>
+                <mat-datepicker #datePickerFrom></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div>
+            <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit">Search</button>
+        </div>
+    </div>
+    

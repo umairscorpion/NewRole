@@ -21,7 +21,7 @@ export class PayRateComponent implements OnInit {
     positions: PayRateSettings[];
     constructor(private fb: FormBuilder, notifier: NotifierService, private districtService: DistrictService,
         private userSession: UserSession) {
-            this.notifier = notifier;
+        this.notifier = notifier;
     }
 
     ngOnInit() {
@@ -61,7 +61,7 @@ export class PayRateComponent implements OnInit {
         let DistrictId = this.userSession.getUserDistrictId();
         this.districtService.getById('user/getPayRateRule', DistrictId).subscribe((data: any) => {
             this.payRateRules = data;
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 1; i++) {
                 this.payRateRules.push(new PayRateRule());
             }
         },
@@ -70,37 +70,47 @@ export class PayRateComponent implements OnInit {
 
     postPayRate(payRate: any) {
         payRate.districtId = this.userSession.getUserDistrictId();
-        if (payRate.id > 0) {
-            this.districtService.Patch('user/payRate/', payRate).subscribe((data: any) => {
-                this.getPayRates();
-                this.notifier.notify('success', 'Updated Successfully!');
-            },
-                error => this.msg = <any>error);
+        if (payRate.positionId && payRate.payRate && payRate.period) {
+            if (payRate.id > 0) {
+                this.districtService.Patch('user/payRate/', payRate).subscribe((data: any) => {
+                    this.getPayRates();
+                    this.notifier.notify('success', 'Updated Successfully!');
+                },
+                    error => this.msg = <any>error);
+            }
+            else {
+                this.districtService.post('user/payRate/', payRate).subscribe((data: any) => {
+                    this.getPayRates();
+                    this.notifier.notify('success', 'Saved Successfully!');
+                },
+                    error => this.msg = <any>error);
+            }
         }
         else {
-            this.districtService.post('user/payRate/', payRate).subscribe((data: any) => {
-                this.getPayRates();
-                this.notifier.notify('success', 'Saved Successfully!');
-            },
-                error => this.msg = <any>error);
+            this.notifier.notify('error', 'Fill all fields.');
         }
     }
 
     postPayRateRule(payRateRule: any) {
         payRateRule.districtId = this.userSession.getUserDistrictId();
-        if (payRateRule.id > 0) {
-            this.districtService.Patch('user/payRateRule/', payRateRule).subscribe((data: any) => {
-                this.notifier.notify('success', 'Updated Successfully!');
-                this.getPayRatesRule();
-            },
-                error => this.msg = <any>error);
+        if (payRateRule.positionId && payRateRule.payRate && payRateRule.increaseAfterDays) {
+            if (payRateRule.id > 0) {
+                this.districtService.Patch('user/payRateRule/', payRateRule).subscribe((data: any) => {
+                    this.notifier.notify('success', 'Updated Successfully!');
+                    this.getPayRatesRule();
+                },
+                    error => this.msg = <any>error);
+            }
+            else {
+                this.districtService.post('user/payRateRule/', payRateRule).subscribe((data: any) => {
+                    this.getPayRatesRule();
+                    this.notifier.notify('success', 'Saved Successfully!');
+                },
+                    error => this.msg = <any>error);
+            }
         }
         else {
-            this.districtService.post('user/payRateRule/', payRateRule).subscribe((data: any) => {
-                this.getPayRatesRule();
-                this.notifier.notify('success', 'Saved Successfully!');
-            },
-                error => this.msg = <any>error);
+            this.notifier.notify('error', 'Fill all fields.');
         }
     }
 

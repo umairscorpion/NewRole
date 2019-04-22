@@ -137,7 +137,7 @@ export class ReportDetailsComponent implements OnInit {
       let confirmResult = confirm('Are you sure you want to cancel this absence?');
       let StatusId = 4;
       if (confirmResult) {
-        this._dataContext.UpdateAbsenceStatus('reports/deleteAbsences', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
           this.dialogRef.close('Reload');
           this.notifier.notify('success', 'Cancelled Successfully.');
         });
@@ -243,7 +243,7 @@ export class ReportDetailsComponent implements OnInit {
         interval: formGroup.value.interval,
         totalInterval: formGroup.value.totalInterval,
         isApprovalRequired: formGroup.value.isApprovalRequired
-      }     
+      }
       this.absenceService.Patch('/Absence/updateAbsence/', AbsenceModel).subscribe((respose: any) => {
         if (respose == "success") {
           this.dialogRef.close('Reload');

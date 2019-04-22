@@ -1,40 +1,47 @@
-<div class="Leave-content">
+<div class="Leave-content col-md-6 col-md-offset-3" style="padding-top: 10px">
     <mat-card>
         <mat-card-content>
-            <form [formGroup]="LeaveForm" (ngSubmit)="onSubmit(LeaveForm)">
-                <h4>Add New Leave</h4>
-                <div>
-                    <mat-form-field class="col-md-12">
-                        <input matInput placeholder="Leave Name" formControlName="leaveTypeName" required>
-                    </mat-form-field>
-                </div>
-                <!-- <div>
-                    <mat-form-field class="col-md-12">
-                        <input matInput placeholder="Starting Balance" type="number" formControlName="startingBalance">
-                    </mat-form-field>
-                </div> -->
-                <div style="text-align: left">
-                    <mat-checkbox class="col-md-12" color="primary" formControlName="isSubtractAllowance">
-                        This leave type subtracts days from an allowance (e.g. vacation)
-                    </mat-checkbox>
-                </div>
-                <div style="text-align: left">
-                    <mat-checkbox class="col-md-12" color="primary" formControlName="isApprovalRequired">
-                        This leave type needs to be approved
-                    </mat-checkbox>
+            <form class="row" [formGroup]="LeaveForm" (ngSubmit)="onSubmit(LeaveForm)">
+                <div style="text-align: center;">
+                    <h4>Add New Leave</h4>
+                    <div>
+                        <mat-form-field class="col-md-7">
+                            <input matInput placeholder="Leave Name" formControlName="leaveTypeName" required>
+                        </mat-form-field>
+                    </div>
+                    <div style="text-align: left">
+                        <mat-checkbox class="col-md-12" color="primary" formControlName="isSubtractAllowance">
+                            This leave type subtracts days from an allowance (e.g. vacation)
+                        </mat-checkbox>
+                    </div>
+                    <div *ngIf='LeaveForm.value.isSubtractAllowance' style="text-align: center">
+                        <mat-form-field class="col-md-7">
+                            <mat-select placeholder="Allowance" formControlName="allowance">
+                                <mat-option>--</mat-option>
+                                <mat-option *ngFor="let allowance of allowances" [value]="allowance.id">
+                                    {{allowance.title}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div style="text-align: left">
+                        <mat-checkbox class="col-md-12" color="primary" formControlName="isApprovalRequired">
+                            This leave type needs to be approved
+                        </mat-checkbox>
 
-                </div>
-                <div style="text-align: left">
-                    <mat-checkbox class="col-md-12" color="primary" formControlName="isVisible">
-                        This leave type is visible to all users scheduling absence
-                    </mat-checkbox>
+                    </div>
+                    <div style="text-align: left">
+                        <mat-checkbox class="col-md-12" color="primary" formControlName="isVisible">
+                            This leave type is visible to all users scheduling absence
+                        </mat-checkbox>
 
-                </div>
-                <div>
-                    <a routerLink="./../../leave" style="padding-right: 5px">
-                        <button mat-raised-button style="background-color: #04c0be; color: white;">Back</button>
-                    </a>
-                    <button mat-raised-button style="background-color: #74a4a7; color: white;">Save</button>
+                    </div>
+                    <div>
+                        <a routerLink="./../../leave" style="padding-right: 5px">
+                            <button mat-raised-button style="background-color: #04c0be; color: white;">Back</button>
+                        </a>
+                        <button mat-raised-button style="background-color: #74a4a7; color: white;">Save</button>
+                    </div>
                 </div>
             </form>
         </mat-card-content>

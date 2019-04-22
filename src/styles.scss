@@ -356,3 +356,7 @@ div.center-text{
         font-size: 45px;
         }
         }
+        .mat-option:first-child .mat-pseudo-checkbox
+        { 
+            display: none; 
+        }

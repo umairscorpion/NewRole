@@ -145,72 +145,22 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6"></div>
                                     <div class="col-md-6 col-lg-6" *ngIf='absenceFirstFormGroup.value.AbsenceType === "1" || absenceFirstFormGroup.value.AbsenceType === "2"'>
-                                        <div style="border-radius: 19px !important; min-height: 199px;" class="col-md-10 col-lg-10 mat-elevation-z8" *ngIf='absenceFirstFormGroup.value.AbsenceType == "1"'>
-                                            <mat-form-field appearance="outline" class="col-md-12 col-lg-12">
-                                                <input autocomplete="off" matInput placeholder="search substitute" (input)="SearchAvailableSubstitutes($event.target.value)">
-                                            </mat-form-field>
-                                            <mat-selection-list *ngIf='absenceFirstFormGroup.value.AbsenceType == "1"' formControlName="Substitutes" class="col-md-12 col-lg-12"
-                                                #Category>
-                                                <mat-list-option *ngFor="let substitute of availableSubstitutes | async" [value]="substitute">
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                            <img class="img-circle" [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'" width="35" height="35">
-                                                        </div>
-                                                        <div class="col-md-10">
-                                                            {{substitute.firstName}}
-                                                        </div>
-                                                    </div>
-                                                </mat-list-option>
-                                            </mat-selection-list>
-                                        </div>
-                                        <!-- <mat-form-field class="col-md-10 col-lg-10" *ngIf='absenceFirstFormGroup.value.AbsenceType == "1"'>
-                                                    <mat-select #matsubList placeholder="Select" formControlName="Substitutes" multiple>
-                                                        <mat-select-trigger>
-                                                            {{absenceFirstFormGroup.value.Substitutes ? absenceFirstFormGroup.value.Substitutes[0].firstName : ''}}
-                                                            <span *ngIf="absenceFirstFormGroup.value.Substitutes != null && absenceFirstFormGroup.value.Substitutes.length > 1" class="additional-selection">
-                                                                (+{{absenceFirstFormGroup.value.Substitutes.length - 1}} {{absenceFirstFormGroup.value.Substitutes.length === 2 ? 'other' : 'others'}})
-                                                            </span>
-                                                        </mat-select-trigger>
-                                                        <div class="select-container">
-                                                            <mat-optgroup>
-                                                                <mat-form-field style="width:100%;">
-                                                                    <input #search autocomplete="off" placeholder="Search" aria-label="Search" matInput>
-                                                                    <button [disableRipple]="true" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch($event)">
-                                                                        <mat-icon>close</mat-icon>
-                                                                    </button>
-                                                                </mat-form-field>
-                                                            </mat-optgroup>
-                                                            <mat-optgroup *ngIf="(SubstituteList | async) == null">
-                                                                <div>No results found!</div>
-                                                            </mat-optgroup>
-                                                            <mat-option *ngFor="let substitute of SubstituteList | async" [value]="substitute">
-                                                                {{substitute.firstName}}
-                                                            </mat-option>
-                                                        </div>
-                                                    </mat-select>
-                                                </mat-form-field> -->
-                                        <div style="border-radius: 10px !important;min-height: 199px;" *ngIf='absenceFirstFormGroup.value.AbsenceType == "2"' class="col-md-10 col-lg-10 mat-elevation-z8">
-                                            <!-- <mat-form-field appearance="outline" class="col-md-12 col-lg-12">
-                                                <input autocomplete="off" matInput placeholder="search substitute" (input)="SearchAvailableSubstitutes($event.target.value)">
-                                            </mat-form-field>
-                                            <mat-selection-list *ngIf='absenceFirstFormGroup.value.AbsenceType == "2"' formControlName="Substitutes" class="col-md-12 col-lg-12"
-                                                #Category>
-                                                <mat-list-option (click)="handleSelection(substitute.userId, Category)" [value]="substitute.userId" *ngFor="let substitute of availableSubstitutes | async" [value]="substitute">
-                                                    <div class="row">
-                                                        <div class="col-md-2">  
-                                                            <img class="img-circle" [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'" width="35" height="35">
-                                                        </div>
-                                                        <div class="col-md-10">
-                                                            {{substitute.firstName}}
-                                                        </div>
-                                                    </div>
-                                                </mat-list-option>
-                                            </mat-selection-list> -->
-                                            <mat-form-field appearance="outline" class="col-md-12 col-lg-12">
-                                                <input autocomplete="off" matInput placeholder="Search here.." (input)="SearchAvailableSubstitutes($event.target.value)" formControlName="Substitutes">
-                                            </mat-form-field>
-                                            <mat-option *ngFor="let substitute of availableSubstitutes | async" (click)="SelectSubstituteForDirectAssign(substitute)">
-                                                <img class="img-circle" [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'" width="25" height="25"> {{substitute.firstName}}
+                                        <div style="border-radius: 19px !important" class="col-md-10 col-lg-10 mat-elevation-z8">
+                                            <tag-input [placeholder]="'Search substitute'" [identifyBy]="'userId'" [displayBy]="'firstName'" [secondaryPlaceholder]="'Search substitute'"
+                                             (input)="SearchAvailableSubstitutes($event.target.value)"
+                                                formControlName="Substitutes">
+                                            </tag-input>
+                                            <h6 *ngIf='availableSubstitutes'>Recommended Candidates</h6>
+                                            <mat-option *ngFor="let substitute of availableSubstitutes | async" style="padding: 0px !important;">
+                                                <div class="col-md-6 col-lg-6">
+                                                    <img class="img-circle" [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'" width="25" height="25"> {{substitute.firstName}}
+                                                </div>
+                                                <div (click)="SelectSubstituteForDirectAssign(substitute)" style="color: darkblue" class="col-md-2 col-lg-2">
+                                                   <b>Select</b> 
+                                                </div>
+                                                <div class="col-md-4 col-lg-4">
+                                                    <button mat-raised-button type="button" style="background-color:lightgreen; color:white">Available</button>
+                                                </div>
                                             </mat-option>
                                         </div>
                                     </div>

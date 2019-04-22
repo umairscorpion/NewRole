@@ -11,6 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     templateUrl: 'pastAbsence.component.html'
 })
 export class PastAbsenceComponent implements OnInit {
+    loginUserRole: number;
     CurrentDate: Date = new Date;
     private notifier: NotifierService;
     PastAbsences = new MatTableDataSource();
@@ -22,7 +23,8 @@ export class PastAbsenceComponent implements OnInit {
     FileStream: any;
 
     constructor(private _dataContext: DataContext, private _userSession: UserSession,
-        notifier: NotifierService, private _communicationService: CommunicationService) { this.notifier = notifier; }
+        notifier: NotifierService, private _communicationService: CommunicationService) 
+        { this.notifier = notifier; this.loginUserRole = _userSession.getUserRoleId() }
     ngOnInit(): void {
         this.GetAbsences();
     }
