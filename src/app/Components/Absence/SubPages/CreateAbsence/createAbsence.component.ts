@@ -307,20 +307,21 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             //     user._selected = false;
             // }
         }
-            // categorySelected.options._results.toArray().forEach(element => {
-            //     if (element.value.name != categorySelected.name) {
-            //         element.selected = false;
-            //     }
-            // });
+        // categorySelected.options._results.toArray().forEach(element => {
+        //     if (element.value.name != categorySelected.name) {
+        //         element.selected = false;
+        //     }
+        // });
     }
 
     //Select Substitute For Direct Assign And Preferred Substitutes
     SelectSubstituteForDirectAssign(user: User) {
-        if (this.absenceFirstFormGroup.value.Substitutes.length > 0 && this.absenceFirstFormGroup.value.AbsenceType === 2) {
-            this.notifier.notify('error', 'You can select only one substitute in direct Assign.')
+        if (this.absenceFirstFormGroup.value.Substitutes.length > 0 && +this.absenceFirstFormGroup.value.AbsenceType === 2) {
+            this.notifier.notify('error', 'You can select only one substitute in direct Assign.');
+            return;
         }
         let alreadyAdded = this.absenceFirstFormGroup.value.Substitutes.filter((obj: User) => obj.userId === user.userId);
-        if(alreadyAdded.length > 0) {
+        if (alreadyAdded.length > 0) {
             this.notifier.notify('error', 'Already Selected')
             return;
         }
@@ -406,6 +407,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     OnchangeAbsenceScope(AbsenceScopetype: number) {
         if (+AbsenceScopetype === 1 || +AbsenceScopetype === 2) {
+            this.absenceFirstFormGroup.value.Substitutes = [];
             if (this.absenceFirstFormGroup.value.AbsenceStartDate && this.absenceFirstFormGroup.value.AbsenceEndDate) {
                 this.SearchAvailableSubstitutes('');
             }
@@ -590,7 +592,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     CheckDataAndTimeOverlape(startDate: Date, endDate: Date, startTime: string, EndTime: string): boolean {
         let Isoverlap: boolean = false;
         if (this.NeedASub)
-        return Isoverlap;
+            return Isoverlap;
         this.EmployeeSchedule.forEach((Absence) => {
             if ((startDate.setHours(0, 0, 0, 0) >= new Date(Absence.startDate).setHours(0, 0, 0, 0)
                 && startDate.setHours(0, 0, 0, 0) <= new Date(Absence.endDate).setHours(0, 0, 0, 0)) ||

@@ -12,18 +12,27 @@ export class ReportFilter {
   locationId: number;
   districtId: number;
   reasonId: number;
+  month: number;
+  year: string;
   employeeName: string;
+  OrganizationId: string;
+  deleteAbsenceReason: string;
+  District: string;
   static CreateFilterFormGroup(fb: FormBuilder) {
     return fb.group({
       fromDate: [moment(new Date()).format('YYYY-MM-DD')],
       toDate: [moment(new Date()).format('YYYY-MM-DD')],
       jobNumber: [''],
-      employeeTypeId: [0],
       absenceTypeId: [0],
       locationId: [0],
       districtId: [0],
       reasonId: [0],
       employeeName: [''],
+      month: [0],
+      year: [''],
+      OrganizationId: [''],
+      deleteAbsenceReason: [''],
+      District: [''],
     });
   }
   static initial() {
@@ -37,6 +46,11 @@ export class ReportFilter {
     filters.districtId = 0;
     filters.reasonId = 0;
     filters.employeeName = '';
+    filters.month = 0;
+    filters.year = '';
+    filters.OrganizationId = '';
+    filters.deleteAbsenceReason = '';
+    filters.District = '';
     return filters;
   }
 }

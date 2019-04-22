@@ -7,6 +7,11 @@ import * as moment from 'moment';
 import { UserSession } from 'src/app/Services/userSession.service';
 import { AbsenceService } from 'src/app/Services/absence.service';
 import { LeaveType } from 'src/app/Model/leaveType';
+import { MatDialog } from '@angular/material';
+import { NotifierService } from 'angular-notifier';
+import { ReportService } from 'src/app/Services/report.service';
+import { DailyReportsComponent } from '../SubPages/DailyReports/dailyReports.component';
+import { PopupForCancelAbsencesComponent } from '../popups/cancel-absence.popup.component';
 
 @Component({
   selector: 'app-report-filters',
@@ -15,19 +20,25 @@ import { LeaveType } from 'src/app/Model/leaveType';
 })
 export class ReportFiltersComponent implements OnInit {
   @ViewChild('myPanel') myPanel: MatExpansionPanel;
+  @ViewChild(DailyReportsComponent) dailyReport: DailyReportsComponent;
+  
   @Output() formAction = new EventEmitter();
 
   matIcon = 'keyboard_arrow_down' || 'keyboard_arrow_up';
   districts: any;
   reportFilterForm: FormGroup;
   Leaves: any;
+  forCancelAbsence: any;
 
   submitted = false;
   constructor(
     private fb: FormBuilder,
     private dataContext: DataContext,
     private _userSession: UserSession,
-    private absenceService: AbsenceService
+    private absenceService: AbsenceService,
+    private dialogRef: MatDialog,
+    private notifier: NotifierService,
+    private reportService: ReportService
   ) {
     this.reportFilterForm = this.initReportFilters();
   }
@@ -87,20 +98,24 @@ export class ReportFiltersComponent implements OnInit {
     }
   }
 
-  onCancel(formGroup: FormGroup) {
-    this.submitted = true;
-    if (!formGroup.invalid) {  
-      if(formGroup.value.reasonId != 0){  
-        formGroup.get('reasonId').setValue(formGroup.value.reasonId);  
-      }       
-      formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
-      formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));    
-      const action = {
-        actionName: 'cancel',
-        formValue: formGroup.value
-      };
-      this.formAction.emit(action);
-    }
+  onCancel() {
+      const dialogCancel= this.dialogRef.open(PopupForCancelAbsencesComponent, {    
+        height: '380px',
+        width: '600px',   
+    });
+    dialogCancel.afterClosed().subscribe(result => {  
+      if(result != null) {   
+        this.reportFilterForm.controls['OrganizationId'].setValue(result.OrganizationId);
+        this.reportFilterForm.controls['deleteAbsenceReason'].setValue(result.deleteAbsenceReason);
+        this.reportFilterForm.controls['District'].setValue(result.District);
+        this.reportService.cancelAbsences(this.reportFilterForm.value).subscribe((response: any) => {  
+          if (response == "success") {
+            this.onSubmit(this.reportFilterForm);      
+            this.notifier.notify('success', 'Cancel Successfully');
+          }                  
+        });
+      }
+    });
   }
 
   onPrintReport(formGroup: FormGroup) {

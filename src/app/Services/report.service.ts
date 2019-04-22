@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { catchError, map } from 'rxjs/operators';
 import { ReportFilter } from '../Model/Report/report.filter';
 import { ReportSummary } from '../Model/Report/report.summary';
@@ -45,5 +44,9 @@ export class ReportService extends RestService<any> {
           return response.map(item => this.getDetailInstance().deserialize(item));
         })
       );
+  }
+
+  cancelAbsences(filter: ReportFilter) {
+    return this.httpClient.post(`${environment.apiUrl}/reports/deleteAbsences`, filter);
   }
 }

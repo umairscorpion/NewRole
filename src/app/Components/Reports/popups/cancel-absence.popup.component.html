@@ -1,0 +1,58 @@
+<div>
+    <mat-dialog-actions style="margin-bottom:0px!important">
+        <div class="col-md-11 pr-0">
+            Cancel Today's Absences
+        </div>
+        <div class="col-md-1">
+            <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onCloseDialog()" mat-dialog-close>clear</mat-icon>
+        </div>
+    </mat-dialog-actions>
+    <mat-divider></mat-divider>
+    <mat-dialog-content class="mat-typography">
+        <form [formGroup]="cancelAbsenceForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <mat-form-field *ngIf="loginedUserRole == 5" appearance="outline">
+                        <mat-select placeholder="District" formControlName="District" required>
+                            <mat-option>--</mat-option>
+                            <mat-option *ngFor="let district of Districts" [value]="district.districtId" (onSelectionChange)="getOrganizationById(district.districtId)">
+                                {{district.districtName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" *ngIf="loginedUserRole == 5">
+                        <mat-select placeholder="Organization" formControlName="OrganizationId" required>
+                            <mat-option>--</mat-option>
+                            <mat-option *ngFor="let Organization of organizations" [value]="Organization.schoolId">
+                                {{Organization.schoolName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" *ngIf="loginedUserRole != 5">
+                        <mat-select placeholder="Organization" formControlName="OrganizationId" required>
+                            <mat-option>--</mat-option>
+                            <mat-option *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
+                                {{Organization.schoolName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="row">
+                <div class="col-md-12">
+                    <mat-form-field appearance="outline" style="width: 540px;">
+                        <textarea matInput formControlName="deleteAbsenceReason" placeholder="Comments" style="height: 100px;"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="row">
+                <div class="col-md-12">
+                    <button mat-raised-button style="background-color:#75c598; color:white; margin-left: 400px" (click)="onSubmit(cancelAbsenceForm)">Yes</button>
+                    <button mat-raised-button (click)="onCloseDialog()" style="background-color:#bfd8ea; color: #0c4872; border:1px solid #9ec3dc">No</button>
+                </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+</div>
