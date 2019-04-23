@@ -12,6 +12,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import {  ChangeDetectionStrategy } from '@angular/core';
 import { MyJobsComponent } from '../MyJobs/myJobs.component';
 import { environment } from '../../../../../environments/environment';
+import * as moment from 'moment';
 
 @Component({
     selector: 'available-jobs',
@@ -202,14 +203,43 @@ export class AvailableJobsComponent implements OnInit {
     }
 
     AcceptAbsence(SelectedRow: any) {
-        let confirmResult = confirm('Are you sure you want to Accept this Job?');
-        if (confirmResult) {
-            this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
-                this.NotifyResponse(response as string);
-                this.GetAvailableJobs()
-                this.upcomingJobs.GetUpcommingJobs();
-            },
-                error => this.msg = <any>error);
+        let currentTime = moment().format('h:mma');
+        let currentDate = moment().format('YYYY MM DD');
+        let starttime = moment(SelectedRow.startTime, 'h:mma');
+        let starttime1 = moment(starttime).format('h:mma');
+        let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
+
+        if(currentDate == startdate) {
+            if(currentTime<=starttime1) {
+                let confirmResult = confirm('Are you sure you want to Accept this Job?');
+                if (confirmResult) {
+                    this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                        this.NotifyResponse(response as string);
+                        this.GetAvailableJobs()
+                        this.upcomingJobs.GetUpcommingJobs();
+                    },
+                        error => this.msg = <any>error);
+                }    
+            }
+            else {
+                alert('Job is started you can not accept job')
+            }
         }
+        else {
+            if( startdate > currentDate) {
+                let confirmResult = confirm('Are you sure you want to Accept this Job?');
+                if (confirmResult) {
+                    this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                        this.NotifyResponse(response as string);
+                        this.GetAvailableJobs()
+                        this.upcomingJobs.GetUpcommingJobs();
+                    },
+                        error => this.msg = <any>error);
+                }
+            }
+            else {
+                alert('Sorry something went wrong');
+            }
+        }        
     }
 }

@@ -76,7 +76,9 @@ export class AddSubstituteComponent implements OnInit {
                         Speciality: data[0].speciality ? data[0].speciality : '',
                         PhoneNumber: data[0].phoneNumber,
                         PayRate: 0,
-                        HourLimit: 0
+                        HourLimit: 0,
+                        // IsActive:data[0].isActive
+                        
                     }
                     this.getProfileImage(data[0].profilePicture);
                     this.substituteForm.setValue(SubstituteModel);
