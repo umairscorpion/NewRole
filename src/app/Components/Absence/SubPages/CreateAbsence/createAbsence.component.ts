@@ -16,6 +16,7 @@ import { LeaveType } from '../../../../Model/leaveType';
 import { AbsenceService } from '../../../../Services/absence.service';
 import { environment } from '../../../../../environments/environment';
 import { User } from '../../../../Model/user';
+import { UpcommingAbsenceComponent } from '../UpcommingAbsence/upcommingAbsence.component';
 
 @Component({
     selector: 'create-absence',
@@ -25,6 +26,7 @@ import { User } from '../../../../Model/user';
 })
 export class CreateAbsenceComponent implements OnInit, OnDestroy {
     private notifier: NotifierService;
+    @ViewChild(UpcommingAbsenceComponent) private upcommingAbsence: UpcommingAbsenceComponent;
     @ViewChild('preferredSubPanel') preferredSubPanel: MatExpansionPanel;
     matIcon = 'keyboard_arrow_down' || 'keyboard_arrow_up';
     // For Blocking Dates Renderer for Current month when open Calendar
@@ -138,7 +140,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             // SubRequired: ['1'],
             PositionId: [''],
             AbsenceType: ['4', Validators.required],
-            Substitutes: [[], []]
+            Substitutes: [[]]
         });
 
         this.absenceSecondFormGroup = this._formBuilder.group({
@@ -407,16 +409,14 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     OnchangeAbsenceScope(AbsenceScopetype: number) {
         if (+AbsenceScopetype === 1 || +AbsenceScopetype === 2) {
-            this.absenceFirstFormGroup.value.Substitutes = [];
             if (this.absenceFirstFormGroup.value.AbsenceStartDate && this.absenceFirstFormGroup.value.AbsenceEndDate) {
                 this.SearchAvailableSubstitutes('');
             }
             else {
                 this.notifier.notify('error', 'Select Date First to search substitutes');
             }
-
-            this.absenceFirstFormGroup.controls["Substitutes"].setValidators([Validators.required]);
-            this.absenceFirstFormGroup.controls['Substitutes'].updateValueAndValidity();
+            // this.absenceFirstFormGroup.controls["Substitutes"].setValidators([Validators.required]);
+            // this.absenceFirstFormGroup.controls['Substitutes'].updateValueAndValidity();
         }
 
         else if (+AbsenceScopetype === 3) {
@@ -576,6 +576,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 FirstAbsenceForm.value.AbsenceEndDate as Date, AbsenceModel.StartTime as string, AbsenceModel.EndTime as string)) {
                 this._dataContext.post('Absence/CreateAbsence', AbsenceModel).subscribe((respose: any) => {
                     if (respose == "success") {
+                        // this.upcommingAbsence.GetAbsences();
                         this.response = 1;
                         stepper.next();
                     }
@@ -629,7 +630,17 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
 
     goToNextForm(stepper: MatStepper) {
-        stepper.next();
+        if (+this.absenceFirstFormGroup.value.AbsenceType === 1 || +this.absenceFirstFormGroup.value.AbsenceType === 2) {
+            if (this.absenceFirstFormGroup.value.Substitutes.length > 0) {
+                stepper.next();
+            }
+            else {
+                this.notifier.notify('error', 'Select Substitute')
+            }
+        }
+        else {
+            stepper.next();
+        }
     }
 
     goBackToPreviousForm(stepper: MatStepper) {
