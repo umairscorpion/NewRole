@@ -17,6 +17,7 @@
         <br>
         <table class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
             <tr>
+                <td>ID:</td>
                 <td>{{data.absenceId}}</td>
             </tr>
             <tr>
@@ -41,9 +42,6 @@
                 <td>Duration:</td>
                 <td>{{data.durationType == 1 ? 'Full Day' : data.durationType == 2 ? 'First Half' : data.durationType == 3 ?
                     'Second Half' : 'Custom Time'}}</td>
-            </tr>
-            <tr>
-                <td>ID:</td>
             </tr>
             <tr>
                 <td>Employee:</td>

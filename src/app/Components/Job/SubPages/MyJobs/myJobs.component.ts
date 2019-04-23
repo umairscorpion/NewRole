@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '../../../../../../node_modules/@angular/
 import { UserService } from '../../../../Service/user.service';
 import { environment } from '../../../../../environments/environment.prod';
 import { HttpErrorResponse } from '../../../../../../node_modules/@angular/common/http';
+import * as moment from 'moment';
 
 @Component({
     selector:'my-jobs',
@@ -60,7 +61,15 @@ export class MyJobsComponent implements OnInit {
     }
 
     ReleaseJob(SelectedRow: any, StatusId: number) {
-        let confirmResult = confirm('Are you sure you want to release this job?');
+        let currentTime = moment().format('h:mma');
+        let currentDate = moment().format('YYYY MM DD');
+        let starttime = moment(SelectedRow.startTime, 'h:mma');
+        let starttime1 = moment(starttime).format('h:mma');
+        let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
+
+        if(currentDate == startdate) {
+            if(currentTime < starttime1) {
+                let confirmResult = confirm('Are you sure you want to release this job?');
         if (confirmResult) {
             if ((SelectedRow.startDate as Date) <= this.currentDate)
             { this.notifier.notify('error','Not aBle to release now') ; return;}
@@ -72,6 +81,35 @@ export class MyJobsComponent implements OnInit {
                 }
             },
                 error => this.msg = <any>error);
+        }
+            }
+
+            else {
+                alert('Job is started you can not release job')
+            }
+
+        }
+        else {
+            if( startdate > currentDate) {
+                let confirmResult = confirm('Are you sure you want to release this job?');
+                if (confirmResult) {
+                    if ((SelectedRow.startDate as Date) <= this.currentDate)
+                    { this.notifier.notify('error','Not aBle to release now') ; return;}
+                    this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                        if (response == "success") {
+                            this.notifier.notify('success', 'Released Successfully.');
+                            this.GetUpcommingJobs();
+                            // this.availableJobs.GetAvailableJobs();
+                        }
+                    },
+                        error => this.msg = <any>error);
+                }
+            }
+
+            else {
+                alert('Sorry Something went wrong')
+            }
+
         }
     }
 
