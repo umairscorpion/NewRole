@@ -146,16 +146,15 @@
                                     <div class="col-md-6 col-lg-6"></div>
                                     <div class="col-md-6 col-lg-6" *ngIf='absenceFirstFormGroup.value.AbsenceType === "1" || absenceFirstFormGroup.value.AbsenceType === "2"'>
                                         <div style="border-radius: 19px !important" class="col-md-10 col-lg-10 mat-elevation-z8">
-                                            <tag-input [placeholder]="'Search substitute'" [identifyBy]="'userId'" [displayBy]="'firstName'" [secondaryPlaceholder]="'Search substitute'"
+                                            <tag-input [placeholder]="''" [identifyBy]="'userId'" [displayBy]="'firstName'" [secondaryPlaceholder]="'Search substitute'"
                                              (input)="SearchAvailableSubstitutes($event.target.value)"
                                                 formControlName="Substitutes">
                                             </tag-input>
-                                            <h6 *ngIf='availableSubstitutes.length !== 0'>Recommended Candidates</h6>
-                                            <mat-option *ngFor="let substitute of availableSubstitutes | async" style="padding: 0px !important;">
+                                            <mat-option *ngFor="let substitute of availableSubstitutes | async" (click)="SelectSubstituteForDirectAssign(substitute)" style="padding: 0px !important;">
                                                 <div class="col-md-6 col-lg-6">
                                                     <img class="img-circle" [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'" width="25" height="25"> {{substitute.firstName}}
                                                 </div>
-                                                <div (click)="SelectSubstituteForDirectAssign(substitute)" style="color: darkblue" class="col-md-2 col-lg-2">
+                                                <div style="color: darkblue" class="col-md-2 col-lg-2">
                                                    <b>Select</b> 
                                                 </div>
                                                 <div class="col-md-4 col-lg-4">

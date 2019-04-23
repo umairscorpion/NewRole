@@ -11,6 +11,7 @@ import { FileService } from '../../../../Services/file.service';
 import { ChangeDetectorRef } from '@angular/core';
 import {  ChangeDetectionStrategy } from '@angular/core';
 import { MyJobsComponent } from '../MyJobs/myJobs.component';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
     selector: 'available-jobs',
@@ -195,20 +196,9 @@ export class AvailableJobsComponent implements OnInit {
     }
 
     getProfilePic(ProfilePictureName: string): SafeUrl {
-        this.ImageURL = 'assets/Images/noimage.png'
-        let model = {
-            AttachedFileName: ProfilePictureName,
-            FileContentType: ProfilePictureName.split('.')[1],
+        if (ProfilePictureName && ProfilePictureName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrl + '/wwwroot/Profile/' + ProfilePictureName);
         }
-        this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
-            let newBlob = new Blob([blob]);
-            var file = new Blob([blob], { type: blob.type });
-            let Url = URL.createObjectURL(file);
-            this.ImageURL = this.sanitizer.bypassSecurityTrustUrl(Url);
-            return this.ImageURL;
-        },
-            error => this.msg = <any>error);
-        return this.ImageURL;
     }
 
     AcceptAbsence(SelectedRow: any) {

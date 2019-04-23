@@ -15,6 +15,8 @@ import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { ChartsModule } from 'ng2-charts';
 import { BlockUIModule } from 'ng-block-ui';
 import { TagInputModule } from 'ngx-chips';
+import { NgxPrintModule } from 'ngx-print';
+
 import {
     MatAutocompleteModule,
     MatButtonModule,
@@ -160,6 +162,7 @@ import { PayRateComponent } from './Components/Manage/SubPages/Substitutes/SubPa
 import { PayRollComponent } from './Components/Payroll/payroll.component';
 import { ExcelService } from './Services/excel.service';
 import { PopupForCancelAbsencesComponent } from './Components/Reports/popups/cancel-absence.popup.component';
+import { RunPayroll } from './Components/Payroll/SubPages/run-payroll.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -216,6 +219,7 @@ const customNotifierOptions: NotifierOptions = {
 
 @NgModule({
     imports: [
+        NgxPrintModule,
         TagInputModule,
         NgxDatatableModule,
         ChartsModule,
@@ -321,7 +325,8 @@ const customNotifierOptions: NotifierOptions = {
         PayRateComponent,
         PayRateComponent,
         PayRollComponent,
-        PopupForCancelAbsencesComponent
+        PopupForCancelAbsencesComponent,
+        RunPayroll
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

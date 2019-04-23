@@ -280,22 +280,22 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     //Search Available Substitutes
     SearchAvailableSubstitutes(SearchedText: string): void {
-        // if (this.absenceFirstFormGroup.value.AbsenceStartDate && this.absenceFirstFormGroup.value.AbsenceEndDate) {
-        let filter = {
-            districtId: this._userSession.getUserDistrictId(),
-            employeeId: this.EmployeeIdForAbsence,
-            startDate: new Date(this.absenceFirstFormGroup.value.AbsenceStartDate).toLocaleDateString(),
-            endDate: new Date(this.absenceFirstFormGroup.value.AbsenceEndDate).toLocaleDateString(),
-            startTime: this.absenceFirstFormGroup.getRawValue().StartTime,
-            endTime: this.absenceFirstFormGroup.getRawValue().EndTime
+        if (this.absenceFirstFormGroup.value.AbsenceStartDate && this.absenceFirstFormGroup.value.AbsenceEndDate) {
+            let filter = {
+                districtId: this._userSession.getUserDistrictId(),
+                employeeId: this.EmployeeIdForAbsence,
+                startDate: new Date(this.absenceFirstFormGroup.value.AbsenceStartDate).toLocaleDateString(),
+                endDate: new Date(this.absenceFirstFormGroup.value.AbsenceEndDate).toLocaleDateString(),
+                startTime: this.absenceFirstFormGroup.getRawValue().StartTime,
+                endTime: this.absenceFirstFormGroup.getRawValue().EndTime
+            }
+            this.availableSubstitutes = this.http.post<User[]>(environment.apiUrl + 'user/getAvailableSubstitutes', filter);
+            this.availableSubstitutes = this.availableSubstitutes.map((users: any) => users.filter((val: User) => val.firstName.toLowerCase().includes(SearchedText.toLowerCase())));
         }
-        this.availableSubstitutes = this.http.post<User[]>(environment.apiUrl + 'user/getAvailableSubstitutes', filter);
-        this.availableSubstitutes = this.availableSubstitutes.map((users: any) => users.filter((val: User) => val.firstName.toLowerCase().includes(SearchedText.toLowerCase())));
-        //  }
 
-        // else {
-        //     this.notifier.notify('error', 'Select Date First');
-        // }
+        else {
+            this.notifier.notify('error', 'Select Date First to search substitutes');
+        }
     }
 
     handleSelection(userId, categorySelected) {
@@ -328,7 +328,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             return;
         }
         this.absenceFirstFormGroup.value.Substitutes.push(user);
-        this.availableSubstitutes = new Observable<User[]>();
+        this.availableSubstitutes = null;
     }
 
     //For Display Substitute name in text box

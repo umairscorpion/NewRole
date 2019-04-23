@@ -19,8 +19,8 @@
                             <mat-form-field class="col-md-6 col-lg-6">
                                 <mat-select placeholder="Position Type" (selectionChange)="onChangeEmployeeType($event.value)" formControlName="UserTypeId">
                                     <mat-option>--</mat-option>
-                                    <mat-option *ngFor="let userType of userTypes" [disabled]="userType.id == 2" [value]="userType.id">
-                                        {{userType.title}}
+                                    <mat-option *ngFor="let position of positions" [value]="position.id">
+                                        {{position.title}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>

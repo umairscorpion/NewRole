@@ -21,6 +21,7 @@ export class AddSubstituteComponent implements OnInit {
     profilePicture: any;
     private notifier: NotifierService;
     userTypes: any;
+    positions: any;
     TeachingLevels: any;
     Districts: any;
     states: Observable<IStates[]>;
@@ -35,7 +36,6 @@ export class AddSubstituteComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
         this.substituteForm = this.fb.group({
             FirstName: ['', Validators.required],
             LastName: ['', Validators.required],
@@ -52,7 +52,8 @@ export class AddSubstituteComponent implements OnInit {
             PayRate: ['0'],
             HourLimit: ['0']
         });
-        this.GetUserTypes();
+        this.getpositions()
+        // this.GetUserTypes();
         this.GetDistricts();
         this.GetTeachingLevels();
         this.route.queryParams.subscribe((params: any) => {
@@ -87,6 +88,14 @@ export class AddSubstituteComponent implements OnInit {
                 this.profilePicture = 'assets/Images/noimage.png';
             }
         });
+    }
+
+    getpositions(): void {
+        let DistrictId = this._userSession.getUserDistrictId();
+        this._dataContext.getById('user/positions', DistrictId).subscribe((data: any[]) => {
+            this.positions = data.filter(t => t.isVisible === true);
+        },
+            error => this.msg = <any>error);
     }
 
     getProfileImage(ImageName: string) {

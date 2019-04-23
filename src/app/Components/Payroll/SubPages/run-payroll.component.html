@@ -1,0 +1,118 @@
+<div class="col-md-12">
+    <div style="font-size: 16px;" class="row col-md-offset-4 vertical-center">
+        <b> Payroll {{payRollFilter.value.dateRange.begin | date:'mediumDate'}}-{{payRollFilter.value.dateRange.end | date:'mediumDate'}}
+        </b>
+    </div>
+    <mat-divider></mat-divider>
+    <form [formGroup]="payRollFilter" (ngSubmit)="submitForm(payRollFilter)">
+        <div class="row vertical-center">
+            <div class="col-md-2">
+                <mat-form-field>
+                    <input matInput placeholder="Date Range" [satDatepicker]="picker2" formControlName="dateRange">
+                    <sat-datepicker #picker2 [rangeMode]="true">
+                    </sat-datepicker>
+                    <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field>
+                    <input matInput placeholder="Search by" formControlName="searchBy">
+                </mat-form-field>
+            </div>
+            <div class="col-md-1">
+                <button mat-raised-button class="btn btn-success" style="background: #3CCCD1; color: white;" type="submit">Search</button>
+            </div>
+            <div class="col-md-1">
+
+            </div>
+            <div class="col-md-6" style="text-align: right">
+                <button mat-raised-button style="background:#76C598; color: white;" type="button">Generate Report</button>
+                <button mat-raised-button style="background: #5E9ECC; color: white; margin-left:5px" type="button">Save</button>
+                <button mat-raised-button printSectionId="htmlForPrint" ngxPrint style="background:#F0F1F3; color:#A1A1A3; margin-left:5px" type="button">
+                    <i class="material-icons">
+                        print
+                    </i>
+                    Print</button>
+                <button mat-raised-button (click)="onExportingToCSV()" style="background:#F0F1F3; color:#A1A1A3; margin-left:5px" type="button">
+                    <i class="material-icons">
+                        description
+                    </i>
+                    Export CSV</button>
+            </div>
+        </div>
+    </form>
+    <table #htmlForPrint mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="Date">
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Employee">
+            <th mat-header-cell *matHeaderCellDef> Employee </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Location">
+            <th mat-header-cell *matHeaderCellDef> Location </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Reason">
+            <th mat-header-cell *matHeaderCellDef> Reason </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Time">
+            <th mat-header-cell *matHeaderCellDef> Time </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Hours">
+            <th mat-header-cell *matHeaderCellDef> Hours </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Notes">
+            <th mat-header-cell *matHeaderCellDef> Notes </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Substitute">
+            <th mat-header-cell *matHeaderCellDef> Substitute </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Rate">
+            <th mat-header-cell *matHeaderCellDef> Rate </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Additional">
+            <th mat-header-cell *matHeaderCellDef> Additional </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Gross">
+            <th mat-header-cell *matHeaderCellDef> Gross Pay </th>
+            <td mat-cell *matCellDef="let report"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+                Approve All
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                    [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+        </tr>
+    </table>
+</div>
