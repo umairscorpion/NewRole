@@ -318,15 +318,22 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     //Select Substitute For Direct Assign And Preferred Substitutes
     SelectSubstituteForDirectAssign(user: User) {
+        if (!user.isActive) {
+            this.notifier.notify('error', 'Inactive Substitute');
+            return;
+        }
+
         if (this.absenceFirstFormGroup.value.Substitutes.length > 0 && +this.absenceFirstFormGroup.value.AbsenceType === 2) {
             this.notifier.notify('error', 'You can select only one substitute in direct Assign.');
             return;
         }
+
         let alreadyAdded = this.absenceFirstFormGroup.value.Substitutes.filter((obj: User) => obj.userId === user.userId);
         if (alreadyAdded.length > 0) {
-            this.notifier.notify('error', 'Already Selected')
+            this.notifier.notify('error', 'Already Selected');
             return;
         }
+        
         this.absenceFirstFormGroup.value.Substitutes.push(user);
         this.availableSubstitutes = null;
     }
@@ -552,7 +559,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 AbsenceReasonId: FirstAbsenceForm.value.Reason.leaveTypeId,
                 DurationType: FirstAbsenceForm.value.Duration,
                 PositionId: this.NeedASub == true ? FirstAbsenceForm.value.PositionId : this.loginedUserType,
-                Status: +FirstAbsenceForm.value.AbsenceType == 2 && SecondAbsenceForm.value.Substitutes ? 2 : 1,
+                Status: +FirstAbsenceForm.value.AbsenceType == 2 && FirstAbsenceForm.value.Substitutes ? 2 : 1,
                 OrganizationId: typeof FirstAbsenceForm.value.OrganizationId != 'undefined' && FirstAbsenceForm.value.OrganizationId && (this.AbsenceForUserLevel == 3 || this.NeedASub) ? FirstAbsenceForm.value.OrganizationId :
                     FirstAbsenceForm.getRawValue().OrganizationId && (this.AbsenceForUserLevel == 3 || this.NeedASub) ? FirstAbsenceForm.getRawValue().OrganizationId : '-1',
                 DistrictId: typeof FirstAbsenceForm.value.Location != 'undefined' && FirstAbsenceForm.value.Location ? FirstAbsenceForm.value.Location :

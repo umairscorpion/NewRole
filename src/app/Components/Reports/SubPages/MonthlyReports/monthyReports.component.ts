@@ -93,7 +93,6 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
             this.bindDetails(details);
         });
         if ($event.actionName == "print") {
-            this.allAbsencesInCurrentState = this.allAbsencesInCurrentState.filter(t => t.statusId !== 4);
             this.allAbsencesInCurrentState = this.allAbsencesInCurrentState.filter(function (absence) {
                 delete absence.substituteId;
                 delete absence.absencePosition;
@@ -115,22 +114,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
                 return true;
             });
             this.excelService.exportAsExcelFile(this.allAbsencesInCurrentState, 'Report');
-        }
-        if ($event.actionName == "cancel") {
-            let data = "";
-            for (var i in this.allAbsencesInCurrentState) {
-                data = data + this.allAbsencesInCurrentState[i].absenceId + ",";
-            }
-            let confirmResult = confirm('Are you sure you want to cancel these jobs?');
-            if (confirmResult) { 
-                this._dataContext.CancelAbsences('reports/deleteAbsences', data).subscribe((response: any) => {  
-                    if (response == "success") {
-                        this.loadReportSummary();
-                        this.notifier.notify('success', 'Cancel Successfully.');                           
-                    }           
-                });
-            }
-        }
+        }      
     }
 
     bindDetails(details: ReportDetail[]) {

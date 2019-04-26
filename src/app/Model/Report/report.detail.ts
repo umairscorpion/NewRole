@@ -28,4 +28,7 @@ export class ReportDetail extends Entity {
   anyAttachment: boolean;
   substituteRequired: boolean;
   durationType: string;
+  payRate: number;
+  dailyHours: number;
+  schoolName: string;
 }

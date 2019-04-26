@@ -1,156 +1,169 @@
 <form #form="ngForm" [formGroup]="reportFilterForm" (ngSubmit)="onSubmit(reportFilterForm)" novalidate>
-    <div class="report-filters">
-      <mat-expansion-panel #myPanel [disabled]="true">
-        <mat-expansion-panel-header class="header-panel">
-          <mat-panel-description>
-            <div class="col-md-12 title-bar p-0">
-              <div class="col-md-4 title p-0">
-                FILTER OPTIONS &nbsp;
-                <button type="button" mat-icon-button color="primary" (click)="expandPanel()" [disableRipple]="true">
-                  <mat-icon>{{matIcon}}</mat-icon>
-                </button>
-              </div>
-              <div class="col-md-4 text-center pt-15">
-                <mat-form-field>
-                  <input matInput [matDatepicker]="datePickerFrom" placeholder="Choose a date" formControlName="fromDate"
-                    (dateChange)="onSubmit(reportFilterForm)">
-                  <mat-datepicker-toggle matSuffix [for]="datePickerFrom"></mat-datepicker-toggle>
-                  <mat-datepicker #datePickerFrom></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="col-md-4 text-right">
-                <button type="button" mat-raised-button class="btn btn-success"
-                  (click)="onPrintReport(reportFilterForm)">Print</button>&nbsp;
-                <button type="button" mat-raised-button class="btn btn-default" (click)="onCancel()">Cancel</button>
-              </div>
+  <div class="report-filters">
+    <mat-expansion-panel #myPanel [disabled]="true">
+      <mat-expansion-panel-header class="header-panel">
+        <mat-panel-description>
+          <div class="col-md-12 title-bar p-0">
+            <div class="col-md-4 title p-0">
+              FILTER OPTIONS&nbsp;
+              <button type="button" mat-icon-button color="primary" (click)="expandPanel()" [disableRipple]="true">
+                <mat-icon>{{matIcon}}</mat-icon>
+              </button>
             </div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="row ">
-          <div class="col-md-4 text-right">
-            <label>Job Number:</label>
+            <div class="col-md-4 text-center pt-15">
+              <mat-form-field *ngIf='componentName == "daily"'>
+                <input matInput [matDatepicker]="datePickerFrom" placeholder="Choose a date" formControlName="fromDate"
+                  (dateChange)="onSubmit(reportFilterForm)">
+                <mat-datepicker-toggle matSuffix [for]="datePickerFrom"></mat-datepicker-toggle>
+                <mat-datepicker #datePickerFrom></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4 text-right">
+              <button type="button" mat-raised-button class="btn btn-success"
+                (click)="onPrintReport(reportFilterForm)">Print</button>&nbsp;
+              <button type="button" mat-raised-button class="btn btn-default" (click)="onCancel()" *ngIf='componentName == "daily"'>Cancel</button>
+            </div>
           </div>
-          <div class="col-md-6">
-            <mat-form-field class="w-100">
-              <input matInput placeholder="Enter Job Confirmation Number" formControlName="jobNumber">
-            </mat-form-field>
-          </div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="row ">
+        <div class="col-md-4 text-right">
+          <label>Job Number:</label>
         </div>
-        <div class="row" style="text-align:center">
-          <div class="col-md-4 text-right">
-            <label>From:</label>
-          </div>
-          <div class="col-md-2">
-            <mat-form-field >
-              <input matInput [matDatepicker]="StartDatePicker" placeholder="Start Date">
-              <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
-              <mat-datepicker #StartDatePicker></mat-datepicker>
-            </mat-form-field>
-          </div>
-          <div class="col-md-1 text-right">
-            <label>To:</label>
-          </div>
-          <div class="col-md-2">
-            <mat-form-field>
-              <input matInput [matDatepicker]="EndDatePicker" placeholder="End Date">
-              <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
-              <mat-datepicker #EndDatePicker></mat-datepicker>
-            </mat-form-field>
-          </div>
+        <div class="col-md-6">
+          <mat-form-field class="w-90">
+            <input matInput placeholder="Enter Job Confirmation Number" formControlName="jobNumber">
+          </mat-form-field>
         </div>
-        <div class="row">
-          <div class="col-md-4 text-right">
-            <label>Year:</label>
-          </div>
-          <div class="col-md-6">
-            <mat-form-field class="w-100">
-              <input matInput placeholder="Enter Year" formControlName="year">
-            </mat-form-field>
-          </div>
+      </div>
+      <div class="row" *ngIf='componentName == "monthly"'>
+        <div class="col-md-4 text-right">
+          <label>From:</label>
         </div>
-        <div class="row">
-          <div class="col-md-4 text-right">
-            <label>Month:</label>
-          </div>
-          <div class="col-md-6">
-            <mat-form-field class="w-100">
-              <mat-select placeholder="Select..." formControlName="month">
-                <mat-option value="1">January</mat-option>
-                <mat-option value="2">February</mat-option>
-                <mat-option value="3">March</mat-option>
-                <mat-option value="4">April</mat-option>
-                <mat-option value="5">May</mat-option>
-                <mat-option value="6">June</mat-option>
-                <mat-option value="7">July</mat-option>
-                <mat-option value="8">August</mat-option>
-                <mat-option value="9">September</mat-option>
-                <mat-option value="10">October</mat-option>
-                <mat-option value="11">November</mat-option>
-                <mat-option value="12">December</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+        <div class="col-md-2">
+          <mat-form-field>
+            <input matInput [matDatepicker]="StartDatePicker" placeholder="Start Date" formControlName="fromDate">
+            <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker [dateClass]="dateClass" #StartDatePicker></mat-datepicker>
+          </mat-form-field>
         </div>
-        <div class="row">
-          <div class="col-md-4 text-right">
-            <label>Absence Type:</label>
-          </div>
-          <div class="col-md-6">
-            <mat-form-field class="w-100">
-              <mat-select placeholder="Select..." formControlName="absenceTypeId">
-                <mat-option value="1">Full Day</mat-option>
-                <mat-option value="2">Half Day AM</mat-option>
-                <mat-option value="3">Half Day PM</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+        <div class="col-md-1 text-right">
+          <label>To:</label>
         </div>
-        <div class="row">
-          <div class="col-md-4 text-right">
-            <label>Location:</label>
-          </div>
-          <div class="col-md-6">
-            <mat-form-field class="w-100">
-              <mat-select placeholder="Select..." formControlName="locationId">
-                <mat-option *ngFor="let district of districts" [value]="district.districtId">
-                  {{district.districtName}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+        <div class="col-md-2">
+          <mat-form-field>
+            <input matInput [matDatepicker]="EndDatePicker" placeholder="End Date" formControlName="toDate">
+            <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker [dateClass]="dateClass" #EndDatePicker></mat-datepicker>
+          </mat-form-field>
         </div>
-        <div class="row">
-          <div class="col-md-4 text-right">
-            <label>Reason:</label>
-          </div>
-          <div class="col-md-6">
-            <mat-form-field class="w-100">
-              <mat-select placeholder="Select..." formControlName="reasonId">
-                <mat-option *ngFor="let Leave of Leaves" [value]="Leave.leaveTypeId">
-                  {{Leave.leaveTypeName}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+      </div>
+      <div class="row" *ngIf='componentName == "monthly"'>
+        <div class="col-md-4 text-right">
+          <label>Year:</label>
         </div>
-        <div class="row">
-          <div class="col-md-4 text-right">
-            <label>Employee Last Name:</label>
-          </div>
-          <div class="col-md-6">
-            <mat-form-field class="w-100">
-              <input matInput placeholder="Enter Employee Last Name" formControlName="employeeName">
-            </mat-form-field>
-          </div>
+        <div class="col-md-2">
+          <mat-form-field>
+            <input matInput placeholder="Enter Year" formControlName="year">
+          </mat-form-field>
         </div>
-        <div class="row">
-          <div class="col-md-4">
-          </div>
-          <div class="col-md-6">
-            <button type="submit" mat-raised-button class="btn btn-success">View Reports</button>&nbsp;
-            <button type="button" mat-raised-button class="btn btn-danger" (click)=onReset()>Reset</button>
-          </div>
+        <div class="col-md-1 text-right">
+          <label>Month:</label>
         </div>
-      </mat-expansion-panel>
-    </div>
-  </form>
+        <div class="col-md-2">
+          <mat-form-field>
+            <mat-select placeholder="Select..." formControlName="month">
+              <mat-option value="1">January</mat-option>
+              <mat-option value="2">February</mat-option>
+              <mat-option value="3">March</mat-option>
+              <mat-option value="4">April</mat-option>
+              <mat-option value="5">May</mat-option>
+              <mat-option value="6">June</mat-option>
+              <mat-option value="7">July</mat-option>
+              <mat-option value="8">August</mat-option>
+              <mat-option value="9">September</mat-option>
+              <mat-option value="10">October</mat-option>
+              <mat-option value="11">November</mat-option>
+              <mat-option value="12">December</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <label>Position:</label>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="w-90">
+            <mat-select placeholder="Select..." formControlName="absencePosition">
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let userType of userTypes" [value]="userType.id">
+                {{userType.title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <label>Absence Type:</label>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="w-90">
+            <mat-select placeholder="Select..." formControlName="absenceTypeId">
+              <mat-option value="1">Full Day</mat-option>
+              <mat-option value="2">Half Day AM</mat-option>
+              <mat-option value="3">Half Day PM</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <label>Location:</label>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="w-90">
+            <mat-select placeholder="Select..." formControlName="districtId">
+              <mat-option *ngFor="let district of districts" [value]="district.districtId">
+                {{district.districtName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <label>Reason:</label>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="w-90">
+            <mat-select placeholder="Select..." formControlName="reasonId">
+              <mat-option *ngFor="let Leave of Leaves" [value]="Leave.leaveTypeId">
+                {{Leave.leaveTypeName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <label>Employee Last Name:</label>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="w-90">
+            <input matInput placeholder="Enter Employee Last Name" formControlName="employeeName">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-6">
+          <button type="submit" mat-raised-button class="btn btn-success">View Reports</button>&nbsp;
+          <button type="button" mat-raised-button class="btn btn-danger" (click)=onReset()>Reset</button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</form>

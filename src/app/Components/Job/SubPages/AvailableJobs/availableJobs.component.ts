@@ -215,7 +215,7 @@ export class AvailableJobsComponent implements OnInit {
                 if (confirmResult) {
                     this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
                         this.NotifyResponse(response as string);
-                        this.GetAvailableJobs()
+                        this.GetAvailableJobs();
                         this.upcomingJobs.GetUpcommingJobs();
                     },
                         error => this.msg = <any>error);

@@ -16,7 +16,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
   styleUrls: ['substitutes.component.css']
 })
 export class SubstitutesComponent implements OnInit {
-  displayedColumns = ['FirstName', 'LastName','Position', 'Email', 'PhoneNumber','Active', 'action'];
+  displayedColumns = ['FirstName', 'LastName', 'Position', 'Email', 'PhoneNumber', 'Active', 'action'];
   SubstituteDetail: any;
   private notifier: NotifierService;
   District: IDistrict;
@@ -81,12 +81,12 @@ export class SubstitutesComponent implements OnInit {
     this.router.navigate(['/manage/substitutes/addSubstitute'], { queryParams: { Id: SelectedRow.userId } });
   }
 
-  updateSubstitute(row:any ) {
+  updateSubstitute(row: any) {
     row.isActive = !row.isActive;
     this._dataContext.Patch('user/updateUser', row).subscribe((data: any) => {
     },
-    error => this.msg = <any>error);
-    }
+      error => this.msg = <any>error);
+  }
 
   ViewSubstituteDetail(SelectedRow: any) {
     this._dataContext.getById('user/getUserById', SelectedRow.userId).subscribe((data: any) => {
@@ -98,7 +98,7 @@ export class SubstitutesComponent implements OnInit {
     },
       error => <any>error);
   }
-  
+
   GetPositions(): void {
     this._dataContext.get('user/getUserTypes').subscribe((data: any) => {
       this.positions = data;
@@ -107,7 +107,7 @@ export class SubstitutesComponent implements OnInit {
   }
 
   onTabChanged(tab: any) {
-    
+
   }
 
   getSettings() {
