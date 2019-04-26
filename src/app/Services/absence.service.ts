@@ -12,6 +12,7 @@ import { User } from '../Model/user';
 import { SubstitutePreference } from '../Model/substitutePreference';
 import { LeaveType } from '../Model/leaveType';
 import { LeaveRequest } from '../Model/leaveRequest';
+import { AbsenceSummary} from 'src/app/Model/absence.summary';
 
 @Injectable()
 export class AbsenceService extends RestService<LeaveType> {
@@ -21,6 +22,32 @@ export class AbsenceService extends RestService<LeaveType> {
   ) {
     super(httpClient);
   }
+  
+  //For Dashboard Chart
+  getSummaryInstance(): Entity {
+    return new AbsenceSummary();
+  }
+
+  getSummary() {
+    return this.httpClient
+      .get<AbsenceSummary[]>(environment.apiUrl + "/absence/summary")
+      .pipe(catchError(this.errorHandler.handleError),
+        map((response: AbsenceSummary[]) => {
+          return response.map(item => this.getSummaryInstance().deserialize(item));
+        })
+      );
+  }
+
+  // getReasonSummary() {
+  //   return this.httpClient
+  //     .get<AbsenceSummary[]>(environment.apiUrl + "/absence/reasonsummary")
+  //     .pipe(catchError(this.errorHandler.handleError),
+  //       map((response: AbsenceSummary[]) => {
+  //         return response.map(item => this.getSummaryInstance().deserialize(item));
+  //       })
+  //     );
+  // }
+
 
   getLeaveTypeRecords(): Entity {
     return new LeaveType();

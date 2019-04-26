@@ -12,14 +12,14 @@ import { HttpErrorResponse } from '../../../../../../node_modules/@angular/commo
 import * as moment from 'moment';
 
 @Component({
-    selector:'my-jobs',
+    selector: 'my-jobs',
     templateUrl: 'myJobs.component.html'
 })
 export class MyJobsComponent implements OnInit {
-    UpcomingJobCount:any;
+    UpcomingJobCount: any;
     @Output() UpcomingCountEvent = new EventEmitter<string>();
     Organizations: any;
-    Districts : any;
+    Districts: any;
     CurrentDate: Date = new Date;
     private notifier: NotifierService;
     FilterForm: FormGroup;
@@ -32,7 +32,7 @@ export class MyJobsComponent implements OnInit {
     FileStream: any;
 
     constructor(private _dataContext: DataContext, private _userSession: UserSession,
-         private _formBuilder: FormBuilder, private userService : UserService, private router: Router,
+        private _formBuilder: FormBuilder, private userService: UserService, private router: Router,
         notifier: NotifierService, private _communicationService: CommunicationService, private activatedRoute: ActivatedRoute) {
         this.notifier = notifier;
     }
@@ -48,53 +48,50 @@ export class MyJobsComponent implements OnInit {
         EndDate.setDate(this.currentDate.getDate() + 30);
         let UserId = this._userSession.getUserId();
         let DistrictId = this._userSession.getUserDistrictId();
-        let Status = 2 ;
+        let Status = 2;
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
-         "/" + UserId + "/"+ "-1" + "/" + DistrictId + "/" + Status ).subscribe((data: any) => {
-            this.UpcommingJobs.data = data;
-            this.UpcomingJobCount = data.length
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + Status).subscribe((data: any) => {
+                this.UpcommingJobs.data = data;
+                this.UpcomingJobCount = data.length
                 this.UpcomingCountEvent.emit(this.UpcomingJobCount)
-        },
-            error => this.msg = <any>error);
+            },
+                error => this.msg = <any>error);
     }
 
     ReleaseJob(SelectedRow: any, StatusId: number) {
         let currentTime = moment().format('h:mma');
         let currentDate = moment().format('YYYY MM DD');
-        let starttime = moment(SelectedRow.startTime, 'h:mma');
-        let starttime1 = moment(starttime).format('h:mma');
+        let starttimetemp = moment(SelectedRow.startTime, 'h:mma');
+        let starttime = moment(starttimetemp).format('h:mma');
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
 
-        if(currentDate == startdate) {
-            if(currentTime < starttime1) {
-                let confirmResult = confirm('Are you sure you want to release this job?');
-        if (confirmResult) {
-            if ((SelectedRow.startDate as Date) <= this.currentDate)
-            { this.notifier.notify('error','Not aBle to release now') ; return;}
-            this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-                if (response == "success") {
-                    this.notifier.notify('success', 'Released Successfully.');
-                    this.GetUpcommingJobs();
-                    // this.availableJobs.GetAvailableJobs();
-                }
-            },
-                error => this.msg = <any>error);
-        }
+        if (currentDate == startdate) {
+            if (currentTime > starttime) {
+                this.notifier.notify('error', 'Unable to release, job has started');
             }
-
-            else {
-                alert('Job is started you can not release job')
+        else {
+                let confirmResult = confirm('Are you sure you want to release this job?');
+                if (confirmResult) {
+                    if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
+                    this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                        if (response == "success") {
+                            this.notifier.notify('success', 'Released Successfully.');
+                            this.GetUpcommingJobs();
+                            // this.availableJobs.GetAvailableJobs();
+                        }
+                    },
+                        error => this.msg = <any>error);
+                }
             }
 
         }
         else {
-            if( startdate > currentDate) {
+            if (startdate > currentDate) {
                 let confirmResult = confirm('Are you sure you want to release this job?');
                 if (confirmResult) {
-                    if ((SelectedRow.startDate as Date) <= this.currentDate)
-                    { this.notifier.notify('error','Not aBle to release now') ; return;}
+                    if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
                     this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                         if (response == "success") {
                             this.notifier.notify('success', 'Released Successfully.');
@@ -107,13 +104,13 @@ export class MyJobsComponent implements OnInit {
             }
 
             else {
-                alert('Sorry Something went wrong')
+                this.notifier.notify('error', 'Something Went Wrong.');
             }
 
         }
     }
 
-    ngOnChanges()	{
+    ngOnChanges() {
         alert("Inti");
     }
 
@@ -127,13 +124,13 @@ export class MyJobsComponent implements OnInit {
         this.FilterForm = this._formBuilder.group({
             FilterStartDate: ['', Validators.required],
             FilterEndDate: ['', Validators.required],
-            DistrictId: [{ disabled: true}, Validators.required],
+            DistrictId: [{ disabled: true }, Validators.required],
             OrganizationId: ['-1', Validators.required]
         });
         this.GetUpcommingJobs();
         this.GetDistricts();
         this.GetOrganizations(this._userSession.getUserDistrictId());
-        
+
     }
 
     GetOrganizations(DistrictId: number): void {
@@ -155,32 +152,32 @@ export class MyJobsComponent implements OnInit {
     GetDistricts(): void {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
-                this.FilterForm.get('DistrictId').setValue(this._userSession.getUserDistrictId());
-                this.FilterForm.controls['DistrictId'].disable();
+            this.FilterForm.get('DistrictId').setValue(this._userSession.getUserDistrictId());
+            this.FilterForm.controls['DistrictId'].disable();
         },
             error => <any>error);
     }
 
     SearchUpcommingJobs(SearchFilter: any): void {
         if (this.FilterForm.valid) {
-            this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/" 
-            + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/"+ SearchFilter.value.OrganizationId + 
-            "/" + SearchFilter.getRawValue().DistrictId  + "/" + 2 ).subscribe((data: any) => {
-            this.UpcommingJobs.data = data;
-            this.UpcomingJobCount = data.length
-                this.UpcomingCountEvent.emit(this.UpcomingJobCount)
-        },
-            error => this.msg = <any>error);
+            this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"
+                + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +
+                "/" + SearchFilter.getRawValue().DistrictId + "/" + 2).subscribe((data: any) => {
+                    this.UpcommingJobs.data = data;
+                    this.UpcomingJobCount = data.length
+                    this.UpcomingCountEvent.emit(this.UpcomingJobCount)
+                },
+                    error => this.msg = <any>error);
         }
     }
 
     ShowJobDetail(AbsenceDetail: any) {
         AbsenceDetail.isShowAttachment = false;
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
-    
+
     }
 
-    AcceptJob(jobNo : number) {
+    AcceptJob(jobNo: number) {
         let confirmResult = confirm('Are you sure you want to Accept this Job?');
         if (confirmResult) {
             this._dataContext.get('Job/acceptJob/' + jobNo + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {

@@ -8,6 +8,7 @@ import { LeaveRequest } from "../../Model/leaveRequest";
 import { AbsenceService } from "../../Services/absence.service";
 import { UserSession } from "../../Services/userSession.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AbsenceSummary } from 'src/app/Model/absence.summary';
 
 @Component({
     selector: 'Subzz-app-dashboard',
@@ -16,8 +17,14 @@ import { HttpErrorResponse } from "@angular/common/http";
 })
 
 export class HomeComponent {
+    userId: string = this.userSession.getUserId();
     submittedLeaveRequests: LeaveRequest[];
     absenceSummary: any;
+    absenceSummary1 = [];
+    absenceReason1 = [];
+    dashboardCounter: AbsenceSummary = new AbsenceSummary();
+    absenceChartSummary: AbsenceSummary = new AbsenceSummary();
+    topCounter:AbsenceSummary;
     absenceReason: any;
     filledunfilledAbsence: any;
     @HostBinding('class.is-open')
@@ -39,88 +46,19 @@ export class HomeComponent {
     }
 
     ngOnInit(): void {
+        this.absenceService.getSummary().subscribe((summary: AbsenceSummary[]) => {
+            this.bindAbsenceSummary(summary[0]);
+            this.bindAbsenceReason(summary[0]);
+            this.dashboardCounter = summary[0];
+        });
+
+        // this.absenceService.getReasonSummary().subscribe((summary: AbsenceSummary[]) => {
+        //     this.bindAbsenceReason(summary[0]);
+        // });
+
         this.GetLeaveRequests();
-        this.absenceSummary = new Chart('absenceSummary', {
-            type: 'bar',
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                datasets: [{
-                    label: 'Absence Summary',
-                    data: [12, 19, 3, 5, 1, 1, 12, 19, 3, 5, 1, 1],
-                    backgroundColor: [
-                        '#73dad9',
-                        '#b1ddc4',
-                        '#fde1c5',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        '#e8f1dc',
-                        '#73dad9',
-                        '#b1ddc4',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        '#f3f4f5',
-                        '#e8f1dc'
-                    ],
-                    borderColor: [
-                        '#72b8b7',
-                        '#7cbb98',
-                        '#f5c89b',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        '#c3cfb4',
-                        '#72b8b7',
-                        '#7cbb98',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        '#c7dcf2',
-                        '#c3cfb4'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-        this.absenceReason = new Chart('absenceReason', {
-            type: 'horizontalBar',
-            data: {
-                labels: ["Personal Leave", "illness Self", "Other", "PD"],
-                datasets: [{
-                    label: 'Absence Reason',
-                    data: [12, 19, 3, 5],
-                    backgroundColor: [
-                        '#73dad9',
-                        '#b1ddc4',
-                        'rgba(255, 206, 86, 0.2)',
-                        '#c1dbed'
-                    ],
-                    borderColor: [
-                        '#72b8b7',
-                        '#7cbb98',
-                        'rgba(255, 206, 86, 1)',
-                        '#a1c6e0',
-                        'rgba(153, 102, 255, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
+
+
         this.filledunfilledAbsence = new Chart('filledunfilledAbsence', {
             type: 'bar',
             data: {
@@ -215,6 +153,111 @@ export class HomeComponent {
             this.userTemplate = data;
         },
             error => this.msg = <any>error);
+    }
+
+    bindAbsenceSummary(chartSummary: AbsenceSummary) {
+        this.absenceSummary1.push(chartSummary.january);
+        this.absenceSummary1.push(chartSummary.february);
+        this.absenceSummary1.push(chartSummary.march);
+        this.absenceSummary1.push(chartSummary.april);
+        this.absenceSummary1.push(chartSummary.may);
+        this.absenceSummary1.push(chartSummary.june);
+        this.absenceSummary1.push(chartSummary.july);
+        this.absenceSummary1.push(chartSummary.august);
+        this.absenceSummary1.push(chartSummary.september);
+        this.absenceSummary1.push(chartSummary.october);
+        this.absenceSummary1.push(chartSummary.november);
+        this.absenceSummary1.push(chartSummary.december);
+
+        this.absenceSummary = new Chart('absenceSummary', {
+            type: 'bar',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: 'Absence Summary',
+                    data: this.absenceSummary1,
+                    // data: [12, 19, 3, 5, 1, 1, 12, 19, 3, 5, 1, 1],
+                    backgroundColor: [
+                        '#73dad9',
+                        '#b1ddc4',
+                        '#fde1c5',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        '#e8f1dc',
+                        '#73dad9',
+                        '#b1ddc4',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        '#f3f4f5',
+                        '#e8f1dc'
+                    ],
+                    borderColor: [
+                        '#72b8b7',
+                        '#7cbb98',
+                        '#f5c89b',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        '#c3cfb4',
+                        '#72b8b7',
+                        '#7cbb98',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        '#c7dcf2',
+                        '#c3cfb4'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    bindAbsenceReason(chartSummary: AbsenceSummary) {
+        this.absenceReason1.push(chartSummary.personalLeave);
+        this.absenceReason1.push(chartSummary.illnessSelf);
+        this.absenceReason1.push(chartSummary.other);
+        this.absenceReason1.push(chartSummary.pd);
+        this.absenceReason = new Chart('absenceReason', {
+            type: 'horizontalBar',
+            data: {
+                labels: ["Personal Leave", "illness Self", "Other", "PD"],
+                datasets: [{
+                    label: 'Absence Reason',
+                    data: this.absenceReason1,
+                    backgroundColor: [
+                        '#73dad9',
+                        '#b1ddc4',
+                        'rgba(255, 206, 86, 0.2)',
+                        '#c1dbed'
+                    ],
+                    borderColor: [
+                        '#72b8b7',
+                        '#7cbb98',
+                        'rgba(255, 206, 86, 1)',
+                        '#a1c6e0',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
     }
     toggle() {
     }
