@@ -9,7 +9,7 @@ import { Absence } from '../../../../Model/absence';
 import { DomSanitizer, SafeUrl } from '../../../../../../node_modules/@angular/platform-browser';
 import { FileService } from '../../../../Services/file.service';
 import { ChangeDetectorRef } from '@angular/core';
-import {  ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { MyJobsComponent } from '../MyJobs/myJobs.component';
 import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
@@ -31,7 +31,7 @@ export class AvailableJobsComponent implements OnInit {
         return toSelectDefaultOptionForReason ? 'highlight-Jobs' : undefined;
     }
     @ViewChild(MyJobsComponent) private upcomingJobs: MyJobsComponent;
-    AvailableJobCount:any;
+    AvailableJobCount: any;
     @Output() AvailableCountEvent = new EventEmitter<string>();
     ImageURL: SafeUrl = "";
     Organizations: any;
@@ -50,7 +50,7 @@ export class AvailableJobsComponent implements OnInit {
 
     constructor(private _dataContext: DataContext, private _userSession: UserSession,
         private _formBuilder: FormBuilder, notifier: NotifierService, private fileService: FileService,
-        private _communicationService: CommunicationService, private sanitizer: DomSanitizer,private ref: ChangeDetectorRef) {
+        private _communicationService: CommunicationService, private sanitizer: DomSanitizer, private ref: ChangeDetectorRef) {
         this.notifier = notifier;
     }
     ngAfterViewInit() {
@@ -157,7 +157,7 @@ export class AvailableJobsComponent implements OnInit {
     ShowJobDetail(AbsenceDetail: any) {
         AbsenceDetail.isShowAttachment = false;
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
-    
+
     }
     ShowAttachment(AbsenceDetail: any) {
         AbsenceDetail.isShowAttachment = true;
@@ -205,12 +205,17 @@ export class AvailableJobsComponent implements OnInit {
     AcceptAbsence(SelectedRow: any) {
         let currentTime = moment().format('h:mma');
         let currentDate = moment().format('YYYY MM DD');
-        let starttime = moment(SelectedRow.startTime, 'h:mma');
-        let starttime1 = moment(starttime).format('h:mma');
+        // let starttimetemp = moment(SelectedRow.startTime, 'h:mma');
+        // let starttime = moment(starttimetemp).format('h:mma');
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
+        let endtimetemp = moment(SelectedRow.endTime, 'h:mma');
+        let endtime = moment(endtimetemp).format('h:mma');
 
-        if(currentDate == startdate) {
-            if(currentTime<=starttime1) {
+        if (currentDate == startdate) {
+            if (currentTime > endtime) {
+                this.notifier.notify('error', 'Job has ended, you cannot accept it.');
+            }
+            else {
                 let confirmResult = confirm('Are you sure you want to Accept this Job?');
                 if (confirmResult) {
                     this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
@@ -219,14 +224,11 @@ export class AvailableJobsComponent implements OnInit {
                         this.upcomingJobs.GetUpcommingJobs();
                     },
                         error => this.msg = <any>error);
-                }    
-            }
-            else {
-                alert('Job is started you can not accept job')
+                }
             }
         }
         else {
-            if( startdate > currentDate) {
+            if (startdate > currentDate) {
                 let confirmResult = confirm('Are you sure you want to Accept this Job?');
                 if (confirmResult) {
                     this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
@@ -238,8 +240,8 @@ export class AvailableJobsComponent implements OnInit {
                 }
             }
             else {
-                alert('Sorry something went wrong');
+                this.notifier.notify('error', 'Something Went Wrong.');
             }
-        }        
+        }
     }
 }
