@@ -14,6 +14,7 @@ import { IEmployee } from 'src/app/Model/Manage/employee';
 import { Observable } from 'rxjs/Observable';
 import { DomSanitizer, SafeUrl } from '../../../../../node_modules/@angular/platform-browser';
 import { FileService } from 'src/app/Services/file.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'report-details',
@@ -146,7 +147,14 @@ export class ReportDetailsComponent implements OnInit {
     else if (action === 'release') {
       let confirmResult = confirm('Are you sure you want to release this job?');
       let StatusId = 1;
+      let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
+      let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
       if (confirmResult) {
+        if (absenceStartDate <= currentDate)
+            { 
+              this.dialogRef.close();
+              this.notifier.notify('error','Not able to release now');
+              return;}
         this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
           if (response == "success") {
             this.dialogRef.close('Reload');
@@ -243,7 +251,7 @@ export class ReportDetailsComponent implements OnInit {
         interval: formGroup.value.interval,
         totalInterval: formGroup.value.totalInterval,
         isApprovalRequired: formGroup.value.isApprovalRequired
-      }
+      }     
       this.absenceService.Patch('/Absence/updateAbsence/', AbsenceModel).subscribe((respose: any) => {
         if (respose == "success") {
           this.dialogRef.close('Reload');

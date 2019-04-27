@@ -31,6 +31,7 @@ export class ReportFiltersComponent implements OnInit {
   forCancelAbsence: any;
   userTypes: any;
   submitted = false;
+  Organizations: any;
 
   constructor(
     private fb: FormBuilder,
@@ -50,6 +51,7 @@ export class ReportFiltersComponent implements OnInit {
     });
     this.loadData();
     this.GetUserTypes();
+    this.GetOrganiations();
   }
 
   initReportFilters() {
@@ -65,13 +67,21 @@ export class ReportFiltersComponent implements OnInit {
       this.districts = data;
     },
       error => <any>error);
-
     let districtId = this._userSession.getUserDistrictId();
     let organizationId = this._userSession.getUserOrganizationId() ? this._userSession.getUserOrganizationId() : '-1';
     this.absenceService.getLeaveType(districtId, organizationId).subscribe((data: LeaveType[]) => {
       this.Leaves = data;
     },
       error => <any>error);
+  }
+  GetOrganiations(): void {
+    this.dataContext.get('school/getSchools').subscribe((data: any) => {
+      this.Organizations = data;
+      if (this._userSession.getUserRoleId() == 2) {
+        this.reportFilterForm.get('locationId').setValue(this._userSession.getUserOrganizationId());
+        this.reportFilterForm.controls['locationId'].disable();
+      }
+    });
   }
 
   onReset() {
@@ -98,13 +108,12 @@ export class ReportFiltersComponent implements OnInit {
       if (formGroup.value.reasonId != 0) {
         formGroup.get('reasonId').setValue(formGroup.value.reasonId);
       }
-      if (this.componentName == "daily") {
+      if(this.componentName == "daily") {
         formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
         formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
         formGroup.get('reportTitle').setValue('D');
-
       }
-      else {
+      else{
         formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
         formGroup.get('toDate').setValue(moment(formGroup.get('toDate').value).format('YYYY-MM-DD'));
         formGroup.get('reportTitle').setValue('M');
@@ -132,7 +141,7 @@ export class ReportFiltersComponent implements OnInit {
             this.onSubmit(this.reportFilterForm);
             this.notifier.notify('success', 'Cancel Successfully');
           }
-          else {
+          else{
             this.notifier.notify('error', 'No Absence found');
           }
         });

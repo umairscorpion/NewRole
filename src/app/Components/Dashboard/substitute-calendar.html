@@ -1,9 +1,47 @@
 ﻿<div class="example-container">
   <Subzz-app-SideNav></Subzz-app-SideNav>
   <div class="row">
-    <div class="col-md-2"></div>
+    <div class="col-md-2">
+      <div class="row col-md-10 col-md-offset-1 mat-elevation-z8"  *ngIf="loginedUserRole == 1 || loginedUserRole == 2 || loginedUserRole == 5"
+        style="margin-top: 20px; margin-bottom: 15px; width: 225px;font-size: 12px;">
+        <table cellpadding="5" cellspacing="5">
+          <tr>
+            <th>Time-Off Information</th>
+          </tr>
+          <tr>
+            <td>Pending Request</td>
+            <td>{{substituteAvailibiltySummary[0].number}}</td>
+          </tr>
+          <tr>
+            <td>Employees Off Today</td>
+            <td>{{substituteAvailibiltySummary[1].number}}</td>
+          </tr>
+          <tr>
+            <td>Employees Off This Week</td>
+            <td>{{substituteAvailibiltySummary[2].number}}</td>
+          </tr>
+          <tr>
+            <td>Employees Off Next Week</td>
+            <td>{{substituteAvailibiltySummary[3].number}}</td>
+          </tr>
+          <br>
+          <mat-divider></mat-divider>
+        </table>
+        <br>
+        <div *ngFor="let absence of todayTotalAbsenceDetails" style="margin-left: -15px;">
+            <div class="col-md-7" *ngIf="absence.statusId == 1 || absence.statusId == 2">{{absence.employeeName}} <br>
+              {{absence.startDate | date:'M/d/y'}}</div>
+            <div class="col-md-5" *ngIf="absence.statusId == 1 || absence.statusId == 2">
+              {{absence.reason}} 
+              <br>{{absence.startTime | convertFrom24HourTo12HourFormat}} 
+              <br>{{absence.endTime | convertFrom24HourTo12HourFormat}}
+            </div>   
+            <br>       
+        </div>   
+      </div>
+    </div>
     <div class="col-md-10">
-      <h1>Calendar</h1>
+      <h2>Calendar</h2>
       <div id="calendar"></div>
     </div>
   </div>

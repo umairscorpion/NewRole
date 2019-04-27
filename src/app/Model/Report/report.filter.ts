@@ -10,7 +10,7 @@ export class ReportFilter {
   absencePosition: number;
   employeeTypeId: number;
   absenceTypeId: number;
-  locationId: number;
+  locationId: string;
   districtId: number;
   reasonId: number;
   month: number;
@@ -19,13 +19,15 @@ export class ReportFilter {
   OrganizationId: string;
   deleteAbsenceReason: string;
   District: number;
+  userId: string;
   static CreateFilterFormGroup(fb: FormBuilder) {
     return fb.group({
+      userId: [''],
+      locationId: [''],
       fromDate: [moment(new Date()).format('YYYY-MM-DD')],
       toDate: [moment(new Date()).format('YYYY-MM-DD')],
       jobNumber: [''],
       absenceTypeId: [0],
-      locationId: [0],
       districtId: [0],
       reasonId: [0],
       employeeName: [''],
@@ -45,7 +47,8 @@ export class ReportFilter {
     filters.jobNumber = '';
     filters.employeeTypeId = 0;
     filters.absenceTypeId = 0;
-    filters.locationId = 0;
+    filters.userId = '';
+    filters.locationId = '';
     filters.districtId = 0;
     filters.reasonId = 0;
     filters.employeeName = '';

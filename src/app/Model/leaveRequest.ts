@@ -22,9 +22,11 @@ export class LeaveRequest extends Entity {
     totalDays: string;
     acceptedDate: string;
     substituteName: string;
-    postedByName: string; 
-    postedOn: string; 
+    postedByName: string;
+    postedOn: string;
     absenceId: string;
     approvedBy: string;
     deniedBy: string;
+    cancelledDate: string;
+    cancelledBy: string;
 }

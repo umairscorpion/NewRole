@@ -124,9 +124,9 @@
         </div>
         <div class="col-md-6">
           <mat-form-field class="w-90">
-            <mat-select placeholder="Select..." formControlName="districtId">
-              <mat-option *ngFor="let district of districts" [value]="district.districtId">
-                {{district.districtName}}
+            <mat-select formControlName="locationId">
+              <mat-option *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
+                {{Organization.schoolName}}
               </mat-option>
             </mat-select>
           </mat-form-field>

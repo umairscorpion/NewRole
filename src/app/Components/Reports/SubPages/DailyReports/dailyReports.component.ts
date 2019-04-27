@@ -54,8 +54,6 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
         private reportService: ReportService,
         private dialogRef: MatDialog,
         private sanitizer: DomSanitizer,
-        private _dataContext: DataContext,
-        private notifier: NotifierService,
         private excelService: ExcelService
     ) {
     }
@@ -98,17 +96,13 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
                 delete absence.grade;
                 delete absence.subject;
                 delete absence.postedById;
-                delete absence.postedByName;
                 delete absence.statusId;
-                delete absence.substituteName;
                 delete absence.anyAttachment;
                 delete absence.fileContentType;
                 delete absence.substituteRequired;
                 delete absence.durationType;
-                delete absence.attachedFileName;
                 delete absence.statusDate;
                 delete absence.substituteProfilePicUrl;
-                delete absence.absenceId;
                 return true;
             });
             this.excelService.exportAsExcelFile(this.allAbsencesInCurrentState, 'Report');
