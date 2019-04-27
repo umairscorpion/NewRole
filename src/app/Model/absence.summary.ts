@@ -25,4 +25,26 @@ export class AbsenceSummary extends Entity {
   filledPrevious: number;
   unfilledPrevious: number;
   noSubRequiredPrevious: number;
+  //Ten Day
+  filledPreviousMinusOne: number;
+  filledPreviousMinusTwo: number;
+  filledPreviousMinusThree: number;
+  filledPreviousMinusFour: number;
+  filledPreviousMinusFive: number;
+  filledPreviousMinusSix: number;
+  filledPreviousMinusSeven: number;
+  filledPreviousMinusEight: number;
+  filledPreviousMinusNine: number;
+  filledPreviousMinusTen: number;
+
+  unfilledPreviousMinusOne: number;
+  unfilledPreviousMinusTwo: number;
+  unfilledPreviousMinusThree: number;
+  unfilledPreviousMinusFour: number;
+  unfilledPreviousMinusFive: number;
+  unfilledPreviousMinusSix: number;
+  unfilledPreviousMinusSeven: number;
+  unfilledPreviousMinusEight: number;
+  unfilledPreviousMinusNine: number;
+  unfilledPreviousMinusTen: number;
 }
