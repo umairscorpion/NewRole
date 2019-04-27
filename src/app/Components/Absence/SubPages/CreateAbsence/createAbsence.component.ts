@@ -655,6 +655,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
 
     resetForm(stepper: MatStepper) {
+        this.isApprovalNeeded = false;
         this.response = 0;
         this.ngOnInit();
         stepper.reset();

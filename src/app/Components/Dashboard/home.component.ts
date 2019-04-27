@@ -21,6 +21,10 @@ export class HomeComponent {
     submittedLeaveRequests: LeaveRequest[];
     absenceSummary: any;
     absenceSummary1 = [];
+    FilledTenDay = [];
+    UnFilledTenDay = [];
+    previousDate = new Date();
+    pDate = [];
     absenceReason1 = [];
     dashboardCounter: AbsenceSummary = new AbsenceSummary();
     absenceChartSummary: AbsenceSummary = new AbsenceSummary();
@@ -46,9 +50,11 @@ export class HomeComponent {
     }
 
     ngOnInit(): void {
+        this.previousDate.setDate(this.previousDate.getDate() -1);
         this.absenceService.getSummary().subscribe((summary: AbsenceSummary[]) => {
             this.bindAbsenceSummary(summary[0]);
             this.bindAbsenceReason(summary[0]);
+            this.bindFilledUnfilled(summary[0]);
             this.dashboardCounter = summary[0];
         });
 
@@ -59,87 +65,7 @@ export class HomeComponent {
         this.GetLeaveRequests();
 
 
-        this.filledunfilledAbsence = new Chart('filledunfilledAbsence', {
-            type: 'bar',
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                datasets: [{
-                    label: 'Filled',
-                    data: [12, 19, 3, 5, 1, 1, 12, 19, 3, 5, 1, 1],
-                    backgroundColor: [
-                        '#73dad9',
-                        '#73dad9',
-                        '#73dad9',
-                        '#73dad9',
-                        '#73dad9',
-                        '#73dad9',
-                        '#73dad9',
-                        '#73dad9',
-                        '#73dad9',
-                        '#73dad9',
-                        '#73dad9',
-                        '#73dad9'
-                    ],
-                    borderColor: [
-                        '#72b8b7',
-                        '#72b8b7',
-                        '#72b8b7',
-                        '#72b8b7',
-                        '#72b8b7',
-                        '#72b8b7',
-                        '#72b8b7',
-                        '#72b8b7',
-                        '#72b8b7',
-                        '#72b8b7',
-                        '#72b8b7',
-                        '#72b8b7',
-                    ],
-                    borderWidth: 1
-                },
-                {
-                    label: 'Unfilled',
-                    data: [12, 19, 3, 5, 1, 1, 12, 19, 3, 5, 1, 1],
-                    backgroundColor: [
-                        '#b1ddc4',
-                        '#b1ddc4',
-                        '#b1ddc4',
-                        '#b1ddc4',
-                        '#b1ddc4',
-                        '#b1ddc4',
-                        '#b1ddc4',
-                        '#b1ddc4',
-                        '#b1ddc4',
-                        '#b1ddc4',
-                        '#b1ddc4',
-                        '#b1ddc4'
-                    ],
-                    borderColor: [
-                        '#7cbb98',
-                        '#7cbb98',
-                        '#7cbb98',
-                        '#7cbb98',
-                        '#7cbb98',
-                        '#7cbb98',
-                        '#7cbb98',
-                        '#7cbb98',
-                        '#7cbb98',
-                        '#7cbb98',
-                        '#7cbb98',
-                        '#7cbb98'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
+        
         this.sideNavService.change.subscribe((isOpen: any) => {
             this.isOpen = isOpen;
         });
@@ -259,6 +185,116 @@ export class HomeComponent {
             }
         });
     }
+ bindFilledUnfilled(chartSummary: AbsenceSummary) {
+    //Filled Ten Days 
+    this.FilledTenDay.push(chartSummary.filledPreviousMinusTen);
+     this.FilledTenDay.push(chartSummary.filledPreviousMinusNine);
+     this.FilledTenDay.push(chartSummary.filledPreviousMinusEight);
+     this.FilledTenDay.push(chartSummary.filledPreviousMinusSeven);
+     this.FilledTenDay.push(chartSummary.filledPreviousMinusSix);
+     this.FilledTenDay.push(chartSummary.filledPreviousMinusFive);
+     this.FilledTenDay.push(chartSummary.filledPreviousMinusFour);
+     this.FilledTenDay.push(chartSummary.filledPreviousMinusThree);
+     this.FilledTenDay.push(chartSummary.filledPreviousMinusTwo);
+     this.FilledTenDay.push(chartSummary.filledPreviousMinusOne);
+     //UnFilled Ten Days
+     this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusTen);
+     this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusNine);
+     this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusEight);
+     this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusSeven);
+     this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusSix);
+     this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusFive);
+     this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusFour);
+     this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusThree);
+     this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusTwo);
+     this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusOne);
+
+     this.pDate.push(this.previousDate);
+
+    this.filledunfilledAbsence = new Chart('filledunfilledAbsence', {
+        type: 'bar',
+        data: {
+            labels: ["4/16", "4/17", "4/18", "4/19", "4/19", "4/20", "4/21", "4/22", "4/23", "4/24"],
+            datasets: [{
+                label: 'Filled',
+                data: this.FilledTenDay,
+                backgroundColor: [
+                    '#73dad9',
+                    '#73dad9',
+                    '#73dad9',
+                    '#73dad9',
+                    '#73dad9',
+                    '#73dad9',
+                    '#73dad9',
+                    '#73dad9',
+                    '#73dad9',
+                    '#73dad9',
+                    '#73dad9',
+                    '#73dad9'
+                ],
+                borderColor: [
+                    '#72b8b7',
+                    '#72b8b7',
+                    '#72b8b7',
+                    '#72b8b7',
+                    '#72b8b7',
+                    '#72b8b7',
+                    '#72b8b7',
+                    '#72b8b7',
+                    '#72b8b7',
+                    '#72b8b7',
+                    '#72b8b7',
+                    '#72b8b7',
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Unfilled',
+                data: this.UnFilledTenDay,
+                backgroundColor: [
+                    '#b1ddc4',
+                    '#b1ddc4',
+                    '#b1ddc4',
+                    '#b1ddc4',
+                    '#b1ddc4',
+                    '#b1ddc4',
+                    '#b1ddc4',
+                    '#b1ddc4',
+                    '#b1ddc4',
+                    '#b1ddc4',
+                    '#b1ddc4',
+                    '#b1ddc4'
+                ],
+                borderColor: [
+                    '#7cbb98',
+                    '#7cbb98',
+                    '#7cbb98',
+                    '#7cbb98',
+                    '#7cbb98',
+                    '#7cbb98',
+                    '#7cbb98',
+                    '#7cbb98',
+                    '#7cbb98',
+                    '#7cbb98',
+                    '#7cbb98',
+                    '#7cbb98'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+ }
+
     toggle() {
     }
 
