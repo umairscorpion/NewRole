@@ -227,7 +227,6 @@ export class ReportDetailsComponent implements OnInit {
       }
       let AbsenceModel = {
         employeeId: formGroup.value.employeeId,
-        absenceCreatedByEmployeeId: formGroup.value.absenceCreatedByEmployeeId,
         absenceId: formGroup.value.absenceId,
         startDate: new Date(formGroup.value.startDate).toLocaleDateString(),
         endDate: new Date(formGroup.value.endDate).toLocaleDateString(),

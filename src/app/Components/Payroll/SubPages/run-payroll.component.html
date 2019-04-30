@@ -32,7 +32,7 @@
                 <button mat-raised-button class="btn btn-success" style="background: #3CCCD1; color: white;" type="submit">Search</button>
             </div>
             <div class="col-md-5" style="text-align: right">
-                <button mat-raised-button style="background: #76C598; color: white; margin-left:5px" type="button">Edit</button>
+                <button mat-raised-button (click)="onEditPayrollReport()" style="background: #76C598; color: white; margin-left:5px" type="button">Edit</button>
                 <button mat-raised-button style="background: #5E9ECC; color: white; margin-left:5px" type="button">Save</button>
                 <button mat-raised-button printSectionId="htmlForPrint" ngxPrint style="background:#F0F1F3; color:#A1A1A3; margin-left:5px"
                     type="button">

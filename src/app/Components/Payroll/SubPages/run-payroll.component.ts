@@ -16,6 +16,7 @@ import { Absence } from '../../../Model/absence';
 import { ReportService } from '../../../Services/report.service';
 import { ReportDetail } from '../../../Model/Report/report.detail';
 import { ReportFilter } from '../../../Model/Report/report.filter';
+import { EditPayrollComponent } from '../Popups/edit-payroll.popup.component';
 
 @Component({
     selector: 'run-payroll',
@@ -39,7 +40,7 @@ export class RunPayroll implements OnInit {
     msg: string;
     curr: Date = new Date;
     displayedColumns: string[] = ['Date', 'Employee', 'Location', 'Reason', 'Time', 'Hours', 'Notes', 'Substitute', 'Rate', 'Additional', 'Gross', 'action'];
-    selection = new SelectionModel<any>(true, []);
+    selection = new SelectionModel<ReportDetail>(true, []);
     constructor(private router: Router, private _districtService: DistrictService, public dialog: MatDialog,
         private reportService: ReportService, notifier: NotifierService, private _dataContext: DataContext,
         public sanitizer: DomSanitizer, private _userSession: UserSession, private fb: FormBuilder, private userService: UserService) {
@@ -135,7 +136,7 @@ export class RunPayroll implements OnInit {
     masterToggle() {
         this.isAllSelected() ?
             this.selection.clear() :
-            this.runPayRollDataSource.data.forEach(row => this.selection.select(row));
+            this.runPayRollDataSource.data.forEach((row: ReportDetail) => this.selection.select(row));
     }
 
     ngAfterViewInit() {
@@ -147,6 +148,21 @@ export class RunPayroll implements OnInit {
             return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
         }
         return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    }
+
+    onEditPayrollReport() {
+        if (this.selection.selected.length > 0) {
+            const dialogRef = this.dialog.open(EditPayrollComponent, {
+                data: this.selection.selected,
+                panelClass: 'edit-payroll-dialog'
+            });
+            dialogRef.afterClosed().subscribe(result => {
+                this.submitForm(this.payRollFilter);
+            });
+        }
+        else {
+            this.notifier.notify('error', 'select absence first then click edit.');
+        }
     }
 }
 

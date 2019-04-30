@@ -31,4 +31,7 @@ export class ReportDetail extends Entity {
   payRate: number;
   dailyHours: number;
   schoolName: string;
+  reasonId: string;
+  absenceScope: number;
+  employeeId: string;
 }

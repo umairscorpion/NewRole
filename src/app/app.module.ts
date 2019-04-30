@@ -163,6 +163,7 @@ import { PayRollComponent } from './Components/Payroll/payroll.component';
 import { ExcelService } from './Services/excel.service';
 import { PopupForCancelAbsencesComponent } from './Components/Reports/popups/cancel-absence.popup.component';
 import { RunPayroll } from './Components/Payroll/SubPages/run-payroll.component';
+import { EditPayrollComponent } from './Components/Payroll/Popups/edit-payroll.popup.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -326,7 +327,8 @@ const customNotifierOptions: NotifierOptions = {
         PayRateComponent,
         PayRollComponent,
         PopupForCancelAbsencesComponent,
-        RunPayroll
+        RunPayroll,
+        EditPayrollComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -343,7 +345,8 @@ const customNotifierOptions: NotifierOptions = {
         AllowanceComponent,
         RecurringComponent,
         PositionComponent,
-        PopupForCancelAbsencesComponent
+        PopupForCancelAbsencesComponent,
+        EditPayrollComponent
     ],
     providers: [
         UserService,

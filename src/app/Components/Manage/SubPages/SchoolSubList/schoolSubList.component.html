@@ -1,0 +1,11 @@
+<div class="col-md-12 mat-elevation-z8">
+    <mat-tab-group (selectedTabChange)="onTabChanged($event)">
+        <mat-tab label="Substitute List">
+            <div class="col-md-12" style="text-align:right !important; padding-top: 10px">
+                    <button mat-raised-button (click)="onOpenPositionPopup()" style="background: #3CCCD1; color: white;">Add Substitutes</button>
+            </div>
+        </mat-tab>
+        <mat-tab label="Blocked List">
+            </mat-tab>
+    </mat-tab-group>
+</div>

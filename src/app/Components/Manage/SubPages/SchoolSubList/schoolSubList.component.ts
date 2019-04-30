@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 @Component({
-    templateUrl: 'schoolSubList.component.html'
+    selector: 'school-sub-list',
+    templateUrl: 'schoolSubList.component.html',
+    styleUrls: ['schoolSubList.component.scss']
 })
 export class SchoolSubListComponent implements OnInit {
     msg: string;

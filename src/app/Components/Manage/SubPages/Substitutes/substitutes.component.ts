@@ -25,7 +25,6 @@ export class SubstitutesComponent implements OnInit {
   substituteDataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  pos
   Employees: any
   msg: string;
   constructor(private router: Router, private _districtService: DistrictService, public dialog: MatDialog,
