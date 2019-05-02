@@ -34,6 +34,10 @@ export class TimeClockComponent implements OnInit {
     startDate:string = moment().format('dddd, MM/DD/YYYY');
     startTime:string = moment().format('h:mma');
     userId:string = this._userSession.getUserId();
+    clockInButton:boolean = false;
+    clockOutButton:boolean = true;
+    BreakButton:boolean = true;
+    ReturnButton:boolean = true;
     
 
     constructor(private router: Router, private _userService: UserService, public dialog: MatDialog,
@@ -63,6 +67,9 @@ export class TimeClockComponent implements OnInit {
     }
 
     clockInClick() {
+        this.clockInButton = true;
+        this.BreakButton = false;
+        this.clockOutButton = false;
     let userId = this._userSession.getUserId();
     this._dataContext.clockin('Time/ClockIn',this.userId).subscribe((respose: any) => {
         if (respose == 1) {
@@ -74,6 +81,8 @@ export class TimeClockComponent implements OnInit {
 }
 
     breakClick() {
+        this.ReturnButton = false;
+        this.BreakButton = true;
         this._dataContext.break('Time/Break',this.userId).subscribe((respose: any) => {
             if (respose == 1) {
                 this.notifier.notify('success', 'On Break.');
@@ -85,6 +94,8 @@ export class TimeClockComponent implements OnInit {
     }
 
     returnClick() {
+        this.ReturnButton = true;
+        this.BreakButton = false;
         this._dataContext.return('Time/Return',this.userId).subscribe((respose: any) => {
             if (respose == 1) {
                 this.notifier.notify('success', 'Return Successfully.');
@@ -95,6 +106,8 @@ export class TimeClockComponent implements OnInit {
     }
 
     clockOutClick() {
+        this.clockOutButton = true;
+        this.clockInButton =false;
         this._dataContext.clockout('Time/Clockout',this.userId).subscribe((respose: any) => {
             if (respose == 1) {
                 this.notifier.notify('success', 'Clock Out Successfully.');

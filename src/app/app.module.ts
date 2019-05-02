@@ -167,7 +167,7 @@ import { PayRollComponent } from './Components/Payroll/payroll.component';
 import { ExcelService } from './Services/excel.service';
 import { PopupForCancelAbsencesComponent } from './Components/Reports/popups/cancel-absence.popup.component';
 import { RunPayroll } from './Components/Payroll/SubPages/run-payroll.component';
-import { TimeClockModule } from './Elements/TimeClock/time-clock/time-clock.module';
+// import { TimeClockModule } from './Elements/TimeClock/time-clock/time-clock.module';
 
 
 export function getAuthServiceConfigs() {
@@ -268,7 +268,7 @@ const customNotifierOptions: NotifierOptions = {
         NgSelectModule,
         SatDatepickerModule,
         SatNativeDateModule,
-        TimeClockModule
+        // TimeClockModule
     ],
     declarations: [
         AppComponent,

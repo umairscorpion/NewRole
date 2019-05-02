@@ -32,18 +32,23 @@
                                     <div style="padding: 10px;
                                                             padding-bottom: 25px;">
                                         <button mat-raised-button class="btn btn-success"
-                                            style="background: #14A1DA; color: white;" (click)="clockInClick()">Clock
+                                            style="background: #14A1DA; color: white;" 
+                                            (click)="clockInClick()"
+                                            [disabled]="clockInButton">Clock
                                             In</button>
                                         <button mat-raised-button class="btn btn-success"
                                             style="background: #1BB253; color: white; margin-left: 5px;"
-                                            (click)="breakClick()">Take
+                                            (click)="breakClick()"
+                                            [disabled]="clockOutButton">Take
                                             Break</button>
                                             <button mat-raised-button class="btn btn-success"
                                             style="background:#1BB253;; color: white; margin-left: 5px;"
-                                            (click)="returnClick()">Return</button>
+                                            (click)="returnClick()"
+                                            [disabled]="ReturnButton">Return</button>
                                         <button mat-raised-button class="btn btn-success"
                                             style="background:#C60B0E; color: white; margin-left: 5px;"
-                                            (click)="clockOutClick()">Clock
+                                            (click)="clockOutClick()"
+                                            [disabled]="BreakButton">Clock
                                             Out</button>
                                     </div>
 
