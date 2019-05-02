@@ -26,6 +26,7 @@ import { AddLeaveRequestComponent } from './Components/Manage/SubPages/Leaves/Le
 import { ProfileComponent } from './Components/Manage/SubPages/Profile/profile.component';
 import { OrganizationsComponent } from './Components/Manage/SubPages/Organization/organizations.component';
 import { AddOrganizationComponent } from './Components/Manage/SubPages/Organization/addOrganization.component';
+import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 
 //Reports Component
 import { ReportsComponent } from './Components/Reports/reports.component';
@@ -117,7 +118,8 @@ const appRoutes: Routes = [
     { path: 'contactUs', component: ContactUsComponent, canActivate: [AuthGuard] },
     { path: 'calendar', component: SubstituteCalendarComponent, canActivate: [AuthGuard] },
     { path: 'availability', component: SubstituteAvailabilityComponent, canActivate: [AuthGuard] },
-    { path: 'payroll', component: PayRollComponent, canActivate: [AuthGuard] }
+    { path: 'payroll', component: PayRollComponent, canActivate: [AuthGuard] },
+    { path: 'auditLog', component: AuditLogComponent, canActivate: [AuthGuard] }
 ];
 
 export const routing: ModuleWithProviders =
