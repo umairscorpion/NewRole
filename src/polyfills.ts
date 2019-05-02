@@ -78,3 +78,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+// if you are compiling to ES5 (check tsconfig.json) then you need this
+import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';

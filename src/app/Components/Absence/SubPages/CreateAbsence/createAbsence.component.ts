@@ -17,6 +17,7 @@ import { AbsenceService } from '../../../../Services/absence.service';
 import { environment } from '../../../../../environments/environment';
 import { User } from '../../../../Model/user';
 import { UpcommingAbsenceComponent } from '../UpcommingAbsence/upcommingAbsence.component';
+import { NewTimeClockComponent } from 'src/app/Components/TimeClock/timeclock/timeclock.component';
 
 @Component({
     selector: 'create-absence',

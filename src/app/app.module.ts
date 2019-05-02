@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injector,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 //import { AppMaterialModule } from './App-Material/app-material';
 import { AppComponent } from './app.component';
@@ -16,6 +16,8 @@ import { ChartsModule } from 'ng2-charts';
 import { BlockUIModule } from 'ng-block-ui';
 import { TagInputModule } from 'ngx-chips';
 import { NgxPrintModule } from 'ngx-print';
+import { createCustomElement } from '@angular/elements';
+
 
 import {
     MatAutocompleteModule,
@@ -120,6 +122,7 @@ import { SettingComponent } from './Components/Settings/settings.component';
 //TimeClock And TimeTracker Component
 import { TimeClockComponent } from './Components/TimeClock/timeClock.component';
 import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.component';
+import { NewTimeClockComponent } from './components/Timeclock/timeclock/timeclock.component';
 
 //Services
 import { SideNavService } from './Components/SideNav/sideNav.service';
@@ -134,6 +137,7 @@ import { ReportService } from './Services/report.service';
 import { ErrorHandlerService } from './Services/error-handler/error-handler.service';
 import { ProfileService } from './Services/profile.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import {TimeClockService} from 'src/app/Services/timeClock.service'
 
 import {
     SocialLoginModule,
@@ -163,6 +167,8 @@ import { PayRollComponent } from './Components/Payroll/payroll.component';
 import { ExcelService } from './Services/excel.service';
 import { PopupForCancelAbsencesComponent } from './Components/Reports/popups/cancel-absence.popup.component';
 import { RunPayroll } from './Components/Payroll/SubPages/run-payroll.component';
+import { TimeClockModule } from './Elements/TimeClock/time-clock/time-clock.module';
+
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -261,7 +267,8 @@ const customNotifierOptions: NotifierOptions = {
         NotifierModule.withConfig(customNotifierOptions),
         NgSelectModule,
         SatDatepickerModule,
-        SatNativeDateModule
+        SatNativeDateModule,
+        TimeClockModule
     ],
     declarations: [
         AppComponent,
@@ -361,6 +368,7 @@ const customNotifierOptions: NotifierOptions = {
         FileService,
         AbsenceService,
         ExcelService,
+        TimeClockService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
@@ -375,6 +383,10 @@ const customNotifierOptions: NotifierOptions = {
         LookupService,
         AvailabilityService
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+   
+    // schemas: [ CUSTOM_ELEMENTS_SCHEMA ]schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
-export class AppModule { }
+export class AppModule { 
+
+}
