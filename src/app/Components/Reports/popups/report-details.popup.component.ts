@@ -234,10 +234,7 @@ export class ReportDetailsComponent implements OnInit {
         endTime: formGroup.getRawValue().endTime,
         absenceReasonId: formGroup.value.absenceReasonId,
         durationType: formGroup.value.durationType,
-        positionId: formGroup.value.positionId,
         status: formGroup.value.status,
-        organizationId: formGroup.value.organizationId,
-        districtId: formGroup.value.districtId,
         substituteRequired: formGroup.value.substituteRequired,
         absenceScope: formGroup.value.absenceScope,
         payrollNotes: formGroup.value.payrollNotes,
@@ -247,9 +244,6 @@ export class ReportDetailsComponent implements OnInit {
         fileContentType: formGroup.value.fileContentType,
         fileExtention: formGroup.value.fileExtention,
         substituteId: formGroup.value.substituteId,
-        interval: formGroup.value.interval,
-        totalInterval: formGroup.value.totalInterval,
-        isApprovalRequired: formGroup.value.isApprovalRequired
       }     
       this.absenceService.Patch('/Absence/updateAbsence/', AbsenceModel).subscribe((respose: any) => {
         if (respose == "success") {

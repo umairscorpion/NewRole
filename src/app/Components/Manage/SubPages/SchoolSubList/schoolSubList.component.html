@@ -43,8 +43,8 @@
                     </div>
                     <hr class="col-md-12">
                     <div class="col-md-10" style="padding-top: 10px">
-                        <button mat-raised-button (click)="onOpenPositionPopup()" style="background: #77C498; color: white;">Save</button>
-                        <button mat-raised-button type="button" (click)="onEditHourLimit()" style="margin-left:3px;background-color: #C3DEF1">Cancel</button>
+                        <button mat-raised-button (click)="updateSchoolSublist()" style="background: #77C498; color: white;">Save</button>
+                        <button mat-raised-button type="button" (click)="showSubstitutes =! showSubstitutes" style="margin-left:3px;background-color: #C3DEF1">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
                 </div>
                 <mat-divider></mat-divider>
                 <div class="row" style="padding-top: 10px">
-                    <button mat-raised-button (click)="onOpenPositionPopup()" style="background: #77C498; color: white;">Save</button>
+                    <button mat-raised-button (click)="updateSchoolSublist()" style="background: #77C498; color: white;">Save</button>
                     <button mat-raised-button type="button" (click)="onEditHourLimit()" style="margin-left:3px;background-color: #C3DEF1">Cancel</button>
                 </div>
             </div>

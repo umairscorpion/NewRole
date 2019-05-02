@@ -2,11 +2,12 @@
   <Subzz-app-SideNav></Subzz-app-SideNav>
   <div class="row">
     <div class="col-md-2">
-      <div class="row col-md-10 col-md-offset-1 mat-elevation-z8"  *ngIf="loginedUserRole == 1 || loginedUserRole == 2 || loginedUserRole == 5"
-        style="margin-top: 20px; margin-bottom: 15px; width: 225px;font-size: 12px;">
-        <table cellpadding="5" cellspacing="5">
+      <div class="row col-md-12 col-md-offset 1 mat-elevation-z8"
+        *ngIf="loginedUserRole == 1 || loginedUserRole == 2 || loginedUserRole == 5"
+        style="margin-top: 20px; margin-left: 8px; font-size: 12px;">
+        <table *ngIf="substituteAvailibiltySummary" cellpadding="4" cellspacing="4">
           <tr>
-            <th>Time-Off Information</th>
+            <th><b>Time-Off Information</b></th>
           </tr>
           <tr>
             <td>Pending Request</td>
@@ -24,20 +25,23 @@
             <td>Employees Off Next Week</td>
             <td>{{substituteAvailibiltySummary[3].number}}</td>
           </tr>
-          <br>
-          <mat-divider></mat-divider>
         </table>
-        <br>
-        <div *ngFor="let absence of todayTotalAbsenceDetails" style="margin-left: -15px;">
-            <div class="col-md-7" *ngIf="absence.statusId == 1 || absence.statusId == 2">{{absence.employeeName}} <br>
-              {{absence.startDate | date:'M/d/y'}}</div>
-            <div class="col-md-5" *ngIf="absence.statusId == 1 || absence.statusId == 2">
-              {{absence.reason}} 
-              <br>{{absence.startTime | convertFrom24HourTo12HourFormat}} 
-              <br>{{absence.endTime | convertFrom24HourTo12HourFormat}}
-            </div>   
-            <br>       
-        </div>   
+        <mat-divider style="background-color:blue"></mat-divider>
+        <div class="text-muted text-center" style="margin-bottom: 5px; margin-top: 5px">
+          <b>{{date}} ({{todayTotalAbsenceDetails.length}})</b>
+        </div>
+        <div *ngFor="let absence of todayTotalAbsenceDetails | slice:0:5; let i=index"
+          style="margin-left: -15px; margin-bottom: 5px">
+          <div class="col-md-12" *ngIf="absence.statusId == 1 || absence.statusId == 2">
+            <b>{{absence.employeeName}}</b><br>
+            {{absence.reason}}
+            {{absence.startTime | convertFrom24HourTo12HourFormat}} -
+            {{absence.endTime | convertFrom24HourTo12HourFormat}}<br>
+          </div>
+        </div>
+        <div>
+          <b><a (click)="jumpToReport()">Jump To Report</a></b>
+        </div>
       </div>
     </div>
     <div class="col-md-10">

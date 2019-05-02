@@ -19,6 +19,7 @@ import { ReportFilter } from 'src/app/Model/Report/report.filter';
 import { ReportDetail } from 'src/app/Model/Report/report.detail';
 import { ReportService } from 'src/app/Services/report.service';
 import { UserSession } from 'src/app/Services/userSession.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-substitute-calendar',
@@ -36,7 +37,8 @@ export class SubstituteCalendarComponent implements OnInit {
     private dialogRef: MatDialog,
     private availabilityService: AvailabilityService,
     private reportService: ReportService,
-    private _userSession: UserSession
+    private _userSession: UserSession,
+    private router: Router,
   ) {
 
   }
@@ -92,6 +94,7 @@ export class SubstituteCalendarComponent implements OnInit {
                 console.log({ save: model });
                 this.availabilityService.create(model).subscribe(t => {
                   this.reloadCalendar();
+                  this.getSubstituteAvailibiltySummary();
                 });
               }
             });
@@ -120,10 +123,12 @@ export class SubstituteCalendarComponent implements OnInit {
                       if (result.action === 'Submit') {
                         this.availabilityService.put('availability/', result.id, result.availability).subscribe(t => {
                           this.reloadCalendar();
+                          this.getSubstituteAvailibiltySummary();
                         });
                       } else if (result.action === 'Delete') {
                         this.availabilityService.delete('availability/', result.id).subscribe(t => {
                           this.reloadCalendar();
+                          this.getSubstituteAvailibiltySummary();
                         });
                       }
                       this.doOpen = true;
@@ -157,5 +162,9 @@ export class SubstituteCalendarComponent implements OnInit {
       this.containerEl.fullCalendar('removeEvents');
       this.containerEl.fullCalendar('renderEvents', data, true);
     });
+  }
+
+  jumpToReport() {
+    this.router.navigate(['/reports']);
   }
 }

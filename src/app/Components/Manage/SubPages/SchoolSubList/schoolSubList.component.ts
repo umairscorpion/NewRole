@@ -61,7 +61,6 @@ export class SchoolSubListComponent implements OnInit {
             else {
                 this.selectedSchoolSubList = this.selectedSchoolSubList.filter(t => t.substituteId !== element.value.substituteId);
             }
-
         });
     }
 
@@ -69,7 +68,8 @@ export class SchoolSubListComponent implements OnInit {
         let model = {
             substituteId: JSON.stringify(this.selectedSchoolSubList)
         }
-        this.dataContext.Patch('user/schoolSubList', model).subscribe((data: any[]) => {
+        this.dataContext.Patch('user/schoolSubList', model).subscribe((response: any) => {
+            this.getSustitutes();
             this.notifier.notify('sucess', 'update Successfully');
         },
             error => this.msg = <any>error);
