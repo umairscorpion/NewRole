@@ -9,6 +9,7 @@ import { AbsenceService } from "../../Services/absence.service";
 import { UserSession } from "../../Services/userSession.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { AbsenceSummary } from 'src/app/Model/absence.summary';
+import * as moment from 'moment';
 
 @Component({
     selector: 'Subzz-app-dashboard',
@@ -23,8 +24,17 @@ export class HomeComponent {
     absenceSummary1 = [];
     FilledTenDay = [];
     UnFilledTenDay = [];
-    previousDate = new Date();
-    pDate = [];
+    previousDates = [];
+    previousDateMinusOne =  moment().subtract(1,'days').format('MM/DD');
+    previousDateMinusTwo =  moment().subtract(2,'days').format('MM/DD');
+    previousDateMinusThree =  moment().subtract(3,'days').format('MM/DD');
+    previousDateMinusFour =  moment().subtract(4,'days').format('MM/DD');
+    previousDateMinusFive =  moment().subtract(5,'days').format('MM/DD');
+    previousDateMinusSix =  moment().subtract(6,'days').format('MM/DD');
+    previousDateMinusSeven =  moment().subtract(7,'days').format('MM/DD');
+    previousDateMinusEight =  moment().subtract(8,'days').format('MM/DD');
+    previousDateMinusNine =  moment().subtract(9,'days').format('MM/DD');
+    previousDateMinusTen =  moment().subtract(10,'days').format('MM/DD');
     absenceReason1 = [];
     dashboardCounter: AbsenceSummary = new AbsenceSummary();
     absenceChartSummary: AbsenceSummary = new AbsenceSummary();
@@ -50,7 +60,7 @@ export class HomeComponent {
     }
 
     ngOnInit(): void {
-        this.previousDate.setDate(this.previousDate.getDate() -1);
+        
         this.absenceService.getSummary().subscribe((summary: AbsenceSummary[]) => {
             this.bindAbsenceSummary(summary[0]);
             this.bindAbsenceReason(summary[0]);
@@ -208,13 +218,23 @@ export class HomeComponent {
      this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusThree);
      this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusTwo);
      this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusOne);
+    //Filled Unfilled Ten days Labels
+    this.previousDates.push(this.previousDateMinusTen);
+    this.previousDates.push(this.previousDateMinusNine);
+    this.previousDates.push(this.previousDateMinusEight);
+    this.previousDates.push(this.previousDateMinusSeven);
+    this.previousDates.push(this.previousDateMinusSix);
+    this.previousDates.push(this.previousDateMinusFive);
+    this.previousDates.push(this.previousDateMinusFour);
+    this.previousDates.push(this.previousDateMinusThree);
+    this.previousDates.push(this.previousDateMinusTwo);
+    this.previousDates.push(this.previousDateMinusOne);
 
-     this.pDate.push(this.previousDate);
 
     this.filledunfilledAbsence = new Chart('filledunfilledAbsence', {
         type: 'bar',
         data: {
-            labels: ["4/16", "4/17", "4/18", "4/19", "4/19", "4/20", "4/21", "4/22", "4/23", "4/24"],
+            labels: this.previousDates,
             datasets: [{
                 label: 'Filled',
                 data: this.FilledTenDay,

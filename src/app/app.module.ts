@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injector,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 //import { AppMaterialModule } from './App-Material/app-material';
 import { AppComponent } from './app.component';
@@ -16,6 +16,8 @@ import { ChartsModule } from 'ng2-charts';
 import { BlockUIModule } from 'ng-block-ui';
 import { TagInputModule } from 'ngx-chips';
 import { NgxPrintModule } from 'ngx-print';
+import { createCustomElement } from '@angular/elements';
+
 
 import {
     MatAutocompleteModule,
@@ -135,6 +137,7 @@ import { ReportService } from './Services/report.service';
 import { ErrorHandlerService } from './Services/error-handler/error-handler.service';
 import { ProfileService } from './Services/profile.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import {TimeClockService} from 'src/app/Services/timeClock.service'
 
 import {
     SocialLoginModule,
@@ -172,6 +175,7 @@ import { RolePermissionService } from './Services/rolePermission.service';
 import { AuthorizationService } from './Services/authorization.service';
 import { DisableIfUnauthorizedDirective } from './Shared/directives/disable-if-unauthorized.directive';
 import { HideIfUnauthorizedDirective } from './Shared/directives/hide-if-unauthorized.directive';
+
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -270,7 +274,7 @@ const customNotifierOptions: NotifierOptions = {
         NotifierModule.withConfig(customNotifierOptions),
         NgSelectModule,
         SatDatepickerModule,
-        SatNativeDateModule
+        SatNativeDateModule,
     ],
     declarations: [
         AppComponent,
@@ -376,6 +380,7 @@ const customNotifierOptions: NotifierOptions = {
         FileService,
         AbsenceService,
         ExcelService,
+        TimeClockService,
         UsersService,
         RoleService,
         {
@@ -394,6 +399,10 @@ const customNotifierOptions: NotifierOptions = {
         RolePermissionService,
         AuthorizationService
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+   
+    // schemas: [ CUSTOM_ELEMENTS_SCHEMA ]schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
-export class AppModule { }
+export class AppModule { 
+
+}
