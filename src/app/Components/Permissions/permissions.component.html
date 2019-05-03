@@ -1,13 +1,13 @@
 <div class="container">
-  <div class="example-container">
+  <div class="nested-container">
     <Subzz-app-SideNav></Subzz-app-SideNav>
-    <mat-sidenav-container class="example-sidenav-container">
-      <!-- <mat-sidenav class="col-md-2" opened="{{isOpen}}" (keydown.escape)="toggle()" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+    <mat-sidenav-container class="sidenav-container">
+      <mat-sidenav class="col-md-2" opened="{{isOpen}}" (keydown.escape)="toggle()" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <mat-nav-list *ngIf='userTemplate && userTemplate.length'>
           <a mat-list-item [routerLinkActive]="['active']" routerLink="/{{userTempplateObj.stateMachine}}" *ngFor="let userTempplateObj of userTemplate">{{userTempplateObj.name}}</a>
         </mat-nav-list>
-      </mat-sidenav> -->
-      <mat-sidenav-content class="col-md-12">
+      </mat-sidenav>
+      <mat-sidenav-content class="col-md-9">
         <mat-tab-group>
           <mat-tab label="User Accounts">
             <p class="p-5">If you want to allow other users to access Plesk in order to manage websites, install applications, or use email services under your domains, then you need to create user accounts.</p>
