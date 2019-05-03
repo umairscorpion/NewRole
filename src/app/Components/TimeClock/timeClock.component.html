@@ -1,0 +1,263 @@
+<div class="example-container">
+    <Subzz-app-SideNav></Subzz-app-SideNav>
+    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav class="col-md-2" opened="{{isOpen}}" [mode]="mobileQuery.matches ? 'over' : 'side'"
+            [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+            <mat-nav-list *ngIf='sideNavMenu && sideNavMenu.length' fixedTopGap="56">
+                <div *ngIf="userRole != 4 || userRole != 3"><a mat-list-item [routerLinkActive]="['active']"
+                        routerLink="{{sideNavMenuObj.stateMachine}}"
+                        *ngFor="let sideNavMenuObj of sideNavMenu">{{sideNavMenuObj.name}}</a></div>
+                <div *ngIf="userRole == 4 || userRole == 3"><a mat-list-item style="background: rgba(209,196,233,.3);
+                        border-left: 4px solid #309e21;" [routerLinkActive]="['active']"
+                        routerLink="{{sideNavMenuObj.stateMachine}}" *ngFor="let sideNavMenuObj of sideNavMenu">Time
+                        Clock</a></div>
+            </mat-nav-list>
+        </mat-sidenav>
+        <mat-sidenav-content class="col-md-10">
+            <mat-card>
+                <mat-card-content>
+                    <h2 class="example-h2">Time Clock</h2>
+                    <!-- <subzz-time-clock></subzz-time-clock> -->
+                    <mat-tab-group class="demo-tab-group">
+                        <mat-tab label="Time Clock">
+                            <div class="row">
+                                <div class="col-md-5" style="padding: 5px;
+                                            box-shadow: 0px 0px 25px -5px grey;
+                                            margin: 30px;
+                                            color: rgba(0, 0, 0, 0.61);">
+                                    <div style="padding:10px;">
+                                        <h4>{{date}} {{time}}</h4>
+                                    </div>
+                                    <hr>
+                                    <div class="row" style="padding: 10px;
+                                                            padding-bottom: 25px;">
+                                        <div class="col-md-2">
+                                            <button mat-raised-button class="btn btn-success"
+                                                style="background: #14A1DA; color: white;" (click)="clockInClick()"
+                                                [disabled]="clockInButton">Clock
+                                                In</button>
+                                        </div>
+                                        <div class="col-md-2" style="margin-left:-24px">
+                                            <button mat-raised-button class="btn btn-success"
+                                                style="background: #1BB253; color: white; margin-left: 5px;"
+                                                (click)="breakClick()" [disabled]="clockOutButton">Take
+                                                Break</button>
+                                        </div>
+                                        <div class="col-md-2" style="margin-left:-24px" *ngIf="showReturnButton">
+                                            <button mat-raised-button class="btn btn-success"
+                                                style="background:#1BB253;; color: white; margin-left: 5px;"
+                                                (click)="returnClick()" [disabled]="ReturnButton">Return</button>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button mat-raised-button class="btn btn-success"
+                                                style="background:#C60B0E; color: white; margin-left: 5px;"
+                                                (click)="clockOutClick()" [disabled]="BreakButton">Clock
+                                                Out</button>
+                                        </div>
+                                        <!-- <button></button> -->
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-md-6" style="padding: 5px;
+                                            box-shadow: 0px 0px 25px -5px grey;
+                                            margin: 30px;
+                                            color: rgba(0, 0, 0, 0.61);">
+                                    <div>
+                                        <form>
+                                            <div class="row vertical-center" style="padding:10px;">
+                                                <div class="col-md-3">
+                                                    <h4>My Timesheets</h4>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <mat-form-field class="col-md-10 col-lg-10">
+                                                        <mat-select>
+                                                            <mat-option value="1">Last 7 days</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <mat-form-field class="col-md-10 col-lg-10">
+                                                        <mat-select>
+                                                            <mat-option value="1">All</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row col-md-12 col-lg-12">
+                                            <div class="mat-elevation-z8">
+                                              <mat-table #table [dataSource]="timeClockDetail" matSort>
+                                                <!-- Position Column -->
+                                                <ng-container matColumnDef="Date">
+                                                  <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+                                                  <mat-cell *matCellDef="let timeClock"> {{timeClock.clockInDate | date:'E, M/d/y' }} </mat-cell>
+                                                </ng-container>
+                                  
+                                                <ng-container matColumnDef="Clockin">
+                                                  <mat-header-cell *matHeaderCellDef mat-sort-header> Clock In </mat-header-cell>
+                                                  <mat-cell *matCellDef="let timeClock"> {{timeClock.clockInTime | convertFrom24HourTo12HourFormat}} </mat-cell>
+                                                </ng-container>
+                                  
+                                                <ng-container matColumnDef="Clockout">
+                                                  <mat-header-cell *matHeaderCellDef> Clock Out </mat-header-cell>
+                                                  <mat-cell *matCellDef="let timeClock"> {{timeClock.clockOutTime | convertFrom24HourTo12HourFormat}} </mat-cell>
+                                                </ng-container>
+                                  
+                                                <ng-container matColumnDef="Length">
+                                                  <mat-header-cell *matHeaderCellDef> Length </mat-header-cell>
+                                                  <mat-cell *matCellDef="let timeClock"> {{timeClock.totalMinutes + ' min'}} </mat-cell>
+                                                </ng-container>
+                                  
+                                                <ng-container matColumnDef="Break">
+                                                  <mat-header-cell *matHeaderCellDef> Break </mat-header-cell>
+                                                  <mat-cell *matCellDef="let timeClock">
+                                                    <div *ngIf = "timeClockDetail.status == 0">No Break</div>  
+                                                    <div *ngIf = "timeClockDetail.status == 1">Break</div>
+                                                    {{ timeClock.status == 0 ? 'No Break' : 'Break' }}
+                                                    </mat-cell>
+                                                </ng-container>
+                                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                              </mat-table>
+                                              <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+                                              </mat-paginator>
+                                            </div>
+                                          </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab *ngIf="userRole != 4 && userRole != 3" label="Time Tracker">
+                            <div class="col-md-12">
+                                <div style="font-size: 16px; margin-bottom: 20px;
+                                margin-top: 20px;" class="row col-md-offset-4 vertical-center">
+                                    <b> Time Tracker {{date}} - {{date}}
+                                    </b>
+                                </div>
+                                <mat-divider></mat-divider>
+                                <form>
+                                    <div style="margin-top: 35px;
+                                    margin-bottom: 20px;" class="row vertical-center">
+                                        <div class="col-md-2">
+                                            <mat-form-field>
+                                                <input matInput placeholder="Date Range" [satDatepicker]="picker2">
+                                                <sat-datepicker #picker2 [rangeMode]="true">
+                                                </sat-datepicker>
+                                                <sat-datepicker-toggle matSuffix [for]="picker2">
+                                                </sat-datepicker-toggle>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <mat-form-field>
+                                                <input matInput placeholder="Search by">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <mat-form-field>
+                                                <input matInput placeholder="Enter name here">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button mat-raised-button class="btn btn-success"
+                                                style="background: #3CCCD1; color: white;" type="submit">Search</button>
+                                        </div>
+                                        <div class="col-md-1">
+
+                                        </div>
+                                        <div class="col-md-4" style="text-align: right">
+                                            <button mat-raised-button style="background:#76C598; color: white;"
+                                                type="button">Edit</button>
+                                            <button mat-raised-button
+                                                style="background: #5E9ECC; color: white; margin-left:5px"
+                                                type="button">Save</button>
+                                            <button mat-raised-button printSectionId="htmlForPrint" ngxPrint
+                                                style="background:#F0F1F3; color:#A1A1A3; margin-left:5px"
+                                                type="button">
+                                                <i class="material-icons">
+                                                    print
+                                                </i>
+                                                Print</button>
+                                            <button mat-raised-button (click)="onExportingToCSV()"
+                                                style="background:#F0F1F3; color:#A1A1A3; margin-left:5px"
+                                                type="button">
+                                                <i class="material-icons">
+                                                    description
+                                                </i>
+                                                Export CSV</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="example-container mat-elevation-z8">
+                                        <div class="example-header">
+                                            <mat-table #table [dataSource]="timeClockDetail">
+                                                <!-- Position Column -->
+                                                <ng-container matColumnDef="Date">
+                                                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                                                    <td mat-cell *matCellDef="let TimeClock"> {{TimeClock.clockInDate}}
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="Employee">
+                                                    <mat-header-cell *matHeaderCellDef> Employee </mat-header-cell>
+                                                    <td mat-cell *matCellDef="let TimeClock"> {{TimeClock.clockInDate}}
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="Location">
+                                                    <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+                                                    <td mat-cell *matCellDef="let TimeClock"> {{TimeClock.clockInDate}}
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="Clockin">
+                                                    <mat-header-cell *matHeaderCellDef> Clock In </mat-header-cell>
+                                                    <td mat-cell *matCellDef="let TimeClock">{{TimeClock.clockInDate}}
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="Clockout">
+                                                    <mat-header-cell *matHeaderCellDef> Clock Out </mat-header-cell>
+                                                    <td mat-cell *matCellDef="let TimeClock">{{TimeClock.clockInDate}}
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="Duration">
+                                                    <mat-header-cell *matHeaderCellDef> Duration </mat-header-cell>
+                                                    <td mat-cell *matCellDef="let TimeClock">{{TimeClock.clockInDate}}
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="Break">
+                                                    <mat-header-cell *matHeaderCellDef> Break </mat-header-cell>
+                                                    <td mat-cell *matCellDef="let TimeClock">{{TimeClock.clockInDate}}
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="Action">
+                                                    <th mat-header-cell *matHeaderCellDef>
+                                                        <mat-checkbox>
+                                                        </mat-checkbox>
+                                                        Approve All
+                                                    </th>
+                                                    <td mat-cell>
+                                                        <mat-checkbox>
+                                                        </mat-checkbox>
+                                                    </td>
+                                                </ng-container>
+                                                <mat-header-row *matHeaderRowDef="displayedColumnsForTimeTracker">
+                                                </mat-header-row>
+                                            </mat-table>
+                                            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]"
+                                                [showFirstLastButtons]="true">
+                                            </mat-paginator>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card-content>
+            </mat-card>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

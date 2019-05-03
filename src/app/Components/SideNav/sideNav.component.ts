@@ -172,7 +172,9 @@ export class PopupDialogForSettings {
         this.dialog.closeAll();
         this.router.navigate(['/calendar']);
     }
-
+    openTimeClockPage() {
+        this.dialog.closeAll();
+        this.router.navigate(['/timeclock']);
     openAuditLog() {
         this.dialog.closeAll();
         this.router.navigate(['/auditLog']);
