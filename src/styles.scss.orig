@@ -1,0 +1,316 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "~font-awesome/css/font-awesome.css";
+@import "../node_modules/angular-notifier/styles.css";
+@import "../node_modules/angular-notifier/styles/core.css";
+@import "../node_modules/angular-notifier/styles/themes/theme-material.css";
+@import '~@swimlane/ngx-datatable/release/index.css';
+@import '~@swimlane/ngx-datatable/release/themes/material.css';
+@import '~@swimlane/ngx-datatable/release/assets/icons.css';
+@import "../node_modules/fullcalendar/dist/fullcalendar.min.css";
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~saturn-datepicker/bundle.css';
+
+$sides: (top, bottom, left, right);
+@for $i from 0 to 100 {
+  @each $side in $sides {
+    .m#{str-slice($side, 0, 1)}-#{$i} {
+      margin-#{$side}: #{$i}px !important;
+    }
+    .p#{str-slice($side, 0, 1)}-#{$i} {
+      padding-#{$side}: #{$i}px !important;
+    }
+    .m-#{$i} {
+      margin: #{$i}px !important;
+    }
+    .p-#{$i} {
+      padding: #{$i}px !important;
+    }
+  }
+  @each $side in $sides {
+    .m#{str-slice($side, 0, 1)}--#{$i} {
+      margin-#{$side}: -#{$i}px !important;
+    }
+    .m--#{$i} {
+      margin: -#{$i}px !important;
+    }
+  }
+  .pv-#{$i} {
+    padding-top: #{$i}px !important;
+    padding-bottom: #{$i}px !important;
+  }
+  .ph-#{$i} {
+    padding-left: #{$i}px !important;
+    padding-right: #{$i}px !important;
+  }
+  .mv-#{$i} {
+    margin-top: #{$i}px !important;
+    margin-bottom: #{$i}px !important;
+  }
+  .mh-#{$i} {
+    margin-left: #{$i}px !important;
+    margin-right: #{$i}px !important;
+  }
+  .mv--#{$i} {
+    margin-top: -#{$i}px !important;
+    margin-bottom: -#{$i}px !important;
+  }
+  .mh--#{$i} {
+    margin-left: -#{$i}px !important;
+    margin-right: -#{$i}px !important;
+  }
+  .w-#{$i} {
+    width: #{$i}% !important;
+  }
+}
+.form-error-content{
+  color: red !important;
+  font-size: 11px;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.report-details-dialog {
+  width: 38vw;
+  height: auto;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    padding: 0;
+  }
+ }
+.report-summary-bar-chart-title{
+  text-align: center;
+  font-weight: 700;
+  color: #a7a7a7;
+}
+.summary-donut-inner {
+  margin-top: -260px;
+  text-align: center;
+  h5 {
+    margin-bottom: 5px;
+    padding-top: 16px;
+    font-size: 45px;
+  }
+}
+.donut-inner {
+  margin-top: -100px;
+  margin-bottom: 45px;
+  h5 {
+    margin-bottom: 5px;
+    padding-top: 16px;
+    font-size: 45px;
+  }
+}
+.text-align-right {
+  text-align: right;
+}
+.availability-edit-dialog {
+  width: 45vw;
+  height: auto;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+}
+.availability-recurrence-dialog {
+  width: 25vw;
+  height: auto;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+}
+.availability-status-unavailable {
+  background-color: #f3b677;
+}
+
+.availability-status-vacations {
+  background-color: #76c598;
+}
+
+.availability-status-recurring {
+  background-color: #5e9eca;
+}
+
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+.allowance-popup-dialog {
+  width: 38vw;
+  height: auto;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    padding: 0;
+  }
+ }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+#Unavailable {
+  .mat-form-field {
+    width: 100% !important;
+ }
+ .dt-picker
+ {
+   background: #f0f1f4;
+   border-radius: 5px;
+   border:solid 1px #f0f1f4;
+ }
+}
+
+.vertical-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+#recurrence {
+  label {
+    font-weight: 100;
+    margin-right: 25px;
+  }
+.mat-button-toggle {
+  border: 1px solid #bbbbbb;
+  border-radius: 28px;
+  margin-left: 3px;
+  margin-right:3px;
+  width: 30px;
+  height: 30px;
+  font-family: 'Nunito Semibold', sans-serif;
+  font-size: 14px;
+  font-style: bold;
+}
+.mat-button-toggle-checked{
+  background-color: #5f9ec9;
+  color: #ffffff;
+}
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 31px !important;
+  padding: 0 7px !important;
+  border-radius: 50px !important;
+}
+.mat-button-toggle-group-appearance-standard, .mat-button-toggle-standalone.mat-button-toggle-appearance-standard {
+  border:none !important;
+}
+.mat-button-toggle-disabled{
+  border: 1px solid #c5c0c7;
+  background-color: #e1dde5;
+}
+
+div.center-text{
+ margin-left: -8px;
+ margin-top: -3px;
+}
+}
+
+//for toggle thumb and bar
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: #04c0be;
+  
+  }
+  .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: #04c0be;
+  }
+  .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #04c0be;
+  }
+  .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: #04c0be91;
+  }
+  .mat-slide-toggle-bar {
+  background-color: #828484;
+  }
+  
+  //radio button
+  .mat-radio-button.mat-primary .mat-radio-inner-circle, .mat-radio-button.mat-primary .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-primary.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-primary:active .mat-radio-persistent-ripple {
+  background-color: #3ab7a9;
+  }
+  .mat-radio-button.mat-primary.mat-radio-checked .mat-radio-outer-circle {
+  border-color:#3ab7a9;
+  }
+
+  .mat-tab-group.mat-primary .mat-ink-bar {
+    background-color: #0ea2b3;
+  }
+    .mat-tab-label:selected{
+    background-color:#f5f5f5;
+  }
+
+ 
+.swal2-cancel {
+  margin-left: 10px !important;
+}
+.fc-timeline-event
+{
+  background: transparent !important;
+  border: none !important;
+}
+
+.substitute-is-available
+{
+  background-image: url('assets/Images/tick.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 28px;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+.substitute-is-unavailable
+{
+  background-image: url('assets/Images/cross.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 28px;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+.substitute-is-vacations
+{
+  background-image: url('assets/Images/umbrella.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 28px;
+<<<<<<< Updated upstream
+}
+=======
+  margin-left: 20px;
+  margin-top: 10px;
+}
+.substitute-availability  {
+  .fc-widget-header {
+  color: #7e7e7e;
+  font-weight: normal;
+  text-align: left !important;
+  padding-left: 10px;
+  border-left-style: none !important;
+    border-right-style: none !important;
+  }
+  .fc-timeline .fc-divider {
+    width: 0px;
+    border-style: none;
+  }
+  td.fc-today {
+    background: none !important;
+  }
+  .fc-head, .fc-body {
+    border: solid 1px #dddddd !important;
+  }
+  td.fc-widget-content {
+    border-left-style: none !important;
+    border-right-style: none !important;
+  }
+}
+.substitute-availability-profile-image {
+  float: left;
+  padding: 7px;
+}
+.ng-select .ng-select-container {
+  min-height: 38.5px !important;
+}
+>>>>>>> Stashed changes
