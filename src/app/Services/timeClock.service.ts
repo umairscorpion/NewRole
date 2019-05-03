@@ -28,4 +28,8 @@ export class TimeClockService {
     return(url:string, userId:string): Observable<any> {
         return this._http.post(this.baseUrl + url, userId);
     }
+
+    TimeClockData(url:string): Observable<any> {
+        return this._http.get(this.baseUrl + url);
+    }
 }
