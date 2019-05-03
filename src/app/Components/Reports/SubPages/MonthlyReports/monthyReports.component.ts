@@ -24,6 +24,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     @ViewChild('chartNoSubReq') chartNoSubReq: ElementRef;
     context: CanvasRenderingContext2D;
 
+    currentDate: Date = new Date();
     msg: string;
     indLoading = false;
     modalTitle: string;
@@ -148,6 +149,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     reportDetails(absenceDetail: ReportDetail) {
+        
         const dialogEdit = this.dialogRef.open(
             ReportDetailsComponent,
             {

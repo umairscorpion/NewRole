@@ -92,18 +92,6 @@
             <ngx-datatable-column [width]="190" name="Event 2" [flexGrow]="2" cellClass="middle" [draggable]="false">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis">
-                        <strong>Accepted</strong>
-                        <br>
-                        <span *ngIf="row['acceptedDate'] != null">{{ row['acceptedDate'] | date:'MMM d, h:mm:ss a' }} By</span>
-                        <br>
-                        <span *ngIf="row['acceptedDate'] != null">{{ row['substituteName'] }}</span>
-                        <br>
-                    </div>
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column [width]="190" name="Event 3" [flexGrow]="2" cellClass="middle" [draggable]="false">
-                <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                    <div class="ellipsis">
                         <strong>Approved</strong>
                         <br>
                         <span *ngIf="row['approvedDate'] != null">{{ row['approvedDate'] | date:'MMM d, h:mm:ss a' }} By</span>
@@ -113,6 +101,18 @@
                     </div>
                 </ng-template>
             </ngx-datatable-column>
+            <ngx-datatable-column [width]="190" name="Event 3" [flexGrow]="2" cellClass="middle" [draggable]="false">
+                    <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis">
+                            <strong>Accepted</strong>
+                            <br>
+                            <span *ngIf="row['acceptedDate'] != null">{{ row['acceptedDate'] | date:'MMM d, h:mm:ss a' }} By</span>
+                            <br>
+                            <span *ngIf="row['acceptedDate'] != null">{{ row['substituteName'] }}</span>
+                            <br>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
             <ngx-datatable-column [width]="190" name="Event 4" [flexGrow]="2" cellClass="middle" [draggable]="false">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis">

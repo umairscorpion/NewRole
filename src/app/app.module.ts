@@ -120,6 +120,7 @@ import { SettingComponent } from './Components/Settings/settings.component';
 //TimeClock And TimeTracker Component
 import { TimeClockComponent } from './Components/TimeClock/timeClock.component';
 import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.component';
+import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 
 //Services
 import { SideNavService } from './Components/SideNav/sideNav.service';
@@ -338,7 +339,8 @@ const customNotifierOptions: NotifierOptions = {
         EditPayrollComponent,
         RolePermissionsComponent,
         DisableIfUnauthorizedDirective,
-        HideIfUnauthorizedDirective
+        HideIfUnauthorizedDirective,
+        AuditLogComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
