@@ -14,9 +14,6 @@ import { HomeComponent } from './Components/Dashboard/home.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { ChartsModule } from 'ng2-charts';
 import { BlockUIModule } from 'ng-block-ui';
-import { TagInputModule } from 'ngx-chips';
-import { NgxPrintModule } from 'ngx-print';
-
 import {
     MatAutocompleteModule,
     MatButtonModule,
@@ -120,7 +117,6 @@ import { SettingComponent } from './Components/Settings/settings.component';
 //TimeClock And TimeTracker Component
 import { TimeClockComponent } from './Components/TimeClock/timeClock.component';
 import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.component';
-import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 
 //Services
 import { SideNavService } from './Components/SideNav/sideNav.service';
@@ -158,20 +154,6 @@ import { PositionsComponent } from './Components/Manage/SubPages/Substitutes/Sub
 import { SubstituteAvailabilityComponent } from './Components/Dashboard/substitute-availability.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
-import { PositionComponent } from './Components/Manage/SubPages/Substitutes/SubPages/popups/position-detail.popup.component';
-import { PayRateComponent } from './Components/Manage/SubPages/Substitutes/SubPages/PayRate/payRate-detail.component';
-import { PayRollComponent } from './Components/Payroll/payroll.component';
-import { ExcelService } from './Services/excel.service';
-import { PopupForCancelAbsencesComponent } from './Components/Reports/popups/cancel-absence.popup.component';
-import { RunPayroll } from './Components/Payroll/SubPages/run-payroll.component';
-import { EditPayrollComponent } from './Components/Payroll/Popups/edit-payroll.popup.component';
-import { RolePermissionsComponent } from './Components/Permissions/RolePrmissions/role-permissions.component';
-import { RoleService } from './Services/role.service';
-import { UsersService } from './Services/users.service';
-import { RolePermissionService } from './Services/rolePermission.service';
-import { AuthorizationService } from './Services/authorization.service';
-import { DisableIfUnauthorizedDirective } from './Shared/directives/disable-if-unauthorized.directive';
-import { HideIfUnauthorizedDirective } from './Shared/directives/hide-if-unauthorized.directive';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -228,8 +210,6 @@ const customNotifierOptions: NotifierOptions = {
 
 @NgModule({
     imports: [
-        NgxPrintModule,
-        TagInputModule,
         NgxDatatableModule,
         ChartsModule,
         BrowserModule, ReactiveFormsModule, MatSidenavModule, CdkTableModule, HttpModule, routing, FormsModule,
@@ -327,20 +307,13 @@ const customNotifierOptions: NotifierOptions = {
         UnAvailabilityComponent,
         AllowanceComponent,
         RecurringComponent,
+<<<<<<< Updated upstream
         PositionsComponent,
+        SubstituteAvailabilityComponent
+=======
         SubstituteAvailabilityComponent,
-        AllowanceComponent,
-        PositionComponent,
-        PayRateComponent,
-        PayRateComponent,
-        PayRollComponent,
-        PopupForCancelAbsencesComponent,
-        RunPayroll,
-        EditPayrollComponent,
-        RolePermissionsComponent,
-        DisableIfUnauthorizedDirective,
-        HideIfUnauthorizedDirective,
-        AuditLogComponent
+        AllowanceComponent
+>>>>>>> Stashed changes
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -355,10 +328,7 @@ const customNotifierOptions: NotifierOptions = {
         ReportDetailsComponent,
         UnAvailabilityComponent,
         AllowanceComponent,
-        RecurringComponent,
-        PositionComponent,
-        PopupForCancelAbsencesComponent,
-        EditPayrollComponent
+        RecurringComponent
     ],
     providers: [
         UserService,
@@ -375,9 +345,6 @@ const customNotifierOptions: NotifierOptions = {
         ProfileService,
         FileService,
         AbsenceService,
-        ExcelService,
-        UsersService,
-        RoleService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
@@ -390,9 +357,7 @@ const customNotifierOptions: NotifierOptions = {
             useFactory: getAuthServiceConfigs
         },
         LookupService,
-        AvailabilityService,
-        RolePermissionService,
-        AuthorizationService
+        AvailabilityService
     ],
     bootstrap: [AppComponent]
 })

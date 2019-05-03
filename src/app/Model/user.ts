@@ -43,3 +43,13 @@ export class User extends Entity {
     userLevel: number;
     categoryId: number;
 }
+
+export class UserSummary extends Entity {
+    userId: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    email: string;
+    roleId: number;
+    roleName: string;
+}
