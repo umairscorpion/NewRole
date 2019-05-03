@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="example-container">
+    <Subzz-app-SideNav></Subzz-app-SideNav>
+    <mat-sidenav-container class="example-sidenav-container">
+      <mat-sidenav class="col-md-2" opened="{{isOpen}}" (keydown.escape)="toggle()" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+        <mat-nav-list *ngIf='userTemplate && userTemplate.length'>
+          <a mat-list-item [routerLinkActive]="['active']" routerLink="/{{userTempplateObj.stateMachine}}" *ngFor="let userTempplateObj of userTemplate">{{userTempplateObj.name}}</a>
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content class="col-md-10">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{ id > 0 ? "Edit" : "Create" }} User Role</mat-card-title>
+              <mat-card-subtitle>Define access to installed apps or Subzz services for all users with this role. If you grant a user access to an app will become to them in Customer Panel.</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-actions>
+              <button mat-button type="submit" class="btn btn-success">Save</button>&nbsp;
+              <button mat-button type="button" class="btn-default">Cancel</button>
+            </mat-card-actions>
+            <mat-card-content>
+              <section class="ml-5">
+                <mat-form-field>
+                  <input matInput formControlName="name" class="form-control">
+                  <mat-hint class="form-error-content" *ngIf="submitted && form.get('name').errors?.required">Role Title is required</mat-hint>
+                  <mat-hint class="form-error-content" *ngIf="submitted && form.get('name').errors?.pattern">Role Title is invalid</mat-hint>
+                </mat-form-field>
+              </section>
+              <mat-list *ngFor="let category of permissions">
+                <h3 mat-subheader>{{category.description}}</h3>
+                <mat-list-item *ngFor="let permission of category.permissions">
+                  <div class="col-xs-6">
+                    <h5 mat-line>{{permission.displayName}}</h5>
+                  </div>
+                  <div class="col-xs-4">
+                    <mat-radio-group>
+                      <mat-radio-button [value]="'true'" [checked]="permission.isChecked" (change)="permissionCheckedChanged(permission, $event)">Granted</mat-radio-button>&nbsp;
+                      <mat-radio-button [value]="'false'" [checked]="!permission.isChecked" (change)="permissionCheckedChanged(permission, $event)">Denied</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <mat-divider></mat-divider>
+                </mat-list-item>
+              </mat-list>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button type="submit" class="btn btn-success">Save</button>&nbsp;
+              <button mat-button type="button" class="btn-default">Cancel</button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+</div>

@@ -20,4 +20,13 @@ export class LeaveRequest extends Entity {
     deniedDate: string;
     isArchived: boolean;
     totalDays: string;
+    acceptedDate: string;
+    substituteName: string;
+    postedByName: string;
+    postedOn: string;
+    absenceId: string;
+    approvedBy: string;
+    deniedBy: string;
+    cancelledDate: string;
+    cancelledBy: string;
 }

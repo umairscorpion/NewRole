@@ -26,6 +26,7 @@ import { AddLeaveRequestComponent } from './Components/Manage/SubPages/Leaves/Le
 import { ProfileComponent } from './Components/Manage/SubPages/Profile/profile.component';
 import { OrganizationsComponent } from './Components/Manage/SubPages/Organization/organizations.component';
 import { AddOrganizationComponent } from './Components/Manage/SubPages/Organization/addOrganization.component';
+import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 
 //Reports Component
 import { ReportsComponent } from './Components/Reports/reports.component';
@@ -58,6 +59,7 @@ import { AuthGuard } from './Authentication/auth.guard';
 import { SubstituteCalendarComponent } from './Components/Dashboard/substitute-calendar.component';
 import { SubstituteAvailabilityComponent } from './Components/Dashboard/substitute-availability.component';
 import { PayRollComponent } from './Components/Payroll/payroll.component';
+import { RolePermissionsComponent } from './Components/Permissions/RolePrmissions/role-permissions.component';
 
 
 const appRoutes: Routes = [
@@ -114,10 +116,12 @@ const appRoutes: Routes = [
     { path: 'settings', component: SettingComponent, canActivate: [AuthGuard] },
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'permissions', component: PermissionsComponent, canActivate: [AuthGuard] },
+    { path: 'role/permissions/:id', component: RolePermissionsComponent, canActivate: [AuthGuard] },
     { path: 'contactUs', component: ContactUsComponent, canActivate: [AuthGuard] },
     { path: 'calendar', component: SubstituteCalendarComponent, canActivate: [AuthGuard] },
     { path: 'availability', component: SubstituteAvailabilityComponent, canActivate: [AuthGuard] },
-    { path: 'payroll', component: PayRollComponent, canActivate: [AuthGuard] }
+    { path: 'payroll', component: PayRollComponent, canActivate: [AuthGuard] },
+    { path: 'auditLog', component: AuditLogComponent, canActivate: [AuthGuard] }
 ];
 
 export const routing: ModuleWithProviders =

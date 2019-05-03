@@ -21,7 +21,7 @@ import { PopupForCancelAbsencesComponent } from '../popups/cancel-absence.popup.
 export class ReportFiltersComponent implements OnInit {
   @ViewChild('myPanel') myPanel: MatExpansionPanel;
   @ViewChild(DailyReportsComponent) dailyReport: DailyReportsComponent;
-  
+  @Input() componentName: string;
   @Output() formAction = new EventEmitter();
 
   matIcon = 'keyboard_arrow_down' || 'keyboard_arrow_up';
@@ -29,8 +29,10 @@ export class ReportFiltersComponent implements OnInit {
   reportFilterForm: FormGroup;
   Leaves: any;
   forCancelAbsence: any;
-
+  userTypes: any;
   submitted = false;
+  Organizations: any;
+
   constructor(
     private fb: FormBuilder,
     private dataContext: DataContext,
@@ -48,6 +50,8 @@ export class ReportFiltersComponent implements OnInit {
       this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
     });
     this.loadData();
+    this.GetUserTypes();
+    this.GetOrganiations();
   }
 
   initReportFilters() {
@@ -63,33 +67,57 @@ export class ReportFiltersComponent implements OnInit {
       this.districts = data;
     },
       error => <any>error);
-
-      let districtId = this._userSession.getUserDistrictId();
-      let organizationId = this._userSession.getUserOrganizationId() ? this._userSession.getUserOrganizationId() : '-1';
-      this.absenceService.getLeaveType(districtId, organizationId).subscribe((data: LeaveType[]) => {
-          this.Leaves = data;   
-      },
+    let districtId = this._userSession.getUserDistrictId();
+    let organizationId = this._userSession.getUserOrganizationId() ? this._userSession.getUserOrganizationId() : '-1';
+    this.absenceService.getLeaveType(districtId, organizationId).subscribe((data: LeaveType[]) => {
+      this.Leaves = data;
+    },
       error => <any>error);
+  }
+  GetOrganiations(): void {
+    this.dataContext.get('school/getSchools').subscribe((data: any) => {
+      this.Organizations = data;
+      if (this._userSession.getUserRoleId() == 2) {
+        this.reportFilterForm.get('locationId').setValue(this._userSession.getUserOrganizationId());
+        this.reportFilterForm.controls['locationId'].disable();
+      }
+    });
   }
 
   onReset() {
     this.reportFilterForm.controls['jobNumber'].setValue('');
-    this.reportFilterForm.controls['employeeTypeId'].setValue(0);
     this.reportFilterForm.controls['absenceTypeId'].setValue(0);
-    this.reportFilterForm.controls['locationId'].setValue(0);
     this.reportFilterForm.controls['districtId'].setValue(0);
     this.reportFilterForm.controls['reasonId'].setValue(0);
     this.reportFilterForm.controls['employeeName'].setValue('');
+    this.reportFilterForm.controls['month'].setValue(0);
+    this.reportFilterForm.controls['year'].setValue('');
+    this.reportFilterForm.controls['absencePosition'].setValue(0);
+  }
+
+  GetUserTypes(): void {
+    this.dataContext.get('user/getUserTypes').subscribe((data: any) => {
+      this.userTypes = data;
+    },
+      error => <any>error);
   }
 
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
-    if (!formGroup.invalid) {  
-      if(formGroup.value.reasonId != 0){  
-        formGroup.get('reasonId').setValue(formGroup.value.reasonId);  
-      }       
-      formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
-      formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));    
+    if (!formGroup.invalid) {
+      if (formGroup.value.reasonId != 0) {
+        formGroup.get('reasonId').setValue(formGroup.value.reasonId);
+      }
+      if(this.componentName == "daily") {
+        formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('reportTitle').setValue('D');
+      }
+      else{
+        formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('toDate').setValue(moment(formGroup.get('toDate').value).format('YYYY-MM-DD'));
+        formGroup.get('reportTitle').setValue('M');
+      }
       const action = {
         actionName: 'submit',
         formValue: formGroup.value
@@ -99,20 +127,23 @@ export class ReportFiltersComponent implements OnInit {
   }
 
   onCancel() {
-      const dialogCancel= this.dialogRef.open(PopupForCancelAbsencesComponent, {    
-        height: '380px',
-        width: '600px',   
+    const dialogCancel = this.dialogRef.open(PopupForCancelAbsencesComponent, {
+      height: '380px',
+      width: '600px',
     });
-    dialogCancel.afterClosed().subscribe(result => {  
-      if(result != null) {   
+    dialogCancel.afterClosed().subscribe(result => {
+      if (result != null) {
         this.reportFilterForm.controls['OrganizationId'].setValue(result.OrganizationId);
         this.reportFilterForm.controls['deleteAbsenceReason'].setValue(result.deleteAbsenceReason);
         this.reportFilterForm.controls['District'].setValue(result.District);
-        this.reportService.cancelAbsences(this.reportFilterForm.value).subscribe((response: any) => {  
+        this.reportService.cancelAbsences(this.reportFilterForm.value).subscribe((response: any) => {
           if (response == "success") {
-            this.onSubmit(this.reportFilterForm);      
+            this.onSubmit(this.reportFilterForm);
             this.notifier.notify('success', 'Cancel Successfully');
-          }                  
+          }
+          else{
+            this.notifier.notify('error', 'No Absence found');
+          }
         });
       }
     });
@@ -120,12 +151,12 @@ export class ReportFiltersComponent implements OnInit {
 
   onPrintReport(formGroup: FormGroup) {
     this.submitted = true;
-    if (!formGroup.invalid) {  
-      if(formGroup.value.reasonId != 0){  
-        formGroup.get('reasonId').setValue(formGroup.value.reasonId);  
-      }       
+    if (!formGroup.invalid) {
+      if (formGroup.value.reasonId != 0) {
+        formGroup.get('reasonId').setValue(formGroup.value.reasonId);
+      }
       formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
-      formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));    
+      formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
       const action = {
         actionName: 'print',
         formValue: formGroup.value

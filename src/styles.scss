@@ -364,3 +364,13 @@ div.center-text{
         .customWidthClass{
           flex: 0 0 75px;
        }
+       
+       .edit-payroll-dialog {
+        width: 70vw;
+        height: auto;
+        .mat-dialog-container {
+          overflow-x: hidden !important;
+          overflow-y: hidden !important;
+          padding: 0;
+        }
+       }

@@ -24,6 +24,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     @ViewChild('chartNoSubReq') chartNoSubReq: ElementRef;
     context: CanvasRenderingContext2D;
 
+    currentDate: Date = new Date();
     msg: string;
     indLoading = false;
     modalTitle: string;
@@ -93,7 +94,6 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
             this.bindDetails(details);
         });
         if ($event.actionName == "print") {
-            this.allAbsencesInCurrentState = this.allAbsencesInCurrentState.filter(t => t.statusId !== 4);
             this.allAbsencesInCurrentState = this.allAbsencesInCurrentState.filter(function (absence) {
                 delete absence.substituteId;
                 delete absence.absencePosition;
@@ -101,36 +101,18 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
                 delete absence.grade;
                 delete absence.subject;
                 delete absence.postedById;
-                delete absence.postedByName;
                 delete absence.statusId;
-                delete absence.substituteName;
                 delete absence.anyAttachment;
                 delete absence.fileContentType;
                 delete absence.substituteRequired;
                 delete absence.durationType;
-                delete absence.attachedFileName;
                 delete absence.statusDate;
                 delete absence.substituteProfilePicUrl;
-                delete absence.absenceId;
                 return true;
             });
             this.excelService.exportAsExcelFile(this.allAbsencesInCurrentState, 'Report');
-        }
-        if ($event.actionName == "cancel") {
-            let data = "";
-            for (var i in this.allAbsencesInCurrentState) {
-                data = data + this.allAbsencesInCurrentState[i].absenceId + ",";
-            }
-            let confirmResult = confirm('Are you sure you want to cancel these jobs?');
-            if (confirmResult) { 
-                this._dataContext.CancelAbsences('reports/deleteAbsences', data).subscribe((response: any) => {  
-                    if (response == "success") {
-                        this.loadReportSummary();
-                        this.notifier.notify('success', 'Cancel Successfully.');                           
-                    }           
-                });
-            }
-        }
+            this.loadReportSummary();
+        }      
     }
 
     bindDetails(details: ReportDetail[]) {
@@ -167,6 +149,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     reportDetails(absenceDetail: ReportDetail) {
+        
         const dialogEdit = this.dialogRef.open(
             ReportDetailsComponent,
             {

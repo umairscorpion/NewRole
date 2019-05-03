@@ -239,6 +239,48 @@
                                     </div>
                                 </div>
                             </mat-tab>
+                            <mat-tab *ngIf='!isSubstitute && UserRole != 3' label="General">
+                                <div class="row col-md-12">
+                                    School Times
+                                    <br>
+                                    <mat-form-field class="col-md-2">
+                                        <input matInput type="text" placeholder="Start Time">
+                                    </mat-form-field>
+                                    <mat-form-field class="col-md-2">
+                                        <input matInput type="text" placeholder="End Time">
+                                    </mat-form-field>
+                                    <mat-form-field class="col-md-2">
+                                        <input matInput type="text" placeholder="First Half End Time">
+                                    </mat-form-field>
+                                    <mat-form-field class="col-md-2">
+                                        <input matInput type="text" placeholder="Second Half Start Time">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="row col-md-12">
+                                    Job Release
+                                    <br> Subs can release jobs
+                                    <mat-form-field style="width:75px">
+                                        <mat-select placeholder="Time">
+                                            <mat-option value="1">12 hours</mat-option>
+                                            <mat-option value="2">6 hours</mat-option>
+                                            <mat-option value="3">2 hours</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    to accept the request before we notify the rest of your sub.
+                                </div>
+                                <div class="col-md-12">
+                                    Preferred subs will have
+                                    <mat-form-field style="width:75px">
+                                        <mat-select placeholder="Time">
+                                            <mat-option value="1">12 hours</mat-option>
+                                            <mat-option value="2">6 hours</mat-option>
+                                            <mat-option value="3">2 hours</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    to accept the request before we notify the rest of your sub.
+                                </div>
+                            </mat-tab>
                         </mat-tab-group>
                     </mat-card-content>
                 </mat-card>

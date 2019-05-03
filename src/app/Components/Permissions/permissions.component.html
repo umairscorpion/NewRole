@@ -1,18 +1,98 @@
-<div class="example-container">
+<div class="container">
+  <div class="example-container">
     <Subzz-app-SideNav></Subzz-app-SideNav>
-    <div class="row" style="text-align: center">
-        <h3> Permissions </h3>
-        <div class="col-md-10 col-md-offset-1">
-           <div class="col-md-2"> <h4> Select User Role</h4> </div>
-           <div class="col-md-4">
-            <mat-form-field>
-                <mat-select >
-                    <mat-option value="option1">Option 1</mat-option>
-                    <mat-option value="option2">Option 2</mat-option>
-                    <mat-option value="option3">Option 3</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        </div>
-    </div>
+    <mat-sidenav-container class="example-sidenav-container">
+      <mat-sidenav class="col-md-2" opened="{{isOpen}}" (keydown.escape)="toggle()" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+        <mat-nav-list *ngIf='userTemplate && userTemplate.length'>
+          <a mat-list-item [routerLinkActive]="['active']" routerLink="/{{userTempplateObj.stateMachine}}" *ngFor="let userTempplateObj of userTemplate">{{userTempplateObj.name}}</a>
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content class="col-md-10">
+        <mat-tab-group>
+          <mat-tab label="User Accounts">
+            <p class="p-5">If you want to allow other users to access Plesk in order to manage websites, install applications, or use email services under your domains, then you need to create user accounts.</p>
+            <hr>
+            <section>
+              <button class="btn btn-success" type="button">Create User Account</button>&nbsp;
+              <button class="btn btn-danger" type="button">Remove</button>
+            </section>
+            <br>
+            <section>
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="col-sm-4 no-pad-left">
+                    <div>
+                      <input type="text" class="form-control" placeholder="Search User" (keydown.enter)="$event.preventDefault()" />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <ngx-datatable class="material" [rows]="rowsUsers" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="0" [rowHeight]="50" [selectionType]="'checkbox'" [selected]="selectedUsers" (select)="onUserSelect($event)" [sorts]="[{ prop: 'userName', dir: 'asc' }]">
+                    <ngx-datatable-column [width]="30" [headerCheckboxable]="true" [checkboxable]="true" cellClass="middle">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="User name" prop="userName" [flexGrow]="2" cellClass="middle" [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">{{ value }}</div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Email address" prop="email" [flexGrow]="2" cellClass="middle" [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">{{ value }}</div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Role" prop="roleName" [flexGrow]="3" cellClass="middle ellipsis" [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">{{ value }}</div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                  </ngx-datatable>
+                </div>
+              </div>
+            </section>
+          </mat-tab>
+          <mat-tab label="User Roles">
+            <p class="p-5">Assign roles to users to give them access to apps and services hosted on your account. There are several predefined user roles. You can modify them or create your own custom roles.</p>
+            <hr>
+            <section>
+              <button class="btn btn-success" type="button">Create User Role</button>&nbsp;
+              <button class="btn btn-danger" type="button">Remove</button>
+            </section>
+            <br>
+            <section>
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="col-sm-4 no-pad-left">
+                    <div>
+                      <input type="text" class="form-control" placeholder="Search Role" (keydown.enter)="$event.preventDefault()" />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <ngx-datatable class="material" [rows]="rowsRoles" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="0" [rowHeight]="50" [selectionType]="'checkbox'" [selected]="selectedRoles" (select)="onRoleSelect($event)" [sorts]="[{ prop: 'name', dir: 'asc' }]">
+                    <ngx-datatable-column [width]="30" [headerCheckboxable]="true" [checkboxable]="true" cellClass="middle">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Role name" prop="name" [flexGrow]="2" cellClass="middle" [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">{{ value }}</div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Users" prop="usersCount" [flexGrow]="1" cellClass="middle" [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">{{ value }}</div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Actions" [flexGrow]="1" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+                      <ng-template let-rowIndex="rowIndex" let-id="value" let-row="row" ngx-datatable-cell-template>
+                        <button type="button" class="btn btn-default" [routerLink]="['/role/permissions', row['role_Id']]">Permissions</button>
+                      </ng-template>
+                    </ngx-datatable-column>
+                  </ngx-datatable>
+                </div>
+              </div>
+            </section>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
 </div>

@@ -16,19 +16,26 @@
             </div>
             <div class="col-md-2">
                 <mat-form-field>
-                    <input matInput placeholder="Search by" formControlName="searchBy">
+                    <mat-select placeholder="Search by" formControlName="searchBy">
+                        <mat-option value="1">Search by Employee</mat-option>
+                        <mat-option value="2">Search by Location</mat-option>
+                        <mat-option value="3">Search by Substitute</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field>
+                    <input matInput placeholder="Enter name here" formControlName="searchByName">
                 </mat-form-field>
             </div>
             <div class="col-md-1">
                 <button mat-raised-button class="btn btn-success" style="background: #3CCCD1; color: white;" type="submit">Search</button>
             </div>
-            <div class="col-md-1">
-
-            </div>
-            <div class="col-md-6" style="text-align: right">
-                <button mat-raised-button style="background:#76C598; color: white;" type="button">Generate Report</button>
+            <div class="col-md-5" style="text-align: right">
+                <button mat-raised-button (click)="onEditPayrollReport()" style="background: #76C598; color: white; margin-left:5px" type="button">Edit</button>
                 <button mat-raised-button style="background: #5E9ECC; color: white; margin-left:5px" type="button">Save</button>
-                <button mat-raised-button printSectionId="htmlForPrint" ngxPrint style="background:#F0F1F3; color:#A1A1A3; margin-left:5px" type="button">
+                <button mat-raised-button printSectionId="htmlForPrint" ngxPrint style="background:#F0F1F3; color:#A1A1A3; margin-left:5px"
+                    type="button">
                     <i class="material-icons">
                         print
                     </i>
@@ -41,60 +48,60 @@
             </div>
         </div>
     </form>
-    <table #htmlForPrint mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <table id="htmlForPrint" mat-table [dataSource]="runPayRollDataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="Date">
             <th mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report"> {{report.startDate | date:'mediumDate'}} </td>
         </ng-container>
 
         <ng-container matColumnDef="Employee">
             <th mat-header-cell *matHeaderCellDef> Employee </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report"> {{report.employeeName}} </td>
         </ng-container>
 
         <ng-container matColumnDef="Location">
             <th mat-header-cell *matHeaderCellDef> Location </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report"> {{ report.schoolName ? report.schoolName : report.districtName}} </td>
         </ng-container>
 
         <ng-container matColumnDef="Reason">
             <th mat-header-cell *matHeaderCellDef> Reason </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report"> {{report.reason}} </td>
         </ng-container>
 
         <ng-container matColumnDef="Time">
             <th mat-header-cell *matHeaderCellDef> Time </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report"> {{report.startTime | convertFrom24HourTo12HourFormat}}- {{report.endTime | convertFrom24HourTo12HourFormat}} </td>
         </ng-container>
 
         <ng-container matColumnDef="Hours">
             <th mat-header-cell *matHeaderCellDef> Hours </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report"> {{ report.dailyHours }}  </td>
         </ng-container>
 
         <ng-container matColumnDef="Notes">
             <th mat-header-cell *matHeaderCellDef> Notes </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report"> {{report.notes}} </td>
         </ng-container>
 
         <ng-container matColumnDef="Substitute">
             <th mat-header-cell *matHeaderCellDef> Substitute </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report"> {{report.substituteName}} </td>
         </ng-container>
 
         <ng-container matColumnDef="Rate">
             <th mat-header-cell *matHeaderCellDef> Rate </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report"> $ {{ report.payRate }}  </td>
         </ng-container>
 
         <ng-container matColumnDef="Additional">
             <th mat-header-cell *matHeaderCellDef> Additional </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report">  </td>
         </ng-container>
 
         <ng-container matColumnDef="Gross">
             <th mat-header-cell *matHeaderCellDef> Gross Pay </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <td mat-cell *matCellDef="let report"> $ {{ report.payRate * report.dailyHours }} </td>
         </ng-container>
 
         <ng-container matColumnDef="action">
