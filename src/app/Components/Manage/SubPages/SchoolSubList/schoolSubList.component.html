@@ -52,17 +52,16 @@
         <mat-tab label="Blocked List">
             <div class="col-md-12">
                 <div class="row" style="text-align:right !important; padding-top: 10px; padding-bottom: 10px">
-                    <button mat-raised-button (click)="onOpenPositionPopup()" style="background: #3CCCD1; color: white;">Add Substitutes</button>
+                    <button mat-raised-button (click)="showBlockedSubstitutes =! showBlockedSubstitutes" style="background: #3CCCD1; color: white;">Add Substitutes</button>
                 </div>
-                <mat-divider></mat-divider>
-                <div class="row">
+                <div *ngIf="showBlockedSubstitutes" class="row shaded-border" style="padding-top: 10px">
                     <div class="col-md-4" style="border-right:1px solid #ccc">
                         <mat-form-field class="col-md-12" appearance="outline">
                             <mat-label>Search Substitutes</mat-label>
-                            <input (input)="SearchSubstitute($event.target.value)" autocomplete="off" matInput placeholder="Search Substitutes">
+                            <input (input)="SearchBlockedSubstitute($event.target.value)" autocomplete="off" matInput placeholder="Search Substitutes">
                         </mat-form-field>
-                        <mat-selection-list #subzz (selectionChange)="selectionChangeSchoolSublist(subzz)">
-                            <mat-list-option checkboxPosition="before" *ngFor="let sub of schoolSubList" [value]="sub" [selected]="sub.isAdded">
+                        <mat-selection-list #blockedsubzz (selectionChange)="selectionChangeBlockedSchoolSublist(blockedsubzz)">
+                            <mat-list-option checkboxPosition="before" *ngFor="let sub of blockedSchoolSubList" [value]="sub" [selected]="sub.isAdded">
                                 {{sub.substituteName}}
                             </mat-list-option>
                         </mat-selection-list>
@@ -73,29 +72,29 @@
                                 Selected
                             </div>
                             <div class="col-md-2">
-                                {{selectedSchoolSubList.length}}
+                                {{selectedBlockedSchoolSubList.length}}
                             </div>
                         </div>
                         <hr>
-                        <div class="col-md-12" *ngIf='selectedSchoolSubList && selectedSchoolSubList.length'>
-                            <a *ngFor="let substitute of selectedSchoolSubList; let i=index">
+                        <div class="col-md-12" *ngIf='selectedBlockedSchoolSubList && selectedBlockedSchoolSubList.length'>
+                            <a *ngFor="let substitute of selectedBlockedSchoolSubList; let i=index">
                                 <div>
                                     <div class="col-md-10">
                                         {{substitute.substituteName}}
                                     </div>
                                     <div class="col-md-2">
-                                        <mat-icon style="cursor: pointer;" (click)="deleteSubstitute(i, substitute.substituteId)" #tooltip="matTooltip" matTooltip="Remove Substitute"
+                                        <mat-icon style="cursor: pointer;" (click)="deleteBlockedSubstitute(i, substitute.substituteId)" #tooltip="matTooltip" matTooltip="Remove Substitute"
                                             matTooltipPosition="left">cancel</mat-icon>
                                     </div>
                                 </div>
                             </a>
                         </div>
                     </div>
-                </div>
-                <mat-divider></mat-divider>
-                <div class="row" style="padding-top: 10px">
-                    <button mat-raised-button (click)="updateSchoolSublist()" style="background: #77C498; color: white;">Save</button>
-                    <button mat-raised-button type="button" (click)="onEditHourLimit()" style="margin-left:3px;background-color: #C3DEF1">Cancel</button>
+                    <hr class="col-md-12">
+                    <div class="col-md-10" style="padding-top: 10px">
+                        <button mat-raised-button (click)="updateBlockedSchoolSublist()" style="background: #77C498; color: white;">Save</button>
+                        <button mat-raised-button type="button" (click)="showBlockedSubstitutes =! showBlockedSubstitutes" style="margin-left:3px;background-color: #C3DEF1">Cancel</button>
+                    </div>
                 </div>
             </div>
         </mat-tab>
