@@ -32,7 +32,7 @@ h1.example-app-name {
 
 .active{
   background:  rgba(209,196,233,.3);
-  border-left: 4px solid #15192F;
+  border-left: 4px solid green;
 }
 
 .ibox {
