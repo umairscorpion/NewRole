@@ -172,5 +172,10 @@ export class PopupDialogForSettings {
         this.dialog.closeAll();
         this.router.navigate(['/calendar']);
     }
+
+    openAuditLog() {
+        this.dialog.closeAll();
+        this.router.navigate(['/auditLog']);
+    }
 }
 

@@ -37,6 +37,14 @@ export class SchoolSubListComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
+    getBlockedSustitutes(): void {
+        this.dataContext.get('user/schoolSubList').subscribe((data: any[]) => {
+            this.blockedSchoolSubList = data;
+            this.selectedBlockedSchoolSubList = data.filter(t => t.isAdded);
+        },
+            error => this.msg = <any>error);
+    }
+
     SearchSubstitute(query: string) {
         this.getSustitutes();
         this.dataContext.get('user/schoolSubList').subscribe((data: any[]) => {
@@ -69,6 +77,17 @@ export class SchoolSubListComponent implements OnInit {
             substituteId: JSON.stringify(this.selectedSchoolSubList)
         }
         this.dataContext.Patch('user/schoolSubList', model).subscribe((response: any) => {
+            this.getSustitutes();
+            this.notifier.notify('sucess', 'update Successfully');
+        },
+            error => this.msg = <any>error);
+    }
+
+    updateBlockedSchoolSublist() {
+        let model = {
+            substituteId: JSON.stringify(this.selectedBlockedSchoolSubList)
+        }
+        this.dataContext.Patch('user/blockedSchoolSubList', model).subscribe((response: any) => {
             this.getSustitutes();
             this.notifier.notify('sucess', 'update Successfully');
         },
