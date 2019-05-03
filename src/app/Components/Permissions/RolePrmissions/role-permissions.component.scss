@@ -1,4 +1,4 @@
-.nested-container {
+.example-container {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -8,10 +8,22 @@
   right: 0;
 }
 
-.sidenav-container {
+.example-is-mobile .example-toolbar {
+  position: fixed;
+  z-index: 2;
+}
+
+h1.example-app-name {
+  margin-left: 8px;
+}
+
+.example-sidenav-container {
   flex: 1;
 }
 
+.example-is-mobile .example-sidenav-container {
+  flex: 1 0 auto;
+}
 .active{
   background:  rgba(209,196,233,.3);
   border-left: 4px solid #15192F;
