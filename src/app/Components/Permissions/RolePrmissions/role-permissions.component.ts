@@ -1,12 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PermissionCategory } from 'src/app/Model/permissionCategory';
 import { RolePermissionService } from 'src/app/Services/rolePermission.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Role } from 'src/app/Model/userRoles';
+import { UserService } from '../../../Service/user.service';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
-  templateUrl: 'role-permissions.component.html'
+  templateUrl: 'role-permissions.component.html',
+  styleUrls: ['role-permissions.component.scss']
 })
 export class RolePermissionsComponent implements OnInit {
   id = 0;
@@ -14,12 +17,23 @@ export class RolePermissionsComponent implements OnInit {
   permissions: PermissionCategory[];
   submitted = false;
   form: FormGroup;
-
+  isOpen = true;
+  msg: string;
+  userTemplate: any;
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
   constructor(
     private route: ActivatedRoute,
     private rolePermissionService: RolePermissionService,
-    private _formBuilder: FormBuilder
-  ) { }
+    private userService: UserService,
+    private _formBuilder: FormBuilder,
+    media: MediaMatcher,
+    changeDetectorRef: ChangeDetectorRef
+  ) {
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+  }
 
   ngOnInit(): void {
     this.form = this._formBuilder.group(
@@ -39,6 +53,17 @@ export class RolePermissionsComponent implements OnInit {
       this.id = params.id;
       this.loadPermissions(this.id);
     });
+    this.LoadUserResources();
+  }
+
+  LoadUserResources(): void {
+    let resourceTypeId = 2;
+    let parentResourceTypeId = -1;
+    let adminPortal = 0;
+    this.userService.getUserResources(resourceTypeId, parentResourceTypeId, adminPortal).subscribe((data: any) => {
+      this.userTemplate = data;
+    },
+      error => this.msg = <any>error);
   }
 
   permissionCheckedChanged(permission, $event) {
