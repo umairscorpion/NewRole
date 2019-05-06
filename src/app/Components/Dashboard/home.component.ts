@@ -327,12 +327,13 @@ export class HomeComponent {
             error => this.msg = <any>error);
     }
 
-    onApproveClick(leaveRequestId: number) {
+    onApproveClick(leaveRequestId: number, absenceId: string) {
         let leaveStatusModel = {
             LeaveRequestId: leaveRequestId,
             IsApproved: 1,
             IsDeniend: 0,
-            isArchived: 0
+            isArchived: 0,
+            AbsenceId: absenceId
         }
         this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
             this.GetLeaveRequests();
@@ -343,12 +344,13 @@ export class HomeComponent {
             });
     }
 
-    onDenyClick(leaveRequestId: number) {
+    onDenyClick(leaveRequestId: number, absenceId: string) {
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
             isApproved: 0,
             isDeniend: 1,
-            isArchived: 0
+            isArchived: 0,
+            AbsenceId: absenceId
         }
         this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
             this.GetLeaveRequests();
