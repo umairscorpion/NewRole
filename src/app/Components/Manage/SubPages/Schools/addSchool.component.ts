@@ -40,6 +40,10 @@ export class AddSchoolComponent implements OnInit {
             EndTime: ['', Validators.required],
             TimeZone: [null, Validators.required],
             PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+            releaseJobTime: [''],
+            notifyOthersTime: [''],
+            dailyAbenceLimit: [''],
+            isAbsenceLimit: ['']
             // NoOfEmployees: ['', Validators.required],
             // EmailId: ['', [Validators.required, Validators.email]],
         });
@@ -61,7 +65,11 @@ export class AddSchoolComponent implements OnInit {
                         SecondHalfStartTime: data[0].school2ndHalfStart,
                         EndTime: data[0].schoolEndTime,
                         TimeZone: data[0].schoolTimeZone,
-                        PhoneNo: data[0].schoolPhone
+                        PhoneNo: data[0].schoolPhone,
+                        releaseJobTime: data[0].releaseJobTime,
+                        notifyOthersTime: data[0].notifyOthersTime,
+                        dailyAbenceLimit: data[0].dailyAbenceLimit,
+                        isAbsenceLimit: data[0].isAbsenceLimit
                     }
                     this.schoolForm.setValue(SchoolModel);
                     this.SchoolIdForUpdate = SchoolId;
@@ -93,7 +101,11 @@ export class AddSchoolComponent implements OnInit {
                         School2ndHalfStart: form.value.SecondHalfStartTime,
                         SchoolEndTime: form.value.EndTime,
                         SchoolTimeZone: form.value.TimeZone,
-                        SchoolPhone: form.value.PhoneNo
+                        SchoolPhone: form.value.PhoneNo,
+                        releaseJobTime: form.value.releaseJobTime,
+                        notifyOthersTime: form.value.notifyOthersTime,
+                        dailyAbenceLimit: form.value.dailyAbenceLimit,
+                        isAbsenceLimit: form.value.isAbsenceLimit
                     }
                     this._dataContext.Patch('school/updateSchool', model).subscribe((data: any) => {
                         this.notifier.notify('success', 'Updated Successfully.');

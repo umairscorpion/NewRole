@@ -93,7 +93,6 @@
                       {{ leave.startDate | date:'E, M/d/y' }}
                       <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
-
                     <div class="col-md-3">
                       <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept"
                         matTooltipPosition="below">
@@ -104,7 +103,6 @@
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
                       </button>
                     </div>
-
                     <mat-divider></mat-divider>
                   </mat-list-item>
                   <mat-divider></mat-divider>
@@ -127,10 +125,12 @@
                       <button mat-icon-button #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Reject"
+                        matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Archive"
+                        matTooltipPosition="below">
                         <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;" class="fa fa-mail-forward"></i>
                       </button>
                     </div>
@@ -153,14 +153,15 @@
                       <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept"
+                        matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
                       </button>
                       <button mat-icon-button #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below"
-                        #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Archive"
+                        matTooltipPosition="below" #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
                         <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;" class="fa fa-mail-forward"></i>
                       </button>
                     </div>
@@ -189,10 +190,12 @@
                       <br> {{leave.createdDate | date}}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept"
+                        matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Reject"
+                        matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
                       </button>
                     </div>
@@ -222,10 +225,12 @@
                       <br> {{leave.createdDate | date}}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept"
+                        matTooltipPosition="below">
                         <mat-icon style="color:#00B945;font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Reject"
+                        matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
                       </button>
                     </div>

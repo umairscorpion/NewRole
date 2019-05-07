@@ -175,6 +175,7 @@ import { RolePermissionService } from './Services/rolePermission.service';
 import { AuthorizationService } from './Services/authorization.service';
 import { DisableIfUnauthorizedDirective } from './Shared/directives/disable-if-unauthorized.directive';
 import { HideIfUnauthorizedDirective } from './Shared/directives/hide-if-unauthorized.directive';
+import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
 
 
 export function getAuthServiceConfigs() {
@@ -344,7 +345,8 @@ const customNotifierOptions: NotifierOptions = {
         RolePermissionsComponent,
         DisableIfUnauthorizedDirective,
         HideIfUnauthorizedDirective,
-        AuditLogComponent
+        AuditLogComponent,
+        MySettingComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
