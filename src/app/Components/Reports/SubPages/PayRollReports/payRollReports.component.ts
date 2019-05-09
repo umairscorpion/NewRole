@@ -5,6 +5,8 @@ import { LeaveRequest } from 'src/app/Model/leaveRequest';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReportFilter } from 'src/app/Model/Report/report.filter';
 import { ExcelService } from 'src/app/Services/excel.service';
+import { AuditFilter } from 'src/app/Model/auditLog';
+import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
 
 @Component({
     selector: 'payroll-reports',
@@ -17,10 +19,10 @@ export class PayRollReportsComponent implements OnInit, AfterViewInit {
     date: string = moment().format('dddd, MM/DD/YYYY');
     noAbsenceMessage = true;
     reportFilterForm: FormGroup;
-    submittedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
     activityReport: LeaveRequest[] = Array<LeaveRequest>();
-
+    auditLogsAbsences: any;
     constructor(
+        private auditLogService: AuditLogService,
         private reportService: ReportService,
         private fb: FormBuilder,
         private excelService: ExcelService
@@ -32,34 +34,21 @@ export class PayRollReportsComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.GetLeaveRequests();
+        this.loadAudit();
     }
 
     initReportFilters() {
         return ReportFilter.CreateFilterFormGroup(this.fb);
     }
 
-    GetLeaveRequests(): void {
-        const filters = ReportFilter.initial();
-        this.reportService.getLeaveRequests(filters).subscribe((leaveRequests: LeaveRequest[]) => {
-            this.bindData(leaveRequests);
-        },
-            error => this.msg = <any>error);
-    }
-
-    applyFilter(formGroup: FormGroup): void {
-        const filters = ReportFilter.initial();
-        filters.fromDate = moment(formGroup.value.fromDate).format('dddd, MM/DD/YYYY');
-        filters.toDate = moment(formGroup.value.toDate).format('dddd, MM/DD/YYYY');
-        filters.jobNumber = formGroup.value.jobNumber;
-        this.reportService.getLeaveRequests(filters).subscribe((leaveRequests: LeaveRequest[]) => {
-            this.bindData(leaveRequests);
-        },
-            error => this.msg = <any>error);
-    }
-
-    bindData(leaveRequests: LeaveRequest[]) {
-        this.submittedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === false);
+    loadAudit(): void {
+        const model = new AuditFilter();
+        model.startDate =  moment(this.reportFilterForm.get('fromDate').value).format('dddd, MM/DD/YYYY');
+        model.endDate = moment(this.reportFilterForm.get('toDate').value).format('dddd, MM/DD/YYYY');
+        model.entityId  = this.reportFilterForm.get('jobNumber').value;
+        this.auditLogService.getAbsencesAuditView(model).subscribe((result: any) => {
+            this.auditLogsAbsences = result;
+        });
     }
 
     onDownload(formGroup: FormGroup) {

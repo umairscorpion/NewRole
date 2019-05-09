@@ -78,6 +78,9 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
+                            <div style="margin-top: -20px; margin-left: 12px; cursor: pointer;">
+                                    <a (click)="openDailyReportPage()">Jump to reports</a>
+                                </div>
                         <div class="ibox-title">
                             Absence Summary
                         </div>
@@ -98,7 +101,7 @@
                             Pending Time Off Requests ({{submittedLeaveRequests ? submittedLeaveRequests.length : '0' }})
                         </div>
                         <div>
-                            <div *ngIf="submittedLeaveRequests.length == 0"><h5 style="text-align:center;">There is no Pending leaves.</h5></div>
+                            <div *ngIf="submittedLeaveRequests.length == 0"><h5 style="text-align:center;">No pending requests.</h5></div>
                             <mat-list>
                                 <mat-list-item style="height: 76px;" *ngFor="let leave of submittedLeaveRequests">
                                     <div class="col-md-1">

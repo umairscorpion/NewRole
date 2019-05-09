@@ -122,6 +122,8 @@ import { SettingComponent } from './Components/Settings/settings.component';
 //TimeClock And TimeTracker Component
 import { TimeClockComponent } from './Components/TimeClock/timeClock.component';
 import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.component';
+import { NewTimeClockComponent } from './components/Timeclock/timeclock/timeclock.component';
+import {EditTimeTracker} from 'src/app/Components/TimeClock/popups/edit-timetracker.popup.component'
 import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 
 //Services
@@ -175,9 +177,10 @@ import { RolePermissionService } from './Services/rolePermission.service';
 import { AuthorizationService } from './Services/authorization.service';
 import { DisableIfUnauthorizedDirective } from './Shared/directives/disable-if-unauthorized.directive';
 import { HideIfUnauthorizedDirective } from './Shared/directives/hide-if-unauthorized.directive';
+import { AuditLogService } from './Services/audit_logs/audit-log.service';
+import { ShowAttachmentPopupComponent } from './Shared/show-attachment-popup/show-attachment-popup.component';
 import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
 import { LeaveBalanceComponent } from './Components/Manage/SubPages/Leaves/LeaveBalance/leave-balance.component';
-
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -342,13 +345,15 @@ const customNotifierOptions: NotifierOptions = {
         PayRollComponent,
         PopupForCancelAbsencesComponent,
         RunPayroll,
+        EditTimeTracker,
         EditPayrollComponent,
         RolePermissionsComponent,
         DisableIfUnauthorizedDirective,
         HideIfUnauthorizedDirective,
         AuditLogComponent,
-        MySettingComponent,
-        LeaveBalanceComponent
+        LeaveBalanceComponent,
+        ShowAttachmentPopupComponent,
+        MySettingComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -366,7 +371,9 @@ const customNotifierOptions: NotifierOptions = {
         RecurringComponent,
         PositionComponent,
         PopupForCancelAbsencesComponent,
-        EditPayrollComponent
+        EditTimeTracker,
+        EditPayrollComponent,
+        ShowAttachmentPopupComponent
     ],
     providers: [
         UserService,
@@ -401,7 +408,8 @@ const customNotifierOptions: NotifierOptions = {
         LookupService,
         AvailabilityService,
         RolePermissionService,
-        AuthorizationService
+        AuthorizationService,
+        AuditLogService
     ],
     bootstrap: [AppComponent],
    
