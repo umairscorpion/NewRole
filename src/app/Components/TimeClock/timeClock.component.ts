@@ -18,10 +18,6 @@ import { DataContext } from 'src/app/Services/dataContext.service';
 import { t } from '@angular/core/src/render3';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TimeClockFilter } from 'src/app/Model/timeclock.filter';
-import { ngxCsv } from 'ngx-csv/ngx-csv';
-import { SelectionModel } from '@angular/cdk/collections';
-import {EditTimeTracker} from 'src/app/Components/TimeClock/popups/edit-timetracker.popup.component';
-import { from } from 'rxjs';
 
 @Component({
     // selector:'time-clock',
