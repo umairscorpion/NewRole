@@ -357,6 +357,10 @@ export class HomeComponent {
             });
     }
 
+    openDailyReportPage() {
+        this.router.navigate(['/reports']);
+    }
+
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this._mobileQueryListener);
     }

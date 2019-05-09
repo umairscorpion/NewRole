@@ -123,6 +123,7 @@ import { SettingComponent } from './Components/Settings/settings.component';
 import { TimeClockComponent } from './Components/TimeClock/timeClock.component';
 import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.component';
 import { NewTimeClockComponent } from './components/Timeclock/timeclock/timeclock.component';
+import {EditTimeTracker} from 'src/app/Components/TimeClock/popups/edit-timetracker.popup.component'
 
 //Services
 import { SideNavService } from './Components/SideNav/sideNav.service';
@@ -331,7 +332,8 @@ const customNotifierOptions: NotifierOptions = {
         PayRateComponent,
         PayRollComponent,
         PopupForCancelAbsencesComponent,
-        RunPayroll
+        RunPayroll,
+        EditTimeTracker
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -348,7 +350,8 @@ const customNotifierOptions: NotifierOptions = {
         AllowanceComponent,
         RecurringComponent,
         PositionComponent,
-        PopupForCancelAbsencesComponent
+        PopupForCancelAbsencesComponent,
+        EditTimeTracker
     ],
     providers: [
         UserService,

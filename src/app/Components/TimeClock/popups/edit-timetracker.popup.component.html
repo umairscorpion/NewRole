@@ -1,0 +1,53 @@
+<div>
+    <mat-dialog-actions style="margin-bottom:0px!important">
+        <div class="col-md-11 pr-0">
+            Time Tracker
+        </div>
+        <div class="col-md-1">
+            <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onCloseDialog()" mat-dialog-close>clear</mat-icon>
+        </div>
+    </mat-dialog-actions>
+    <mat-divider></mat-divider>
+    <mat-dialog-content class="mat-typography" style="padding-top: 10px; overflow-x: hidden; margin-right: 100px;">
+        <div>
+            <div class="row col-md-10 col-md-offset-1 mat-elevation-z8" style="margin-bottom: 15px;">
+                <table cellpadding="3" cellspacing="3" width="100%">
+                    <tr>
+                        <th>
+                             Date
+                        </th>
+                        <th>
+                            Clock In
+                        </th>
+                        <th>
+                            Clock Out
+                        </th>
+                    </tr>
+                    <mat-divider></mat-divider>
+                    <tr *ngFor="let absence of reportDetail">
+                        <td>
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="StartDatePicker" placeholder="Date" [(ngModel)]="absence.startDate">
+                                <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #StartDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <input matInput type="time" placeholder="Clock In Time" [(ngModel)]="absence.startTime">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <input matInput type="time" placeholder="Clock Out Time" [(ngModel)]="absence.endTime">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                                <button mat-raised-button type="button" (click)="onUpdateAbsence(absence)" style="background-color: #04C0BF; color: white; margin-right: 150px;">Save</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </mat-dialog-content>
+</div>
