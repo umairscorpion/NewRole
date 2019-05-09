@@ -51,6 +51,11 @@ export class ReportsComponent implements OnInit {
             this.router.navigateByUrl('/absence', { skipLocationChange: true }).then(() =>
                 this.router.navigate(["reports"], { queryParams: { Tab: "0" } }));
         }
+
+        if (tab.index == 2) {
+            this.router.navigateByUrl('/absence', { skipLocationChange: true }).then(() =>
+                this.router.navigate(["reports"], { queryParams: { Tab: "2" } }));
+        }
     }
 
     ngAfterViewInit(): void {
