@@ -52,26 +52,12 @@ export class PayRollReportsComponent implements OnInit, AfterViewInit {
     }
 
     onDownload(formGroup: FormGroup) {
-        const filters = ReportFilter.initial();
-        filters.fromDate = moment(formGroup.value.fromDate).format('dddd, MM/DD/YYYY');
-        filters.toDate = moment(formGroup.value.toDate).format('dddd, MM/DD/YYYY');
-        filters.jobNumber = formGroup.value.jobNumber;
-        this.reportService.getLeaveRequests(filters).subscribe((leaveRequests: LeaveRequest[]) => {
-            this.activityReport = leaveRequests;
-            this.activityReport = this.activityReport.filter(function (activityReport) {
-                delete activityReport.leaveRequestId;
-                delete activityReport.createdById;
-                delete activityReport.employeeId;
-                delete activityReport.leaveTypeId;
-                delete activityReport.isApproved;
-                delete activityReport.isDeniend;
-                delete activityReport.leaveTypeName;
-                delete activityReport.description;
-                delete activityReport.createdDate;
-                delete activityReport.isArchived;
-                delete activityReport.totalDays;
-                return true;
-            });
+        const model = new AuditFilter();
+        model.startDate =  moment(this.reportFilterForm.get('fromDate').value).format('dddd, MM/DD/YYYY');
+        model.endDate = moment(this.reportFilterForm.get('toDate').value).format('dddd, MM/DD/YYYY');
+        model.entityId  = this.reportFilterForm.get('jobNumber').value;
+        this.auditLogService.getAbsencesAuditView(model).subscribe((result: any) => {
+            this.activityReport = result;
             this.excelService.exportAsExcelFile(this.activityReport, 'ActivityReport');
         });
     }
