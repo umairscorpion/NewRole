@@ -1,18 +1,15 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { EmployeeService } from '../../../../Service/Manage/employees.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, FormControl, NgForm } from '@angular/forms';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { UserSession } from '../../../../Services/userSession.service';
-import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Lookup } from '../../../../Model/lookup';
-import { ProfileService } from '../../../../Services/profile.service';
-import { Observable } from 'rxjs';
-import { User } from '../../../../Model/user';
-import { SubstitutePreference } from '../../../../Model/substitutePreference';
-import { MatTableDataSource, MatPaginator} from '@angular/material';
+import { environment } from 'src/environments/environment';
+import { FileService } from 'src/app/Services/file.service';
+import { ShowAttachmentPopupComponent } from 'src/app/Shared/show-attachment-popup/show-attachment-popup.component';
+import { MatDialog } from '@angular/material';
 @Component({
     templateUrl: 'profile.component.html',
     styleUrls: ['profile.component.css']
@@ -32,10 +29,19 @@ export class ProfileComponent implements OnInit {
     FavoriteSubstututes: Array<any> = [];
     BlockedSubstitutes: Array<any> = [];
     UserRole: number = this._userSession.getUserRoleId();
+    AllAttachedFiles: any;
+    AttachedFileName: string;
+    AttachedFileId: string;
+    FileName: string;
+    AttachedFileType: string;
+    AttachedFileExtention: string;
+    CompletedPercentage: number;
+    SuccessMessage: boolean;
+    SubstituteFiles: any;
 
-    constructor(private router: Router, private sanitizer: DomSanitizer, private _formBuilder: FormBuilder,
-        notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession,
-        private _employeeService: EmployeeService, private profileService: ProfileService) {
+    constructor(private sanitizer: DomSanitizer, private _formBuilder: FormBuilder,
+        notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession, private _dataContext: DataContext,
+        private _employeeService: EmployeeService, private http: HttpClient, private _fileService: FileService, private dialogRef: MatDialog,) {
         this.notifier = notifier
     }
 
@@ -45,6 +51,7 @@ export class ProfileComponent implements OnInit {
             this.GetFavoritSubstitutes();
         }
         this.generateForms();
+        this.getSubstututeFiles();
     }
 
     onSubmitPersonalForm(form: any) {
@@ -201,5 +208,94 @@ export class ProfileComponent implements OnInit {
                 this.ProfilePicture = event.target.result;
             }
         }
+    }
+
+    //UPLOAD ATTACHEMNT
+    uploadClick() {
+        const fileUpload = document.getElementById('UploadButton') as HTMLInputElement;
+        fileUpload.click();
+    }
+
+    upload(files: File[]) {
+        this.uploadAndProgress(files);
+    }
+
+    removeAttachedFile() {
+        this.AllAttachedFiles = null;
+        this.FileName = null;
+    }
+
+    uploadAndProgress(files: File[]) {
+        this.AllAttachedFiles = files;
+        this.AttachedFileType = files[0].type;
+        this.FileName = this.AllAttachedFiles[0].name;
+        this.AttachedFileExtention = files[0].name.split('.')[1];
+        let formData = new FormData();
+        Array.from(files).forEach(file => formData.append('file', file))
+        this.http.post(environment.apiUrl + 'fileSystem/uploadFile', formData).subscribe(event => {
+            this.SuccessMessage = true;
+            this.AttachedFileId = event.toString();
+        });
+    }
+
+    getSubstututeFiles(): void {
+        this._fileService.getSubstituteFiles('fileSystem/getFiles').subscribe((respose: any) => {
+            this.SubstituteFiles = respose;
+        });
+    }
+
+    AddFile() {
+        let model = {
+            attachedFileName: this.FileName,
+            attachedFileId: this.AttachedFileId,
+            fileContentType: this.AttachedFileType,
+            fileExtention: this.AttachedFileExtention
+        }
+        this._fileService.addSubstituteFiles('fileSystem/addFiles', model).subscribe((respose: any) => {
+            this.SubstituteFiles = respose;
+        });
+    }
+
+    DeleteFile(file: any) {
+        let model = {
+            attachedFileId: file.attachedFileId,
+            fileContentType: file.fileContentType,
+            fileExtention: file.fileExtention
+        }
+        this._fileService.deleteSubstituteFiles('fileSystem/deleteFiles', model).subscribe((respose: any) => {
+            this.SubstituteFiles = respose;
+        });
+    }
+
+    ViewFile(fileData: any) {
+        this.dialogRef.open(
+            ShowAttachmentPopupComponent, {
+                panelClass: 'app-show-attachment-popup',
+                data: fileData
+            }
+        );
+    }
+
+    DownloadFile(file: any): void {
+        const model = { AttachedFileId: file.attachedFileId, FileContentType: file.fileContentType };
+        this._dataContext.getFile('fileSystem/getfile', model).subscribe((blob: any) => {
+            const newBlob = new Blob([blob]);
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(newBlob);
+                return;
+            }
+            // To open in browser
+            // const files = new Blob([blob], { type: file.attachedFileId });
+            // window.open(URL.createObjectURL(files));   
+            // To Download
+            let data = window.URL.createObjectURL(newBlob);
+            let link = document.createElement('a');
+            link.href = data;
+            link.download = file.attachedFileId;
+            link.click();
+            setTimeout(() => {
+                window.URL.revokeObjectURL(data);
+            }, 100);
+        });
     }
 }

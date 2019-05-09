@@ -12,6 +12,8 @@ import { environment } from 'src/environments/environment';
 import { NotifierService } from 'angular-notifier';
 import { DataContext } from 'src/app/Services/dataContext.service';
 import { ExcelService } from '../../../../Services/excel.service';
+import { AuditFilter } from 'src/app/Model/auditLog';
+import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
 
 @Component({
     selector:'monthly-reports',
@@ -49,14 +51,14 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     unFilledAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
     noSubReqAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
     allAbsencesInCurrentState: ReportDetail[] = Array<ReportDetail>();
+    insertAbsencesLogView: any;
 
     constructor(
         private reportService: ReportService,
         private dialogRef: MatDialog,
         private sanitizer: DomSanitizer,
-        private notifier: NotifierService,
-        private _dataContext: DataContext,
-        private excelService: ExcelService
+        private excelService: ExcelService,
+        private auditLogService: AuditLogService
     ) {
     }
 
@@ -116,8 +118,8 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     bindDetails(details: ReportDetail[]) {
-        this.filledAbsenceDetails = details.filter(t => t.statusId === 2 || t.statusId === 3);
-        this.unFilledAbsenceDetails = details.filter(t => t.statusId === 1 && t.substituteRequired === true);
+        this.filledAbsenceDetails = details.filter(t => (t.statusId === 2 || t.statusId === 3) && t.substituteRequired === true && t.isApproved === true);
+        this.unFilledAbsenceDetails = details.filter(t => t.statusId === 1 && t.substituteRequired === true && t.isApproved === true);
         this.noSubReqAbsenceDetails = details.filter(t => t.substituteRequired === false);
     }
 
@@ -149,6 +151,11 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     reportDetails(absenceDetail: ReportDetail) {
+        const model = new AuditFilter();
+        model.entityId = absenceDetail.absenceId;
+        this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
+            this.insertAbsencesLogView = result;
+        });
         
         const dialogEdit = this.dialogRef.open(
             ReportDetailsComponent,

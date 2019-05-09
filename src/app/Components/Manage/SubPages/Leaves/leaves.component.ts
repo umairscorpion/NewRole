@@ -87,12 +87,13 @@ export class LeavesComponent implements OnInit {
             this.dataSourceForLeaveRequests.data.forEach((row: any) => this.selection.select(row));
     }
 
-    onApproveClick(leaveRequestId: number) {
+    onApproveClick(leaveRequestId: number, absenceId: string) {
         let leaveStatusModel = {
             LeaveRequestId: leaveRequestId,
             IsApproved: 1,
             IsDeniend: 0,
-            isArchived: 0
+            isArchived: 0,
+            AbsenceId: absenceId
         }
         this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
             this.selection.clear();
@@ -112,12 +113,13 @@ export class LeavesComponent implements OnInit {
             });
     }
 
-    onDenyClick(leaveRequestId: number) {
+    onDenyClick(leaveRequestId: number, absenceId: string) {
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
             isApproved: 0,
             isDeniend: 1,
-            isArchived: 0
+            isArchived: 0,
+            AbsenceId: absenceId
         }
         this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
             this.selection.clear();
@@ -137,11 +139,12 @@ export class LeavesComponent implements OnInit {
             });
     }
 
-    onArchiveRequest(leaveRequestId: number) {
+    onArchiveRequest(leaveRequestId: number, absenceId: string) {
 
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
-            isArchived: 1
+            isArchived: 1,
+            AbsenceId: absenceId
         }
 
         this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {

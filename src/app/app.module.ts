@@ -175,7 +175,8 @@ import { RolePermissionService } from './Services/rolePermission.service';
 import { AuthorizationService } from './Services/authorization.service';
 import { DisableIfUnauthorizedDirective } from './Shared/directives/disable-if-unauthorized.directive';
 import { HideIfUnauthorizedDirective } from './Shared/directives/hide-if-unauthorized.directive';
-
+import { AuditLogService } from './Services/audit_logs/audit-log.service';
+import { ShowAttachmentPopupComponent } from './Shared/show-attachment-popup/show-attachment-popup.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -344,7 +345,8 @@ const customNotifierOptions: NotifierOptions = {
         RolePermissionsComponent,
         DisableIfUnauthorizedDirective,
         HideIfUnauthorizedDirective,
-        AuditLogComponent
+        AuditLogComponent,
+        ShowAttachmentPopupComponent,
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -362,7 +364,8 @@ const customNotifierOptions: NotifierOptions = {
         RecurringComponent,
         PositionComponent,
         PopupForCancelAbsencesComponent,
-        EditPayrollComponent
+        EditPayrollComponent,
+        ShowAttachmentPopupComponent
     ],
     providers: [
         UserService,
@@ -397,7 +400,8 @@ const customNotifierOptions: NotifierOptions = {
         LookupService,
         AvailabilityService,
         RolePermissionService,
-        AuthorizationService
+        AuthorizationService,
+        AuditLogService
     ],
     bootstrap: [AppComponent],
    
