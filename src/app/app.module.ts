@@ -122,6 +122,8 @@ import { SettingComponent } from './Components/Settings/settings.component';
 //TimeClock And TimeTracker Component
 import { TimeClockComponent } from './Components/TimeClock/timeClock.component';
 import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.component';
+import { NewTimeClockComponent } from './components/Timeclock/timeclock/timeclock.component';
+import {EditTimeTracker} from 'src/app/Components/TimeClock/popups/edit-timetracker.popup.component'
 import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 
 //Services
@@ -342,6 +344,7 @@ const customNotifierOptions: NotifierOptions = {
         PayRollComponent,
         PopupForCancelAbsencesComponent,
         RunPayroll,
+        EditTimeTracker
         EditPayrollComponent,
         RolePermissionsComponent,
         DisableIfUnauthorizedDirective,
@@ -366,6 +369,7 @@ const customNotifierOptions: NotifierOptions = {
         RecurringComponent,
         PositionComponent,
         PopupForCancelAbsencesComponent,
+        EditTimeTracker
         EditPayrollComponent,
         ShowAttachmentPopupComponent
     ],
