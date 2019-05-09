@@ -22,4 +22,17 @@ export class FileService extends RestService<FileManager> {
   getProfilePic(model: any): Observable<any> {
     return this.httpClient.post(environment.apiUrl + 'fileSystem/getProfilePic', model, { responseType: 'blob' });
   }
+
+  getSubstituteFiles(url: string): Observable<any> {
+    return this.httpClient.get(environment.apiUrl + url);
+  }
+
+  addSubstituteFiles(url: string, model: any): Observable<any> {
+    return this.httpClient.post(environment.apiUrl + url, model);
+  }
+
+  deleteSubstituteFiles(url: string, model: any): Observable<any> {
+    return this.httpClient.patch(environment.apiUrl + url, model);
+  }
+
 }

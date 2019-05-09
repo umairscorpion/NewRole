@@ -124,6 +124,7 @@ import { TimeClockComponent } from './Components/TimeClock/timeClock.component';
 import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.component';
 import { NewTimeClockComponent } from './components/Timeclock/timeclock/timeclock.component';
 import {EditTimeTracker} from 'src/app/Components/TimeClock/popups/edit-timetracker.popup.component'
+import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 
 //Services
 import { SideNavService } from './Components/SideNav/sideNav.service';
@@ -168,7 +169,17 @@ import { PayRollComponent } from './Components/Payroll/payroll.component';
 import { ExcelService } from './Services/excel.service';
 import { PopupForCancelAbsencesComponent } from './Components/Reports/popups/cancel-absence.popup.component';
 import { RunPayroll } from './Components/Payroll/SubPages/run-payroll.component';
-
+import { EditPayrollComponent } from './Components/Payroll/Popups/edit-payroll.popup.component';
+import { RolePermissionsComponent } from './Components/Permissions/RolePrmissions/role-permissions.component';
+import { RoleService } from './Services/role.service';
+import { UsersService } from './Services/users.service';
+import { RolePermissionService } from './Services/rolePermission.service';
+import { AuthorizationService } from './Services/authorization.service';
+import { DisableIfUnauthorizedDirective } from './Shared/directives/disable-if-unauthorized.directive';
+import { HideIfUnauthorizedDirective } from './Shared/directives/hide-if-unauthorized.directive';
+import { AuditLogService } from './Services/audit_logs/audit-log.service';
+import { ShowAttachmentPopupComponent } from './Shared/show-attachment-popup/show-attachment-popup.component';
+import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -334,6 +345,13 @@ const customNotifierOptions: NotifierOptions = {
         PopupForCancelAbsencesComponent,
         RunPayroll,
         EditTimeTracker
+        EditPayrollComponent,
+        RolePermissionsComponent,
+        DisableIfUnauthorizedDirective,
+        HideIfUnauthorizedDirective,
+        AuditLogComponent,
+        ShowAttachmentPopupComponent,
+        MySettingComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -352,6 +370,8 @@ const customNotifierOptions: NotifierOptions = {
         PositionComponent,
         PopupForCancelAbsencesComponent,
         EditTimeTracker
+        EditPayrollComponent,
+        ShowAttachmentPopupComponent
     ],
     providers: [
         UserService,
@@ -370,6 +390,8 @@ const customNotifierOptions: NotifierOptions = {
         AbsenceService,
         ExcelService,
         TimeClockService,
+        UsersService,
+        RoleService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
@@ -382,7 +404,10 @@ const customNotifierOptions: NotifierOptions = {
             useFactory: getAuthServiceConfigs
         },
         LookupService,
-        AvailabilityService
+        AvailabilityService,
+        RolePermissionService,
+        AuthorizationService,
+        AuditLogService
     ],
     bootstrap: [AppComponent],
    

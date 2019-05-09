@@ -15,7 +15,11 @@ import { AvailabilityService } from '../../Services/availability.service';
 import { MatDialog } from '@angular/material';
 import { UnAvailabilityComponent } from './unavailability/unavailability.component';
 import { UserAvailability } from 'src/app/Model/userAvailability';
-import { environment } from 'src/environments/environment';
+import { ReportFilter } from 'src/app/Model/Report/report.filter';
+import { ReportDetail } from 'src/app/Model/Report/report.detail';
+import { ReportService } from 'src/app/Services/report.service';
+import { UserSession } from 'src/app/Services/userSession.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-substitute-calendar',
@@ -23,18 +27,27 @@ import { environment } from 'src/environments/environment';
 })
 export class SubstituteCalendarComponent implements OnInit {
   containerEl: JQuery;
+  substituteAvailibiltySummary: any;
   doOpen = true;
+  date: string = moment().format('dddd, MM/DD/YYYY');
+  todayTotalAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
+  loginedUserRole: number = 0;
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
-    private availabilityService: AvailabilityService
+    private availabilityService: AvailabilityService,
+    private reportService: ReportService,
+    private _userSession: UserSession,
+    private router: Router,
   ) {
 
   }
 
   ngOnInit() {
+    this.loginedUserRole = this._userSession.getUserRoleId();
     this.containerEl = $('#calendar');
     this.loadUnavailability();
+    this.getSubstituteAvailibiltySummary();
   }
 
   loadUnavailability() {
@@ -44,7 +57,7 @@ export class SubstituteCalendarComponent implements OnInit {
         this.containerEl.fullCalendar({
           editable: false,
           eventDurationEditable: true,
-          aspectRatio: 1.8,
+          aspectRatio: 2,
           scrollTime: '00:00',
           selectable: true,
           slotDuration: '00:30:00',
@@ -81,6 +94,7 @@ export class SubstituteCalendarComponent implements OnInit {
                 console.log({ save: model });
                 this.availabilityService.create(model).subscribe(t => {
                   this.reloadCalendar();
+                  this.getSubstituteAvailibiltySummary();
                 });
               }
             });
@@ -109,10 +123,12 @@ export class SubstituteCalendarComponent implements OnInit {
                       if (result.action === 'Submit') {
                         this.availabilityService.put('availability/', result.id, result.availability).subscribe(t => {
                           this.reloadCalendar();
+                          this.getSubstituteAvailibiltySummary();
                         });
                       } else if (result.action === 'Delete') {
                         this.availabilityService.delete('availability/', result.id).subscribe(t => {
                           this.reloadCalendar();
+                          this.getSubstituteAvailibiltySummary();
                         });
                       }
                       this.doOpen = true;
@@ -128,10 +144,27 @@ export class SubstituteCalendarComponent implements OnInit {
     );
   }
 
+  getSubstituteAvailibiltySummary() {
+    const model = {
+      };
+    this.availabilityService.post('availability/substitutes/summary', model).subscribe((availabilities: any) => {
+      this.substituteAvailibiltySummary = availabilities;
+    });
+    const filters = ReportFilter.initial();
+    this.date = moment(filters.fromDate).format('dddd, MM/DD/YYYY');
+    this.reportService.getDetail(filters).subscribe((details: ReportDetail[]) => {
+      this.todayTotalAbsenceDetails = details;
+    });
+  }
+
   reloadCalendar() {
     this.availabilityService.getAll().subscribe((data: any) => {
       this.containerEl.fullCalendar('removeEvents');
       this.containerEl.fullCalendar('renderEvents', data, true);
     });
+  }
+
+  jumpToReport() {
+    this.router.navigate(['/reports']);
   }
 }

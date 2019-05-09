@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { ErrorHandlerService } from './error-handler/error-handler.service';
 import { ReportDetail } from '../Model/Report/report.detail';
 import { RestService } from './restService';
+import { LeaveRequest } from '../Model/leaveRequest';
 
 @Injectable()
 export class ReportService extends RestService<any> {
@@ -24,6 +25,10 @@ export class ReportService extends RestService<any> {
 
   getDetailInstance(): Entity {
     return new ReportDetail();
+  }
+
+  getLeaveRequestRecords(): Entity {
+    return new LeaveRequest();
   }
 
   getSummary(filter: ReportFilter) {
@@ -46,7 +51,27 @@ export class ReportService extends RestService<any> {
       );
   }
 
+  getPayrollDetails(filter: ReportFilter) {
+    return this.httpClient
+      .post<ReportDetail[]>(`${environment.apiUrl}/reports/payrollDetail`, filter)
+      .pipe(catchError(this.errorHandler.handleError),
+        map((response: ReportDetail[]) => {
+          return response.map(item => this.getDetailInstance().deserialize(item));
+        })
+      );
+  }
+
   cancelAbsences(filter: ReportFilter) {
     return this.httpClient.post(`${environment.apiUrl}/reports/deleteAbsences`, filter);
+  }
+
+  getLeaveRequests(filter: ReportFilter) {
+    return this.httpClient
+      .post<LeaveRequest[]>(`${environment.apiUrl}/reports/getActivityReportDetail`, filter)
+      .pipe(catchError(this.errorHandler.handleError),
+        map((response: LeaveRequest[]) => {
+          return response.map(item => this.getLeaveRequestRecords().deserialize(item));
+        })
+      );
   }
 }

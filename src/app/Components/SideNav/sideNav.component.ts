@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { SideNavService } from './sideNav.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { FileService } from '../../Services/file.service';
+import { AuditFilter } from 'src/app/Model/auditLog';
+import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
 
 @Component({
     selector: 'Subzz-app-SideNav',
@@ -28,6 +30,7 @@ export class SideNavComponent implements OnInit {
     //For Storing Current Screen Size
     screenHeight: any;
     screenWidth: any;
+    
     @HostListener('window:resize', ['$event'])
     getScreenSize(event?) {
         //   this.screenHeight = window.innerHeight;
@@ -86,7 +89,7 @@ export class SideNavComponent implements OnInit {
     Logout() {
         this._userService.logout();
         localStorage.removeItem('userToken');
-        localStorage.removeItem('userClaims');
+        localStorage.removeItem('userClaims');      
         this.router.navigate(['/']);
     }
 
@@ -122,8 +125,9 @@ export class PopupDialogForSettings {
     UserName: string;
     ProfilePicture: any;
     userRole: number = this._userSession.getUserRoleId();
+    insertAuditLogout: any;
     constructor(@Inject(MAT_DIALOG_DATA) public data: any, private fileService: FileService,
-        public dialog: MatDialog, private sanitizer: DomSanitizer, private router: Router, private _userSession: UserSession) {
+        public dialog: MatDialog, private sanitizer: DomSanitizer, private router: Router, private _userSession: UserSession, private auditLogService: AuditLogService) {
         this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
         this.UserName = this.UserClaim.firstName;
         let profilePicName: string = this.UserClaim.profilePicture;
@@ -147,6 +151,10 @@ export class PopupDialogForSettings {
 
     }
     Logout() {
+        const model = new AuditFilter();
+        this.auditLogService.insertAuditLogout(model).subscribe((result: any) => {
+            this.insertAuditLogout = result;
+        });
         localStorage.removeItem('userToken');
         localStorage.removeItem('userClaims');
         this.router.navigate(['/']);
@@ -172,10 +180,18 @@ export class PopupDialogForSettings {
         this.dialog.closeAll();
         this.router.navigate(['/calendar']);
     }
-
     openTimeClockPage() {
         this.dialog.closeAll();
         this.router.navigate(['/timeclock']);
+    }
+
+    openMySettings() {
+        this.dialog.closeAll();
+        this.router.navigate(['/mysettings']);
+    }
+    openAuditLog() {
+        this.dialog.closeAll();
+        this.router.navigate(['/auditLog']);
     }
 }
 

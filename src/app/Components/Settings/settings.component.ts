@@ -8,6 +8,8 @@ import { User } from '../../Model/user';
 import { SocialUser } from 'angular-6-social-login';
 import { FormBuilder, FormGroup, Validators, FormControl, NgForm } from '@angular/forms';
 import { EmployeeService } from '../../Service/Manage/employees.service';
+import { TimeClock } from '../../Model/timeclock';
+import { Organization } from '../../Model/organization';
 @Component({
     templateUrl: 'settings.component.html',
     styleUrls: ['settings.component.css']
@@ -15,6 +17,8 @@ import { EmployeeService } from '../../Service/Manage/employees.service';
 export class SettingComponent implements OnInit {
     displayedColumns: string[] = ['event', 'email', 'text', 'voice'];
     substituteList: User[] = Array<User>();
+    OrganizationId: any;
+    organizations: Organization[] = Array<Organization>();
     UserClaim: any = JSON.parse(localStorage.getItem('userClaims'));
     TimeCustomDelay: string;
     isSubstitute: boolean = false;
@@ -26,7 +30,7 @@ export class SettingComponent implements OnInit {
     PreferredSchools: any;
     ChangedPreferences: any[] = [];
     private notifier: NotifierService;
-    PreferencesFormGroup: FormGroup;
+    schoolSettings: FormGroup;
     FavoriteSubstututes: Array<any> = [];
     BlockedSubstitutes: Array<any> = [];
     UserRole: number = this._userSession.getUserRoleId();
@@ -43,11 +47,31 @@ export class SettingComponent implements OnInit {
         }
         this.GetSubstituteCategories();
         this.ManageDefultValuesAgainstDifferentUserRoles();
-        if (this._userSession.getUserRoleId() != 4) {
-            this.GetBlockedSubstitutes();
-            this.GetFavoritSubstitutes();
-        }
         this.generateForms();
+        this.GetOrganizations(this._userSession.getUserDistrictId());
+    }
+
+    generateForms(): void {
+        this.schoolSettings = this._formBuilder.group({
+            schoolName: [''],
+            schoolId: [''],
+            schoolDistrictId: [''],
+            districtName: [''],
+            schoolCity: [''],
+            schoolAddress: [''],
+            schoolEmail: [''],
+            schoolPhone: [''],
+            schoolTimeZone: [''],
+            schoolZipCode: [''],
+            schoolStartTime: [''],
+            school1stHalfEnd: [''],
+            school2ndHalfStart: [''],
+            schoolEndTime: [''],
+            releaseJobTime: [''],
+            notifyOthersTime: [''],
+            dailyAbenceLimit: [''],
+            isAbsenceLimit: ['']
+        });
     }
 
     ManageDefultValuesAgainstDifferentUserRoles() {
@@ -132,80 +156,41 @@ export class SettingComponent implements OnInit {
     saveSubstituteList(substituteList: any): void {
         console.log(this.substituteList);
     }
-    SaveSubstitutePreference(): void {
-        let model = {
-            UserId: this._userSession.getUserId(),
-            BlockedSubstituteList: JSON.stringify(this.BlockedSubstitutes),
-            FavoriteSubstituteList: JSON.stringify(this.FavoriteSubstututes)
-        }
-        this._dataContext.post('user/updateSubstitutePreferrence', model).subscribe((data: any) => {
+
+    getSchoolSettings() {
+        this._dataContext.getById('School/getSchoolById', this.OrganizationId).subscribe((org: Organization) => {
+            this.schoolSettings.patchValue({...org[0]});
+        },
+            error => <any>error);
+    }
+
+    GetOrganizations(DistrictId: number): void {
+        this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
+            this.organizations = data;
+            // if (typeof this._userSession.getUserOrganizationId() != "undefined" && this._userSession.getUserOrganizationId() != "-1" && this._userSession.getUserOrganizationId())
+            //     this.schoolSettings.get('OrganizationId').setValue(this._userSession.getUserOrganizationId());
+            // this.schoolSettings.controls['OrganizationId'].enable();
+            // if (this._userSession.getUserRoleId() == 5) {
+            //     this.schoolSettings.get['OrganizationId'].setValue(data[0].schoolId);
+            // }
+            // else {
+            //     this.schoolSettings.controls['OrganizationId'].disable();
+            // }
+        },
+            error => <any>error);
+    }
+
+    submitGeneralSettings(org: FormGroup) {
+        this._dataContext.Patch('school/updateSchool', org.value).subscribe((data: any) => {
             this.notifier.notify('success', 'Updated Successfully.');
         },
             (err: HttpErrorResponse) => {
-                this.notifier.notify('error', err.error.error_description);
+                this.notifier.notify('error', err.message);
             });
     }
 
-    SearchSubstitutes(SearchText: string) {
-        let IsSearchSubstitute = 1;
-        let OrgId = this._userSession.getUserOrganizationId();
-        let DistrictId = this._userSession.getUserDistrictId();
-        this.SubstituteList = this._employeeService.searchUser('user/getEmployeeSuggestions', SearchText, IsSearchSubstitute, OrgId, DistrictId);
+    onchangeOrganization() {
+        this.getSchoolSettings();
     }
 
-    SelectToAddInPreferredSubstitute(Substitute: any) {
-        this.SubstituteList = null;
-        if (this.FavoriteSubstututes.find((obj: any) => obj.userId == Substitute.userId)) {
-            this.notifier.notify('error', 'Already added in this category.');
-            return;
-        }
-        if (this.BlockedSubstitutes.find((obj: any) => obj.userId == Substitute.userId)) {
-            this.notifier.notify('error', 'Already added in blocled list.');
-            return;
-        }
-        if (this.FavoriteSubstututes.length < 5) {
-            this.FavoriteSubstututes.push(Substitute);
-        }
-        else
-            this.notifier.notify('error', 'Already added five substitutes.');
-    }
-    GetFavoritSubstitutes() {
-        let UserId = this._userSession.getUserId();
-        this._dataContext.get('user/getFavoriteSubstitutes' + '/' + UserId).subscribe((data: any) => {
-            this.FavoriteSubstututes = data;
-        },
-            error => this.msg = <any>error);
-    }
-
-    GetBlockedSubstitutes() {
-        let UserId = this._userSession.getUserId();
-        this._dataContext.get('user/getBlockedSubstitutes' + '/' + UserId).subscribe((data: any) => {
-            this.BlockedSubstitutes = data;
-        },
-            error => this.msg = <any>error);
-    }
-    generateForms(): void {
-        this.PreferencesFormGroup = this._formBuilder.group({
-            BlockedSubstitutes: [''],
-            PreferredSubstitites: ['']
-        });
-    }
-    SelectToBlockSubstitite(Substitute: any) {
-        this.SubstituteList = null;
-        if (this.BlockedSubstitutes.find((obj: any) => obj.userId == Substitute.userId)) {
-            this.notifier.notify('error', 'Already added in list.');
-            return;
-        }
-        if (this.FavoriteSubstututes.find((obj: any) => obj.userId == Substitute.userId)) {
-            this.notifier.notify('error', 'Already added in favorite list.');
-            return;
-        }
-        if (this.BlockedSubstitutes.length < 5)
-            this.BlockedSubstitutes.push(Substitute);
-        else
-            this.notifier.notify('error', 'Already added five substitutes.');
-    }
-    removePreferredSub(index: number) {
-        this.FavoriteSubstututes.splice(index, 1);
-    }
 }

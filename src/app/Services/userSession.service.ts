@@ -8,42 +8,42 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class UserSession {
-    UserClaim : any ;
+    UserClaim: any;
     constructor() { this.UserClaim = JSON.parse(localStorage.getItem('userClaims')); }
 
-    SetUserSession() : void {
+    SetUserSession(): void {
         this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
     }
 
-    nullUserSession() : void {
+    nullUserSession(): void {
         this.UserClaim = null;
     }
 
-    getUserName() : string {
+    getUserName(): string {
         return this.UserClaim.userName as string;
     }
 
-    getUserId() : string {
+    getUserId(): string {
         return this.UserClaim.userId as string;
     }
 
-    getUserTypeId() : number {
+    getUserTypeId(): number {
         return this.UserClaim.userTypeId as number;
     }
 
-    getUserRoleId() : number {
+    getUserRoleId(): number {
         return this.UserClaim.roleId as number;
     }
 
-    getUserDistrictId() : number {
+    getUserDistrictId(): number {
         return this.UserClaim.districtId as number;
     }
 
-    getUserOrganizationId() : string {
+    getUserOrganizationId(): string {
         return this.UserClaim.organizationId as string;
     }
 
-    getUserLevelId() : number {
+    getUserLevelId(): number {
         return this.UserClaim.userLevel as number;
     }
 

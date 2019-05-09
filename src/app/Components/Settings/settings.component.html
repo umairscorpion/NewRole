@@ -9,77 +9,6 @@
                     </mat-card-title>
                     <mat-card-content>
                         <mat-tab-group class="demo-tab-group" (selectedTabChange)="onChangeTab($event)">
-                            <mat-tab *ngIf='UserRole != 4' label="Substitute Preferences">
-                                <form (ngSubmit)="SaveSubstitutePreference()" [formGroup]="PreferencesFormGroup">
-                                    <div style="padding-top: 10px; min-height:500px" class=" col-md-10 col-md-offset-1 shadow">
-                                        <div style="font-size: 15px" class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-5">
-                                                    <b> Favorite Substitutes </b>
-                                                    <br> Remaining choices: {{5 - FavoriteSubstututes.length}}
-                                                </div>
-                                                <div class="col-md-7">
-                                                    <mat-form-field class="col-md-5 col-lg-5">
-                                                        <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
-                                                            matInput [matAutocomplete]="autoCom">
-                                                        <mat-autocomplete #autoCom="matAutocomplete">
-                                                            <mat-option (onSelectionChange)="SelectToAddInPreferredSubstitute(user)" *ngFor="let user of SubstituteList | async" [value]="">
-                                                                {{user.firstName}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div style="height:175px" class="col-md-12">
-                                            <div *ngIf='FavoriteSubstututes && FavoriteSubstututes.length'>
-                                                <a *ngFor="let Substitute of FavoriteSubstututes">
-                                                    <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="FavoriteSubstututes.splice($index,1)" matTooltip="Remove Substitute"
-                                                        matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
-                                                    <br>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div style="font-size: 15px" class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-5">
-                                                    <b> Blocked Substitutes </b>
-                                                    <br> Remaining choices: {{5 - BlockedSubstitutes.length}}
-                                                </div>
-                                                <div class="col-md-7">
-                                                    <mat-form-field class="col-md-10 col-lg-10">
-                                                        <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
-                                                            matInput [matAutocomplete]="auto">
-                                                        <mat-autocomplete #auto="matAutocomplete">
-                                                            <mat-option (onSelectionChange)="SelectToBlockSubstitite(user)" *ngFor="let user of SubstituteList | async" [value]="">
-                                                                {{user.firstName}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div style="height:175px;" class="col-md-12">
-                                            <div *ngIf='BlockedSubstitutes && BlockedSubstitutes.length'>
-                                                <a *ngFor="let Substitute of BlockedSubstitutes">
-                                                    <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="BlockedSubstitutes.splice($index,1)" matTooltip="Remove Substitute"
-                                                        matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
-                                                    <br>
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                        <div style="text-align: center" class="col-md-12">
-                                            <button mat-raised-button style="color:white; background-color: #04c0be;" type="submit">Save</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </mat-tab>
-                            <!-- <mat-tab *ngIf='!isSubstitute' label="Organization Settings">
-        
-        </mat-tab> -->
                             <mat-tab *ngIf='!isSubstitute && UserRole != 3' label="Lists">
                                 <div style="padding-top:10px ">
                                     <div class="row col-md-12">
@@ -238,6 +167,92 @@
                                         <button color="primary" mat-raised-button (click)="SavePreferredSchoolSettings(EnabledSchools)">Save</button>
                                     </div>
                                 </div>
+                            </mat-tab>
+                            <mat-tab *ngIf='!isSubstitute && UserRole != 3' label="General">
+                                <div class="row col-md-12" style="text-align: center">
+                                    <mat-form-field class="col-md-3 col-lg-3">
+                                        <mat-select placeholder="School" (selectionChange)="onchangeOrganization()" [(ngModel)]="OrganizationId">
+                                            <mat-option>--</mat-option>
+                                            <mat-option *ngFor="let organization of organizations" [value]="organization.schoolId">
+                                                {{organization.schoolName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <form [formGroup]="schoolSettings" (ngSubmit)="submitGeneralSettings(schoolSettings)">
+                                    <div class="row col-md-12">
+                                        <b>School Times</b>
+                                        <br>
+                                        <mat-form-field class="col-md-2" form>
+                                            <input matInput type="time" formControlName="schoolStartTime" placeholder="Start Time">
+                                        </mat-form-field>
+                                        <mat-form-field class="col-md-2">
+                                            <input matInput type="time" formControlName="schoolEndTime" placeholder="End Time">
+                                        </mat-form-field>
+                                        <mat-form-field class="col-md-2">
+                                            <input matInput type="time" formControlName="school1stHalfEnd" placeholder="First Half End Time">
+                                        </mat-form-field>
+                                        <mat-form-field class="col-md-2">
+                                            <input matInput type="time" formControlName="school2ndHalfStart" placeholder="Second Half Start Time">
+                                        </mat-form-field>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="row col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <b> Daily Absence Limits </b>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <b>Maximum Daily Absences</b>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4" style="padding-top: 20px">
+                                                Current Daily Limit: {{schoolSettings.value.isAbsenceLimit ? 'There is no Limit': schoolSettings.value.dailyAbenceLimit +
+                                                ' Absences'}}
+                                            </div>
+                                            <div class="col-md-4">
+                                                <mat-form-field>
+                                                    <input matInput formControlName="dailyAbenceLimit" type="number" placeholder="time">
+                                                </mat-form-field>
+                                                <br>
+                                                <mat-checkbox class="col-md-12" formControlName="isAbsenceLimit" style="padding: 0px !important" color="primary">
+                                                    No Daily Limit
+                                                </mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="row col-md-12">
+                                        <b>Job Release</b>
+                                        <br> Subs can release jobs
+                                        <mat-form-field style="width:75px">
+                                            <mat-select placeholder="Time" formControlName="releaseJobTime">
+                                                <mat-option value="12">12 hours</mat-option>
+                                                <mat-option value="6">6 hours</mat-option>
+                                                <mat-option value="2">2 hours</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        to accept the request before we notify the rest of your sub.
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="row col-md-12">
+                                        <b>Notification Settings</b>
+                                        <br> Preferred subs will have
+                                        <mat-form-field style="width:75px">
+                                            <mat-select placeholder="Time" formControlName="notifyOthersTime">
+                                                <mat-option value="12">12 hours</mat-option>
+                                                <mat-option value="6">6 hours</mat-option>
+                                                <mat-option value="2">2 hours</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        to accept the request before we notify the rest of your sub.
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="row col-md-12">
+                                        <button mat-raised-button type="submit" style="background-color: #74a4a7; color: white;">Save</button>
+                                    </div>
+                                </form>
                             </mat-tab>
                         </mat-tab-group>
                     </mat-card-content>

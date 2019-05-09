@@ -115,6 +115,8 @@ export class PayRateComponent implements OnInit {
     }
 
     onDeletePayRate(id: number) {
+        if (!id || id === 0)
+        return;
         this.districtService.delete('user/deletePayRate/', id).subscribe((data: any) => {
             this.getPayRates();
             this.notifier.notify('success', 'Deleted Successfully!');
@@ -123,6 +125,8 @@ export class PayRateComponent implements OnInit {
     }
 
     onDeletePayRateRule(id: number) {
+        if (!id || id === 0)
+        return;
         this.districtService.delete('user/deletePayRateRule/', id).subscribe((data: any) => {
             this.getPayRatesRule();
             this.notifier.notify('success', 'Deleted Successfully!');

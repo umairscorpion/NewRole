@@ -47,7 +47,8 @@ export class AddEmployeesComponent implements OnInit {
             District: ['', Validators.required],
             OrganizationId: [''],
             EmailId: ['', [Validators.required, Validators.email]],
-            PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]]
+            PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+            IsActive: [1]
         });
         if (this._userSession.getUserRoleId() == 2) {
             this.employeeForm.get('WorkLocaion').setValue('2');
@@ -82,7 +83,8 @@ export class AddEmployeesComponent implements OnInit {
                         Gender: String(data[0].gender),
                         District: data[0].districtId,
                         OrganizationId: data[0].organizationId ? data[0].organizationId : '',
-                        PhoneNumber: data[0].phoneNumber
+                        PhoneNumber: data[0].phoneNumber,
+                        IsActive:data[0].isActive
                     }
                     this.getProfileImage(data[0].profilePicture);
                     this.employeeForm.setValue(EmployeeModel);
@@ -228,7 +230,8 @@ export class AddEmployeesComponent implements OnInit {
                     OrganizationId: this.showOrganization == true ? form.getRawValue().OrganizationId : '',
                     Email: form.value.EmailId,
                     PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png'
+                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
+                    IsActive: form.value.IsActive
                 }
                 this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
                     // this.router.navigate(['/manage/substitutes']);
@@ -259,7 +262,8 @@ export class AddEmployeesComponent implements OnInit {
                     OrganizationId: form.getRawValue().OrganizationId,
                     Email: form.value.EmailId,
                     PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png'
+                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
+                    IsActive: form.value.IsActive
                 }
 
                 this._dataContext.post('user/insertUser', model).subscribe((data: any) => {

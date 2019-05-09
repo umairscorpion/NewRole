@@ -30,25 +30,19 @@
                                                             padding-bottom: 25px;">
                                         <div class="col-md-2">
                                             <button mat-raised-button class="btn btn-success"
-                                                style="background: #14A1DA; color: white;" (click)="clockInClick()"
-                                                [disabled]="clockInButton">Clock
-                                                In</button>
+                                                style="background: #14A1DA; color: white;" (click)="clockInClick()">Clock In</button>
                                         </div>
                                         <div class="col-md-2" style="margin-left:-24px">
                                             <button mat-raised-button class="btn btn-success"
                                                 style="background: #1BB253; color: white; margin-left: 5px;"
-                                                (click)="breakClick()" [disabled]="clockOutButton">Take
+                                                (click)="breakClick()">Take
                                                 Break</button>
                                         </div>
-                                        <div class="col-md-2" style="margin-left:-24px" *ngIf="showReturnButton">
-                                            <button mat-raised-button class="btn btn-success"
-                                                style="background:#1BB253;; color: white; margin-left: 5px;"
-                                                (click)="returnClick()" [disabled]="ReturnButton">Return</button>
-                                        </div>
+                                        
                                         <div class="col-md-2">
                                             <button mat-raised-button class="btn btn-success"
                                                 style="background:#C60B0E; color: white; margin-left: 5px;"
-                                                (click)="clockOutClick()" [disabled]="BreakButton">Clock
+                                                (click)="clockOutClick()">Clock
                                                 Out</button>
                                         </div>
                                     </div>

@@ -98,7 +98,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="ibox-title">
-                            Pending Time Off Requests ({{submittedLeaveRequests.length}})
+                            Pending Time Off Requests ({{submittedLeaveRequests ? submittedLeaveRequests.length : '0' }})
                         </div>
                         <div>
                             <div *ngIf="submittedLeaveRequests.length == 0"><h5 style="text-align:center;">No pending requests.</h5></div>
@@ -119,9 +119,9 @@
                                     </div>
                                     <div class="col-md-3">
                                         <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="Approve"
-                                            matTooltipPosition="above" (click)="onApproveClick(leave.leaveRequestId)">check</i>
+                                            matTooltipPosition="above" (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)">check</i>
                                         <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;" #tooltip="matTooltip" matTooltip="Deny"
-                                            matTooltipPosition="above" (click)="onDenyClick(leave.leaveRequestId)">close</i>
+                                            matTooltipPosition="above" (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)">close</i>
                                     </div>
                                     <mat-divider></mat-divider>
                                 </mat-list-item>

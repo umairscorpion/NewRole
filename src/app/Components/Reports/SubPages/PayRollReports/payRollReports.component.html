@@ -1,43 +1,114 @@
 <style>
-        /* Structure */
-    
-        .example-container {
-            display: flex;
-            flex-direction: column;
-            min-width: 300px;
-        }
-    
-        .example-header {
-            min-height: 64px;
-            padding: 8px 24px 0;
-        }
-    
-        .mat-form-field {
-            font-size: 14px;
-            width: 100%;
-        }
-    
-        .mat-table {
-            overflow: auto;
-            max-height: 500px;
-        }
-    </style>
-    <h3>Activity Reports</h3>
+    /* Structure */
+
+    .example-container {
+        display: flex;
+        flex-direction: column;
+        min-width: 300px;
+    }
+
+    .example-header {
+        min-height: 64px;
+        padding: 8px 24px 0;
+    }
+
+    .mat-form-field {
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .mat-table {
+        overflow: auto;
+        max-height: 500px;
+    }
+</style>
+<h3>Activity Report</h3>
+<form [formGroup]="reportFilterForm">
     <div class="row example-header">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <mat-form-field>
-                <input matInput #inputName placeholder="Search Job #">
+                <input matInput formControlName="jobNumber" placeholder="Search Job #">
             </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <mat-form-field>
-                <input matInput [matDatepicker]="datePickerFrom" placeholder="Choose a date">
-                <mat-datepicker-toggle matSuffix [for]="datePickerFrom"></mat-datepicker-toggle>
-                <mat-datepicker #datePickerFrom></mat-datepicker>
+                <input matInput [matDatepicker]="StartDatePicker" placeholder="Choose Start Date"
+                    formControlName="fromDate">
+                <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #StartDatePicker></mat-datepicker>
             </mat-form-field>
         </div>
-        <div>
-            <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit">Search</button>
+        <div class="col-md-2">
+            <mat-form-field>
+                <input matInput [matDatepicker]="EndDatePicker" placeholder="Choose End Date" formControlName="toDate">
+                <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #EndDatePicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col-md-2">
+            <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit"
+                (click)="loadAudit(reportFilterForm)">Search</button>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <button mat-raised-button class="btn btn-success" type="submit" (click)="onDownload(reportFilterForm)">
+                <i class="material-icons">
+                    description
+                </i>
+                EXPORT CSV
+            </button>
         </div>
     </div>
-    
+</form>
+<div class="row">
+    <div class="m-30">
+        <ngx-datatable class="material" [rows]="auditLogsAbsences" [columnMode]="'standard'" [headerHeight]="50"
+            [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
+            <ngx-datatable-column [width]="100" name="Job #" prop="entityId" [flexGrow]="2" cellClass="middle"
+                [draggable]="false">
+                <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                    <div class="ellipsis" [title]="value">
+                        <strong>{{value}}</strong>
+                    </div>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [width]="100" name="Notified" [flexGrow]="2" cellClass="middle" [draggable]="false">
+                <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                    <div class="ellipsis">11</div>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [width]="1000" name="Events" [flexGrow]="2" cellClass="middle" [draggable]="false">
+                <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                    <div class="ellipsis">
+                        <div class="col-md-3">
+                            <strong>Posted</strong>
+                            <br>
+                            <span>{{ row['created']}}</span>
+                        </div>
+                        <div  class="col-md-3" *ngIf="row['approved'] != null">
+                            <strong>Approved</strong>
+                            <br>
+                            <span *ngIf="row['approved'] != null">{{ row['approved']}}</span>
+                        </div>
+                        <div class="col-md-3" *ngIf="row['accepted'] != null">
+                            <strong>Accepted</strong>
+                            <br>
+                            <span>{{ row['accepted']}}</span>
+                        </div>
+                        <div class="col-md-3" *ngIf="row['declined'] != null">
+                            <strong>Declined</strong>
+                            <br>
+                            <span>{{ row['declined']}}</span>
+                        </div>
+                        <div class="col-md-3" *ngIf="row['cancelled'] != null">
+                            <strong>Cancelled</strong>
+                            <br>
+                            <span>{{ row['cancelled']}}</span>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+</div>

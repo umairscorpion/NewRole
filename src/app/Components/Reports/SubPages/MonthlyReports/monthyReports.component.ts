@@ -12,6 +12,8 @@ import { environment } from 'src/environments/environment';
 import { NotifierService } from 'angular-notifier';
 import { DataContext } from 'src/app/Services/dataContext.service';
 import { ExcelService } from '../../../../Services/excel.service';
+import { AuditFilter } from 'src/app/Model/auditLog';
+import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
 
 @Component({
     selector:'monthly-reports',
@@ -24,6 +26,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     @ViewChild('chartNoSubReq') chartNoSubReq: ElementRef;
     context: CanvasRenderingContext2D;
 
+    currentDate: Date = new Date();
     msg: string;
     indLoading = false;
     modalTitle: string;
@@ -48,14 +51,14 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     unFilledAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
     noSubReqAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
     allAbsencesInCurrentState: ReportDetail[] = Array<ReportDetail>();
+    insertAbsencesLogView: any;
 
     constructor(
         private reportService: ReportService,
         private dialogRef: MatDialog,
         private sanitizer: DomSanitizer,
-        private notifier: NotifierService,
-        private _dataContext: DataContext,
-        private excelService: ExcelService
+        private excelService: ExcelService,
+        private auditLogService: AuditLogService
     ) {
     }
 
@@ -93,7 +96,6 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
             this.bindDetails(details);
         });
         if ($event.actionName == "print") {
-            this.allAbsencesInCurrentState = this.allAbsencesInCurrentState.filter(t => t.statusId !== 4);
             this.allAbsencesInCurrentState = this.allAbsencesInCurrentState.filter(function (absence) {
                 delete absence.substituteId;
                 delete absence.absencePosition;
@@ -101,41 +103,23 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
                 delete absence.grade;
                 delete absence.subject;
                 delete absence.postedById;
-                delete absence.postedByName;
                 delete absence.statusId;
-                delete absence.substituteName;
                 delete absence.anyAttachment;
                 delete absence.fileContentType;
                 delete absence.substituteRequired;
                 delete absence.durationType;
-                delete absence.attachedFileName;
                 delete absence.statusDate;
                 delete absence.substituteProfilePicUrl;
-                delete absence.absenceId;
                 return true;
             });
             this.excelService.exportAsExcelFile(this.allAbsencesInCurrentState, 'Report');
-        }
-        if ($event.actionName == "cancel") {
-            let data = "";
-            for (var i in this.allAbsencesInCurrentState) {
-                data = data + this.allAbsencesInCurrentState[i].absenceId + ",";
-            }
-            let confirmResult = confirm('Are you sure you want to cancel these jobs?');
-            if (confirmResult) { 
-                this._dataContext.CancelAbsences('reports/deleteAbsences', data).subscribe((response: any) => {  
-                    if (response == "success") {
-                        this.loadReportSummary();
-                        this.notifier.notify('success', 'Cancel Successfully.');                           
-                    }           
-                });
-            }
-        }
+            this.loadReportSummary();
+        }      
     }
 
     bindDetails(details: ReportDetail[]) {
-        this.filledAbsenceDetails = details.filter(t => t.statusId === 2 || t.statusId === 3);
-        this.unFilledAbsenceDetails = details.filter(t => t.statusId === 1 && t.substituteRequired === true);
+        this.filledAbsenceDetails = details.filter(t => (t.statusId === 2 || t.statusId === 3) && t.substituteRequired === true && t.isApproved === true);
+        this.unFilledAbsenceDetails = details.filter(t => t.statusId === 1 && t.substituteRequired === true && t.isApproved === true);
         this.noSubReqAbsenceDetails = details.filter(t => t.substituteRequired === false);
     }
 
@@ -167,6 +151,12 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     reportDetails(absenceDetail: ReportDetail) {
+        const model = new AuditFilter();
+        model.entityId = absenceDetail.absenceId;
+        this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
+            this.insertAbsencesLogView = result;
+        });
+        
         const dialogEdit = this.dialogRef.open(
             ReportDetailsComponent,
             {
