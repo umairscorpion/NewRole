@@ -6,6 +6,8 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AuditFilter } from 'src/app/Model/auditLog';
+import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
 @Component({
     selector: 'upcoming-absences',
     templateUrl: 'upcommingAbsence.component.html'
@@ -20,9 +22,11 @@ export class UpcommingAbsenceComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
+    insertAbsencesLogView: any;
 
     constructor(private _dataContext: DataContext, private _userSession: UserSession,
-        notifier: NotifierService, private _communicationService: CommunicationService) {
+        notifier: NotifierService, private _communicationService: CommunicationService,
+        private auditLogService: AuditLogService) {
         this.notifier = notifier;
     }
     ngOnInit(): void {
@@ -47,6 +51,11 @@ export class UpcommingAbsenceComponent implements OnInit {
 
     ShowDetail(AbsenceDetail: any) {
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
+        const model = new AuditFilter();
+        model.entityId = AbsenceDetail.absenceId;
+        this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
+            this.insertAbsencesLogView = result;
+        });
     }
 
     UpdateStatus(SelectedRow: any, StatusId: number) {

@@ -32,7 +32,8 @@
         </div>
         <div class="col-md-2">
             <mat-form-field>
-                <input matInput [matDatepicker]="StartDatePicker" placeholder="Choose Start Date" formControlName="fromDate">
+                <input matInput [matDatepicker]="StartDatePicker" placeholder="Choose Start Date"
+                    formControlName="fromDate">
                 <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #StartDatePicker></mat-datepicker>
             </mat-form-field>
@@ -46,94 +47,65 @@
         </div>
         <div class="col-md-2">
             <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit"
-                (click)="applyFilter(reportFilterForm)">Search</button>
+                (click)="loadAudit(reportFilterForm)">Search</button>
         </div>
-        <div class="col-md-2" >             
+        <div class="col-md-2">
         </div>
-        <div class="col-md-2" >
+        <div class="col-md-2">
             <button mat-raised-button class="btn btn-success" type="submit" (click)="onDownload(reportFilterForm)">
                 <i class="material-icons">
                     description
                 </i>
                 EXPORT CSV
-            </button>              
+            </button>
         </div>
     </div>
 </form>
 <div class="row">
     <div class="m-30">
-        <ngx-datatable class="material" [rows]="submittedLeaveRequests" [columnMode]="'standard'" [headerHeight]="50"
+        <ngx-datatable class="material" [rows]="auditLogsAbsences" [columnMode]="'standard'" [headerHeight]="50"
             [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
-            <ngx-datatable-column [width]="100" name="Job #" prop="employeeName" [flexGrow]="2" cellClass="middle"
+            <ngx-datatable-column [width]="100" name="Job #" prop="entityId" [flexGrow]="2" cellClass="middle"
                 [draggable]="false">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis" [title]="value">
-                        <strong>{{row['absenceId']}}</strong>
+                        <strong>{{value}}</strong>
                     </div>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="130" name="Notified" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="100" name="Notified" [flexGrow]="2" cellClass="middle" [draggable]="false">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis">11</div>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="190" name="Event 1" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="1000" name="Events" [flexGrow]="2" cellClass="middle" [draggable]="false">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis">
-                        <strong>Posted</strong>
-                        <br>
-                        <span>{{ row['postedOn'] | date:'MMM d, h:mm:ss a' }} By</span>
-                        <br>
-                        <span>{{ row['postedByName'] }}</span>
-                        <br>
-                    </div>
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column [width]="190" name="Event 2" [flexGrow]="2" cellClass="middle" [draggable]="false">
-                <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                    <div class="ellipsis">
-                        <strong>Approved</strong>
-                        <br>
-                        <span *ngIf="row['approvedDate'] != null">{{ row['approvedDate'] | date:'MMM d, h:mm:ss a' }} By</span>
-                        <br>
-                        <span *ngIf="row['approvedBy'] != null">{{ row['approvedBy'] }}</span>
-                        <br>
-                    </div>
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column [width]="190" name="Event 3" [flexGrow]="2" cellClass="middle" [draggable]="false">
-                    <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                        <div class="ellipsis">
+                        <div class="col-md-3">
+                            <strong>Posted</strong>
+                            <br>
+                            <span>{{ row['created']}}</span>
+                        </div>
+                        <div  class="col-md-3" *ngIf="row['approved'] != null">
+                            <strong>Approved</strong>
+                            <br>
+                            <span *ngIf="row['approved'] != null">{{ row['approved']}}</span>
+                        </div>
+                        <div class="col-md-3" *ngIf="row['accepted'] != null">
                             <strong>Accepted</strong>
                             <br>
-                            <span *ngIf="row['acceptedDate'] != null">{{ row['acceptedDate'] | date:'MMM d, h:mm:ss a' }} By</span>
-                            <br>
-                            <span *ngIf="row['acceptedDate'] != null">{{ row['substituteName'] }}</span>
-                            <br>
+                            <span>{{ row['accepted']}}</span>
                         </div>
-                    </ng-template>
-                </ngx-datatable-column>
-            <ngx-datatable-column [width]="190" name="Event 4" [flexGrow]="2" cellClass="middle" [draggable]="false">
-                <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                    <div class="ellipsis">
-                        <strong>Declined</strong>
-                        <br>
-                        <span *ngIf="row['deniedDate'] != null">{{ row['deniedDate'] | date:'MMM d, h:mm:ss a' }} By</span>
-                        <br>
-                        <span *ngIf="row['deniedBy'] != null">{{ row['deniedBy'] }}</span>
-                        <br>
-                    </div>
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column [width]="190" name="Event 5" [flexGrow]="2" cellClass="middle" [draggable]="false">
-                <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                    <div class="ellipsis">
-                        <strong>Cancelled</strong>
-                        <br>
-                        <span *ngIf="row['cancelledDate'] != null">{{ row['cancelledDate'] | date:'MMM d, h:mm:ss a' }} By</span>
-                        <br>
-                        <span *ngIf="row['cancelledBy'] != null">{{ row['cancelledBy'] }}</span>
-                        <br>
+                        <div class="col-md-3" *ngIf="row['declined'] != null">
+                            <strong>Declined</strong>
+                            <br>
+                            <span>{{ row['declined']}}</span>
+                        </div>
+                        <div class="col-md-3" *ngIf="row['cancelled'] != null">
+                            <strong>Cancelled</strong>
+                            <br>
+                            <span>{{ row['cancelled']}}</span>
+                        </div>
                     </div>
                 </ng-template>
             </ngx-datatable-column>
