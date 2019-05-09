@@ -100,9 +100,11 @@ export class LeavesComponent implements OnInit {
             if (this.tabClicked == 0) {
                 this.GetLeaveRequests();
             }
+
             else if (this.tabClicked == 1) {
                 this.GetLeaveRequests();
             }
+
             else {
                 this.GetLeaveRequests();
             }
@@ -121,6 +123,7 @@ export class LeavesComponent implements OnInit {
             isArchived: 0,
             AbsenceId: absenceId
         }
+
         this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
             this.selection.clear();
             if (this.tabClicked == 0) {
@@ -218,7 +221,7 @@ export class LeavesComponent implements OnInit {
     }
 
     onOpenAllowancePopup() {
-        if(this.allowances.length >= 3) {
+        if (this.allowances.length >= 3) {
             this.notifier.notify('error', 'You can add only 3 allowance leave types.');
             return;
         }

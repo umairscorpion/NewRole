@@ -269,11 +269,13 @@
                   (click)="editAllowance(allowance)">edit</i>
                 <i class="material-icons" style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete Allowance" matTooltipPosition="below"
                   (click)="deleteAllowance(allowance.id)">delete_sweep</i>
-
               </div>
             </div>
           </div>
         </div>
+      </mat-tab>
+      <mat-tab label="Employee Leave Balance">
+        <leave-balance></leave-balance>
       </mat-tab>
     </mat-tab-group>
   </mat-card-content>

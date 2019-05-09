@@ -11,4 +11,5 @@ export class LeaveType extends Entity {
     organizationId: string;
     createdDate: Date | string;
     modifiedDate: Date | string;
+    allowanceType: number;
 }   

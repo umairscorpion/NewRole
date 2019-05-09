@@ -176,6 +176,7 @@ import { AuthorizationService } from './Services/authorization.service';
 import { DisableIfUnauthorizedDirective } from './Shared/directives/disable-if-unauthorized.directive';
 import { HideIfUnauthorizedDirective } from './Shared/directives/hide-if-unauthorized.directive';
 import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
+import { LeaveBalanceComponent } from './Components/Manage/SubPages/Leaves/LeaveBalance/leave-balance.component';
 
 
 export function getAuthServiceConfigs() {
@@ -346,7 +347,8 @@ const customNotifierOptions: NotifierOptions = {
         DisableIfUnauthorizedDirective,
         HideIfUnauthorizedDirective,
         AuditLogComponent,
-        MySettingComponent
+        MySettingComponent,
+        LeaveBalanceComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

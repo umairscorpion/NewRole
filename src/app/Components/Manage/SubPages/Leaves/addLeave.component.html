@@ -16,7 +16,7 @@
                     </div>
                     <div *ngIf='LeaveForm.value.isSubtractAllowance' style="text-align: center">
                         <mat-form-field class="col-md-7">
-                            <mat-select placeholder="Allowance" formControlName="allowance">
+                            <mat-select placeholder="Allowance" formControlName="allowanceType">
                                 <mat-option>--</mat-option>
                                 <mat-option *ngFor="let allowance of allowances" [value]="allowance.id">
                                     {{allowance.title}}
@@ -28,7 +28,6 @@
                         <mat-checkbox class="col-md-12" color="primary" formControlName="isApprovalRequired">
                             This leave type needs to be approved
                         </mat-checkbox>
-
                     </div>
                     <div style="text-align: left">
                         <mat-checkbox class="col-md-12" color="primary" formControlName="isVisible">

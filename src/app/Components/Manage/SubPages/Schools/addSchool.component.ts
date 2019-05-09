@@ -40,10 +40,10 @@ export class AddSchoolComponent implements OnInit {
             EndTime: ['', Validators.required],
             TimeZone: [null, Validators.required],
             PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
-            releaseJobTime: [''],
-            notifyOthersTime: [''],
-            dailyAbenceLimit: [''],
-            isAbsenceLimit: ['']
+            releaseJobTime: ['0'],
+            notifyOthersTime: ['0'],
+            dailyAbenceLimit: [0],
+            isAbsenceLimit: [false]
             // NoOfEmployees: ['', Validators.required],
             // EmailId: ['', [Validators.required, Validators.email]],
         });
@@ -127,7 +127,11 @@ export class AddSchoolComponent implements OnInit {
                         School2ndHalfStart: form.value.SecondHalfStartTime,
                         SchoolEndTime: form.value.EndTime,
                         SchoolTimeZone: form.value.TimeZone,
-                        SchoolPhone: form.value.PhoneNo
+                        SchoolPhone: form.value.PhoneNo,
+                        releaseJobTime: form.value.releaseJobTime,
+                        notifyOthersTime: form.value.notifyOthersTime,
+                        dailyAbenceLimit: form.value.dailyAbenceLimit,
+                        isAbsenceLimit: form.value.isAbsenceLimit
                     }
                     this._dataContext.post('school/insertSchool', model).subscribe((data: any) => {
                         this.notifier.notify('success', 'Saved Successfully.');

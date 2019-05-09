@@ -18,6 +18,7 @@ export class SettingComponent implements OnInit {
     displayedColumns: string[] = ['event', 'email', 'text', 'voice'];
     substituteList: User[] = Array<User>();
     OrganizationId: any;
+    accessibilityOfOrganizationDropdown: boolean = false;
     organizations: Organization[] = Array<Organization>();
     UserClaim: any = JSON.parse(localStorage.getItem('userClaims'));
     TimeCustomDelay: string;
@@ -159,7 +160,7 @@ export class SettingComponent implements OnInit {
 
     getSchoolSettings() {
         this._dataContext.getById('School/getSchoolById', this.OrganizationId).subscribe((org: Organization) => {
-            this.schoolSettings.patchValue({...org[0]});
+            this.schoolSettings.patchValue({ ...org[0] });
         },
             error => <any>error);
     }
@@ -167,15 +168,11 @@ export class SettingComponent implements OnInit {
     GetOrganizations(DistrictId: number): void {
         this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
             this.organizations = data;
-            // if (typeof this._userSession.getUserOrganizationId() != "undefined" && this._userSession.getUserOrganizationId() != "-1" && this._userSession.getUserOrganizationId())
-            //     this.schoolSettings.get('OrganizationId').setValue(this._userSession.getUserOrganizationId());
-            // this.schoolSettings.controls['OrganizationId'].enable();
-            // if (this._userSession.getUserRoleId() == 5) {
-            //     this.schoolSettings.get['OrganizationId'].setValue(data[0].schoolId);
-            // }
-            // else {
-            //     this.schoolSettings.controls['OrganizationId'].disable();
-            // }
+            if (this._userSession.getUserRoleId() === 2) {
+                this.OrganizationId = this._userSession.getUserOrganizationId()
+                this.getSchoolSettings();
+                this.accessibilityOfOrganizationDropdown = true;
+            }
         },
             error => <any>error);
     }

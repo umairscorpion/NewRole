@@ -64,7 +64,7 @@
             <div class="col-md-12">Rules</div>
         </div>
     </div>
-    <div class="col-md-6 col-lg-6 mat-elevation-z8">
+    <div class="col-md-8 col-lg-8 mat-elevation-z8">
         <div class="row vertical-center">
             <div class="col-md-12">Payrate</div>
         </div>
@@ -80,7 +80,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <mat-form-field>
                     <input matInput type="number" [(ngModel)]="payRateRule.increaseAfterDays" placeholder="Increase After">
                     <span matSuffix>Days</span>
@@ -92,14 +92,12 @@
                     <span matPrefix>$&nbsp;</span>
                 </mat-form-field>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <button mat-raised-button type="button" (click)="postPayRateRule(payRateRule)" style="background-color: #04C0BF;color: white">
                     <mat-icon style="font-size: 20px">check</mat-icon>OK</button>
-            </div>
-            <div class="col-md-2">
-                <button mat-raised-button type="button" (click)="onDeletePayRateRule(payRateRule.id)" style="background-color: #F1F1F3">
-                    <mat-icon style="color:#d20e0f;font-size:15px;font-weight: bold;">close</mat-icon>
-                </button>
+                    <button mat-raised-button type="button" (click)="onDeletePayRateRule(payRateRule.id)" style="background-color: #F1F1F3; margin-left: 5px">
+                            <mat-icon style="color:#d20e0f;font-size:15px;font-weight: bold;">close</mat-icon>
+                        </button>
             </div>
         </div>
     </div>

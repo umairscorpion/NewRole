@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DistrictService } from '../../../../Service/Manage/district.service';
-import { FormBuilder, FormGroup, Validators , FormControl, NgForm} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, NgForm } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbsenceService } from '../../../../Services/absence.service';
 import { UserSession } from '../../../../Services/userSession.service';
@@ -18,14 +18,16 @@ export class AddLeaveComponent implements OnInit {
     allowances: Allowance[];
     leaveIdForEdit: number = 0;
     LeaveForm: FormGroup;
-    constructor(private _FormBuilder: FormBuilder, private userSession : UserSession, private districtService: DistrictService,
-        private absenceService: AbsenceService, private route: ActivatedRoute,  notifier: NotifierService) { 
-            this.notifier = notifier;
-         }
+
+    constructor(private _FormBuilder: FormBuilder, private userSession: UserSession, private districtService: DistrictService,
+        private absenceService: AbsenceService, private route: ActivatedRoute, notifier: NotifierService) {
+        this.notifier = notifier;
+    }
+
     ngOnInit(): void {
         this.LeaveForm = this._FormBuilder.group({
             leaveTypeName: ['', Validators.required],
-            allowance: [''],
+            allowanceType: [''],
             isSubtractAllowance: [''],
             isApprovalRequired: [''],
             isVisible: ['']
@@ -39,13 +41,7 @@ export class AddLeaveComponent implements OnInit {
             if (params['Id']) {
                 let leaveId = params.Id;
                 this.absenceService.getById('Leave/getleaveTypeById', leaveId).subscribe((data: LeaveType) => {
-                    let leaveModel = {
-                        leaveTypeName: data.leaveTypeName,
-                        isSubtractAllowance: data.isSubtractAllowance,
-                        isApprovalRequired: data.isApprovalRequired,
-                        isVisible: data.isVisible
-                    }
-                    this.LeaveForm.setValue(leaveModel);
+                    this.LeaveForm.patchValue({ ...data });
                     this.leaveIdForEdit = leaveId;
                 },
                     error => <any>error);
@@ -61,7 +57,7 @@ export class AddLeaveComponent implements OnInit {
             });
     }
 
-    onSubmit(form : any) {
+    onSubmit(form: any) {
         if (this.LeaveForm.valid) {
             let leaveFormModel = {
                 leaveTypeId: this.leaveIdForEdit,
@@ -71,19 +67,18 @@ export class AddLeaveComponent implements OnInit {
                 isApprovalRequired: form.value.isApprovalRequired ? form.value.isApprovalRequired : false,
                 isVisible: form.value.isVisible ? form.value.isVisible : false,
                 districtId: this.userSession.getUserDistrictId(),
-                organizationId: this.userSession.getUserOrganizationId() ? this.userSession.getUserDistrictId(): '-1',
+                organizationId: this.userSession.getUserOrganizationId() ? this.userSession.getUserDistrictId() : '-1',
+                allowanceType: form.value.allowanceType
             }
-            if (this.leaveIdForEdit > 0) {
-                this.absenceService.insertLeaveType(leaveFormModel).subscribe((data: any) => {
-                    if (this.leaveIdForEdit > 0)
+            this.absenceService.insertLeaveType(leaveFormModel).subscribe((data: any) => {
+                if (this.leaveIdForEdit > 0)
                     this.notifier.notify('success', 'Updated Successfully');
-                    else 
+                else
                     this.notifier.notify('success', 'Added Successfully');
-                    // this.toastr.success('Added Successfully!', 'Success!');
-                },
-                    (err: HttpErrorResponse) => {
-                    });
-            }
+                // this.toastr.success('Added Successfully!', 'Success!');
+            },
+                (err: HttpErrorResponse) => {
+                });
         }
     }
 }

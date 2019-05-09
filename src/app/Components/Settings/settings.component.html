@@ -171,7 +171,8 @@
                             <mat-tab *ngIf='!isSubstitute && UserRole != 3' label="General">
                                 <div class="row col-md-12" style="text-align: center">
                                     <mat-form-field class="col-md-3 col-lg-3">
-                                        <mat-select placeholder="School" (selectionChange)="onchangeOrganization()" [(ngModel)]="OrganizationId">
+                                        <mat-select placeholder="School" (selectionChange)="onchangeOrganization()" [disabled]="accessibilityOfOrganizationDropdown"
+                                            [(ngModel)]="OrganizationId">
                                             <mat-option>--</mat-option>
                                             <mat-option *ngFor="let organization of organizations" [value]="organization.schoolId">
                                                 {{organization.schoolName}}
