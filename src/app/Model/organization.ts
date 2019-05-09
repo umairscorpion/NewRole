@@ -17,4 +17,8 @@ export class Organization extends Entity {
     schoolEndTime: Time;
     schoolZipCode: number;
     schoolEmployees: number;
+    releaseJobTime: string;
+    notifyOthersTime: string;
+    dailyAbenceLimit: number;
+    isAbsenceLimit: boolean;
 }

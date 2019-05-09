@@ -1,0 +1,86 @@
+<div class="main-container">
+    <Subzz-app-SideNav></Subzz-app-SideNav>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="row">
+                <mat-card>
+                    <mat-card-title>
+                        My Settings
+                    </mat-card-title>
+                    <mat-card-content>
+                        <mat-tab-group class="demo-tab-group" (selectedTabChange)="onChangeTab($event)">
+                            <mat-tab *ngIf='UserRole != 4' label="Substitute Preferences">
+                                <form (ngSubmit)="SaveSubstitutePreference()" [formGroup]="PreferencesFormGroup">
+                                    <div style="padding-top: 10px; min-height:500px" class=" col-md-10 col-md-offset-1 shadow">
+                                        <div style="font-size: 15px" class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <b> Favorite Substitutes </b>
+                                                    <br> Remaining choices: {{5 - FavoriteSubstututes.length}}
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <mat-form-field class="col-md-5 col-lg-5">
+                                                        <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
+                                                            matInput [matAutocomplete]="autoCom">
+                                                        <mat-autocomplete #autoCom="matAutocomplete">
+                                                            <mat-option (onSelectionChange)="SelectToAddInPreferredSubstitute(user)" *ngFor="let user of SubstituteList | async" [value]="">
+                                                                {{user.firstName}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div style="height:175px" class="col-md-12">
+                                            <div *ngIf='FavoriteSubstututes && FavoriteSubstututes.length'>
+                                                <a *ngFor="let Substitute of FavoriteSubstututes">
+                                                    <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="FavoriteSubstututes.splice($index,1)" matTooltip="Remove Substitute"
+                                                        matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
+                                                    <br>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 15px" class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <b> Blocked Substitutes </b>
+                                                    <br> Remaining choices: {{5 - BlockedSubstitutes.length}}
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <mat-form-field class="col-md-10 col-lg-10">
+                                                        <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
+                                                            matInput [matAutocomplete]="auto">
+                                                        <mat-autocomplete #auto="matAutocomplete">
+                                                            <mat-option (onSelectionChange)="SelectToBlockSubstitite(user)" *ngFor="let user of SubstituteList | async" [value]="">
+                                                                {{user.firstName}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div style="height:175px;" class="col-md-12">
+                                            <div *ngIf='BlockedSubstitutes && BlockedSubstitutes.length'>
+                                                <a *ngFor="let Substitute of BlockedSubstitutes">
+                                                    <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="BlockedSubstitutes.splice($index,1)" matTooltip="Remove Substitute"
+                                                        matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
+                                                    <br>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                        <div style="text-align: center" class="col-md-12">
+                                            <button mat-raised-button style="color:white; background-color: #04c0be;" type="submit">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

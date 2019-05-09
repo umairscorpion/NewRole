@@ -177,6 +177,7 @@ import { DisableIfUnauthorizedDirective } from './Shared/directives/disable-if-u
 import { HideIfUnauthorizedDirective } from './Shared/directives/hide-if-unauthorized.directive';
 import { AuditLogService } from './Services/audit_logs/audit-log.service';
 import { ShowAttachmentPopupComponent } from './Shared/show-attachment-popup/show-attachment-popup.component';
+import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -347,6 +348,7 @@ const customNotifierOptions: NotifierOptions = {
         HideIfUnauthorizedDirective,
         AuditLogComponent,
         ShowAttachmentPopupComponent,
+        MySettingComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

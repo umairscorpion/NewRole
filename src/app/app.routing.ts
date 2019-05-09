@@ -60,6 +60,7 @@ import { SubstituteCalendarComponent } from './Components/Dashboard/substitute-c
 import { SubstituteAvailabilityComponent } from './Components/Dashboard/substitute-availability.component';
 import { PayRollComponent } from './Components/Payroll/payroll.component';
 import { RolePermissionsComponent } from './Components/Permissions/RolePrmissions/role-permissions.component';
+import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
 
 
 const appRoutes: Routes = [
@@ -114,6 +115,7 @@ const appRoutes: Routes = [
     { path: 'timetracker', component: TimeTrackerComponent, canActivate: [AuthGuard] },
     { path: 'timeclock', component: TimeClockComponent, canActivate: [AuthGuard] },
     { path: 'settings', component: SettingComponent, canActivate: [AuthGuard] },
+    { path: 'mysettings', component: MySettingComponent, canActivate: [AuthGuard] },
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'permissions', component: PermissionsComponent, canActivate: [AuthGuard] },
     { path: 'role/permissions/:id', component: RolePermissionsComponent, canActivate: [AuthGuard] },
@@ -125,4 +127,4 @@ const appRoutes: Routes = [
 ];
 
 export const routing: ModuleWithProviders =
-    RouterModule.forRoot(appRoutes);
+    RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'});

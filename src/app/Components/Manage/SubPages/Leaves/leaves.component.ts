@@ -210,7 +210,7 @@ export class LeavesComponent implements OnInit {
 
     updateAllowance(allowance: Allowance) {
         allowance.isEnalbled = !allowance.isEnalbled;
-        if(+allowance.id > 0) {
+        if (+allowance.id > 0) {
             this._districtService.Patch('District/allowances/', allowance).subscribe((data: any) => {
             },
                 error => this.msg = <any>error);
@@ -218,9 +218,13 @@ export class LeavesComponent implements OnInit {
     }
 
     onOpenAllowancePopup() {
+        if(this.allowances.length >= 3) {
+            this.notifier.notify('error', 'You can add only 3 allowance leave types.');
+            return;
+        }
         const dialogRef = this.dialog.open(AllowanceComponent, {
             panelClass: 'allowance-popup-dialog'
-        }); 
+        });
         dialogRef.afterClosed().subscribe(result => {
             this.getAllowances();
         });
@@ -230,7 +234,7 @@ export class LeavesComponent implements OnInit {
         const dialogRef = this.dialog.open(AllowanceComponent, {
             data: allowance,
             panelClass: 'allowance-popup-dialog'
-        }); 
+        });
         dialogRef.afterClosed().subscribe(result => {
             this.getAllowances();
         });
@@ -240,8 +244,8 @@ export class LeavesComponent implements OnInit {
         var confirmResult = confirm('Are you sure you want to delete allowance?');
         if (confirmResult) {
             this.absenceService.delete('District/deleteAllowance/', id).subscribe((response: any) => {
-                    this.notifier.notify('success', 'Deleted Successfully');
-                    this.getAllowances();
+                this.notifier.notify('success', 'Deleted Successfully');
+                this.getAllowances();
             });
         }
     }

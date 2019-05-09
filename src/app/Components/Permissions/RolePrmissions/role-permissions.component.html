@@ -2,7 +2,7 @@
   <div class="example-container">
     <Subzz-app-SideNav></Subzz-app-SideNav>
     <mat-sidenav-container class="example-sidenav-container">
-      <mat-sidenav class="col-md-2" opened="{{isOpen}}" (keydown.escape)="toggle()" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <mat-sidenav class="col-md-2" opened="{{isOpen}}" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <mat-nav-list *ngIf='userTemplate && userTemplate.length'>
           <a mat-list-item [routerLinkActive]="['active']" routerLink="/{{userTempplateObj.stateMachine}}" *ngFor="let userTempplateObj of userTemplate">{{userTempplateObj.name}}</a>
         </mat-nav-list>

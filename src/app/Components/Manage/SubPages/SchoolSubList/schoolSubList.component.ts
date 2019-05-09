@@ -15,6 +15,8 @@ import { NotifierService } from 'angular-notifier';
 export class SchoolSubListComponent implements OnInit {
     @ViewChild('subzz') selectionlist: MatSelectionList;
     @ViewChild('blockedsubzz') blockedselectionlist: MatSelectionList;
+    showBlockedSubstitutes: boolean;
+    showSubstitutes: boolean
     private notifier: NotifierService;
     msg: string;
     schoolSubList: SchoolSubList[] = Array<SchoolSubList>();

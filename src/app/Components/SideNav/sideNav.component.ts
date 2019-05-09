@@ -184,6 +184,11 @@ export class PopupDialogForSettings {
         this.dialog.closeAll();
         this.router.navigate(['/timeclock']);
     }
+
+    openMySettings() {
+        this.dialog.closeAll();
+        this.router.navigate(['/mysettings']);
+    }
     openAuditLog() {
         this.dialog.closeAll();
         this.router.navigate(['/auditLog']);

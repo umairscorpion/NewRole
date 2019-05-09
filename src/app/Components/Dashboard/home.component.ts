@@ -19,7 +19,7 @@ import * as moment from 'moment';
 
 export class HomeComponent {
     userId: string = this.userSession.getUserId();
-    submittedLeaveRequests: LeaveRequest[];
+    submittedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
     absenceSummary: any;
     absenceSummary1 = [];
     FilledTenDay = [];
