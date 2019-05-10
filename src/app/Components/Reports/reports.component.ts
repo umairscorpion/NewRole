@@ -32,6 +32,7 @@ export class ReportsComponent implements OnInit {
         });
         this.LoadSideNavMenu();
     }
+    
     LoadSideNavMenu(): void {
         let resourceTypeId = 2;
         let parentResourceTypeId = -1;
@@ -50,6 +51,11 @@ export class ReportsComponent implements OnInit {
         if (tab.index == 0) {
             this.router.navigateByUrl('/absence', { skipLocationChange: true }).then(() =>
                 this.router.navigate(["reports"], { queryParams: { Tab: "0" } }));
+        }
+
+        if (tab.index == 2) {
+            this.router.navigateByUrl('/absence', { skipLocationChange: true }).then(() =>
+                this.router.navigate(["reports"], { queryParams: { Tab: "2" } }));
         }
     }
 

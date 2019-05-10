@@ -149,7 +149,7 @@
               <input type="text" placeholder="Search Substitute Name" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
                 matInput formControlName="substituteId" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName" multiple>
-                <mat-option (onSelectionChange)="substututeSelection(substutute)" (click)="substututeSelection(substutute)" *ngFor="let substutute of Substututes | async"
+                <mat-option (onSelectionChange)="substututeSelection(substutute)" *ngFor="let substutute of Substututes | async"
                   [value]="substutute">
                   {{substutute.firstName}}
                 </mat-option>

@@ -7,6 +7,7 @@ import { ReportFilter } from 'src/app/Model/Report/report.filter';
 import { ExcelService } from 'src/app/Services/excel.service';
 import { AuditFilter } from 'src/app/Model/auditLog';
 import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
+import { ngxCsv } from 'ngx-csv';
 
 @Component({
     selector: 'payroll-reports',
@@ -14,20 +15,25 @@ import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
 })
 export class PayRollReportsComponent implements OnInit, AfterViewInit {
 
-    currentDate: Date = new Date();
-    msg: string;
-    date: string = moment().format('dddd, MM/DD/YYYY');
     noAbsenceMessage = true;
     reportFilterForm: FormGroup;
-    activityReport: LeaveRequest[] = Array<LeaveRequest>();
+    activityReport: AuditFilter[] = Array<AuditFilter>();
     auditLogsAbsences: any;
+    activityReportFilter: FormGroup;
+    jobNumber: string = '';
+
     constructor(
         private auditLogService: AuditLogService,
-        private reportService: ReportService,
-        private fb: FormBuilder,
+        private _formBuilder: FormBuilder,
         private excelService: ExcelService
     ) {
-        this.reportFilterForm = this.initReportFilters();
+        const curr = new Date;
+        const first = curr.getDate();
+        const last = first;
+        this.activityReportFilter = this._formBuilder.group({
+            date: [{ begin: new Date(curr.setDate(first)), end: new Date(curr.setDate(last)) }],
+            jobNumber: ['']
+        });
     }
 
     ngOnInit(): void {
@@ -37,42 +43,35 @@ export class PayRollReportsComponent implements OnInit, AfterViewInit {
         this.loadAudit();
     }
 
-    initReportFilters() {
-        return ReportFilter.CreateFilterFormGroup(this.fb);
-    }
-
     loadAudit(): void {
         const model = new AuditFilter();
-        model.startDate =  moment(this.reportFilterForm.get('fromDate').value).format('dddd, MM/DD/YYYY');
-        model.endDate = moment(this.reportFilterForm.get('toDate').value).format('dddd, MM/DD/YYYY');
-        model.entityId  = this.reportFilterForm.get('jobNumber').value;
+        model.startDate =  moment(this.activityReportFilter.get('date').value['begin']).format('dddd, MM/DD/YYYY');
+        model.endDate = moment(this.activityReportFilter.get('date').value['end']).format('dddd, MM/DD/YYYY');
+        model.entityId  = this.activityReportFilter.get('jobNumber').value;
         this.auditLogService.getAbsencesAuditView(model).subscribe((result: any) => {
             this.auditLogsAbsences = result;
         });
     }
 
-    onDownload(formGroup: FormGroup) {
-        const filters = ReportFilter.initial();
-        filters.fromDate = moment(formGroup.value.fromDate).format('dddd, MM/DD/YYYY');
-        filters.toDate = moment(formGroup.value.toDate).format('dddd, MM/DD/YYYY');
-        filters.jobNumber = formGroup.value.jobNumber;
-        this.reportService.getLeaveRequests(filters).subscribe((leaveRequests: LeaveRequest[]) => {
-            this.activityReport = leaveRequests;
-            this.activityReport = this.activityReport.filter(function (activityReport) {
-                delete activityReport.leaveRequestId;
-                delete activityReport.createdById;
-                delete activityReport.employeeId;
-                delete activityReport.leaveTypeId;
-                delete activityReport.isApproved;
-                delete activityReport.isDeniend;
-                delete activityReport.leaveTypeName;
-                delete activityReport.description;
-                delete activityReport.createdDate;
-                delete activityReport.isArchived;
-                delete activityReport.totalDays;
-                return true;
-            });
-            this.excelService.exportAsExcelFile(this.activityReport, 'ActivityReport');
+    onExportingToCSV() {
+        var configuration = {
+            fieldSeparator: ',',
+            quoteStrings: '"',
+            decimalseparator: '.',
+            showLabels: true,
+            showTitle: true,
+            title: 'Activity Report',
+            useBom: false,
+            noDownload: false,
+            headers: ['Absence ID', 'Posted By', 'Approved By', 'Accepted By', 'Released By', 'Declined By', 'Cancelled By']
+        };
+        this.auditLogsAbsences = this.auditLogsAbsences.filter(function (result) {
+            delete result.assigned;
+            delete result.updated;
+            delete result.substituteName;
+            delete result.entityType;
+            return true;
         });
+        new ngxCsv(JSON.stringify(this.auditLogsAbsences), new Date().toLocaleDateString(), configuration);
     }
 }

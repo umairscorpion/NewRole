@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DataContext } from 'src/app/Services/dataContext.service';
-import { UserSession } from 'src/app/Services/userSession.service';
-import { EmployeeService } from 'src/app/Service/Manage/employees.service';
-import { Observable } from 'rxjs/Observable';
-import { IEmployee } from 'src/app/Model/Manage/employee';
+import { FormGroup, FormBuilder} from '@angular/forms';
 import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
 import { AuditFilter } from 'src/app/Model/auditLog';
 
@@ -17,9 +12,7 @@ export class AuditLogComponent implements OnInit {
 
     noAbsenceMessage = true;
     auditLog: any;
-    searchAuditLogsForm: FormGroup;
-    Employees: Observable<IEmployee[]>;
-    SearchedEmployee: string;
+    auditLogFilter: FormGroup;
     searchEmployeeName: string = '';
 
     constructor(
@@ -29,7 +22,7 @@ export class AuditLogComponent implements OnInit {
         const curr = new Date;
         const first = curr.getDate();
         const last = first;
-        this.searchAuditLogsForm = this._formBuilder.group({
+        this.auditLogFilter = this._formBuilder.group({
             date: [{ begin: new Date(curr.setDate(first)), end: new Date(curr.setDate(last)) }],
             searchEmployeeName: ['']
         });
@@ -44,9 +37,9 @@ export class AuditLogComponent implements OnInit {
 
     getAuditLog() {
         const model = new AuditFilter();
-        model.startDate = this.searchAuditLogsForm.get('date').value['begin'];
-        model.endDate = this.searchAuditLogsForm.get('date').value['end'];
-        model.searchByEmployeeName = this.searchAuditLogsForm.get('searchEmployeeName').value;
+        model.startDate = this.auditLogFilter.get('date').value['begin'];
+        model.endDate = this.auditLogFilter.get('date').value['end'];
+        model.searchByEmployeeName = this.auditLogFilter.get('searchEmployeeName').value;
         this.auditLogService.getAuditView(model).subscribe((availabilities: any) => {
             this.auditLog = availabilities;
         });

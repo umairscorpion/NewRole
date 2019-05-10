@@ -130,4 +130,8 @@ export class MySettingComponent implements OnInit {
     removePreferredSub(index: number) {
         this.FavoriteSubstututes.splice(index, 1);
     }
+
+    onChangeTab(event: any) {
+
+    }
 }

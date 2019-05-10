@@ -4,20 +4,27 @@
         <div class="row">
             <div>
                 <mat-form-field class="col-md-2">
-                    <mat-select placeholder="year">
-                        <mat-option  *ngFor="let year of years" [value]="year.value">
+                    <mat-select placeholder="year" [ngModel]="year">
+                        <mat-option *ngFor="let year of years" [value]="year.value">
                             {{year.value}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
             <div>
-                <mat-form-field class="col-md-2">
-                    <input matInput placeholder="Search Employee Name">
+                <mat-form-field class="col-md-2 col-lg-2">
+                    <input type="text" placeholder="Search Employee Name" aria-label="Number" (input)="SearchEmployees($event.target.value)"
+                        matInput [(ngModel)]="employee" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
+                        <mat-option *ngFor="let employee of employees | async"
+                            [value]="employee">
+                            {{employee.firstName}}
+                        </mat-option>
+                    </mat-autocomplete>
                 </mat-form-field>
             </div>
             <div>
-                <button mat-raised-button style="background-color: #04c0be; color: white;">Search</button>
+                <button mat-raised-button type="button" style="background-color: #04c0be; color: white;" (click)="applyFilter()">Search</button>
             </div>
         </div>
         <div class="example-container mat-elevation-z8">
