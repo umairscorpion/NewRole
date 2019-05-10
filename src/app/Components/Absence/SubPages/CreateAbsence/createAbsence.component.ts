@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
 import { EmployeeService } from '../../../../Service/Manage/employees.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,8 +16,6 @@ import { LeaveType } from '../../../../Model/leaveType';
 import { AbsenceService } from '../../../../Services/absence.service';
 import { environment } from '../../../../../environments/environment';
 import { User } from '../../../../Model/user';
-import { UpcommingAbsenceComponent } from '../UpcommingAbsence/upcommingAbsence.component';
-import { NewTimeClockComponent } from 'src/app/Components/TimeClock/timeclock/timeclock.component';
 
 @Component({
     selector: 'create-absence',
@@ -27,7 +25,7 @@ import { NewTimeClockComponent } from 'src/app/Components/TimeClock/timeclock/ti
 })
 export class CreateAbsenceComponent implements OnInit, OnDestroy {
     private notifier: NotifierService;
-    @ViewChild(UpcommingAbsenceComponent) private upcommingAbsence: UpcommingAbsenceComponent;
+    @Output() refreshBalance = new EventEmitter<string>();
     @ViewChild('preferredSubPanel') preferredSubPanel: MatExpansionPanel;
     matIcon = 'keyboard_arrow_down' || 'keyboard_arrow_up';
     // For Blocking Dates Renderer for Current month when open Calendar
@@ -584,9 +582,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 FirstAbsenceForm.value.AbsenceEndDate as Date, AbsenceModel.StartTime as string, AbsenceModel.EndTime as string)) {
                 this._dataContext.post('Absence/CreateAbsence', AbsenceModel).subscribe((respose: any) => {
                     if (respose == "success") {
-                        // this.upcommingAbsence.GetAbsences();
                         this.response = 1;
                         stepper.next();
+                        if(this._userSession.getUserRoleId() === 3) this.refreshBalance.next();
                     }
                 },
                     (err: HttpErrorResponse) => {
