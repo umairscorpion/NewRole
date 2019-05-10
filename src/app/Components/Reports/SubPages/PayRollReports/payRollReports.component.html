@@ -21,9 +21,13 @@
         overflow: auto;
         max-height: 500px;
     }
+
+    th,td {
+        border: 1px solid #e9e3e3;
+    }
 </style>
 <h3>Activity Report</h3>
-<form [formGroup]="reportFilterForm">
+<form [formGroup]="activityReportFilter">
     <div class="row example-header">
         <div class="col-md-2">
             <mat-form-field>
@@ -32,27 +36,20 @@
         </div>
         <div class="col-md-2">
             <mat-form-field>
-                <input matInput [matDatepicker]="StartDatePicker" placeholder="Choose Start Date"
-                    formControlName="fromDate">
-                <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #StartDatePicker></mat-datepicker>
-            </mat-form-field>
-        </div>
-        <div class="col-md-2">
-            <mat-form-field>
-                <input matInput [matDatepicker]="EndDatePicker" placeholder="Choose End Date" formControlName="toDate">
-                <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #EndDatePicker></mat-datepicker>
+                <input matInput placeholder="Date Range" [satDatepicker]="picker2" formControlName="date">
+                <sat-datepicker #picker2 [rangeMode]="true">
+                </sat-datepicker>
+                <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
             </mat-form-field>
         </div>
         <div class="col-md-2">
             <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit"
                 (click)="loadAudit()">Search</button>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
         </div>
         <div class="col-md-2">
-            <button mat-raised-button class="btn btn-success" type="submit" (click)="onDownload(reportFilterForm)">
+            <button mat-raised-button class="btn btn-success" type="submit" (click)="onExportingToCSV()" style="background:#F0F1F3; color:#A1A1A3">
                 <i class="material-icons">
                     description
                 </i>
@@ -65,7 +62,7 @@
     <div class="m-30">
         <ngx-datatable class="material" [rows]="auditLogsAbsences" [columnMode]="'standard'" [headerHeight]="50"
             [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
-            <ngx-datatable-column [width]="100" name="Job #" prop="entityId" [flexGrow]="2" cellClass="middle"
+            <ngx-datatable-column [width]="'auto'" name="Job #" prop="entityId" [flexGrow]="2" cellClass="middle"
                 [draggable]="false">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis" [title]="value">
@@ -73,38 +70,40 @@
                     </div>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="100" name="Notified" [flexGrow]="2" cellClass="middle" [draggable]="false">
-                <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                    <div class="ellipsis">11</div>
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column [width]="1000" name="Events" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="'auto'" name="Notified" [flexGrow]="2" cellClass="middle"
+                [draggable]="false">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis">
-                        <div class="col-md-3">
-                            <strong>Posted</strong>
-                            <br>
-                            <span>{{ row['created']}}</span>
-                        </div>
-                        <div  class="col-md-3" *ngIf="row['approved'] != null">
-                            <strong>Approved</strong>
-                            <br>
-                            <span *ngIf="row['approved'] != null">{{ row['approved']}}</span>
-                        </div>
-                        <div class="col-md-3" *ngIf="row['accepted'] != null">
-                            <strong>Accepted</strong>
-                            <br>
-                            <span>{{ row['accepted']}}</span>
-                        </div>
-                        <div class="col-md-3" *ngIf="row['declined'] != null">
-                            <strong>Declined</strong>
-                            <br>
-                            <span>{{ row['declined']}}</span>
-                        </div>
-                        <div class="col-md-3" *ngIf="row['cancelled'] != null">
-                            <strong>Cancelled</strong>
-                            <br>
-                            <span>{{ row['cancelled']}}</span>
+                        <strong>11</strong>
+                    </div>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [width]="'auto'" name="Events" [flexGrow]="2" cellClass="middle" [draggable]="false">
+                <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                    <div class="ellipsis" style="margin-left:25px">
+                        <div class="col-md-12">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Posted</th>
+                                        <th *ngIf="row['approved'] != null">Approved</th>
+                                        <th *ngIf="row['accepted'] != null">Accepted</th>
+                                        <th *ngIf="row['released'] != null">Released</th>
+                                        <th *ngIf="row['declined'] != null">Declined</th>
+                                        <th *ngIf="row['cancelled'] != null">Cancelled</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ row['created']}}</td>
+                                        <td *ngIf="row['approved'] != null">{{ row['approved']}}</td>
+                                        <td *ngIf="row['accepted'] != null">{{ row['accepted']}}</td>
+                                        <td *ngIf="row['released'] != null">{{ row['released']}}</td>
+                                        <td *ngIf="row['declined'] != null">{{ row['declined']}}</td>
+                                        <td *ngIf="row['cancelled'] != null">{{ row['cancelled']}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </ng-template>

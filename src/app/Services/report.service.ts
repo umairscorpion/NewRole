@@ -64,14 +64,4 @@ export class ReportService extends RestService<any> {
   cancelAbsences(filter: ReportFilter) {
     return this.httpClient.post(`${environment.apiUrl}/reports/deleteAbsences`, filter);
   }
-
-  getLeaveRequests(filter: ReportFilter) {
-    return this.httpClient
-      .post<LeaveRequest[]>(`${environment.apiUrl}/reports/getActivityReportDetail`, filter)
-      .pipe(catchError(this.errorHandler.handleError),
-        map((response: LeaveRequest[]) => {
-          return response.map(item => this.getLeaveRequestRecords().deserialize(item));
-        })
-      );
-  }
 }

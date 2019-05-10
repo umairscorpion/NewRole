@@ -32,6 +32,7 @@ export class ReportsComponent implements OnInit {
         });
         this.LoadSideNavMenu();
     }
+    
     LoadSideNavMenu(): void {
         let resourceTypeId = 2;
         let parentResourceTypeId = -1;
