@@ -44,7 +44,7 @@
 
               <ng-container matColumnDef="Active">
                 <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
-                <mat-cell *matCellDef="let Substitute"> 7 days ago </mat-cell>
+                <mat-cell *matCellDef="let Substitute"> {{lastActiveDays}} days ago </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="action">
