@@ -9,8 +9,6 @@ import { MatDialog } from '@angular/material';
 import { ReportDetailsComponent } from '../../popups/report-details.popup.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-import { DataContext } from 'src/app/Services/dataContext.service';
-import { NotifierService } from 'angular-notifier';
 import { ExcelService } from '../../../../Services/excel.service';
 import { AuditFilter } from 'src/app/Model/auditLog';
 import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';

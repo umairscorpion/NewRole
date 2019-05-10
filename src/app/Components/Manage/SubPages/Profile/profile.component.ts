@@ -228,6 +228,7 @@ export class ProfileComponent implements OnInit {
     uploadAndProgress(files: File[]) {
         this.AllAttachedFiles = files;
         this.AttachedFileType = files[0].type;
+        if (!this.AttachedFileType) this.AttachedFileType = "text/plain";
         this.FileName = this.AllAttachedFiles[0].name;
         this.AttachedFileExtention = files[0].name.split('.')[1];
         let formData = new FormData();
