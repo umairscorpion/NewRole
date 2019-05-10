@@ -12,32 +12,32 @@ import { TimeClockFilter } from '../Model/timeclock.filter';
 import { TimeClock } from '../Model/timeclock';
 
 @Injectable()
-export class TimeClockService {
-    baseUrl = environment.apiUrl;
+export class TimeClockService extends RestService<TimeClock> {
     constructor(private _http: HttpClient,
-        protected errorHandler: ErrorHandlerService) { }
+        protected errorHandler: ErrorHandlerService) { super(_http);}
     clockin(url:string, userId:string): Observable<any> {
-        return this._http.post(this.baseUrl + url, userId);
+        return this._http.post(environment.apiUrl + url, userId);
+        
     }
 
     clockout(url:string, userId:string): Observable<any> {
-        return this._http.post(this.baseUrl + url, userId);
+        return this._http.post(environment.apiUrl + url, userId);
     }
 
     break(url:string, userId:string): Observable<any> {
-        return this._http.post(this.baseUrl + url, userId);
+        return this._http.post(environment.apiUrl + url, userId);
     }
 
     return(url:string, userId:string): Observable<any> {
-        return this._http.post(this.baseUrl + url, userId);
+        return this._http.post(environment.apiUrl + url, userId);
     }
 
     TimeClockData(url: string): Observable<any> {
-        return this._http.get(this.baseUrl + url);
+        return this._http.get(environment.apiUrl + url);
     }
 
     checkTimeClockStatus(url: string): Observable<any> {
-        return this._http.get(this.baseUrl + url);
+        return this._http.get(environment.apiUrl + url);
     }
 
     //Get data by Filters
@@ -57,6 +57,16 @@ export class TimeClockService {
       getTimeTrackerSummary(filter: TimeClockFilter) {
         return this._http
           .post<TimeClock[]>(`${environment.apiUrl}/Time/gettimetrackerdata`, filter)
+          .pipe(catchError(this.errorHandler.handleError),
+            map((response: TimeClock[]) => {
+              return response.map(item => this.getSummaryInstance().deserialize(item));
+            })
+          );
+      }
+
+      getTimeTrackerDetailsWithFilter(filter: TimeClockFilter) {
+        return this._http
+          .post<TimeClock[]>(`${environment.apiUrl}/Time/timetrackerdatawithfilter`, filter)
           .pipe(catchError(this.errorHandler.handleError),
             map((response: TimeClock[]) => {
               return response.map(item => this.getSummaryInstance().deserialize(item));

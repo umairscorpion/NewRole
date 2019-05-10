@@ -21,7 +21,7 @@
                     <h2 class="example-h2">Time Clock</h2>
                     <!-- <subzz-time-clock></subzz-time-clock> -->
                     <mat-tab-group class="demo-tab-group">
-                        <mat-tab label="Time Clock" *ngIf="userRole != 1 && userRole != 2">
+                        <mat-tab *ngIf="userRole != 1 && userRole != 2" label="Time Clock">
                                 <div class="col-md-5 timeClockTable">
                                     <div style="padding:10px;">
                                         <h4>{{date}} {{time}}</h4>

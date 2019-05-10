@@ -42,6 +42,7 @@ export class User extends Entity {
     teachingLevel: number;
     userLevel: number;
     categoryId: number;
+    lastActive: Date;
 }
 
 export class UserSummary extends Entity {

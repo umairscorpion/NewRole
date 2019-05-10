@@ -40,9 +40,9 @@
             <div class="col-md-4" style="text-align: right">
                 <button mat-raised-button (click)="onEditPayrollReport()" style="background:#76C598; color: white;"
                     type="button">Edit</button>
-                <button mat-raised-button
+                <!-- <button mat-raised-button
                     style="background: #5E9ECC; color: white; margin-left:5px"
-                    type="button">Save</button>
+                    type="button">Save</button> -->
                 <button mat-raised-button printSectionId="htmlForPrint" ngxPrint
                     style="background:#F0F1F3; color:#A1A1A3; margin-left:5px"
                     type="button">
@@ -103,17 +103,17 @@
                                           </ng-container>
 
                                           <ng-container matColumnDef="Action">
-                                            <th mat-header-cell *matHeaderCellDef>
+                                            <mat-header-cell *matHeaderCellDef>
                                                 <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
                                                     [aria-label]="checkboxLabel()">
                                                 </mat-checkbox>
-                                                Approve All
-                                            </th>
-                                            <td mat-cell *matCellDef="let row">
+                                                <span style="margin-left:5px;">Edit</span>
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let row">
                                                 <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
                                                     [aria-label]="checkboxLabel(row)">
                                                 </mat-checkbox>
-                                            </td>
+                                            </mat-cell>
                                               </ng-container>
               
                             

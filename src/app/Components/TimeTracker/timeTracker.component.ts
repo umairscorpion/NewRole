@@ -81,7 +81,7 @@ export class TimeTrackerComponent implements OnInit {
         this.intializeFilter(first, last);
     }
     ngOnInit(): void {
-        this.GetTimeTrackerData();
+        // this.GetTimeTrackerData();
         this.LoadSideNavMenu();
         this.sideNavService.change.subscribe((isOpen: any) => {
             this.isOpen = isOpen;
@@ -122,17 +122,18 @@ export class TimeTrackerComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
-    GetTimeTrackerData() {
-        const filters = TimeClockFilter.initial();
-             filters.isDaysSelected = 0;
-             filters.startDate = moment().subtract(7, 'days').toISOString();
-             filters.endDate = moment(new Date()).toISOString();
-             this.timeClockService.getTimeTrackerSummary(filters).subscribe((data: TimeClock[]) => {
-                 this.timeTrackerDetail.data = data;
-                 this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
-             },
-                error => this.msg = <any>error);
-    }
+    // GetTimeTrackerData() {
+    //     const filters = TimeClockFilter.initial();
+    //          filters.isDaysSelected = 0;
+    //          filters.startDate = moment().subtract(7, 'days').toISOString();
+    //          filters.endDate = moment(new Date()).toISOString();
+    //          this.timeClockService.getTimeTrackerSummary(filters).subscribe((data: TimeClock[]) => {
+    //              this.timeTrackerDetail.data = data;
+    //              this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
+    //              this.allTimeTrackerDataInCurrentState = data;
+    //          },
+    //             error => this.msg = <any>error);
+    // }
 
 
     //Time Tracker Code
@@ -147,10 +148,9 @@ export class TimeTrackerComponent implements OnInit {
 
     submitForm(form: FormGroup) {
         const filters = TimeClockFilter.initial();
-        filters.startDate = form.value.dateRange.begin;
-        filters.endDate = form.value.dateRange.end;
-        this.timeClockService.getTimeClockSummary(filters).subscribe((details: TimeClock[]) => {
-            details = details.filter(t => t.statusId === 2 || t.statusId === 3);
+        filters.fromDate = form.value.dateRange.begin;
+        filters.toDate = form.value.dateRange.end;
+        this.timeClockService.getTimeTrackerDetailsWithFilter(filters).subscribe((details: TimeClock[]) => {
             if (+form.value.searchBy === 1) {
                 if (form.value.searchByName) {
                     details = details.filter((reportdetail: TimeClock) => reportdetail.employeeName.toLowerCase().includes(form.value.searchByName.toLowerCase()));
@@ -183,21 +183,24 @@ export class TimeTrackerComponent implements OnInit {
             title: 'Time Tracker Report',
             useBom: false,
             noDownload: false,
-            headers: ['Date', 'Employee', 'Location', 'Clock In', 'Clock Out', 'Duration', 'Break']
+            headers: ['Date', 'Employee', 'Clock In', 'Clock Out']
         };
         let timeTrackerForPrint = this.allTimeTrackerDataInCurrentState.filter(function (timetracker: any) {
-            // delete timetracker.userId
-            // delete timetracker.startDate
-            // delete timetracker.endDate
-            // delete timetracker.activity
-            // delete timetracker.totalHours
+            delete timetracker.userId
+            delete timetracker.firstName
             // delete timetracker.totalMinutes
-            // delete timetracker.totalBreaks
-            // delete timetracker.totalNoBreaks
-            // delete timetracker.schoolName
-            // delete timetracker.statusId
-            // delete timetracker.substituteName
-            // delete timetracker.employeeName
+            delete timetracker.startDate
+            delete timetracker.endDate
+            delete timetracker.activity
+            // delete timetracker.status
+            delete timetracker.totalHours
+            delete timetracker.lastName
+            delete timetracker.totalBreaks
+            delete timetracker.totalNoBreaks
+            delete timetracker.schoolName
+            delete timetracker.statusId
+            delete timetracker.substituteName
+            delete timetracker.location
             return true;
         });
         new ngxCsv(JSON.stringify(timeTrackerForPrint), new Date().toLocaleDateString(), configuration);
@@ -214,7 +217,7 @@ export class TimeTrackerComponent implements OnInit {
             });
         }
         else {
-            this.notifier.notify('error', 'select Data first then click edit.');
+            this.notifier.notify('error', 'Select Row First Then Click Edit.');
         }
     }
 }

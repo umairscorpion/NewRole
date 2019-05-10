@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: 'substitutes.component.html',
@@ -23,6 +24,9 @@ export class SubstitutesComponent implements OnInit {
   positions: any;
   weeklyLimitSettings: FormGroup;
   substituteDataSource = new MatTableDataSource();
+  currentDate = moment();
+  lastActiveDaysTemp: any;
+  lastActiveDays: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   Employees: any
@@ -55,6 +59,8 @@ export class SubstitutesComponent implements OnInit {
     let DistrictId = this._userSession.getUserDistrictId();
     this._employeeService.get('user/getUsers', RoleId, OrgId, DistrictId).subscribe((data: any) => {
       this.substituteDataSource.data = data;
+      this.lastActiveDaysTemp = moment(data.lastActive).format('YYYY-MM-DD');
+      this.lastActiveDays = Math.abs(this.currentDate.diff(this.lastActiveDaysTemp, 'days'));
     },
       error => this.msg = <any>error);
   }
