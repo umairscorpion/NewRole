@@ -7,6 +7,7 @@ import { ErrorHandlerService } from './error-handler/error-handler.service';
 import { Entity } from '../Model/entity';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 
 @Injectable()
@@ -36,6 +37,17 @@ export class RoleService extends RestService<UserRole> {
       .pipe(catchError(this.errorHandler.handleError),
         map((response: RoleSummary[]) => {
           return response.map(item => this.getInstance().deserialize(item));
+        })
+      );
+  }
+
+  deleteAll(ids: Array<number>): Observable<boolean> {
+    return this.httpClient
+      .put(`${this.getUri()}/bulk/delete`, ids)
+      .pipe(
+        catchError(this.errorHandler.handleError),
+        map((response: any) => {
+          return response.status === 200 && response.statusText === 'OK';
         })
       );
   }
