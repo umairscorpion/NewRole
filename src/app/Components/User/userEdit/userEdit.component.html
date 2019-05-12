@@ -1,0 +1,109 @@
+<div>
+  <div class="row">
+    <div class="col-md-4">
+      <h5>User</h5>
+    </div>
+    <div class="col-md-2 pull-right text-right">
+      <mat-icon class="mat-dialog-toolbar-spacer cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
+    </div>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label class="required">First Name</label>
+        <input type="text" class="form-control" autocomplete="off" formControlName="firstName" [ngClass]="{'has-error': !form.get('firstName').valid && submitted}" />
+        <div class="form-inline form-error-content" *ngIf="submitted">
+          <span *ngIf="submitted && form.get('firstName').errors?.required">First Name is required</span>
+          <span *ngIf="submitted && form.get('firstName').errors?.pattern">First Name is invalid</span>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="required">Last Name</label>
+        <input type="text" class="form-control" autocomplete="off" formControlName="lastName" [ngClass]="{'has-error': !form.get('lastName').valid && submitted}" />
+        <div class="form-inline form-error-content" *ngIf="submitted">
+          <span *ngIf="submitted && form.get('lastName').errors?.required">First Name is required</span>
+          <span *ngIf="submitted && form.get('lastName').errors?.pattern">First Name is invalid</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-xs-6">
+        <label>Phone</label>
+        <input type="phone" class="form-control" formControlName="phoneNumber" [ngClass]="{'has-error': !form.get('phoneNumber').valid && submitted}">
+        <div class="form-inline form-error-content" *ngIf="submitted">
+          <span *ngIf="submitted && form.get('phoneNumber').errors?.pattern">
+            Phone Number is invalid
+          </span>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Gender</label>
+        <select formControlName="gender" class="form-control">
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label>Role</label>
+        <select formControlName="roleId" class="form-control">
+          <option value="0">Select Role</option>
+          <option *ngFor="let role of roles" [value]="role.roleId">{{role.roleName}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-6">
+        <label>User Type</label>
+        <select formControlName="userTypeId" class="form-control">
+          <option value="0">Select Type</option>
+          <option *ngFor="let type of userTypes" [value]="type.id">{{type.title}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="required">Email Address</label>
+        <input type="email" class="form-control" formControlName="email" [ngClass]="{'has-error': (!form.get('email').valid && submitted) || msg}">
+        <div class="form-inline form-error-content" *ngIf="submitted">
+          <span *ngIf="form.get('email').errors?.required">
+            Email is required.
+          </span>
+          <span *ngIf="form.get('email').errors?.pattern">
+            Email address is invalid.
+          </span>
+          <span *ngIf="msg">
+            {{msg.error}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label class="required">Password</label>
+        <input type="password" class="form-control" autocomplete="off" formControlName="password" [ngClass]="{'has-error': !form.get('password').valid && submitted}">
+        <div class="form-inline form-error-content" *ngIf="submitted">
+          <span *ngIf="form.get('password').errors?.required">
+            Password is required.
+          </span>
+
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="required">Confirm Password</label>
+        <input type="password" class="form-control" autocomplete="off" formControlName="confirmPassword" [ngClass]="{'has-error': !form.get('confirmPassword').valid && submitted}">
+        <div class="form-inline form-error-content" *ngIf="submitted">
+          <span *ngIf="form.get('confirmPassword').errors?.required">
+            Confirm Password is required.
+          </span>
+          <span *ngIf="form.errors?.mismatch && !form.get('confirmPassword').errors?.required">
+            Passwords do not match.
+          </span>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-default" (click)="onClose()">Cancel</button>&nbsp;
+      <button type="submit" class="btn btn-success">Save</button>
+    </footer>
+  </form>
+</div>

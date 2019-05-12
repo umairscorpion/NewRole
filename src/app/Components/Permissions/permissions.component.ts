@@ -2,9 +2,13 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { UsersService } from 'src/app/Services/users.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { RoleService } from 'src/app/Services/role.service';
-import { UserSummary } from 'src/app/Model/user';
+import { UserSummary, User } from 'src/app/Model/user';
 import { RoleSummary } from 'src/app/Model/userRoles';
 import { UserService } from '../../Service/user.service';
+import { UserEditComponent } from '../User/userEdit/userEdit.component';
+import { MatDialog } from '@angular/material';
+import swal from 'sweetalert2';
+
 @Component({
     templateUrl: 'permissions.component.html',
     styleUrls: ['permissions.component.scss']
@@ -19,7 +23,7 @@ export class PermissionsComponent implements OnInit {
     private _mobileQueryListener: () => void;
     roles = Array<RoleSummary>();
     rowsRoles = Array<RoleSummary>();
-    selectedRoles: UserSummary[] = [];
+    selectedRoles: RoleSummary[] = [];
     selectedAllRoles = false;
     isOpen = true;
     msg: string;
@@ -27,10 +31,11 @@ export class PermissionsComponent implements OnInit {
     constructor(
         private userService: UsersService,
         private roleService: RoleService,
-        private _userService : UserService,
+        private _userService: UserService,
         media: MediaMatcher,
-        changeDetectorRef: ChangeDetectorRef 
-    ) { 
+        changeDetectorRef: ChangeDetectorRef,
+        private dialog: MatDialog,
+    ) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
@@ -49,6 +54,14 @@ export class PermissionsComponent implements OnInit {
         });
     }
 
+    updateUsers(event) {
+        const val = event.target.value.toLowerCase();
+        const temp = this.users.filter(function (d) {
+            return d.firstName.toLowerCase().indexOf(val) !== -1 || d.lastName.toLowerCase().indexOf(val) !== -1 || !val;
+        });
+        this.rowsUsers = temp;
+    }
+
     loadRoles() {
         this.roleService.getSummaryList().subscribe((roles: RoleSummary[]) => {
             this.roles = roles;
@@ -56,10 +69,18 @@ export class PermissionsComponent implements OnInit {
         });
     }
 
+    updateRoles(event) {
+        const val = event.target.value.toLowerCase();
+        const temp = this.roles.filter(function (d) {
+            return d.name.toLowerCase().indexOf(val) !== -1 || !val;
+        });
+        this.rowsRoles = temp;
+    }
+
     LoadUserResources(): void {
-        let resourceTypeId = 2;
-        let parentResourceTypeId = -1;
-        let adminPortal = 0;
+        const resourceTypeId = 2;
+        const parentResourceTypeId = -1;
+        const adminPortal = 0;
         this._userService.getUserResources(resourceTypeId, parentResourceTypeId, adminPortal).subscribe((data: any) => {
             this.userTemplate = data;
         },
@@ -83,6 +104,76 @@ export class PermissionsComponent implements OnInit {
             this.selectedAllRoles = true;
         } else {
             this.selectedAllRoles = false;
+        }
+    }
+
+    addEditUser(user: UserSummary) {
+        const dialogRef = this.dialog.open(UserEditComponent, {
+            panelClass: 'user-create-dialog',
+            data: user || new UserSummary();
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && result.user) {
+                if (result.user.userId && result.user.userId.length > 0) {
+                    this.userService.update(result.user).subscribe((data: any) => {
+                        this.loadUsers();
+                    },
+                        error => this.msg = <any>error);
+                } else {
+                    this.userService.create(result.user).subscribe((data: any) => {
+                        this.loadUsers();
+                    },
+                        error => this.msg = <any>error);
+                }
+            }
+        });
+    }
+
+    removeUsers() {
+        if (this.selectedUsers.length > 0) {
+            swal.fire({
+                title: 'Delete',
+                text:
+                    'Are you sure, you want to delete the selected users?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonClass: 'btn btn-danger',
+                cancelButtonClass: 'btn btn-success',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                buttonsStyling: false
+            }).then(r => {
+                if (r.value) {
+                    const selectedIds = this.selectedUsers.map((v, k) => {
+                        return v.userId;
+                    });
+                    this.userService.deleteAll(selectedIds).subscribe(t => { this.loadUsers(); });
+                }
+            });
+        }
+    }
+
+    removeRoles() {
+        if (this.selectedRoles.length > 0) {
+            swal.fire({
+                title: 'Delete',
+                text:
+                    'Are you sure, you want to delete the selected roles?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonClass: 'btn btn-danger',
+                cancelButtonClass: 'btn btn-success',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                buttonsStyling: false
+            }).then(r => {
+                if (r.value) {
+                    const selectedIds = this.selectedRoles.map((v, k) => {
+                        return v.role_Id;
+                    });
+                    this.roleService.deleteAll(selectedIds).subscribe(t => { this.loadRoles(); });
+                }
+            });
         }
     }
 }
