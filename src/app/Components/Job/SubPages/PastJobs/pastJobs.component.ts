@@ -47,7 +47,7 @@ export class PastJobsComponent implements OnInit {
         this.FilterForm.get('FilterStartDate').setValue(StartDate);
         this.FilterForm.get('FilterEndDate').setValue(this.CurrentDate);
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate.toISOString() + "/" + EndDate +
-         "/" + UserId + "/"+ "-1" + "/" + DistrictId + "/" + Status ).subscribe((data: any) => {
+         "/" + UserId + "/"+ "-1" + "/" + DistrictId + "/"+ false + "/" + Status ).subscribe((data: any) => {
             this.PastJobs.data = data;
             this.PastJobCount = data.length
                 this.PastCountEvent.emit(this.PastJobCount)
@@ -88,7 +88,7 @@ export class PastJobsComponent implements OnInit {
         if (this.FilterForm.valid) {
             this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/" 
             + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/"+ SearchFilter.value.OrganizationId + 
-            "/" + SearchFilter.getRawValue().DistrictId  + "/" + 2 ).subscribe((data: any) => {
+            "/" + SearchFilter.getRawValue().DistrictId + "/"+ false + "/" + 2 ).subscribe((data: any) => {
             this.PastJobs.data = data;
             this.PastJobCount = data.length
                 this.PastCountEvent.emit(this.PastJobCount)

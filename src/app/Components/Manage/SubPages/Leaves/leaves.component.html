@@ -1,4 +1,4 @@
-<mat-card>
+  <mat-card>
   <mat-card-content>
     <h2 class="example-h2">Leave</h2>
     <mat-tab-group class="demo-tab-group">
@@ -59,7 +59,7 @@
                   <mat-cell *matCellDef="let row">
                     <i class="material-icons" style="cursor: pointer; color: #448ac9" #tooltip="matTooltip" matTooltip="Delete Leave" matTooltipPosition="below"
                       (click)="deleteLeaveType(row.leaveTypeId)">delete_sweep</i>
-                    <i class="material-icons" style="cursor: pointer;margin-left: 10px; color: #f19f4d" #tooltip="matTooltip" matTooltip="Edit Leave"
+                    <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:  #448ac9" #tooltip="matTooltip" matTooltip="Edit Leave"
                       matTooltipPosition="below" (click)="editLeaveType(row.leaveTypeId)">edit</i>
                   </mat-cell>
                 </ng-container>
@@ -265,9 +265,9 @@
               <div class="col-md-3" style="text-align: center">
                 <mat-slide-toggle #tooltip="matTooltip" [matTooltip]="allowance.isEnalbled ? 'click to disable' : 'click to enable'" matTooltipPosition="left"
                   [checked]="allowance.isEnalbled" (change)="updateAllowance(allowance)" color=""></mat-slide-toggle>
-                <i class="material-icons" style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Allowance" matTooltipPosition="below"
+                <i class="material-icons" style="cursor: pointer;margin-left: 10px ; color:#448ac9" #tooltip="matTooltip" matTooltip="Edit Allowance" matTooltipPosition="below"
                   (click)="editAllowance(allowance)">edit</i>
-                <i class="material-icons" style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete Allowance" matTooltipPosition="below"
+                <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:#448ac9" #tooltip="matTooltip" matTooltip="Delete Allowance" matTooltipPosition="below"
                   (click)="deleteAllowance(allowance.id)">delete_sweep</i>
               </div>
             </div>

@@ -8,5 +8,5 @@ export interface IEmployee {
     IsActive: boolean,
     IsDeleted: boolean,
     IsSubscribedSMS: boolean,
-    IsSubscribedEmail: boolean
+    IsSubscribedEmail: boolean,
 }

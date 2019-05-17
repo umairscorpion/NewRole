@@ -8,6 +8,7 @@ import { User } from '../../../Model/user';
 import { SocialUser } from 'angular-6-social-login';
 import { FormBuilder, FormGroup, Validators, FormControl, NgForm } from '@angular/forms';
 import { EmployeeService } from '../../../Service/Manage/employees.service';
+import { Organization } from '../../../Model/organization';
 @Component({
     templateUrl: 'my-settings.component.html',
     styleUrls: ['my-settings.component.scss']
@@ -24,6 +25,9 @@ export class MySettingComponent implements OnInit {
     modalBtnTitle: string;
     Categories: any;
     PreferredSchools: any;
+    OrganizationId: any;
+    organizations: Organization[] = Array<Organization>();
+    accessibilityOfOrganizationDropdown: boolean = false;
     ChangedPreferences: any[] = [];
     private notifier: NotifierService;
     PreferencesFormGroup: FormGroup;
@@ -32,6 +36,7 @@ export class MySettingComponent implements OnInit {
     UserRole: number = this._userSession.getUserRoleId();
     SubstituteList: any;
     personalFormGroup: FormGroup;
+    schoolSettings: FormGroup;
 
     constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession: UserSession,
         private _formBuilder: FormBuilder, private _employeeService: EmployeeService) {
@@ -44,13 +49,29 @@ export class MySettingComponent implements OnInit {
             this.GetFavoritSubstitutes();
         }
         this.generateForms();
+        this.GetSubstituteCategories();
+        this.GetOrganizations(this._userSession.getUserDistrictId());
     }
 
     ManageDefultValuesAgainstDifferentUserRoles() {
         //Show substitute Categories only to substitutes
         if (this.UserClaim.roleId === 4) {
             this.isSubstitute = true;
+            this.getPreferredSchools();
         }
+    }
+    GetSubstituteCategories(): void {
+        this._dataContext.get('user/getSubstituteCategories').subscribe((data: any) => {
+            this.Categories = data;
+        },
+            error => <any>error);
+    }
+    getPreferredSchools(): void {
+        let UserId = this._userSession.getUserId();
+        this._dataContext.get('user/GetSubstitutePreferredSchools/' + UserId).subscribe((data: any) => {
+            this.PreferredSchools = data;
+        },
+            error => <any>error);
     }
 
     SaveSubstitutePreference(): void {
@@ -65,6 +86,44 @@ export class MySettingComponent implements OnInit {
             (err: HttpErrorResponse) => {
                 this.notifier.notify('error', err.error.error_description);
             });
+    }
+    SaveCategories(Categories: any): void {
+        for (let category of Categories.options._results) {
+            let model = {
+                OrganizationId: category.value,
+                IsEnabled: category.selected
+            }
+
+            this._dataContext.Patch('user/updateUserCategories', model).subscribe((data: any) => {
+            },
+                (err: HttpErrorResponse) => {
+                    this.notifier.notify('error', err.error.error_description);
+                });
+        }
+        this.notifier.notify('success', 'Updated Successfully');
+    }
+
+    SavePreferredSchoolSettings(AllSchools: any): void {
+        for (let School of AllSchools.options._results) {
+            let model = {
+                OrganizationId: School.value,
+                IsEnabled: School.selected,
+                UserId: this._userSession.getUserId()
+            }
+            this._dataContext.Patch('user/UpdateEnabledSchools', model).subscribe((data: any) => {
+            },
+                (err: HttpErrorResponse) => {
+                    this.notifier.notify('error', err.error.error_description);
+                });
+        }
+        this.notifier.notify('success', 'Updated Successfully');
+    }
+
+    getSchoolSettings() {
+        this._dataContext.getById('School/getSchoolById', this.OrganizationId).subscribe((org: Organization) => {
+            this.schoolSettings.patchValue({ ...org[0] });
+        },
+            error => <any>error);
     }
 
     SearchSubstitutes(SearchText: string) {
@@ -90,6 +149,17 @@ export class MySettingComponent implements OnInit {
         else
             this.notifier.notify('error', 'Already added five substitutes.');
     }
+    GetOrganizations(DistrictId: number): void {
+        this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
+            this.organizations = data;
+            if (this._userSession.getUserRoleId() === 2) {
+                this.OrganizationId = this._userSession.getUserOrganizationId()
+                this.getSchoolSettings();
+                this.accessibilityOfOrganizationDropdown = true;
+            }
+        },
+            error => <any>error);
+    }
     GetFavoritSubstitutes() {
         let UserId = this._userSession.getUserId();
         this._dataContext.get('user/getFavoriteSubstitutes' + '/' + UserId).subscribe((data: any) => {
@@ -110,6 +180,26 @@ export class MySettingComponent implements OnInit {
             BlockedSubstitutes: [''],
             PreferredSubstitites: ['']
         });
+        this.schoolSettings = this._formBuilder.group({
+            schoolName: [''],
+            schoolId: [''],
+            schoolDistrictId: [''],
+            districtName: [''],
+            schoolCity: [''],
+            schoolAddress: [''],
+            schoolEmail: [''],
+            schoolPhone: [''],
+            schoolTimeZone: [''],
+            schoolZipCode: [''],
+            schoolStartTime: [''],
+            school1stHalfEnd: [''],
+            school2ndHalfStart: [''],
+            schoolEndTime: [''],
+            releaseJobTime: [''],
+            notifyOthersTime: [''],
+            dailyAbenceLimit: [''],
+            isAbsenceLimit: ['']
+        });
     }
     
     SelectToBlockSubstitite(Substitute: any) {
@@ -129,5 +219,16 @@ export class MySettingComponent implements OnInit {
     }
     removePreferredSub(index: number) {
         this.FavoriteSubstututes.splice(index, 1);
+    }
+    submitGeneralSettings(org: FormGroup) {
+        this._dataContext.Patch('school/updateSchool', org.value).subscribe((data: any) => {
+            this.notifier.notify('success', 'Updated Successfully.');
+        },
+            (err: HttpErrorResponse) => {
+                this.notifier.notify('error', err.message);
+            });
+    }
+    onchangeOrganization() {
+        this.getSchoolSettings();
     }
 }

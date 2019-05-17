@@ -1,6 +1,7 @@
 ﻿import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, ViewChild, Inject, HostListener } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { UserService } from '../../Service/user.service';
 import { UserSession } from '../../Services/userSession.service';
 import { Observable } from 'rxjs/Rx';
@@ -11,6 +12,15 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { FileService } from '../../Services/file.service';
 import { AuditFilter } from 'src/app/Model/auditLog';
 import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
+import { merge } from 'rxjs/observable/merge';
+import { startWith } from 'rxjs/operators/startWith';
+import { switchMap } from 'rxjs/operators/switchMap';
+import { map } from 'rxjs/operators/map';
+import { catchError } from 'rxjs/operators/catchError';
+import { of as observableOf } from 'rxjs/observable/of';
+import { DataContext } from 'src/app/Services/dataContext.service';
+import { IEmployee } from '../../Model/Manage/employee';
+import { EmployeeService } from 'src/app/Service/Manage/employees.service';
 
 @Component({
     selector: 'Subzz-app-SideNav',
@@ -111,10 +121,56 @@ export class SideNavComponent implements OnInit {
     styleUrls: ['sideNav.component.css']
 })
 export class PopupDialogForSearch {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any, public sanitizer: DomSanitizer) {
+    dataSource = new MatTableDataSource();
+    isLoadingResults = true;
+    DataSourceEmployeesObj: DataSourceEmployees | null;
+    isRateLimitReached = false;
+    resultsLength = 0;
+    employeeName: string = '';
+    msg: string;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+    displayedColumns = ['firstName', 'LastName', 'Email', 'Type'];
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any, public sanitizer: DomSanitizer, private _dataContext: DataContext,
+    private _userSession:UserSession,  private _employeeService:EmployeeService) {
     }
+    ngOnInit(): void {
+    // this.GetSustitutes();
+      }
+    
+      GetSustitutes(): void {
+        let OrgId = -1;
+        let DistrictId = this._userSession.getUserDistrictId();
+        this._employeeService.getSearchContent('user/searchContent',OrgId, DistrictId).subscribe((data: any) => {
+          this.dataSource.data = data;
+        },
+          error => this.msg = <any>error);
+      }
+      ngAfterViewInit() {
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      }
+    Search(searchQuery: string) {
+        let OrgId = -1;
+        let DistrictId = this._userSession.getUserDistrictId();
+        this._employeeService.getSearchContentByFilter('user/searchContent',OrgId, DistrictId, searchQuery).subscribe((data: any) => {
+          this.dataSource.data = data;
+        },
+          error => this.msg = <any>error);
+        
+      }
+    
 }
-
+export class DataSourceEmployees {
+    constructor(private _dataContext: DataContext, private _UserSession: UserSession) { }
+    getRepoIssues(sort: string, order: string, page: number): Observable<IEmployee[]> {
+  
+      let RoleId = 3;
+      let OrgId = this._UserSession.getUserOrganizationId();
+      let DistrictId = this._UserSession.getUserDistrictId();
+      return this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId);
+    }
+  }
 @Component({
     templateUrl: 'popups/settingPopup.html',
     styleUrls: ['sideNav.component.css']
@@ -193,5 +249,6 @@ export class PopupDialogForSettings {
         this.dialog.closeAll();
         this.router.navigate(['/auditLog']);
     }
+    
 }
 
