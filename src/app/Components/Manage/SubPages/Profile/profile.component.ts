@@ -30,17 +30,16 @@ export class ProfileComponent implements OnInit {
     BlockedSubstitutes: Array<any> = [];
     UserRole: number = this._userSession.getUserRoleId();
     AllAttachedFiles: any;
-    AttachedFileName: string;
-    AttachedFileId: string;
     FileName: string;
-    AttachedFileType: string;
-    AttachedFileExtention: string;
+    OriginalFileName: string;
+    FileContentType: string;
+    FileExtention: string;
     CompletedPercentage: number;
     SuccessMessage: boolean;
     SubstituteFiles: any;
 
     constructor(private sanitizer: DomSanitizer, private _formBuilder: FormBuilder,
-        notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession, private _dataContext: DataContext,
+        notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession,
         private _employeeService: EmployeeService, private http: HttpClient, private _fileService: FileService, private dialogRef: MatDialog,) {
         this.notifier = notifier
     }
@@ -121,7 +120,6 @@ export class ProfileComponent implements OnInit {
     }
 
     //Starting Functions Related To Preference Tab
-
 
     GetFavoritSubstitutes() {
         let UserId = this._userSession.getUserId();
@@ -222,48 +220,53 @@ export class ProfileComponent implements OnInit {
 
     removeAttachedFile() {
         this.AllAttachedFiles = null;
-        this.FileName = null;
+        this.OriginalFileName = null;
     }
 
     uploadAndProgress(files: File[]) {
         this.AllAttachedFiles = files;
-        this.AttachedFileType = files[0].type;
-        if (!this.AttachedFileType) this.AttachedFileType = "text/plain";
-        this.FileName = this.AllAttachedFiles[0].name;
-        this.AttachedFileExtention = files[0].name.split('.')[1];
+        this.FileContentType = files[0].type;
+        if (!this.FileContentType) this.FileContentType = "text/plain";
+        this.OriginalFileName = this.AllAttachedFiles[0].name;
+        this.FileExtention = files[0].name.split('.')[1];
         let formData = new FormData();
         Array.from(files).forEach(file => formData.append('file', file))
         this.http.post(environment.apiUrl + 'fileSystem/uploadFile', formData).subscribe(event => {
             this.SuccessMessage = true;
-            this.AttachedFileId = event.toString();
+            this.FileName = event.toString();
         });
     }
 
     getSubstututeFiles(): void {
-        this._fileService.getSubstituteFiles('fileSystem/getFiles').subscribe((respose: any) => {
+        let model = {
+            fileType: "Substitute Files"
+          }
+        this._fileService.getFile(model).subscribe((respose: any) => {
             this.SubstituteFiles = respose;
         });
     }
 
     AddFile() {
         let model = {
-            attachedFileName: this.FileName,
-            attachedFileId: this.AttachedFileId,
-            fileContentType: this.AttachedFileType,
-            fileExtention: this.AttachedFileExtention
+            originalFileName: this.OriginalFileName,
+            fileName: this.FileName,
+            fileContentType: this.FileContentType,
+            fileExtention: this.FileExtention,
+            fileType: 1
         }
-        this._fileService.addSubstituteFiles('fileSystem/addFiles', model).subscribe((respose: any) => {
+        this._fileService.addFile('fileSystem/addFiles', model).subscribe((respose: any) => {
             this.SubstituteFiles = respose;
         });
     }
 
     DeleteFile(file: any) {
         let model = {
-            attachedFileId: file.attachedFileId,
+            fileName: file.fileName,
             fileContentType: file.fileContentType,
-            fileExtention: file.fileExtention
+            fileExtention: file.fileExtention,
+            fileType: "Substitute Files"
         }
-        this._fileService.deleteSubstituteFiles('fileSystem/deleteFiles', model).subscribe((respose: any) => {
+        this._fileService.deleteFile('fileSystem/deleteFiles', model).subscribe((respose: any) => {
             this.SubstituteFiles = respose;
         });
     }
@@ -278,8 +281,8 @@ export class ProfileComponent implements OnInit {
     }
 
     DownloadFile(file: any): void {
-        const model = { AttachedFileId: file.attachedFileId, FileContentType: file.fileContentType };
-        this._dataContext.getFile('fileSystem/getfile', model).subscribe((blob: any) => {
+        const model = { FileName: file.fileName, FileContentType: file.fileContentType };
+        this._datacontext.getFile('fileSystem/getUploadFile', model).subscribe((blob: any) => {
             const newBlob = new Blob([blob]);
             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
                 window.navigator.msSaveOrOpenBlob(newBlob);
@@ -292,7 +295,7 @@ export class ProfileComponent implements OnInit {
             let data = window.URL.createObjectURL(newBlob);
             let link = document.createElement('a');
             link.href = data;
-            link.download = file.attachedFileId;
+            link.download = file.fileName;
             link.click();
             setTimeout(() => {
                 window.URL.revokeObjectURL(data);

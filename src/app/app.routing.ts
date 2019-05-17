@@ -61,6 +61,7 @@ import { SubstituteAvailabilityComponent } from './Components/Dashboard/substitu
 import { PayRollComponent } from './Components/Payroll/payroll.component';
 import { RolePermissionsComponent } from './Components/Permissions/RolePrmissions/role-permissions.component';
 import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
+import { TrainingGuidesComponent } from './Components/TrainingGuides/training-guides.component';
 
 
 const appRoutes: Routes = [
@@ -123,7 +124,8 @@ const appRoutes: Routes = [
     { path: 'calendar', component: SubstituteCalendarComponent, canActivate: [AuthGuard] },
     { path: 'availability', component: SubstituteAvailabilityComponent, canActivate: [AuthGuard] },
     { path: 'payroll', component: PayRollComponent, canActivate: [AuthGuard] },
-    { path: 'auditLog', component: AuditLogComponent, canActivate: [AuthGuard] }
+    { path: 'auditLog', component: AuditLogComponent, canActivate: [AuthGuard] },
+    { path: 'trainingGuide', component: TrainingGuidesComponent, canActivate: [AuthGuard] }
 ];
 
 export const routing: ModuleWithProviders =

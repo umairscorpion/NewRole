@@ -5,6 +5,8 @@ import { ErrorHandlerService } from './error-handler/error-handler.service';
 import { Observable } from 'rxjs';
 import { RestService } from './restService';
 import { FileManager } from '../Model/FileSystem/fileManager.detail';
+import { catchError, map } from 'rxjs/operators';
+import { Entity } from '../Model/entity';
 
 @Injectable()
 export class FileService extends RestService<FileManager> {
@@ -15,6 +17,10 @@ export class FileService extends RestService<FileManager> {
     super(httpClient);
   }
 
+  getInstance(): Entity {
+    return new FileManager();
+  }
+
   uploadProfilePicture(model: FormData): Observable<any> {
     return this.httpClient.post(environment.apiUrl + 'fileSystem/uploadProfilePicture', model, { reportProgress: true, observe: 'events' })
   }
@@ -23,15 +29,21 @@ export class FileService extends RestService<FileManager> {
     return this.httpClient.post(environment.apiUrl + 'fileSystem/getProfilePic', model, { responseType: 'blob' });
   }
 
-  getSubstituteFiles(url: string): Observable<any> {
-    return this.httpClient.get(environment.apiUrl + url);
+  getFile(model: any): Observable<any> {
+    return this.httpClient
+      .post<FileManager[]>(`${environment.apiUrl}/fileSystem/getFiles`, model)
+      .pipe(catchError(this.errorHandler.handleError),
+        map((response: FileManager[]) => {
+          return response.map(item => this.getInstance().deserialize(item));
+        })
+      );
   }
 
-  addSubstituteFiles(url: string, model: any): Observable<any> {
+  addFile(url: string, model: any): Observable<any> {
     return this.httpClient.post(environment.apiUrl + url, model);
   }
 
-  deleteSubstituteFiles(url: string, model: any): Observable<any> {
+  deleteFile(url: string, model: any): Observable<any> {
     return this.httpClient.patch(environment.apiUrl + url, model);
   }
 

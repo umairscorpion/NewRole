@@ -49,7 +49,7 @@
         <div class="col-md-4">
         </div>
         <div class="col-md-2">
-            <button mat-raised-button class="btn btn-success" type="submit" (click)="onExportingToCSV()" style="background:#F0F1F3; color:#A1A1A3">
+            <button mat-raised-button class="btn btn-success" type="submit" (click)="onExportingToCSV()">
                 <i class="material-icons">
                     description
                 </i>
@@ -85,7 +85,7 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Posted</th>
+                                        <th *ngIf="row['created'] != null">Posted</th>
                                         <th *ngIf="row['approved'] != null">Approved</th>
                                         <th *ngIf="row['accepted'] != null">Accepted</th>
                                         <th *ngIf="row['released'] != null">Released</th>
@@ -95,7 +95,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{ row['created']}}</td>
+                                        <td *ngIf="row['created'] != null">{{ row['created']}}</td>
                                         <td *ngIf="row['approved'] != null">{{ row['approved']}}</td>
                                         <td *ngIf="row['accepted'] != null">{{ row['accepted']}}</td>
                                         <td *ngIf="row['released'] != null">{{ row['released']}}</td>
