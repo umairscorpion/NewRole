@@ -52,7 +52,7 @@ export class MyJobsComponent implements OnInit {
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + Status).subscribe((data: any) => {
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/"+ false + "/" + Status).subscribe((data: any) => {
                 this.UpcommingJobs.data = data;
                 this.UpcomingJobCount = data.length
                 this.UpcomingCountEvent.emit(this.UpcomingJobCount)
@@ -162,7 +162,7 @@ export class MyJobsComponent implements OnInit {
         if (this.FilterForm.valid) {
             this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"
                 + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +
-                "/" + SearchFilter.getRawValue().DistrictId + "/" + 2).subscribe((data: any) => {
+                "/" + SearchFilter.getRawValue().DistrictId +  "/" + false + "/" + 2).subscribe((data: any) => {
                     this.UpcommingJobs.data = data;
                     this.UpcomingJobCount = data.length
                     this.UpcomingCountEvent.emit(this.UpcomingJobCount)

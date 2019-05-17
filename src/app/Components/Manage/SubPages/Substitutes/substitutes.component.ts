@@ -59,8 +59,8 @@ export class SubstitutesComponent implements OnInit {
     let DistrictId = this._userSession.getUserDistrictId();
     this._employeeService.get('user/getUsers', RoleId, OrgId, DistrictId).subscribe((data: any) => {
       this.substituteDataSource.data = data;
-      this.lastActiveDaysTemp = moment(data.lastActive).format('YYYY-MM-DD');
-      this.lastActiveDays = Math.abs(this.currentDate.diff(this.lastActiveDaysTemp, 'days'));
+      // this.lastActiveDaysTemp = moment(data.lastActive).format('YYYY-MM-DD');
+      // this.lastActiveDays = Math.abs(this.currentDate.diff(this.lastActiveDaysTemp, 'days'));
     },
       error => this.msg = <any>error);
   }
