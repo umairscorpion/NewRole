@@ -189,9 +189,15 @@ export class PopupDialogForSettings {
         this.dialog.closeAll();
         this.router.navigate(['/mysettings']);
     }
+
     openAuditLog() {
         this.dialog.closeAll();
         this.router.navigate(['/auditLog']);
+    }
+
+    openTrainingGuide() {
+        this.dialog.closeAll();
+        this.router.navigate(['/trainingGuide']);
     }
 }
 

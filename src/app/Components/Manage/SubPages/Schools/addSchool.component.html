@@ -1,6 +1,12 @@
 <!-- <block-ui>
     
 </block-ui>  -->
+<style>
+    .schoolForm-table {
+        text-align: left;
+        font-size: 12px;
+    }
+</style>
 <mat-card>
     <mat-card-title>
         Add School
@@ -8,7 +14,7 @@
 
     <mat-card-content>
         <form (ngSubmit)="onSubmit(schoolForm)" [formGroup]="schoolForm">
-            <table class="col-md-12 col-lg-12">
+            <table class="row col-md-offset-1 schoolForm-table">
                 <!-- <tr>
                             <td>
                                     <mat-radio-group>
@@ -19,52 +25,100 @@
                             
                     </tr> -->
                 <tr>
+                    <td class="col-md-2">School’s Name</td>
                     <td>
-                        <mat-form-field class="demo-full-width">
+                        <mat-form-field class="col-md-4">
                             <input matInput placeholder="Name" formControlName="Name" required>
                         </mat-form-field>
                     </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">District</td>
                     <td>
-                        <mat-form-field>
+                        <mat-form-field class="col-md-4">
                             <mat-select placeholder="District" formControlName="district" required>
                                 <mat-option>--</mat-option>
                                 <mat-option *ngFor="let district of Districts" [value]="district.districtId">
                                     {{district.districtName}}
                                 </mat-option>
                             </mat-select>
-                            <mat-error *ngIf="schoolForm.controls['district'].hasError('required')">Please choose any district</mat-error>
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-form-field class="demo-full-width">
-                            <textarea matInput placeholder="Address" formControlName="Address" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>
+                            <mat-error *ngIf="schoolForm.controls['district'].hasError('required')">Please choose any
+                                district</mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
                 <tr>
+                    <td class="col-md-2">Address</td>
                     <td>
-                        <mat-form-field class="demo-full-width">
-                            <input matInput type="number" placeholder="Zip Code" formControlName="ZipCode">
+                        <mat-form-field class="col-md-4">
+                            <textarea matInput placeholder="Address" formControlName="Address" matTextareaAutosize
+                                matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>
                         </mat-form-field>
                     </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">City</td>
                     <td>
-                        <mat-form-field class="demo-full-width">
+                        <mat-form-field class="col-md-4">
                             <input matInput placeholder="City" formControlName="City">
                         </mat-form-field>
                     </td>
-                    <mat-form-field>
-                        <mat-select placeholder="Select Time Zone" formControlName="TimeZone">
-                            <mat-option>-- Select Any --</mat-option>
-                            <mat-option value="9">(GMT+09:30) Adelaide</mat-option>
-                            <mat-option value="10">(GMT+10:00) Canberra, Melbourne, Sydney</mat-option>
-                            <mat-option value="11">(GMT+11:00) Magadan, Solomon Islands, New Caledonien</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <!-- <td>
-                        <mat-form-field class="demo-full-width">
-                            <input matInput type="number" placeholder="No Of Employees" formControlName="NoOfEmployees">
+                </tr>
+                <tr>
+                    <td class="col-md-2">Zip Code</td>
+                    <td>
+                        <mat-form-field class="col-md-4">
+                            <input matInput type="number" placeholder="Zip Code" formControlName="ZipCode">
                         </mat-form-field>
-                    </td> -->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">Phone Number</td>
+                    <td>
+                        <mat-form-field hintLabel="Max 10 characters" class="col-md-4">
+                            <input matInput #input maxlength="11" placeholder="Phone No" formControlName="PhoneNo">
+                            <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
+                            <mat-error *ngIf="schoolForm.controls['PhoneNo'].hasError('pattern')">Only numbers allowed
+                            </mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">Time Zone</td>
+                    <td>
+                        <mat-form-field class="col-md-4">
+                            <mat-select placeholder="Select Time Zone" formControlName="TimeZone">
+                                <mat-option>-- Select Any --</mat-option>
+                                <mat-option value="9">(GMT+09:30) Adelaide</mat-option>
+                                <mat-option value="10">(GMT+10:00) Canberra, Melbourne, Sydney</mat-option>
+                                <mat-option value="11">(GMT+11:00) Magadan, Solomon Islands, New Caledonien</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <!-- <td>
+                                    <mat-form-field class="demo-full-width">
+                                        <input matInput type="number" placeholder="No Of Employees" formControlName="NoOfEmployees">
+                                    </mat-form-field>
+                                </td> -->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">Time</td>
+                    <td>
+                        <mat-form-field class="col-md-2">
+                            <input matInput type="time" placeholder="Start Time" formControlName="StartTime">
+                        </mat-form-field>
+                        <mat-form-field class="col-md-2">
+                            <input matInput type="time" placeholder="1st Half Day EndTime"
+                                formControlName="firstHalfEndTime">
+                        </mat-form-field>
+                        <mat-form-field class="col-md-2">
+                            <input matInput type="time" placeholder="2nt Half Day StartTime"
+                                formControlName="SecondHalfStartTime">
+                        </mat-form-field>
+                        <mat-form-field class="col-md-2">
+                            <input matInput type="time" placeholder="End Time" formControlName="EndTime">
+                        </mat-form-field>
+                    </td>
                 </tr>
                 <tr>
                     <!-- <td>
@@ -73,44 +127,14 @@
                             <mat-error *ngIf="schoolForm.controls['EmailId'].hasError('email')">Not a valid email</mat-error>
                         </mat-form-field>
                     </td> -->
-                    <td>
-                        <mat-form-field hintLabel="Max 10 characters">
-                            <input matInput #input maxlength="11" placeholder="Phone No" formControlName="PhoneNo">
-                            <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
-                            <mat-error *ngIf="schoolForm.controls['PhoneNo'].hasError('pattern')">Only numbers allowed</mat-error>
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-form-field class="demo-full-width">
-                            <input matInput type="time" placeholder="Start Time" formControlName="StartTime">
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-form-field class="demo-full-width">
-                            <input matInput type="time" placeholder="1st Half Day EndTime" formControlName="firstHalfEndTime">
-                        </mat-form-field>
-                    </td>
                 </tr>
                 <tr>
-                    <td>
-                        <mat-form-field class="demo-full-width">
-                            <input matInput type="time" placeholder="2nt Half Day StartTime" formControlName="SecondHalfStartTime">
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-form-field class="demo-full-width">
-                            <input matInput type="time" placeholder="End Time" formControlName="EndTime">
-                        </mat-form-field>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="content-center">
-                        <button mat-raised-button style="background-color: #04c0be; color: white; margin-right: 5px;" type="submit">{{SchoolIdForUpdate ? 'Update': 'Save'}}</button>
+                    <td colspan="2" class="content-center" style="padding-top: 20px">
+                        <button mat-raised-button style="background-color: #04c0be; color: white;"
+                            type="submit">{{SchoolIdForUpdate ? 'Update': 'Save School to Database'}}</button>
                         <a routerLink="../../schools">
-                            <button mat-raised-button type="button" style="background-color: #74a4a7; color: white;">Back</button>
+                            <button mat-raised-button type="button"
+                                style="background-color: #74a4a7; color: white; margin-left: 5px">Back</button>
                         </a>
                     </td>
                 </tr>

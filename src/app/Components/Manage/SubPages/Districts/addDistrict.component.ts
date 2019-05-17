@@ -18,6 +18,7 @@ export class AddDistrictComponent implements OnInit {
     msg: string;
     districtForm: FormGroup;
     districtIdForUpdate : any = 0;
+    getDistrictById: any;
     constructor(private router: Router, private fb: FormBuilder, notifier: NotifierService, private route: ActivatedRoute,
         private _districtService: DistrictService, private _dataContext: DataContext) {
         this.notifier = notifier;
@@ -43,6 +44,7 @@ export class AddDistrictComponent implements OnInit {
             {
                 let DistrictId = params.Id ;
                 this._dataContext.getById('district/getDistrictById', DistrictId).subscribe((data: any) => {
+                    this.getDistrictById = data;
                     let DistrictModel = {
                         Name: data[0].districtName,
                         City: data[0].city,
@@ -100,9 +102,11 @@ export class AddDistrictComponent implements OnInit {
                         District2ndHalfStart: form.value.SecondHaifStartTime,
                         DistrictEndTime: form.value.EndTime,
                         DistrictTimeZone: form.value.TimeZone,
-                        DistrictPhone: form.value.PhoneNo
+                        DistrictPhone: form.value.PhoneNo,
+                        IsActive: 1
                     }
                     this._dataContext.Patch('district/updateDistrict', model).subscribe((data: any) => {
+                        this.router.navigate(['/manage/districts']);
                         this.notifier.notify('success', 'Updated Successfully.');
                     },
                         (err: HttpErrorResponse) => {
@@ -126,6 +130,7 @@ export class AddDistrictComponent implements OnInit {
                         DistrictPhone: form.value.PhoneNo
                     }
                     this._districtService.post('District/insertDistrict', model).subscribe((data: any) => {
+                        this.router.navigate(['/manage/districts']);
                         this.notifier.notify('success', 'Saved Successfully.');
                     },
                         (err: HttpErrorResponse) => {

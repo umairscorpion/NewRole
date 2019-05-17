@@ -1,55 +1,37 @@
+<style>
+    .substituteForm-table td {
+        text-align: left;
+        font-size: 12px;
+    }
+</style>
 <mat-card>
     <mat-card-title>
         Add Substitute
     </mat-card-title>
     <mat-card-content>
-        <form (ngSubmit)="onSubmitSubstituteForm(substituteForm)" class="row" [formGroup]="substituteForm">
-            <div class="row col-md-12">
-                <div class="col-md-10 col-lg-10">
-                    <div class="col-md-10 col-md-offset-1">
-                        <div class="row">
-                            <mat-form-field class="col-md-6 col-lg-6">
+        <form (ngSubmit)="onSubmitSubstituteForm(substituteForm)" [formGroup]="substituteForm">
+            <div class="row">
+                <table class="col-md-6 col-md-offset-1 substituteForm-table">
+                    <tr>
+                        <td class="col-md-3">First Name</td>
+                        <td>
+                            <mat-form-field class="col-md-7">
                                 <input matInput placeholder="First Name" formControlName="FirstName">
                             </mat-form-field>
-                            <mat-form-field class="col-md-6 col-lg-6">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3">Last Name</td>
+                        <td>
+                            <mat-form-field class="col-md-7">
                                 <input matInput placeholder="Last Name" formControlName="LastName">
                             </mat-form-field>
-                        </div>
-`                        <!-- <div style="display:none;">
-                                <mat-form-field class="col-md-6 col-lg-6">
-                                        <input matInput placeholder="Last Name" formControlName="IsActive">
-                                    </mat-form-field>
-                        </div> -->
-                        <div class="row">
-                            <mat-form-field class="col-md-6 col-lg-6">
-                                <mat-select placeholder="Position Type" (selectionChange)="onChangeEmployeeType($event.value)" formControlName="UserTypeId">
-                                    <mat-option>--</mat-option>
-                                    <mat-option *ngFor="let position of positions" [value]="position.id">
-                                        {{position.title}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <mat-form-field class="col-md-6 col-lg-6">
-                                <input matInput placeholder="Email" type="email" formControlName="Email">
-                                <mat-error *ngIf="substituteForm.controls['Email'].hasError('email')">Not a valid email
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="row" *ngIf="substituteForm.value.UserTypeId == 1">
-                            <mat-form-field class="col-md-6 col-lg-6">
-                                <mat-select placeholder="Teaching Level" formControlName="TeachingLevel">
-                                    <mat-option>--</mat-option>
-                                    <mat-option *ngFor="let teachingLevel of TeachingLevels" [value]="teachingLevel.id">
-                                        {{teachingLevel.title}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <mat-form-field class="col-md-6 col-lg-6">
-                                <input matInput placeholder="Speciality" formControlName="Speciality">
-                            </mat-form-field>
-                        </div>
-                        <div class="row">
-                            <mat-form-field class="col-md-6 col-lg-6">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3">District</td>
+                        <td>
+                            <mat-form-field class="col-md-7">
                                 <mat-select placeholder="District" formControlName="District" required>
                                     <mat-option>--</mat-option>
                                     <mat-option *ngFor="let district of Districts" [value]="district.districtId">
@@ -57,128 +39,136 @@
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <mat-form-field class="col-md-6 col-lg-6" hintLabel="Max 11 characters">
-                                <input matInput #input maxlength="11" formControlName="PhoneNumber" placeholder="Contact Number">
-                                <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
-                                <mat-error *ngIf="substituteForm.controls['PhoneNumber'].hasError('pattern')">Only numbers allowed</mat-error>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3">Position Type</td>
+                        <td>
+                            <mat-form-field class="col-md-7">
+                                <mat-select placeholder="Position Type"
+                                    (selectionChange)="onChangeEmployeeType($event.value)" formControlName="UserTypeId">
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let position of positions" [value]="position.id">
+                                        {{position.title}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
-                        </div>
-                        <div class="row">
-                            <!-- <div class="col-md-2"><label for="mat-radio-group"
-                                            style="margin-top:10px; font-weight:100;">Certified:</label></div> -->
-                            <div class="col-md-3">
-                                <label for="mat-radio-group" style="margin-top:10px; font-weight:100;">Email Alerts:
-                                </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="mat-radio-group" style="margin-top:10px; font-weight:100;">Text Alerts:
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <!-- <div class="col-md-2">
-                                        <mat-radio-group style="margin-top:10px" formControlName="IsCertified"
-                                            #radioGroup="matRadioGroup">
-                                            <mat-radio-button color="primary" value="0">No
-                                            </mat-radio-button><br>
-                                            <mat-radio-button color="primary" value="1">Yes
-                                            </mat-radio-button>
-                                        </mat-radio-group>
-                                    </div> -->
-                            <div class="col-md-3">
-                                <mat-radio-group style="margin-top:10px" formControlName="IsSubscribedEmail" #radioGroup="matRadioGroup">
-                                    <mat-radio-button color="primary" value="0">No
-                                    </mat-radio-button>
-                                    <br>
-                                    <mat-radio-button color="primary" value="1">Yes
-                                    </mat-radio-button>
-                                </mat-radio-group>
-                            </div>
-                            <div class="col-md-3">
-                                <mat-radio-group style="margin-top:10px" formControlName="IsSubscribedSMS" #radioGroup="matRadioGroup">
-                                    <mat-radio-button color="primary" value="0">No
-                                    </mat-radio-button>
-                                    <br>
-                                    <mat-radio-button color="primary" value="1">Yes
-                                    </mat-radio-button>
-                                </mat-radio-group>
-                            </div>
-                            <div class="row">
-                                <mat-form-field class="col-md-2 col-lg-2">
-                                    <input matInput placeholder="Payrate" type="number" formControlName="PayRate">
-                                    <span matPrefix>$&nbsp;</span>
-                                    <span matSuffix>/ hour</span>
-                                </mat-form-field>
-                                <mat-form-field class="col-md-4 col-lg-4">
-                                    <mat-select placeholder="Weekly Time Limits" formControlName="HourLimit">
-                                        <mat-option value="1">39 hour per week</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-
-
-
-                        </div>
-                        <!-- <div class="row">
-                                <div class="col-md-3 col-lg-3" style="margin-left:-16px">
-                                    <label class="col-md-8 col-lg-8" for="mat-radio-group" style="margin-top:10px">Certified:</label>
-                                    <mat-radio-group class="col-md-3 col-lg-3" style="margin-top:10px"
-                                        formControlName="IsCertified" #radioGroup="matRadioGroup">
-                                        <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="0">No
-                                        </mat-radio-button>
-                                        <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="1">Yes
-                                        </mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-                                <div class="col-md-3 col-lg-3" style="margin-left:-16px">
-                                    <label class="col-md-8 col-lg-8" for="mat-radio-group" style="margin-top:10px">Email
-                                        Alerts:</label>
-                                    <mat-radio-group class="col-md-3 col-lg-3" style="margin-top:10px"
-                                        formControlName="IsSubscribedEmail" #radioGroup="matRadioGroup">
-                                        <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="0">No
-                                        </mat-radio-button>
-                                        <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="1">Yes
-                                        </mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-                                <div class="col-md-3 col-lg-3">
-                                    <label class="col-md-8 col-lg-8" for="mat-radio-group" style="margin-top:10px">Text
-                                        Alerts:</label>
-                                    <mat-radio-group class="col-md-3 col-lg-3" style="margin-top:10px"
-                                        formControlName="IsSubscribedSMS" #radioGroup="matRadioGroup">
-                                        <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="0">No
-                                        </mat-radio-button>
-                                        <mat-radio-button color="primary" class="col-md-6 col-lg-6" value="1">Yes
-                                        </mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-                            </div> -->
-                        <!-- <div class="row">
-                                    <label class="col-md-2 col-lg-2">Gender</label>
-                                    <mat-radio-group class="col-md-4 col-lg-4"  formControlName="Gender">
-                                        <mat-radio-button color="primary" class="col-md-5 col-lg-5" value="M">Male</mat-radio-button>
-                                        <mat-radio-button color="primary" class="col-md-7 col-lg-7" value="F">Female</mat-radio-button>
-                                    </mat-radio-group>
-                            </div> -->
-                    </div>
-                </div>
-                <div class="col-md-2 col-lg-2">
+                        </td>
+                    </tr>
+                    <tr *ngIf="substituteForm.value.UserTypeId == 1">
+                        <td class="col-md-3">Subject</td>
+                        <td>
+                            <mat-form-field class="col-md-7">
+                                <mat-select placeholder="Subject" formControlName="TeachingLevel">
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let teachingLevel of TeachingLevels" [value]="teachingLevel.id">
+                                        {{teachingLevel.title}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr *ngIf="substituteForm.value.UserTypeId == 1">
+                        <td class="col-md-3">Subject</td>
+                        <td>
+                            <mat-form-field class="col-md-7">
+                                <input matInput placeholder="Subject" formControlName="Speciality">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3">Mobile Number</td>
+                        <td>
+                            <mat-form-field hintLabel="Max 11 characters" class="col-md-7">
+                                <input matInput #input maxlength="11" formControlName="PhoneNumber"
+                                    placeholder="Mobile Number">
+                                <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
+                                <mat-error *ngIf="substituteForm.controls['PhoneNumber'].hasError('pattern')">Only
+                                    numbers
+                                    allowed</mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3">Work Email Address</td>
+                        <td>
+                            <mat-form-field class="col-md-7">
+                                <input matInput placeholder="Email" type="email" formControlName="Email">
+                                <mat-error *ngIf="substituteForm.controls['Email'].hasError('email')">Not a valid email
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3">Payrate</td>
+                        <td>
+                            <mat-form-field class="col-md-7">
+                                <input matInput placeholder="Payrate" type="number" formControlName="PayRate">
+                                <span matPrefix>$&nbsp;</span>
+                                <span matSuffix>/ hour</span>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3">Weekly Time Limits</td>
+                        <td>
+                            <mat-form-field class="col-md-7">
+                                <mat-select placeholder="Weekly Time Limits" formControlName="HourLimit">
+                                    <mat-option value="1">39 hour per week</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3">Email Alerts</td>
+                        <td>
+                            <mat-radio-group formControlName="IsSubscribedEmail" #radioGroup="matRadioGroup"
+                                class="col-md-7">
+                                <mat-radio-button color="primary" value="1" style="margin-right: 10px">Yes
+                                </mat-radio-button>
+                                <mat-radio-button color="primary" value="0">No
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3">Text Alerts</td>
+                        <td>
+                            <mat-radio-group formControlName="IsSubscribedSMS" #radioGroup="matRadioGroup"
+                                class="col-md-7">
+                                <mat-radio-button color="primary" value="1" style="margin-right: 10px">Yes
+                                </mat-radio-button>
+                                <mat-radio-button color="primary" value="0">No
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </td>
+                    </tr>
+                </table>
+                <div class="col-md-4" style="margin-top: 10px;">
                     <div>
-                        <h4 style="text-align:center">Profile Picture</h4>
+                        <h4>Profile Picture</h4>
                     </div>
-                    <div class="row">
-                        <img [src]="profilePicture" width="200" height="200">
+                    <div>
+                        <img [src]="profilePicture" width="150" height="150">
                     </div>
-                    <div class="row">
-                        <input type='file' (change)="onSelectProfileImage($event)">
+                    <div>
+                        <input type="file" id="UploadButton" style="display: none;"
+                            (change)="onSelectProfileImage($event)">
+                        <button mat-button type="button" matTooltip="Upload Image" (click)="uploadClick()"
+                            style="color:white; background-color: #04c0be; padding: 0px 7px;">
+                            Upload
+                            <i class="material-icons">add</i>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="row col-md-12" style="text-align: right">
-                <button mat-raised-button style="background-color: #04c0be; color: white; margin-right: 5px;" type="submit">{{userIdForUpdate ? 'Update': 'Save'}}</button>
+            <div class="row col-md-offset-1" style="padding-top: 30px">
                 <a routerLink="./../../substitutes">
-                    <button mat-raised-button type="button" style="background-color: #74a4a7; color: white;">Back</button>
+                    <button mat-raised-button type="button"
+                        style="background-color: #74a4a7; color: white;">Back</button>
                 </a>
+                <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px"
+                    type="submit">{{userIdForUpdate ? 'Update': 'Add Substitute to Database'}}</button>
             </div>
         </form>
     </mat-card-content>

@@ -15,7 +15,7 @@
                                         <mat-radio-group (change)="onChangeAbsenceFor($event)" style="padding-left: 13px;" #radioGroup="matRadioGroup">
                                             <mat-radio-button color="primary" value="1" checked>Self</mat-radio-button>
                                             <mat-radio-button style="padding-left: 10px;" color="primary" value="2">Employee</mat-radio-button>
-                                            <mat-radio-button style="padding-left: 10px;" color="primary" value="3">Need a Sub</mat-radio-button>
+                                            <mat-radio-button style="padding-left: 10px;" color="primary" value="3">Find a Sub</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
                                     <div class="col-md-6 col-lg-6">
@@ -58,7 +58,7 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
-                                            <mat-select placeholder="Absence Reason" (selectionChange)="onChangeReason($event.value)" formControlName="Reason">
+                                            <mat-select placeholder="Reason" (selectionChange)="onChangeReason($event.value)" formControlName="Reason">
                                                 <mat-option *ngFor="let Leave of Leaves" [value]="Leave">
                                                     {{Leave.leaveTypeName}}
                                                 </mat-option>
@@ -104,7 +104,7 @@
                                     </div>
                                     <div *ngIf='NeedASub' class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
-                                            <mat-select placeholder="School" (selectionChange)="OnchangeOrganization(absenceFirstFormGroup.value.OrganizationId)" formControlName="OrganizationId">
+                                            <mat-select placeholder="School Location" (selectionChange)="OnchangeOrganization(absenceFirstFormGroup.value.OrganizationId)" formControlName="OrganizationId">
                                                 <mat-option>--</mat-option>
                                                 <mat-option *ngFor="let organization of Organizations" [value]="organization.schoolId">
                                                     {{organization.schoolName}}

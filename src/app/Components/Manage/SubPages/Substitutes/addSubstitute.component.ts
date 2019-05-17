@@ -172,6 +172,11 @@ export class AddSubstituteComponent implements OnInit {
         }
     }
 
+    uploadClick() {
+        const fileUpload = document.getElementById('UploadButton') as HTMLInputElement;
+        fileUpload.click();
+    }
+
     onSubmitSubstituteForm(form: any) {
         this.msg = "";
         if (this.substituteForm.valid) {

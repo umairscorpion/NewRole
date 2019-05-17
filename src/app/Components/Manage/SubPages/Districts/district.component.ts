@@ -43,6 +43,13 @@ export class DistrictsComponent {
     this.dataSource.filter = filterValue;
   }
 
+  updateDistrict(row: any) {
+    row.isActive = !row.isActive;
+    this._dataContext.Patch('District/updateDistrict', row).subscribe((data: any) => {
+    },
+      error => this.msg = <any>error);
+  }
+
   EditDistrict(SelectedRow: any) {
     this.router.navigate(['/manage/district/addDistrict'], { queryParams: { Id: SelectedRow.districtId } });
   }
