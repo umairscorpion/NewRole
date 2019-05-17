@@ -27,7 +27,7 @@
   <div class="row">
     <div class="col-md-12 col-lg-12" style="text-align: right">
       <a routerLink="/manage/employees/addemployee">
-        <button mat-raised-button style="background: #3CCCD1; color: white;">Add</button>
+        <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add</button>
       </a>
     </div>
   </div>
@@ -37,17 +37,17 @@
     <div class="example-container mat-elevation-z8">
       <div class="row example-header">
         <div class="col-md-3">
-            <mat-form-field>
-                <input matInput #inputName [(ngModel)]="employeeName" placeholder="Search Employee">
-              </mat-form-field>
+          <mat-form-field>
+            <input matInput #inputName [(ngModel)]="employeeName" placeholder="Search Employee">
+          </mat-form-field>
         </div>
         <div class="col-md-3">
-            <mat-form-field>
-                <input matInput #inputLoc [(ngModel)]="location" placeholder="Search Location">
-              </mat-form-field>
+          <mat-form-field>
+            <input matInput #inputLoc [(ngModel)]="location" placeholder="Search Location">
+          </mat-form-field>
         </div>
         <div>
-            <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit" (click)="applyFilter(inputName, inputLoc)">Search</button>
+          <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit" (click)="applyFilter(inputName, inputLoc)">Search</button>
         </div>
       </div>
       <mat-table #table [dataSource]="dataSource" matSort>
@@ -87,16 +87,15 @@
           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
           <mat-cell *matCellDef="let row">
             <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Employee" matTooltipPosition="below">
-              <i class="material-icons" (click)="DeleteEmployee(row)">delete_sweep</i>
+              <i class="material-icons" (click)="DeleteEmployee(row)" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">delete_sweep</i>
             </a>
             <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Employee" matTooltipPosition="below">
-              <i class="material-icons" (click)="EditEmployee(row)">edit</i>
+              <i class="material-icons" (click)="EditEmployee(row)" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">edit</i>
             </a>
             <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
               <i class="material-icons" (click)="ViewEmployeeDetail(row)">visibility</i>
             </a>
-            <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above"
-            [checked]="row.isActive" (change)="updateEmployee(row)" color=""></mat-slide-toggle>
+            <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above" [checked]="row.isActive" (change)="updateEmployee(row)" color=""></mat-slide-toggle>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

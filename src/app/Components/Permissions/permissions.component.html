@@ -61,7 +61,7 @@
             <p class="p-5">Assign roles to users to give them access to apps and services hosted on your account. There are several predefined user roles. You can modify them or create your own custom roles.</p>
             <hr>
             <section>
-              <button class="btn btn-success" type="button">Create User Role</button>&nbsp;
+              <button class="btn btn-success" type="button" [routerLink]="['/role/permissions', 0]">Create User Role</button>&nbsp;
               <button class="btn btn-danger" type="button" (click)="removeRoles()">Remove</button>
             </section>
             <br>
