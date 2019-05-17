@@ -64,6 +64,11 @@ $sides: (top, bottom, left, right);
     width: #{$i}% !important;
   }
 }
+
+.has-error {
+  border: solid 1px red;
+}
+
 .form-error-content{
   color: red !important;
   font-size: 11px;
@@ -373,4 +378,8 @@ div.center-text{
           overflow-y: hidden !important;
           padding: 0;
         }
+       }
+
+       .user-create-dialog {
+       width: 50vw;
        }

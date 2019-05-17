@@ -144,6 +144,13 @@ export class EmployeesComponent implements OnInit {
     this.router.navigate(['/manage/employees/addemployee'], { queryParams: { Id: SelectedRow.userId } });
   }
 
+  updateEmployee(row: any) {
+    row.isActive = !row.isActive;
+    this._dataContext.Patch('user/updateUser', row).subscribe((data: any) => {
+    },
+      error => this.msg = <any>error);
+  }
+
   ViewEmployeeDetail(SelectedRow: any) {
     this._dataContext.getById('user/getUserById', SelectedRow.userId).subscribe((data: any) => {
       this.dialog.open(PopupDialogForEmployeeDetail, {

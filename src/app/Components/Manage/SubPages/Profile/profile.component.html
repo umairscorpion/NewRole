@@ -1,4 +1,4 @@
-<div class="main-container" style="overflow-x: hidden">
+<div class="main-container" style="overflow-x:hidden">
     <Subzz-app-SideNav></Subzz-app-SideNav>
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -63,10 +63,10 @@
                                         <div class="col-md-6">
                                             <h3>Files</h3>
                                         </div>
-                                        <div class="col-md-6 col-lg-6">
+                                        <div class="col-md-6 col-lg-6" style="margin-top: 10px">
                                             <button mat-button type="button" color="warn" (click)="uploadClick()">
                                                 <mat-icon>file_upload</mat-icon>
-                                                {{FileName}}
+                                                {{OriginalFileName}}
                                             </button>
                                             <i *ngIf='FileName' style="cursor: pointer;" class="material-icons"
                                                 #tooltip="matTooltip" matTooltip="Remove Attachment"
@@ -86,30 +86,32 @@
                                 </div>
                                 <div class="col-md-12 col-lg-12" *ngIf="SubstituteFiles">
                                     <div class="col-lg-12 col-md-12 mat-elevation-z8">
-                                        <div class="row vertical-center" *ngFor="let file of SubstituteFiles">
-                                            <div class="col-md-4 col-lg-4" style="margin-top: 10px">
-                                                <mat-form-field>
-                                                    <input disabled="true" matInput [(ngModel)]="file.attachedFileName"
+                                        <div class="row" *ngFor="let file of SubstituteFiles">
+                                            <div style="margin-top: 10px">
+                                                <mat-form-field class="col-md-3 col-lg-3">
+                                                    <input disabled="true" matInput [(ngModel)]="file.originalFileName"
                                                         placeholder="File Name">
                                                 </mat-form-field>
                                             </div>
-                                            <div class="col-md-3 col-lg-3" style="margin-top: 10px">
-                                                <mat-form-field>
-                                                    <input disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
+                                            <div style="margin-top: 10px">
+                                                <mat-form-field class="col-md-3 col-lg-3">
+                                                    <input disabled="true" matInput [(ngModel)]="file.date"
+                                                        placeholder="Date">
                                                 </mat-form-field>
                                             </div>
-                                            <div class="col-md-3 col-lg-3" style="margin-top: 10px">
+                                            <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
                                                 <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
                                                     matTooltip="View File" matTooltipPosition="below">
                                                     <i class="material-icons" (click)="ViewFile(file)">visibility</i>
                                                 </a>
-                                                 <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                                                <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
                                                     matTooltip="Download File" matTooltipPosition="below">
                                                     <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
                                                 </a>
                                                 <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
                                                     matTooltip="Delete File" matTooltipPosition="below">
-                                                    <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
+                                                    <i class="material-icons"
+                                                        (click)="DeleteFile(file)">delete_sweep</i>
                                                 </a>
                                             </div>
                                         </div>

@@ -40,6 +40,13 @@ export class SchoolsComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
+  updateSchool(row: any) {
+    row.isActive = !row.isActive;
+    this._dataContext.Patch('school/updateSchool', row).subscribe((data: any) => {
+    },
+      error => this.msg = <any>error);
+  }
+
   EditSchool(SelectedRow: any) {
     this.router.navigate(['/manage/schools/AddSchool'], { queryParams: { Id: SelectedRow.schoolId } });
   }

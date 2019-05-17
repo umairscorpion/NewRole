@@ -5,11 +5,11 @@
             <div class="row">
                 <mat-card>
                     <mat-card-title>
-                        My Settings
+                        Account Settings
                     </mat-card-title>
                     <mat-card-content>
                         <mat-tab-group class="demo-tab-group" (selectedTabChange)="onChangeTab($event)">
-                            <mat-tab *ngIf='!isSubstitute && UserRole != 3' label="Lists">
+                            <mat-tab *ngIf='UserRole === 9' label="Lists">
                                 <div style="padding-top:10px ">
                                     <div class="row col-md-12">
                                         <div class="col-md-6" style="text-align:right">
@@ -42,7 +42,7 @@
                                     </div>
                                 </div>
                             </mat-tab>
-                            <mat-tab *ngIf='!isSubstitute && UserRole != 3' label="Payroll Settings">
+                            <mat-tab *ngIf='UserRole === 9' label="Payroll Settings">
                                 <div class="row col-md-8 col-md-offset-2">
                                     <div class="row">
                                         <div class="col-md-12" style="margin-top:10px;text-align: center">
@@ -127,7 +127,7 @@
                                     </div>
                                 </div>
                             </mat-tab>
-                            <mat-tab *ngIf='!isSubstitute && UserRole != 3' label="Calendar Settings">
+                            <mat-tab *ngIf='UserRole === 9' label="Calendar Settings">
 
                             </mat-tab>
                             <mat-tab *ngIf='isSubstitute' label="Categories Settings">
@@ -234,7 +234,7 @@
                                                 <mat-option value="2">2 hours</mat-option>
                                             </mat-select>
                                         </mat-form-field>
-                                        to accept the request before we notify the rest of your sub.
+                                        before we notify the rest of your sub.
                                     </div>
                                     <mat-divider></mat-divider>
                                     <div class="row col-md-12">

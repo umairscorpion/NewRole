@@ -74,6 +74,7 @@ export class ReportFiltersComponent implements OnInit {
     },
       error => <any>error);
   }
+  
   GetOrganiations(): void {
     this.dataContext.get('school/getSchools').subscribe((data: any) => {
       this.Organizations = data;

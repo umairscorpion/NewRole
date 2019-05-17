@@ -43,6 +43,13 @@ export class OrganizationsComponent {
     this.dataSource.filter = filterValue;
   }
 
+  updateOrganization(row: any) {
+    row.isActive = !row.isActive;
+    this._dataContext.Patch('district/updateDistrict', row).subscribe((data: any) => {
+    },
+      error => this.msg = <any>error);
+  }
+
   EditDistrict(SelectedRow: any) {
     this.router.navigate(['/manage/organizations/addOrganization'], { queryParams: { Id: SelectedRow.districtId } });
   }

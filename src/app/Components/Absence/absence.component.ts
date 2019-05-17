@@ -7,12 +7,14 @@ import { Router } from '@angular/router';
 import { SideNavService } from '../SideNav/sideNav.service';
 import { CommunicationService } from '../../Services/communication.service';
 import { UserSession } from '../../Services/userSession.service';
+import { LeaveBalance } from '../../Model/leaveBalance';
 
 @Component({
     templateUrl: 'absence.component.html',
     styleUrls: ['absence.component.css']
 })
 export class absenceComponent {
+    employeeLeaveBalance: any;
     sideNavMenu: any;
     msg: string;
     userRole: number = this._userSession.getUserRoleId();
@@ -20,7 +22,8 @@ export class absenceComponent {
     mobileQuery: MediaQueryList;
     private _mobileQueryListener: () => void;
     isOpen = true;
-    constructor(private router: Router, private _userService: UserService, public dialog: MatDialog,
+    constructor(private router: Router, private _userService: UserService, public dialog: MatDialog, 
+        private dataContext: DataContext,
         private sideNavService: SideNavService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
         private _userSession: UserSession,
         private _communicationService: CommunicationService) {
@@ -37,6 +40,13 @@ export class absenceComponent {
         this._communicationService.AbsenceDetail.subscribe((AbsenceDetail: any) => {
             this.AbsenceDetail(AbsenceDetail);
         });
+        if(this._userSession.getUserRoleId() === 3) this.getEmployeeBalance();
+    }
+
+    getEmployeeBalance() {
+        this.dataContext.get('Leave/getEmployeeLeaveBalance/' + new Date().getFullYear() + '/' + this._userSession.getUserId()).subscribe((response: LeaveBalance[]) => {
+            this.employeeLeaveBalance = response;
+        })
     }
 
     LoadSideNavMenu(): void {

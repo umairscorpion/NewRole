@@ -6,6 +6,10 @@ import { UserSession } from '../../../../../Services/userSession.service';
 import { NotifierService } from '../../../../../../../node_modules/angular-notifier';
 import { DataContext } from '../../../../../Services/dataContext.service';
 import { LeaveBalance } from '../../../../../Model/leaveBalance';
+import { EmployeeService } from '../../../../../Service/Manage/employees.service';
+import { Observable } from '../../../../../../../node_modules/rxjs';
+import { IEmployee } from '../../../../../Model/Manage/employee';
+import { User } from '../../../../../Model/user';
 
 @Component({
     selector: 'leave-balance',
@@ -13,14 +17,17 @@ import { LeaveBalance } from '../../../../../Model/leaveBalance';
     styleUrls: ['leave-balance.component.scss']
 })
 export class LeaveBalanceComponent implements OnInit {
+    year: number = new Date().getFullYear();
+    employee: User;
     years: Years[] = Array<Years>();
+    employees: Observable<IEmployee[]>;
     employeeLeaveBalance = new MatTableDataSource();
     displayedColumnsForLeaveRequests = ['Year', 'Name', 'Personal', 'Sick', 'Vacation'];
     private notifier: NotifierService;
     position: FormGroup;
     msg: string;
     constructor(private fb: FormBuilder, notifier: NotifierService, private dataContext: DataContext,
-        private userSession: UserSession) {
+        private userSession: UserSession, private employeeService: EmployeeService) {
         this.notifier = notifier;
     }
 
@@ -31,10 +38,31 @@ export class LeaveBalanceComponent implements OnInit {
         this.getLeaveEmployeeLeaveBalance();
     }
 
+    //ASYNC FUNCTION TO SEARCH EMPLOYEE
+    SearchEmployees(SearchedText: string) {
+        let IsSearchSubstitute = 0;
+        let OrgId = this.userSession.getUserOrganizationId();
+        let DistrictId = this.userSession.getUserDistrictId();
+        //this.Employees.map(employee => employee.filter(employees => employees.FirstName === SearchEmployees));
+        this.employees = this.employeeService.searchUser('user/getEmployeeSuggestions', SearchedText, IsSearchSubstitute, OrgId, DistrictId);
+        this.employees = this.employees.map((users: any) => users.filter(user => user.userId != this.userSession.getUserId()));
+    }
+
     getLeaveEmployeeLeaveBalance() {
-        this.dataContext.get('Leave/getEmployeeLeaveBalance').subscribe((response: LeaveBalance[]) => {
+        this.dataContext.get('Leave/getEmployeeLeaveBalance/' + this.year + '/' + "-1").subscribe((response: LeaveBalance[]) => {
             this.employeeLeaveBalance.data = response;
         })
+    }
+
+    applyFilter() {
+        this.dataContext.get('Leave/getEmployeeLeaveBalance/' + this.year + '/' + this.employee.userId).subscribe((response: LeaveBalance[]) => {
+            this.employeeLeaveBalance.data = response;
+        })
+    }
+
+    //For Display Employee name in text box
+    displayName(user?: any): string | undefined {
+        return user ? user.firstName : undefined;
     }
 }
 
