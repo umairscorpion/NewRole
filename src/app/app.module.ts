@@ -180,6 +180,7 @@ import { AuditLogService } from './Services/audit_logs/audit-log.service';
 import { ShowAttachmentPopupComponent } from './Shared/show-attachment-popup/show-attachment-popup.component';
 import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
 import { LeaveBalanceComponent } from './Components/Manage/SubPages/Leaves/LeaveBalance/leave-balance.component';
+import { TrainingGuidesComponent } from './Components/TrainingGuides/training-guides.component';
 import { UserEditComponent } from './Components/User/userEdit/userEdit.component';
 
 export function getAuthServiceConfigs() {
@@ -354,6 +355,7 @@ const customNotifierOptions: NotifierOptions = {
         LeaveBalanceComponent,
         ShowAttachmentPopupComponent,
         MySettingComponent,
+        TrainingGuidesComponent,
         UserEditComponent
     ],
     entryComponents: [

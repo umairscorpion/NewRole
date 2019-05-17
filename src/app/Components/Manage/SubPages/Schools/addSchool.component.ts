@@ -105,11 +105,12 @@ export class AddSchoolComponent implements OnInit {
                         releaseJobTime: form.value.releaseJobTime,
                         notifyOthersTime: form.value.notifyOthersTime,
                         dailyAbenceLimit: form.value.dailyAbenceLimit,
-                        isAbsenceLimit: form.value.isAbsenceLimit
+                        isAbsenceLimit: form.value.isAbsenceLimit,
+                        IsActive: 1
                     }
                     this._dataContext.Patch('school/updateSchool', model).subscribe((data: any) => {
-                        this.notifier.notify('success', 'Updated Successfully.');
                         this.router.navigate(['/manage/schools']);
+                        this.notifier.notify('success', 'Updated Successfully.');
                     },
                         (err: HttpErrorResponse) => {
                             this.notifier.notify('error', err.message);
@@ -134,8 +135,8 @@ export class AddSchoolComponent implements OnInit {
                         isAbsenceLimit: form.value.isAbsenceLimit
                     }
                     this._dataContext.post('school/insertSchool', model).subscribe((data: any) => {
-                        this.notifier.notify('success', 'Saved Successfully.');
                         this.router.navigate(['/manage/schools']);
+                        this.notifier.notify('success', 'Saved Successfully.');
                     },
                         (err: HttpErrorResponse) => {
                             this.notifier.notify('error', err.message);

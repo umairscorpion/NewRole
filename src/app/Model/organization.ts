@@ -21,4 +21,5 @@ export class Organization extends Entity {
     notifyOthersTime: string;
     dailyAbenceLimit: number;
     isAbsenceLimit: boolean;
+    isActive: boolean;
 }

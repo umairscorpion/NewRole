@@ -22,4 +22,5 @@ export class District extends Entity
         countryId: number;
         countryName: string;
         stateName: string;
+        isActive: boolean;
     }

@@ -25,8 +25,8 @@ export class ShowAttachmentPopupComponent implements OnInit {
   }
 
   viewAttachmet() {
-    const model = { AttachedFileId: this.data.attachedFileId, FileContentType: this.data.fileContentType };
-    this._dataContext.getFile('fileSystem/getfile', model).subscribe((blob: any) => {
+    const model = { FileName: this.data.fileName, FileContentType: this.data.fileContentType };
+    this._dataContext.getFile('fileSystem/getUploadFile', model).subscribe((blob: any) => {
       const newBlob = new Blob([blob]);
       if (window.navigator && window.navigator.msSaveOrOpenBlob) {
         window.navigator.msSaveOrOpenBlob(newBlob);

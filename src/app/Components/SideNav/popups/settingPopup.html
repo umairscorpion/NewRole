@@ -35,6 +35,9 @@
                 <div style="margin-top: 20px">
                     <a (click)="openTimeClockPage()">Time Clock</a>
                 </div>
+                <div style="margin-top: 20px" *ngIf="userRole != 5">
+                    <a (click)="openTrainingGuide()">Training Guide</a>
+                </div>
             </div>
         </div>
         <div class="col-md-4 col-xs-4" style="height: 300px;background-color: rgba(209,196,233,.3);">
