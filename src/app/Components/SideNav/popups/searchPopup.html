@@ -4,9 +4,12 @@
     </div>
     <form class="row">
         <mat-form-field class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1">
-            <input type="tel" matInput placeholder="Search your employee, substitutes and reports">
-            <mat-icon matSuffix>search</mat-icon>
+            <input type="tel" #inputName matInput placeholder="Search your employee, substitutes and reports">
+            
         </mat-form-field>
+        <button mat-icon-button class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1" (click)="Search(inputName.value)">
+            <mat-icon matSuffix >search</mat-icon>
+        </button>
     </form>
     <div class="row">
         <div class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1">
@@ -20,6 +23,32 @@
                    Search by <b>name</b>, <b>Job#</b>, <b>date</b>(MM/DD/YYYY) and more.
             </div>
         </div>
+    </div>
+    <div class="row" class="search-div">
+        <mat-table #table [dataSource]="dataSource" matSort>
+            <!-- Position Column -->
+            <ng-container matColumnDef="firstName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+              <mat-cell *matCellDef="let iEmployee" >{{iEmployee.firstName}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="LastName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+              <mat-cell *matCellDef="let iEmployee" >{{iEmployee.lastName}} </mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Email">
+              <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+              <mat-cell *matCellDef="let iEmployee" >{{iEmployee.email}} </mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Type">
+              <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+              <mat-cell *matCellDef="let iEmployee" >{{iEmployee.roleId == 4 ? 'Substitute' : iEmployee.roleId == 3 ? 'Teacher' : 'Admin' }} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
     </div>
 
 </div>

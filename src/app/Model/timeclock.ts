@@ -21,6 +21,7 @@ export class TimeClock extends Entity {
     statusId: number
     substituteName: string;
     location: string;
-
-
+    timeClockId: number
+    startTime: string;
+    endTime: string;
 }

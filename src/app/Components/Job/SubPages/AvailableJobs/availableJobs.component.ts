@@ -47,6 +47,7 @@ export class AvailableJobsComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
+    iamRequested: boolean;
 
     constructor(private _dataContext: DataContext, private _userSession: UserSession,
         private _formBuilder: FormBuilder, notifier: NotifierService, private fileService: FileService,
@@ -68,7 +69,7 @@ export class AvailableJobsComponent implements OnInit {
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + Status).subscribe((data: Absence[]) => {
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/"+ false + "/" + Status).subscribe((data: Absence[]) => {
                 this.AvailableJobs.data = data;
                 this.AvailableJobCount = data.length;
                 this.AvailableCountEvent.emit(this.AvailableJobCount);
@@ -82,7 +83,7 @@ export class AvailableJobsComponent implements OnInit {
             FilterEndDate: ['', Validators.required],
             DistrictId: [{ disabled: true }, Validators.required],
             OrganizationId: ['-1', Validators.required],
-            Requested: ['']
+            Requested: [false]
         });
         this.GetMyJobs();
         this.GetDistricts();
@@ -119,7 +120,7 @@ export class AvailableJobsComponent implements OnInit {
         if (this.FilterForm.valid) {
             this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"
                 + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +
-                "/" + SearchFilter.getRawValue().DistrictId + "/" + 1).subscribe((data: any) => {
+                "/" + SearchFilter.getRawValue().DistrictId + "/" + SearchFilter.value.Requested + "/" + 1).subscribe((data: any) => {
                     this.AvailableJobs.data = data;
                     this.AvailableJobCount = data.length;
                     this.AvailableCountEvent.emit(this.AvailableJobCount)
@@ -190,7 +191,7 @@ export class AvailableJobsComponent implements OnInit {
         let DistrictId = this._userSession.getUserDistrictId();
         let Status = 2;
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate.toISOString() + "/" + EndDate.toISOString() +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + Status).subscribe((data: any) => {
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/"+ false + "/" + Status).subscribe((data: any) => {
                 this.myJobs = data;
             },
                 error => this.msg = <any>error);

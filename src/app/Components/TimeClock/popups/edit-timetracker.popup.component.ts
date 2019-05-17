@@ -32,9 +32,10 @@ export class EditTimeTracker implements OnInit {
     onUpdateTimeTracker(timeTrackerDetail: TimeClock) {
         let TimeModel = {
             clockInDate: timeTrackerDetail.clockInDate,
-            clockInTime:timeTrackerDetail.clockInTime,
-            clockOutTime:timeTrackerDetail.clockOutTime,
+            clockInTime:timeTrackerDetail.startTime,
+            clockOutTime:timeTrackerDetail.endTime,
             userId:timeTrackerDetail.userId,
+            timeClockId:timeTrackerDetail.timeClockId
             
         }
         this.timeClockService.Patch('/Time/updateTimeClockData/', TimeModel).subscribe((respose: any) => {

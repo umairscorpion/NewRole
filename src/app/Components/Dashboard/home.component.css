@@ -31,7 +31,7 @@ h1.example-app-name {
 }
 
 .active{
-  background:  rgba(209,196,233,.3);
+  background:  #fafafa;;
   border-left: 4px solid green;
 }
 
@@ -80,4 +80,15 @@ h1.example-app-name {
 
 .stat-percent {
   float: right;
+}
+.matheadercell {
+  color: black;
+  background-color: #fafafa;
+  font-size: small;
+}
+.matrow {
+  background-color: #fafafa;
+}
+ .matrow:nth-child(odd) {
+  background-color: #fafafa8c;
 }

@@ -38,6 +38,16 @@ export class AbsenceService extends RestService<LeaveType> {
       );
   }
 
+  getTopTenTeachers() {
+    return this.httpClient
+      .get<AbsenceSummary[]>(environment.apiUrl + "/absence/getTopTenTeachers")
+      .pipe(catchError(this.errorHandler.handleError),
+        map((response: AbsenceSummary[]) => {
+          return response.map(item => this.getSummaryInstance().deserialize(item));
+        })
+      );
+  }
+
   // getReasonSummary() {
   //   return this.httpClient
   //     .get<AbsenceSummary[]>(environment.apiUrl + "/absence/reasonsummary")
