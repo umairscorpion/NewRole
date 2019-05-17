@@ -77,6 +77,76 @@
                                     </div>
                                 </form>
                             </mat-tab>
+                            <mat-tab *ngIf='isSubstitute' label="School Settings">
+                                <div class="row col-md-8 col-md-offset-2">
+                                    <div class="col-md-8" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
+                                        <p>
+                                            <b> Select Schools against which you want to get notifications.</b>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-8" style="height:400px;">
+                                        <mat-selection-list #EnabledSchools>
+                                            <mat-list-option *ngFor="let school of PreferredSchools" [value]="school.organizationId" [selected]="school.isEnabled">
+                                                {{school.organizationName}}
+                                            </mat-list-option>
+                                        </mat-selection-list>
+                                    </div>
+                                    <div class="col-md-8" style="text-align: center">
+                                        <button style="background-color: #04c0be; color: white;" mat-raised-button (click)="SavePreferredSchoolSettings(EnabledSchools)">Save</button>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                            <mat-tab *ngIf='isSubstitute' label="Categories Settings">
+                                <div class="row col-md-8 col-md-offset-2">
+                                    <div class="col-md-12" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
+                                        <p>
+                                            <b> Select Categories against which you want to get notifications.</b>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12" style="overflow-y: scroll; height:400px;">
+                                        <mat-selection-list #Category>
+                                            <mat-list-option *ngFor="let category of Categories" [value]="category.id" [selected]="category.isNotificationSend">
+                                                {{category.title}}
+                                            </mat-list-option>
+                                        </mat-selection-list>
+                                    </div>
+                                    <div class="col-md-12" style="text-align: center">
+                                        <button style="background-color: #04c0be; color: white;" mat-raised-button (click)="SaveCategories(Category)">Save</button>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                            <mat-tab *ngIf='isSubstitute' label="Notification">
+                                <h3>Notifications</h3>
+                                <div class="row">
+                                    <!-- <div class="col-md-2"><label for="mat-radio-group"
+                                                    style="margin-top:10px; font-weight:100;">Certified:</label></div> -->
+                                    <div class="col-md-3">
+                                        <label for="mat-radio-group" style="margin-top:10px; font-weight:100;">Email Alerts:
+                                        </label>
+                                        <br>
+                                        <mat-radio-group style="margin-top:10px" #radioGroup="matRadioGroup">
+                                            <mat-radio-button color="primary" value="0">No
+                                            </mat-radio-button>
+                                            <br>
+                                            <mat-radio-button color="primary" value="1">Yes
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="mat-radio-group" style="margin-top:10px; font-weight:100;">Text Alerts:
+                                        </label>
+                                        <br>
+                                        <mat-radio-group style="margin-top:10px" #radioGroup="matRadioGroup">
+                                            <mat-radio-button color="primary" value="0">No
+                                            </mat-radio-button>
+                                            <br>
+                                            <mat-radio-button color="primary" value="1">Yes
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                            </div>
+
+                            </mat-tab>
                         </mat-tab-group>
                     </mat-card-content>
                 </mat-card>

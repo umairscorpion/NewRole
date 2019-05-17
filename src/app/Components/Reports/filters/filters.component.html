@@ -12,8 +12,7 @@
             </div>
             <div class="col-md-4 text-center pt-15">
               <mat-form-field *ngIf='componentName == "daily"'>
-                <input matInput [matDatepicker]="datePickerFrom" placeholder="Choose a date" formControlName="fromDate"
-                  (dateChange)="onSubmit(reportFilterForm)">
+                <input matInput [matDatepicker]="datePickerFrom" placeholder="Choose a date" formControlName="fromDate" (dateChange)="onSubmit(reportFilterForm)">
                 <mat-datepicker-toggle matSuffix [for]="datePickerFrom"></mat-datepicker-toggle>
                 <mat-datepicker #datePickerFrom></mat-datepicker>
               </mat-form-field>
@@ -23,7 +22,7 @@
                 <i class="material-icons">
                   description
                 </i>
-                  EXPORT CSV  
+                EXPORT CSV
               </button>&nbsp;
               <button type="button" mat-raised-button class="btn btn-default" (click)="onCancel()" *ngIf='componentName == "daily"'>Cancel</button>
             </div>

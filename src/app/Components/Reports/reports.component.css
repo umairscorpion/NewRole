@@ -30,6 +30,6 @@
     flex: 1 0 auto;
   }
   .active{
-    background: rgba(209,196,233,.3);
+    background: #fafafa;;
     border-left: 4px solid #309e21;
     }
