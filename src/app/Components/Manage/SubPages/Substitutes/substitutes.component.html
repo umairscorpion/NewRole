@@ -5,7 +5,7 @@
       <mat-tab label="Substitutes">
         <div class="row col-md-12 col-lg-12" style="text-align: right">
           <a routerLink="/manage/substitutes/addSubstitute">
-            <button mat-raised-button style="background: #3CCCD1; color: white;">Add</button>
+            <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add</button>
           </a>
         </div>
         <div class="row col-md-12 col-lg-12">
@@ -51,16 +51,15 @@
                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                 <mat-cell *matCellDef="let row">
                   <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Substitute" matTooltipPosition="below">
-                    <i class="material-icons" (click)="DeleteSubstitute(row)">delete_sweep</i>
+                    <i class="material-icons" (click)="DeleteSubstitute(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">delete_sweep</i>
                   </a>
                   <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute" matTooltipPosition="below">
-                    <i class="material-icons" (click)="EditSubstitute(row)">edit</i>
+                    <i class="material-icons" (click)="EditSubstitute(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">edit</i>
                   </a>
                   <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
                     <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
                   </a>
-                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above"
-                  [checked]="row.isActive" (change)="updateSubstitute(row)" color=""></mat-slide-toggle>
+                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above" [checked]="row.isActive" (change)="updateSubstitute(row)" color=""></mat-slide-toggle>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -76,7 +75,7 @@
       </mat-tab>
       <mat-tab label="School Sub List">
         <school-sub-list></school-sub-list>
-        </mat-tab>
+      </mat-tab>
     </mat-tab-group>
   </mat-card-content>
 </mat-card>
