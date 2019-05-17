@@ -14,18 +14,19 @@
               <mat-card-title>{{ id > 0 ? "Edit" : "Create" }} User Role</mat-card-title>
               <mat-card-subtitle>Define access to installed apps or Subzz services for all users with this role. If you grant a user access to an app will become to them in Customer Panel.</mat-card-subtitle>
             </mat-card-header>
-            <mat-card-actions>
-              <button mat-button type="submit" class="btn btn-success">Save</button>&nbsp;
-              <button mat-button type="button" class="btn-default">Cancel</button>
-            </mat-card-actions>
+            <div class="row p-15">
+              <div class="form-group col-md-6">
+                <label class="required">Role Title</label>
+                <input type="text" class="form-control" autocomplete="off" formControlName="name" [ngClass]="{'has-error': !form.get('name').valid && submitted}" />
+                <div class="form-inline form-error-content" *ngIf="submitted">
+                  <span *ngIf="submitted && form.get('name').errors?.required">Role Title is required</span>
+                  <span *ngIf="submitted && form.get('name').errors?.pattern">Role Title is invalid</span>
+                </div>
+              </div>
+              <div class="form-group col-md-6"><button mat-button type="submit" class="btn btn-success">Save</button>&nbsp;
+                <button mat-button type="button" class="btn-default">Cancel</button></div>
+            </div>
             <mat-card-content>
-              <section class="ml-5">
-                <mat-form-field>
-                  <input matInput formControlName="name" class="form-control">
-                  <mat-hint class="form-error-content" *ngIf="submitted && form.get('name').errors?.required">Role Title is required</mat-hint>
-                  <mat-hint class="form-error-content" *ngIf="submitted && form.get('name').errors?.pattern">Role Title is invalid</mat-hint>
-                </mat-form-field>
-              </section>
               <mat-list *ngFor="let category of permissions">
                 <h3 mat-subheader>{{category.description}}</h3>
                 <mat-list-item *ngFor="let permission of category.permissions">

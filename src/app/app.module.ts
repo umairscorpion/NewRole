@@ -1,4 +1,4 @@
-import { NgModule, Injector,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgModule, Injector, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 //import { AppMaterialModule } from './App-Material/app-material';
 import { AppComponent } from './app.component';
@@ -122,7 +122,7 @@ import { SettingComponent } from './Components/Settings/settings.component';
 //TimeClock And TimeTracker Component
 import { TimeClockComponent } from './Components/TimeClock/timeClock.component';
 import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.component';
-import {EditTimeTracker} from 'src/app/Components/TimeClock/popups/edit-timetracker.popup.component'
+import { EditTimeTracker } from 'src/app/Components/TimeClock/popups/edit-timetracker.popup.component'
 import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 
 //Services
@@ -138,7 +138,7 @@ import { ReportService } from './Services/report.service';
 import { ErrorHandlerService } from './Services/error-handler/error-handler.service';
 import { ProfileService } from './Services/profile.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import {TimeClockService} from 'src/app/Services/timeClock.service'
+import { TimeClockService } from 'src/app/Services/timeClock.service'
 
 import {
     SocialLoginModule,
@@ -181,6 +181,7 @@ import { ShowAttachmentPopupComponent } from './Shared/show-attachment-popup/sho
 import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
 import { LeaveBalanceComponent } from './Components/Manage/SubPages/Leaves/LeaveBalance/leave-balance.component';
 import { TrainingGuidesComponent } from './Components/TrainingGuides/training-guides.component';
+import { UserEditComponent } from './Components/User/userEdit/userEdit.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -354,7 +355,8 @@ const customNotifierOptions: NotifierOptions = {
         LeaveBalanceComponent,
         ShowAttachmentPopupComponent,
         MySettingComponent,
-        TrainingGuidesComponent
+        TrainingGuidesComponent,
+        UserEditComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -374,7 +376,8 @@ const customNotifierOptions: NotifierOptions = {
         PopupForCancelAbsencesComponent,
         EditTimeTracker,
         EditPayrollComponent,
-        ShowAttachmentPopupComponent
+        ShowAttachmentPopupComponent,
+        UserEditComponent
     ],
     providers: [
         UserService,
@@ -413,9 +416,9 @@ const customNotifierOptions: NotifierOptions = {
         AuditLogService
     ],
     bootstrap: [AppComponent],
-   
+
     // schemas: [ CUSTOM_ELEMENTS_SCHEMA ]schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
-export class AppModule { 
+export class AppModule {
 
 }
