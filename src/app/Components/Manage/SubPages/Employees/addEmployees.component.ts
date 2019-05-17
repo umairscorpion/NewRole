@@ -228,6 +228,13 @@ export class AddEmployeesComponent implements OnInit {
         fileUpload.click();
     }
 
+    onSelectPrimarySchool(schoolId: string) {
+        const secondarySchools: string[] = Array<string>();
+        secondarySchools.push(schoolId);
+        this.employeeForm.get('SecondarySchools').setValue(secondarySchools);
+
+    }
+
     onSubmitEmployeeForm(form: any) {
         this.msg = "";
         if (this.employeeForm.valid) {
