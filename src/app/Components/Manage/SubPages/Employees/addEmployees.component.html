@@ -34,7 +34,7 @@
 
                         <div class="row" *ngIf="employeeForm.value.UserTypeId == 1">
                             <mat-form-field class="col-md-6 col-lg-6">
-                                <mat-select placeholder="Teaching Level" formControlName="TeachingLevel">
+                                <mat-select placeholder="Grade" formControlName="TeachingLevel">
                                     <mat-option>--</mat-option>
                                     <mat-option *ngFor="let teachingLevel of TeachingLevels" [value]="teachingLevel.id">
                                         {{teachingLevel.title}}
@@ -42,7 +42,12 @@
                                 </mat-select>
                             </mat-form-field>
                             <mat-form-field class="col-md-6 col-lg-6">
-                                <input matInput placeholder="Speciality" formControlName="Speciality">
+                                <mat-select placeholder="Subject" formControlName="TeachingLevel">
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let subject of teachingSubjects" [value]="subject.id">
+                                        {{subject.title}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </div>
 
@@ -64,10 +69,20 @@
                                 </mat-select>
                             </mat-form-field>
                             <mat-form-field *ngIf='radioGroupForLocation.value == "2"' class="col-md-6 col-lg-6">
-                                <mat-select placeholder="Organization" formControlName="OrganizationId" required>
+                                <mat-select placeholder="Primary School" formControlName="OrganizationId"
+                                    required>
                                     <mat-option>--</mat-option>
-                                    <mat-option *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
+                                    <mat-option *ngFor="let Organization of Organizations" (click)="onChangeSchool(Organization.schoolId)" [value]="Organization.schoolId">
                                         {{Organization.schoolName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field *ngIf='radioGroupForLocation.value == "2"' class="col-md-6 col-lg-6">
+                                <mat-select placeholder="Can also access the schools" formControlName="SecondarySchools" multiple>
+                                    <mat-option-select-all></mat-option-select-all>
+                                    <mat-option *ngFor="let organization of Organizations" [disabled]="employeeForm.value.OrganizationId === organization.schoolId"
+                                        [value]="organization.schoolId">
+                                        {{organization.schoolName}} {{employeeForm.value.OrganizationId === organization.schoolId ? '(Primary School)': ''}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>

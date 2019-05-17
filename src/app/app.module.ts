@@ -181,6 +181,7 @@ import { ShowAttachmentPopupComponent } from './Shared/show-attachment-popup/sho
 import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
 import { LeaveBalanceComponent } from './Components/Manage/SubPages/Leaves/LeaveBalance/leave-balance.component';
 import { UserEditComponent } from './Components/User/userEdit/userEdit.component';
+import { SelectCheckAllComponent } from './Elements/MultiSelect/multi-select.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -354,7 +355,8 @@ const customNotifierOptions: NotifierOptions = {
         LeaveBalanceComponent,
         ShowAttachmentPopupComponent,
         MySettingComponent,
-        UserEditComponent
+        UserEditComponent,
+        SelectCheckAllComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

@@ -16,8 +16,7 @@
                     <input type="text" placeholder="Search Employee Name" aria-label="Number" (input)="SearchEmployees($event.target.value)"
                         matInput [(ngModel)]="employee" [matAutocomplete]="auto">
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
-                        <mat-option *ngFor="let employee of employees | async"
-                            [value]="employee">
+                        <mat-option *ngFor="let employee of employees | async" [value]="employee">
                             {{employee.firstName}}
                         </mat-option>
                     </mat-autocomplete>

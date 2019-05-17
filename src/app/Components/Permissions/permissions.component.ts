@@ -110,7 +110,7 @@ export class PermissionsComponent implements OnInit {
     addEditUser(user: UserSummary) {
         const dialogRef = this.dialog.open(UserEditComponent, {
             panelClass: 'user-create-dialog',
-            data: user || new UserSummary();
+            data: user || new UserSummary()
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.user) {

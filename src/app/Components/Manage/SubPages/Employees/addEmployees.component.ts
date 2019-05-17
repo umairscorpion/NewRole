@@ -20,8 +20,10 @@ export class AddEmployeesComponent implements OnInit {
     Districts: any;
     Organizations: any;
     TeachingLevels: any;
+    teachingSubjects: any;
     msg: string;
     employeeForm: FormGroup;
+    toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
     UserClaim = JSON.parse(localStorage.getItem('userClaims'));
     // These two variables are used to show and hid district and school but not in use may be reqired. So dont remove it.
     showDistrict: boolean = true;
@@ -46,6 +48,7 @@ export class AddEmployeesComponent implements OnInit {
             Gender: ['M', Validators.required],
             District: ['', Validators.required],
             OrganizationId: [''],
+            SecondarySchools: [],
             EmailId: ['', [Validators.required, Validators.email]],
             PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
             IsActive: [1]
@@ -61,6 +64,7 @@ export class AddEmployeesComponent implements OnInit {
         this.GetDistricts();
         this.GetOrganiations();
         this.GetTeachingLevels();
+        this.GetTeachingSubjects();
 
         this.route.queryParams.subscribe((params: any) => {
             if (params['Id']) {
@@ -75,7 +79,7 @@ export class AddEmployeesComponent implements OnInit {
                         UserTypeId: data[0].userTypeId,
                         EmailId: data[0].email,
                         TeachingLevel: data[0].teachingLevel,
-                        Speciality: data[0].speciality ? data[0].speciality : '',
+                        Speciality: data[0].specialityTypeId,
                         WorkLocaion: data[0].organizationId ? '2' : '1',
                         IsCertified: String(data[0].isCertified),
                         IsSubscribedEmail: data[0].isSubscribedEmail ? '1' : '0',
@@ -83,8 +87,9 @@ export class AddEmployeesComponent implements OnInit {
                         Gender: String(data[0].gender),
                         District: data[0].districtId,
                         OrganizationId: data[0].organizationId ? data[0].organizationId : '',
+                        SecondarySchools: data[0].secondarySchools,
                         PhoneNumber: data[0].phoneNumber,
-                        IsActive:data[0].isActive
+                        IsActive: data[0].isActive
                     }
                     this.getProfileImage(data[0].profilePicture);
                     this.employeeForm.setValue(EmployeeModel);
@@ -123,7 +128,12 @@ export class AddEmployeesComponent implements OnInit {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
             this.employeeForm.get('District').setValue(this._userSession.getUserDistrictId());
-            this.employeeForm.controls['District'].disable();
+            if (this._userSession.getUserRoleId() == 5) {
+                this.employeeForm.controls['District'].enable();
+            }
+            else {
+                this.employeeForm.controls['District'].disable();
+            }
         },
             error => <any>error);
     }
@@ -142,6 +152,13 @@ export class AddEmployeesComponent implements OnInit {
     GetTeachingLevels(): void {
         this._dataContext.get('lookup/getTeachingLevels').subscribe((data: any) => {
             this.TeachingLevels = data;
+        },
+            error => this.msg = <any>error);
+    }
+
+    GetTeachingSubjects(): void {
+        this._dataContext.get('lookup/teachingSubjects').subscribe((data: any) => {
+            this.teachingSubjects = data;
         },
             error => this.msg = <any>error);
     }
@@ -172,18 +189,19 @@ export class AddEmployeesComponent implements OnInit {
     //ON CHANGING EMPLOYEE TYPE
     onChangeEmployeeType(value: any) {
         if (value === 1) {
-            this.employeeForm.controls["TeachingLevel"].setValidators([Validators.required]);
-            this.employeeForm.controls["Speciality"].setValidators([Validators.required]);
-            this.employeeForm.controls['TeachingLevel'].updateValueAndValidity();
-            this.employeeForm.controls['Speciality'].updateValueAndValidity();
+            // this.employeeForm.controls["TeachingLevel"].setValidators([Validators.required]);
+            // this.employeeForm.controls["Speciality"].setValidators([Validators.required]);
+            // this.employeeForm.controls['TeachingLevel'].updateValueAndValidity();
+            // this.employeeForm.controls['Speciality'].updateValueAndValidity();
         }
         else {
-            this.employeeForm.controls['TeachingLevel'].clearValidators();
-            this.employeeForm.controls['Speciality'].clearValidators();
-            this.employeeForm.controls['TeachingLevel'].updateValueAndValidity();
-            this.employeeForm.controls['Speciality'].updateValueAndValidity();
+            // this.employeeForm.controls['TeachingLevel'].clearValidators();
+            // this.employeeForm.controls['Speciality'].clearValidators();
+            // this.employeeForm.controls['TeachingLevel'].updateValueAndValidity();
+            // this.employeeForm.controls['Speciality'].updateValueAndValidity();
         }
     }
+
     // On Selecting Profile Image
     onSelectProfileImage(event: any) {
         if (event.target.files && event.target.files[0]) {
@@ -205,6 +223,11 @@ export class AddEmployeesComponent implements OnInit {
         }
     }
 
+    uploadClick() {
+        const fileUpload = document.getElementById('UploadButton') as HTMLInputElement;
+        fileUpload.click();
+    }
+
     onSubmitEmployeeForm(form: any) {
         this.msg = "";
         if (this.employeeForm.valid) {
@@ -221,20 +244,21 @@ export class AddEmployeesComponent implements OnInit {
                         form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? 1 : 3,
                     // IF USER TYPE IS TEACHER
                     TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
-                    Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
+                    specialityTypeId: form.value.UserTypeId === 1 ? form.value.Speciality : 0,
                     Gender: form.value.Gender,
                     IsCertified: form.value.IsCertified,
                     IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
                     IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
                     DistrictId: typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
                     OrganizationId: this.showOrganization == true ? form.getRawValue().OrganizationId : '',
+                    SecondarySchools: form.value.SecondarySchools.filter(school => school !== form.getRawValue().OrganizationId),
                     Email: form.value.EmailId,
                     PhoneNumber: form.value.PhoneNumber,
                     ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
                     IsActive: form.value.IsActive
                 }
                 this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
-                    // this.router.navigate(['/manage/substitutes']);
+                    this.router.navigate(['/manage/employees']);
                     this.notifier.notify('success', 'Updated Successfully');
                 },
                     (err: HttpErrorResponse) => {
@@ -253,13 +277,14 @@ export class AddEmployeesComponent implements OnInit {
                         form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? 1 : 3,
                     // IF USER TYPE IS TEACHER
                     TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
-                    Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
+                    specialityTypeId: form.value.UserTypeId === 1 ? form.value.Speciality : 0,
                     Gender: form.value.Gender,
                     IsCertified: form.value.IsCertified,
                     IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
                     IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
                     DistrictId: typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
                     OrganizationId: form.getRawValue().OrganizationId,
+                    SecondarySchools: form.value.SecondarySchools.filter(school => school !== form.getRawValue().OrganizationId),
                     Email: form.value.EmailId,
                     PhoneNumber: form.value.PhoneNumber,
                     ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
@@ -267,7 +292,7 @@ export class AddEmployeesComponent implements OnInit {
                 }
 
                 this._dataContext.post('user/insertUser', model).subscribe((data: any) => {
-                    // this.router.navigate(['/manage/substitutes']);
+                    this.router.navigate(['/manage/employees']);
                     this.notifier.notify('success', 'Added Successfully');
                 },
                     (err: HttpErrorResponse) => {
