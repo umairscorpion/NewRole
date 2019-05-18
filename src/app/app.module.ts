@@ -183,6 +183,7 @@ import { LeaveBalanceComponent } from './Components/Manage/SubPages/Leaves/Leave
 import { TrainingGuidesComponent } from './Components/TrainingGuides/training-guides.component';
 import { UserEditComponent } from './Components/User/userEdit/userEdit.component';
 import { SelectCheckAllComponent } from './Elements/MultiSelect/multi-select.component';
+import { ForgotPasswordComponent } from './Components/User/ForgotPassword/forgot-password.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -359,6 +360,7 @@ const customNotifierOptions: NotifierOptions = {
         UserEditComponent,
         SelectCheckAllComponent,
         TrainingGuidesComponent,
+        ForgotPasswordComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
