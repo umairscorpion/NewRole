@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DistrictService } from '../../../../Service/Manage/district.service';
-import { FormBuilder, FormGroup, Validators, NgForm, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ICountry } from '../../../../Model/Lookups/country';
 import { IStates } from '../../../../Model/Lookups/states';

@@ -13,3 +13,9 @@
 .shadow {
       border: solid rgba(0,0,0,.1);
 }
+.profileForm-table {
+  text-align: left;
+  font-size: 12px;
+  width: 50%;
+  margin-top: 10px;
+}

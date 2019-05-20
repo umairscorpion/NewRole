@@ -1,19 +1,15 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { ReportService } from 'src/app/Services/report.service';
 import * as moment from 'moment';
-import { LeaveRequest } from 'src/app/Model/leaveRequest';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ReportFilter } from 'src/app/Model/Report/report.filter';
-import { ExcelService } from 'src/app/Services/excel.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuditFilter } from 'src/app/Model/auditLog';
 import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
 import { ngxCsv } from 'ngx-csv';
 
 @Component({
-    selector: 'payroll-reports',
-    templateUrl: 'payRollReports.component.html'
+    selector: 'activity-reports',
+    templateUrl: 'activityReports.component.html'
 })
-export class PayRollReportsComponent implements OnInit, AfterViewInit {
+export class ActivityReportsComponent implements OnInit, AfterViewInit {
 
     noAbsenceMessage = true;
     reportFilterForm: FormGroup;
@@ -24,8 +20,7 @@ export class PayRollReportsComponent implements OnInit, AfterViewInit {
 
     constructor(
         private auditLogService: AuditLogService,
-        private _formBuilder: FormBuilder,
-        private excelService: ExcelService
+        private _formBuilder: FormBuilder
     ) {
         const curr = new Date;
         const first = curr.getDate();

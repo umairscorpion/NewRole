@@ -7,6 +7,7 @@ import { FileService } from 'src/app/Services/file.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { FileManager } from 'src/app/Model/FileSystem/fileManager.detail';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-training-guides',
@@ -35,7 +36,8 @@ export class TrainingGuidesComponent implements OnInit {
     private _userSession: UserSession,
     private _fileService: FileService,
     private http: HttpClient,
-    private dialogRef: MatDialog
+    private dialogRef: MatDialog,
+    private notifier: NotifierService
   ) {
   }
 
@@ -64,7 +66,7 @@ export class TrainingGuidesComponent implements OnInit {
     this.FileContentType = files[0].type;
     if (!this.FileContentType) this.FileContentType = "text/plain";
     this.OriginalFileName = this.AllAttachedFiles[0].name;
-    this.OriginalFileNameForDisplay = this.OriginalFileName.substr(0, 15)  
+    this.OriginalFileNameForDisplay = this.OriginalFileName.substr(0, 15);  
     this.FileExtention = files[0].name.split('.')[1];
     let formData = new FormData();
     Array.from(files).forEach(file => formData.append('file', file))
@@ -87,6 +89,14 @@ export class TrainingGuidesComponent implements OnInit {
   }
 
   AddFile(fileType: any) {
+    if(this.OriginalFileName == null) {
+      this.notifier.notify('error', 'Please upload file');
+      return;
+    }
+    if(fileType.value == null) {
+      this.notifier.notify('error', 'Please select option');
+      return;
+    }
     let model = {
       originalFileName: this.OriginalFileName,
       fileName: this.FileName,

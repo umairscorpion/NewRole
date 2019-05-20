@@ -9,7 +9,8 @@ import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs/Observable';
 import { DataContext } from '../../../../Services/dataContext.service';
 @Component({
-    templateUrl: 'addDistrict.component.html'
+    templateUrl: 'addDistrict.component.html',
+    styleUrls: ['district.component.css']
 })
 export class AddDistrictComponent implements OnInit {
     private notifier: NotifierService;

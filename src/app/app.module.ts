@@ -97,7 +97,7 @@ import { AddOrganizationComponent } from './Components/Manage/SubPages/Organizat
 import { ReportsComponent } from './Components/Reports/reports.component';
 import { DailyReportsComponent } from './Components/Reports/SubPages/DailyReports/dailyReports.component';
 import { MonthlyReportsComponent } from './Components/Reports/SubPages/MonthlyReports/monthyReports.component';
-import { PayRollReportsComponent } from './Components/Reports/SubPages/PayRollReports/payRollReports.component';
+import { ActivityReportsComponent } from './Components/Reports/SubPages/ActivityReports/activityReports.component';
 
 //Schools Component
 import { SchoolsComponent, PopupDialogForSchoolDetail } from './Components/Manage/SubPages/Schools/schools.component';
@@ -303,7 +303,7 @@ const customNotifierOptions: NotifierOptions = {
         ReportsComponent,
         DailyReportsComponent,
         MonthlyReportsComponent,
-        PayRollReportsComponent,
+        ActivityReportsComponent,
         PastJobsComponent,
         MyJobsComponent,
         JobComponent,

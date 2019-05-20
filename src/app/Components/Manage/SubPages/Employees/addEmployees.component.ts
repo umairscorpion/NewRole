@@ -9,7 +9,8 @@ import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 @Component({
-    templateUrl: 'addEmployees.component.html'
+    templateUrl: 'addEmployees.component.html',
+    styleUrls: ['employee.component.css']
 })
 export class AddEmployeesComponent implements OnInit {
     userIdForUpdate: any = null;

@@ -10,49 +10,64 @@
                             <div class="demo-tab-content">
                                 <form (ngSubmit)="onSubmitPersonalForm(personalFormGroup)"
                                     [formGroup]="personalFormGroup">
-                                    <table class="col-md-12 col-lg-12">
+                                    <table class="col-md-6 col-lg-6 col-md-offset-1 profileForm-table">
                                         <tr>
+                                            <td>First Name</td>
                                             <td>
-                                                <mat-form-field class="demo-full-width">
+                                                <mat-form-field>
                                                     <input matInput placeholder="First Name"
                                                         formControlName="FirstName">
                                                 </mat-form-field>
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Last Name</td>
                                             <td>
-                                                <mat-form-field class="demo-full-width">
+                                                <mat-form-field>
                                                     <input matInput placeholder="Last Name" formControlName="LastName">
                                                 </mat-form-field>
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td>Mobile Number</td>
                                             <td>
-                                                <mat-form-field class="demo-full-width">
-                                                    <input matInput placeholder="Email ID" formControlName="Email">
-                                                </mat-form-field>
-                                            </td>
-                                            <td>
-                                                <mat-form-field class="demo-full-width">
-                                                    <input matInput placeholder="Contact No"
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Mobile Number"
                                                         formControlName="PhoneNumber">
                                                 </mat-form-field>
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td>Work Email</td>
                                             <td>
-                                                <h4 style="margin-left: 40px;">Profile Picture</h4>
-                                                <img [src]="ProfilePicture" width="200" height="200">
-                                                <br />
-                                                <input type='file' (change)="onSelectFile($event)">
-                                            </td>
-                                        </tr>
-                                        <tr style="text-align: right">
-                                            <td colspan="2" class="content-center">
-                                                <button mat-raised-button
-                                                    style="color:white; background-color: #04c0be;"
-                                                    type="submit">Save</button>
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Work Email" formControlName="Email">
+                                                </mat-form-field>
                                             </td>
                                         </tr>
                                     </table>
+                                    <div class="col-md-4">
+                                        <div>
+                                            <h5>Profile Picture</h5>
+                                        </div>
+                                        <div>
+                                            <img [src]="ProfilePicture" width="150" height="150">
+                                        </div>
+                                        <div>
+                                            <input type="file" id="UploadButton" style="display: none;"
+                                                (change)="onSelectFile($event)">
+                                            <button mat-button type="button" matTooltip="Upload Image"
+                                                (click)="uploadClick()"
+                                                style="color:white; background-color: #04c0be; padding: 0px 7px;">
+                                                Upload
+                                                <i class="material-icons">add</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-md-offset-1" style="padding-top: 10px; padding-left: 0px">
+                                        <button mat-raised-button style="color:white; background-color: #04c0be;"
+                                            type="submit">Save</button>
+                                    </div>
                                 </form>
                             </div>
                         </mat-tab>
@@ -63,21 +78,21 @@
                                         <div class="col-md-6">
                                             <h3>Files</h3>
                                         </div>
-                                        <div class="col-md-6 col-lg-6" style="margin-top: 10px">
+                                        <div class="col-md-6 col-lg-6" style="margin-top: 10px; text-align: right">
                                             <button mat-button type="button" color="warn" (click)="uploadClick()">
                                                 <mat-icon>file_upload</mat-icon>
-                                                {{OriginalFileName}}
+                                                {{OriginalFileNameForDisplay}}
+                                                <span *ngIf='!OriginalFileNameForDisplay'>Upload</span>
                                             </button>
-                                            <i *ngIf='FileName' style="cursor: pointer;" class="material-icons"
-                                                #tooltip="matTooltip" matTooltip="Remove Attachment"
+                                            <i *ngIf='OriginalFileName' style="cursor: pointer;" class="material-icons"
+                                                #tooltip="matTooltip" matTooltip="Remove File"
                                                 matTooltipPosition="right" (click)="removeAttachedFile()">
                                                 cancel
                                             </i>
                                             <input type="file" id="UploadButton" (change)="upload($event.target.files)"
                                                 style="display: none" />
                                             <button mat-raised-button (click)="AddFile()" type="button"
-                                                mat-raised-button style="color:white; background-color: #04c0be;"
-                                                [disabled]="FileName == null">
+                                                mat-raised-button style="color:white; background-color: #04c0be;">
                                                 Add
                                                 <i class="material-icons" matTooltip="Add File">add</i>
                                             </button>
@@ -96,7 +111,7 @@
                                             <div style="margin-top: 10px">
                                                 <mat-form-field class="col-md-3 col-lg-3">
                                                     <input disabled="true" matInput [(ngModel)]="file.date"
-                                                        placeholder="Date">
+                                                    type="datetime-local" placeholder="Date">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
@@ -119,7 +134,7 @@
                                 </div>
                             </div>
                         </mat-tab>
-                        <mat-tab *ngIf='UserRole == 4' label="Change Password">
+                        <mat-tab label="Change Password">
 
                         </mat-tab>
                         <mat-tab *ngIf='UserRole != 4' label="Official Information">
