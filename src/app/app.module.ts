@@ -183,6 +183,13 @@ import { LeaveBalanceComponent } from './Components/Manage/SubPages/Leaves/Leave
 import { TrainingGuidesComponent } from './Components/TrainingGuides/training-guides.component';
 import { UserEditComponent } from './Components/User/userEdit/userEdit.component';
 import { SelectCheckAllComponent } from './Elements/MultiSelect/multi-select.component';
+import { ForgotPasswordComponent } from './Components/User/ForgotPassword/forgot-password.component';
+import { SiteLayoutComponent } from './Components/_layout/site-layout/site-layout.component';
+import { AppLayoutComponent } from './Components/_layout/app-layout/app-layout.component';
+import { AppHeaderComponent } from './Components/_layout/app-header/app-header.component';
+import { SiteHeaderComponent } from './Components/_layout/site-header/site-header.component';
+import { SiteFooterComponent } from './Components/_layout/site-footer/site-footer.component';
+import { NavbarComponent } from './Components/nav/nav.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -284,6 +291,12 @@ const customNotifierOptions: NotifierOptions = {
         SatNativeDateModule,
     ],
     declarations: [
+        SiteLayoutComponent,
+        AppLayoutComponent,
+        AppHeaderComponent,
+        SiteHeaderComponent,
+        SiteFooterComponent,
+        NavbarComponent,
         AppComponent,
         HomeComponent,
         LoginComponent,
@@ -359,6 +372,7 @@ const customNotifierOptions: NotifierOptions = {
         UserEditComponent,
         SelectCheckAllComponent,
         TrainingGuidesComponent,
+        ForgotPasswordComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

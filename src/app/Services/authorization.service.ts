@@ -8,15 +8,9 @@ export class AuthorizationService {
     private userSessionService: UserSession,
   ) { }
   hasPermission(permissionTitle: string) {
-    if (
-      this.userSessionService.UserClaim.permissions &&
-      this.userSessionService.UserClaim.permissions.find(permission => {
-        return (
-          (permission.permissionTitle === permissionTitle && permission.isChecked) != null
-        );
-      })
-    ) {
-      return true;
+    if (this.userSessionService.UserClaim.permissions) {
+      const reqPermissions = this.userSessionService.UserClaim.permissions.filter(permission => permission.title === permissionTitle);
+      return (reqPermissions && reqPermissions[0] && reqPermissions[0].isChecked === true);
     }
     return false;
   }

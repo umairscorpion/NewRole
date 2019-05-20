@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12 col-lg-12" style="text-align: right">
-    <a >
-      <button mat-raised-button (click)="onOpenPositionPopup()" style="background: #3CCCD1; color: white;">Add position</button>
+    <a>
+      <button mat-raised-button (click)="onOpenPositionPopup()" style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE_POSITIONS'">Add position</button>
     </a>
   </div>
   <div class="col-md-12 col-lg-12">
@@ -20,21 +20,19 @@
 
         <ng-container matColumnDef="Visibility">
           <mat-header-cell *matHeaderCellDef> Visibility </mat-header-cell>
-          <mat-cell *matCellDef="let postion"> 
-              <i class="material-icons">
-                  {{postion.isVisible ? 'check' : 'close' }}
-                </i>  
+          <mat-cell *matCellDef="let postion">
+            <i class="material-icons">
+              {{postion.isVisible ? 'check' : 'close' }}
+            </i>
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
           <mat-cell *matCellDef="let row">
-              <i class="material-icons" style="cursor: pointer; color: #448ac9" #tooltip="matTooltip" matTooltip="Delete Position" matTooltipPosition="below"
-                (click)="deletePosition(row.id)">delete_sweep</i>
-              <i class="material-icons" style="cursor: pointer;margin-left: 10px; color: #f19f4d" #tooltip="matTooltip" matTooltip="Edit Position"
-                matTooltipPosition="below" (click)="editPosition(row)">edit</i>
-            </mat-cell>
+            <i class="material-icons" style="cursor: pointer; color: #448ac9" #tooltip="matTooltip" matTooltip="Delete Position" matTooltipPosition="below" (click)="deletePosition(row.id)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE_POSITIONS'">delete_sweep</i>
+            <i class="material-icons" style="cursor: pointer;margin-left: 10px; color: #f19f4d" #tooltip="matTooltip" matTooltip="Edit Position" matTooltipPosition="below" (click)="editPosition(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE_POSITIONS'">edit</i>
+          </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

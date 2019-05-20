@@ -62,10 +62,12 @@ import { PayRollComponent } from './Components/Payroll/payroll.component';
 import { RolePermissionsComponent } from './Components/Permissions/RolePrmissions/role-permissions.component';
 import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
 import { TrainingGuidesComponent } from './Components/TrainingGuides/training-guides.component';
+import { ForgotPasswordComponent } from './Components/User/ForgotPassword/forgot-password.component';
 
 
 const appRoutes: Routes = [
     { path: '', component: LoginComponent },
+    { path: 'forgotPassword', component: ForgotPasswordComponent },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
     {
         path: 'absence', component: absenceComponent, canActivate: [AuthGuard],

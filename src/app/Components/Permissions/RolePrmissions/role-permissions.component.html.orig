@@ -23,8 +23,13 @@
                   <span *ngIf="submitted && form.get('name').errors?.pattern">Role Title is invalid</span>
                 </div>
               </div>
+<<<<<<< HEAD
               <div class="form-group col-md-6"><button mat-raised-button type="submit" class="btn btn-success">Save</button>&nbsp;
-                <button mat-raised-button type="button" class="btn-default" [routerLink]="['/permissions']">Cancel</button></div>
+                <button mat-raised-button type="button" class="btn btn-default">Cancel</button></div>
+=======
+              <div class="form-group col-md-6"><button mat-button type="submit" class="btn btn-success">Save</button>&nbsp;
+                <button mat-button type="button" class="btn-default" [routerLink]="['/permissions']">Cancel</button></div>
+>>>>>>> ae7c2bc1a1f43f233bccb2e4bf6bfce6fbb85dc9
             </div>
             <mat-card-content>
               <mat-list *ngFor="let category of permissions">
@@ -44,8 +49,13 @@
               </mat-list>
             </mat-card-content>
             <mat-card-actions>
+<<<<<<< HEAD
               <button mat-raised-button type="submit" class="btn btn-success">Save</button>&nbsp;
-              <button mat-raised-button type="button" class="btn-default" [routerLink]="['/permissions']">Cancel</button>
+              <button mat-raised-button type="button" class="btn btn-default" style="margin-left: 1px">Cancel</button>
+=======
+              <button mat-button type="submit" class="btn btn-success">Save</button>&nbsp;
+              <button mat-button type="button" class="btn-default" [routerLink]="['/permissions']">Cancel</button>
+>>>>>>> ae7c2bc1a1f43f233bccb2e4bf6bfce6fbb85dc9
             </mat-card-actions>
           </mat-card>
         </form>

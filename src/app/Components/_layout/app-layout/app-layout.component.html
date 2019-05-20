@@ -1,0 +1,25 @@
+<!-- <div class="wrapper">
+  <div class="sidebar" data-color="white" data-background-color="red">
+    <ng-nav></ng-nav>
+    <div class="sidebar-background"></div>
+  </div>
+  <div class="main-panel">
+    <app-header></app-header>
+    
+  </div>
+</div> -->
+
+
+<div [class.example-is-mobile]="mobileQuery.matches">
+  <Subzz-app-SideNav></Subzz-app-SideNav>
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav class="col-md-2" opened="{{isOpen}}" (keydown.escape)="toggle()" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <mat-nav-list *ngIf='userTemplate && userTemplate.length'>
+        <a mat-list-item [routerLinkActive]="['active']" routerLink="/{{userTempplateObj.stateMachine}}" *ngFor="let userTempplateObj of userTemplate">{{userTempplateObj.name}}</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="col-md-10">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

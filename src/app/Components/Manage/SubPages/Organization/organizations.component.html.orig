@@ -1,9 +1,19 @@
+<<<<<<< HEAD
+
+      <h3>Organizations</h3>
+      <div>
+          <div class="row">
+              <div class="col-md-12 col-lg-12" style="text-align: right">
+                      <a routerLink="/manage/organizations/addOrganization"> <button mat-raised-button style="background: #3CCCD1; color: white;">Add Organizations</button></a>
+              </div>
+          </div>
+=======
 <h3>Organizations</h3>
 <div>
   <div class="row">
     <div class="col-md-12 col-lg-12" style="text-align: right">
       <a routerLink="/manage/organizations/addOrganization">
-        <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_ORGANIZATION'">Add Organizations</button></a>
+        <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_ORGANIZATION'">Add</button></a>
     </div>
   </div>
 </div>
@@ -14,6 +24,7 @@
         <mat-form-field>
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
         </mat-form-field>
+>>>>>>> ae7c2bc1a1f43f233bccb2e4bf6bfce6fbb85dc9
       </div>
       <mat-table #table [dataSource]="dataSource" matSort>
         <!-- Position Column -->
