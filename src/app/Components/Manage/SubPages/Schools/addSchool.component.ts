@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IDistrict } from '../../../../Model/Manage/district';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataContext } from '../../../../Services/dataContext.service';
+
 @Component({
     templateUrl: 'addSchool.component.html'
 })
@@ -17,8 +18,13 @@ export class AddSchoolComponent implements OnInit {
     indLoading: boolean = false;
     modalTitle: string;
     modalBtnTitle: string;
-    constructor(private router: Router, private fb: FormBuilder, private route: ActivatedRoute,
-        notifier: NotifierService, private _dataContext: DataContext) {
+
+    constructor(
+        private router: Router, 
+        private fb: FormBuilder, 
+        private route: ActivatedRoute,
+        private _dataContext: DataContext,       
+        notifier: NotifierService) {
         this.notifier = notifier;
     }
     ngOnInit(): void {
@@ -43,7 +49,8 @@ export class AddSchoolComponent implements OnInit {
             releaseJobTime: ['0'],
             notifyOthersTime: ['0'],
             dailyAbenceLimit: [0],
-            isAbsenceLimit: [false]
+            isAbsenceLimit: [false],
+            IsActive: [1]
             // NoOfEmployees: ['', Validators.required],
             // EmailId: ['', [Validators.required, Validators.email]],
         });
@@ -69,7 +76,8 @@ export class AddSchoolComponent implements OnInit {
                         releaseJobTime: data[0].releaseJobTime,
                         notifyOthersTime: data[0].notifyOthersTime,
                         dailyAbenceLimit: data[0].dailyAbenceLimit,
-                        isAbsenceLimit: data[0].isAbsenceLimit
+                        isAbsenceLimit: data[0].isAbsenceLimit,
+                        IsActive: data[0].isActive
                     }
                     this.schoolForm.setValue(SchoolModel);
                     this.SchoolIdForUpdate = SchoolId;
@@ -85,29 +93,30 @@ export class AddSchoolComponent implements OnInit {
         },
             error => <any>error);
     }
+
     onSubmit(form: any) {
         if (this.schoolForm.valid) {
             if (this.CheckTime(form.value)) {
+                let model = {
+                    SchoolId: this.SchoolIdForUpdate,
+                    SchoolName: form.value.Name,
+                    SchoolDistrictId: form.value.district,
+                    SchoolCity: form.value.City,
+                    SchoolAddress: form.value.Address,
+                    SchoolZipCode: form.value.ZipCode,
+                    SchoolStartTime: form.value.StartTime,
+                    School1stHalfEnd: form.value.firstHalfEndTime,
+                    School2ndHalfStart: form.value.SecondHalfStartTime,
+                    SchoolEndTime: form.value.EndTime,
+                    SchoolTimeZone: form.value.TimeZone,
+                    SchoolPhone: form.value.PhoneNo,
+                    releaseJobTime: form.value.releaseJobTime,
+                    notifyOthersTime: form.value.notifyOthersTime,
+                    dailyAbenceLimit: form.value.dailyAbenceLimit,
+                    isAbsenceLimit: form.value.isAbsenceLimit,
+                    IsActive: form.value.IsActive
+                }
                 if (this.SchoolIdForUpdate != null) {
-                    let model = {
-                        SchoolId: this.SchoolIdForUpdate,
-                        SchoolName: form.value.Name,
-                        SchoolDistrictId: form.value.district,
-                        SchoolCity: form.value.City,
-                        SchoolAddress: form.value.Address,
-                        SchoolZipCode: form.value.ZipCode,
-                        SchoolStartTime: form.value.StartTime,
-                        School1stHalfEnd: form.value.firstHalfEndTime,
-                        School2ndHalfStart: form.value.SecondHalfStartTime,
-                        SchoolEndTime: form.value.EndTime,
-                        SchoolTimeZone: form.value.TimeZone,
-                        SchoolPhone: form.value.PhoneNo,
-                        releaseJobTime: form.value.releaseJobTime,
-                        notifyOthersTime: form.value.notifyOthersTime,
-                        dailyAbenceLimit: form.value.dailyAbenceLimit,
-                        isAbsenceLimit: form.value.isAbsenceLimit,
-                        IsActive: 1
-                    }
                     this._dataContext.Patch('school/updateSchool', model).subscribe((data: any) => {
                         this.router.navigate(['/manage/schools']);
                         this.notifier.notify('success', 'Updated Successfully.');
@@ -117,23 +126,6 @@ export class AddSchoolComponent implements OnInit {
                         });
                 }
                 else {
-                    let model = {
-                        SchoolName: form.value.Name,
-                        SchoolDistrictId: form.value.district,
-                        SchoolCity: form.value.City,
-                        SchoolAddress: form.value.Address,
-                        SchoolZipCode: form.value.ZipCode,
-                        SchoolStartTime: form.value.StartTime,
-                        School1stHalfEnd: form.value.firstHalfEndTime,
-                        School2ndHalfStart: form.value.SecondHalfStartTime,
-                        SchoolEndTime: form.value.EndTime,
-                        SchoolTimeZone: form.value.TimeZone,
-                        SchoolPhone: form.value.PhoneNo,
-                        releaseJobTime: form.value.releaseJobTime,
-                        notifyOthersTime: form.value.notifyOthersTime,
-                        dailyAbenceLimit: form.value.dailyAbenceLimit,
-                        isAbsenceLimit: form.value.isAbsenceLimit
-                    }
                     this._dataContext.post('school/insertSchool', model).subscribe((data: any) => {
                         this.router.navigate(['/manage/schools']);
                         this.notifier.notify('success', 'Saved Successfully.');

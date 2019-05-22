@@ -1,11 +1,10 @@
 import { Component, ViewChild, Inject } from '@angular/core';
 import { MatPaginator, MatTableDataSource, MatSort, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { IDistrict } from '../../../../Model/Manage/district';
-// import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { DistrictService } from '../../../../Service/Manage/district.service';
 import { DataContext } from '../../../../Services/dataContext.service';
-
 import { Router } from '@angular/router';
+
 @Component({
   templateUrl: 'Organizations.component.html',
   styleUrls: ['organization.component.css']
@@ -17,7 +16,11 @@ export class OrganizationsComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   msg: string;
-  constructor(private router: Router, private _districtService: DistrictService, private _dataContext: DataContext,
+
+  constructor(
+    private router: Router,
+    private _districtService: DistrictService,
+    private _dataContext: DataContext,
     public dialog: MatDialog) {
   }
 

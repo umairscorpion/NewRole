@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
-// import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { IEmployee } from '../../../../Model/Manage/employee';
@@ -31,11 +30,15 @@ export class EmployeesComponent implements OnInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   msg: string;
-  constructor(private router: Router, private _userSession: UserSession,
-    public dialog: MatDialog, private _dataContext: DataContext, notifier: NotifierService) {
+
+  constructor(
+    private router: Router,
+    private _userSession: UserSession,
+    public dialog: MatDialog,
+    private _dataContext: DataContext,
+    notifier: NotifierService) {
     this.notifier = notifier;
   }
-
 
   ngOnInit(): void {
     this.DataSourceEmployeesObj = new DataSourceEmployees(this._dataContext, this._userSession);
@@ -144,9 +147,9 @@ export class EmployeesComponent implements OnInit {
     this.router.navigate(['/manage/employees/addemployee'], { queryParams: { Id: SelectedRow.userId } });
   }
 
-  updateEmployee(row: any) {
+  UpdateEmployeeStatus(row: any) {
     row.isActive = !row.isActive;
-    this._dataContext.Patch('user/updateUser', row).subscribe((data: any) => {
+    this._dataContext.Patch('user/updateUserStatus', row).subscribe((data: any) => {
     },
       error => this.msg = <any>error);
   }

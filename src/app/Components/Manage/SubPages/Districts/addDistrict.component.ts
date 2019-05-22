@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DistrictService } from '../../../../Service/Manage/district.service';
-import { FormBuilder, FormGroup, Validators, NgForm, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ICountry } from '../../../../Model/Lookups/country';
 import { IStates } from '../../../../Model/Lookups/states';
@@ -20,8 +20,13 @@ export class AddDistrictComponent implements OnInit {
     districtForm: FormGroup;
     districtIdForUpdate : any = 0;
     getDistrictById: any;
-    constructor(private router: Router, private fb: FormBuilder, notifier: NotifierService, private route: ActivatedRoute,
-        private _districtService: DistrictService, private _dataContext: DataContext) {
+    constructor(
+        private router: Router, 
+        private fb: FormBuilder,  
+        private route: ActivatedRoute,
+        private _districtService: DistrictService, 
+        private _dataContext: DataContext,
+        notifier: NotifierService) {
         this.notifier = notifier;
     }
     ngOnInit(): void {
@@ -37,7 +42,8 @@ export class AddDistrictComponent implements OnInit {
             SecondHaifStartTime: [''],
             EndTime: [''],
             TimeZone: [''],
-            PhoneNo: ['', Validators.required]
+            PhoneNo: ['', Validators.required],
+            IsActive: [1]
         });
         this.GetCountries();
         this.route.queryParams.subscribe((params : any) => {
@@ -58,7 +64,8 @@ export class AddDistrictComponent implements OnInit {
                         SecondHaifStartTime: data[0].district2ndHalfStart,
                         EndTime: data[0].districtEndTime,
                         TimeZone: data[0].districtTimeZone,
-                        PhoneNo: data[0].districtPhone
+                        PhoneNo: data[0].districtPhone,
+                        IsActive: data[0].isActive
                     }
                     
                     this.districtForm.setValue(DistrictModel);
@@ -88,24 +95,24 @@ export class AddDistrictComponent implements OnInit {
 
         if (this.districtForm.valid) {
             if (this.CheckTime(form.value)) {
+                let model = {
+                    DistrictId : this.districtIdForUpdate,
+                    DistrictName: form.value.Name,
+                    City: form.value.City,
+                    DistrictAddress: form.value.Address,
+                    DistrictZipCode: form.value.ZipCode,
+                    CountryId: form.value.Country,
+                    DistrictStateId: form.value.State,
+                    DistrictStartTime: form.value.StartTime,
+                    District1stHalfEnd: form.value.firstHalfEndTime,
+                    District2ndHalfStart: form.value.SecondHaifStartTime,
+                    DistrictEndTime: form.value.EndTime,
+                    DistrictTimeZone: form.value.TimeZone,
+                    DistrictPhone: form.value.PhoneNo,
+                    IsActive: form.value.IsActive
+                }
                 if (this.districtIdForUpdate > 0)
-                {
-                    let model = {
-                        DistrictId : this.districtIdForUpdate,
-                        DistrictName: form.value.Name,
-                        City: form.value.City,
-                        DistrictAddress: form.value.Address,
-                        DistrictZipCode: form.value.ZipCode,
-                        CountryId: form.value.Country,
-                        DistrictStateId: form.value.State,
-                        DistrictStartTime: form.value.StartTime,
-                        District1stHalfEnd: form.value.firstHalfEndTime,
-                        District2ndHalfStart: form.value.SecondHaifStartTime,
-                        DistrictEndTime: form.value.EndTime,
-                        DistrictTimeZone: form.value.TimeZone,
-                        DistrictPhone: form.value.PhoneNo,
-                        IsActive: 1
-                    }
+                {                    
                     this._dataContext.Patch('district/updateDistrict', model).subscribe((data: any) => {
                         this.router.navigate(['/manage/districts']);
                         this.notifier.notify('success', 'Updated Successfully.');
@@ -116,20 +123,6 @@ export class AddDistrictComponent implements OnInit {
                 }
                 else
                 {
-                    let model = {
-                        DistrictName: form.value.Name,
-                        City: form.value.City,
-                        DistrictAddress: form.value.Address,
-                        DistrictZipCode: form.value.ZipCode,
-                        CountryId: form.value.Country,
-                        DistrictStateId: form.value.State,
-                        DistrictStartTime: form.value.StartTime,
-                        District1stHalfEnd: form.value.firstHalfEndTime,
-                        District2ndHalfStart: form.value.SecondHaifStartTime,
-                        DistrictEndTime: form.value.EndTime,
-                        DistrictTimeZone: form.value.TimeZone,
-                        DistrictPhone: form.value.PhoneNo
-                    }
                     this._districtService.post('District/insertDistrict', model).subscribe((data: any) => {
                         this.router.navigate(['/manage/districts']);
                         this.notifier.notify('success', 'Saved Successfully.');
@@ -141,6 +134,7 @@ export class AddDistrictComponent implements OnInit {
             }
         }
     }
+    
     CheckTime(district: any): boolean {
         if (district.StartTime > district.EndTime || district.firstHalfEndTime > district.SecondHaifStartTime ||
             district.StartTime > district.SecondHaifStartTime || district.StartTime > district.firstHalfEndTime ||

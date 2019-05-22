@@ -66,14 +66,19 @@
                         <td class="col-md-3">Subject</td>
                         <td>
                             <mat-form-field class="col-md-7">
-                                <input matInput placeholder="Subject" formControlName="Speciality">
+                                <mat-select placeholder="Subject" formControlName="Speciality">
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let subject of teachingSubjects" [value]="subject.id">
+                                        {{subject.title}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-3">Work Location</td>
                         <td>
-                            <mat-radio-group (change)="OnchangeWorkLocation($event)" formControlName="WorkLocaion"
+                            <mat-radio-group (change)="OnchangeWorkLocation($event.value)" formControlName="WorkLocaion"
                                 #radioGroupForLocation="matRadioGroup" class="col-md-7">
                                 <mat-radio-button color="primary" value="1" style="margin-right: 22px">District Level
                                 </mat-radio-button>
@@ -96,7 +101,7 @@
                             </mat-form-field>
                         </td>
                     </tr>
-                    <tr *ngIf='radioGroupForLocation.value == "2"'>
+                    <tr *ngIf='(radioGroupForLocation.value == "2") && (employeeForm.value.UserTypeId == 2 || employeeForm.value.UserTypeId == 3 || employeeForm.value.UserTypeId == 4)'>
                         <td class="col-md-3">Can also access the schools</td>
                         <td>
                             <mat-form-field class="col-md-7">

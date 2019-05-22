@@ -86,9 +86,9 @@ export class SubstitutesComponent implements OnInit {
     this.router.navigate(['/manage/substitutes/addSubstitute'], { queryParams: { Id: SelectedRow.userId } });
   }
 
-  updateSubstitute(row: any) {
+  UpdateSubstituteStatus(row: any) {
     row.isActive = !row.isActive;
-    this._dataContext.Patch('user/updateUser', row).subscribe((data: any) => {
+    this._dataContext.Patch('user/updateUserStatus', row).subscribe((data: any) => {
     },
       error => this.msg = <any>error);
   }
@@ -112,11 +112,9 @@ export class SubstitutesComponent implements OnInit {
   }
 
   onTabChanged(tab: any) {
-
   }
 
   getSettings() {
-
   }
 }
 

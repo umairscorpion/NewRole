@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { UserSession } from '../../../../Services/userSession.service';
-import { FormBuilder, FormGroup, Validators, NgForm, FormControl } from '@angular/forms';
-import { MatRadioChange } from '@angular/material';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse, HttpResponse, HttpEventType } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
@@ -24,14 +23,20 @@ export class AddEmployeesComponent implements OnInit {
     teachingSubjects: any;
     msg: string;
     employeeForm: FormGroup;
-    toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
     UserClaim = JSON.parse(localStorage.getItem('userClaims'));
     // These two variables are used to show and hid district and school but not in use may be reqired. So dont remove it.
     showDistrict: boolean = true;
     showOrganization: boolean = false;
-    constructor(private router: Router, private fb: FormBuilder, private _dataContext: DataContext,
-        notifier: NotifierService, private route: ActivatedRoute, private _userSession: UserSession,
-        private fileService: FileService, private sanitizer: DomSanitizer) {
+
+    constructor(
+        private router: Router,
+        private fb: FormBuilder,
+        private _dataContext: DataContext,
+        notifier: NotifierService,
+        private route: ActivatedRoute,
+        private _userSession: UserSession,
+        private fileService: FileService,
+        private sanitizer: DomSanitizer) {
         this.notifier = notifier;
     }
 
@@ -169,7 +174,8 @@ export class AddEmployeesComponent implements OnInit {
     }
 
     OnchangeWorkLocation(event: any) {
-        if (event.value == 2) {
+
+        if (+event === 2) {
             this.employeeForm.controls["OrganizationId"].setValidators([Validators.required]);
             this.employeeForm.controls['OrganizationId'].updateValueAndValidity();
             this.employeeForm.controls['District'].clearValidators();
@@ -189,7 +195,8 @@ export class AddEmployeesComponent implements OnInit {
 
     //ON CHANGING EMPLOYEE TYPE
     onChangeEmployeeType(value: any) {
-        if (value === 1) {
+        if (value !== 2 || value !== 3 || value !== 4) {
+            this.employeeForm.get('SecondarySchools').setValue([]);
             // this.employeeForm.controls["TeachingLevel"].setValidators([Validators.required]);
             // this.employeeForm.controls["Speciality"].setValidators([Validators.required]);
             // this.employeeForm.controls['TeachingLevel'].updateValueAndValidity();
@@ -239,32 +246,32 @@ export class AddEmployeesComponent implements OnInit {
     onSubmitEmployeeForm(form: any) {
         this.msg = "";
         if (this.employeeForm.valid) {
+            let model = {
+                UserId: this.userIdForUpdate,
+                FirstName: form.value.FirstName,
+                LastName: form.value.LastName,
+                UserTypeId: form.value.UserTypeId,
+                //IF USER TYPE IS 2 i.e ADMIN AND SHOW ORGANIZTION IS TRUE THAN ITS ORGANIZATION ADMIN
+                //IF USER TYPE IS 2 i.e ADMIN AND SHOW DISTRICT IS TRUE THAN ITS DISTRICT ADMIN
+                //IF BOTH SCENARIOS ARE FALSE THAN ITS EMPLOYEE ADMIN
+                RoleId: form.value.UserTypeId === 2 && this.showOrganization == true && typeof form.getRawValue().OrganizationId != 'undefined' && form.getRawValue().OrganizationId ? 2 :
+                    form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? 1 : 3,
+                // IF USER TYPE IS TEACHER
+                TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
+                specialityTypeId: form.value.UserTypeId === 1 ? form.value.Speciality : 0,
+                Gender: form.value.Gender,
+                IsCertified: form.value.IsCertified,
+                IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
+                IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
+                DistrictId: typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
+                OrganizationId: this.showOrganization == true ? form.getRawValue().OrganizationId : '',
+                SecondarySchools: form.value.SecondarySchools && this.showOrganization == true ? form.value.SecondarySchools.filter((school: any) => school !== form.getRawValue().OrganizationId) : null,
+                Email: form.value.EmailId,
+                PhoneNumber: form.value.PhoneNumber,
+                ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
+                IsActive: form.value.IsActive
+            }
             if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
-                let model = {
-                    UserId: this.userIdForUpdate,
-                    FirstName: form.value.FirstName,
-                    LastName: form.value.LastName,
-                    UserTypeId: form.value.UserTypeId,
-                    //IF USER TYPE IS 2 i.e ADMIN AND SHOW ORGANIZTION IS TRUE THAN ITS ORGANIZATION ADMIN
-                    //IF USER TYPE IS 2 i.e ADMIN AND SHOW DISTRICT IS TRUE THAN ITS DISTRICT ADMIN
-                    //IF BOTH SCENARIOS ARE FALSE THAN ITS EMPLOYEE ADMIN
-                    RoleId: form.value.UserTypeId === 2 && this.showOrganization == true && typeof form.getRawValue().OrganizationId != 'undefined' && form.getRawValue().OrganizationId ? 2 :
-                        form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? 1 : 3,
-                    // IF USER TYPE IS TEACHER
-                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
-                    specialityTypeId: form.value.UserTypeId === 1 ? form.value.Speciality : 0,
-                    Gender: form.value.Gender,
-                    IsCertified: form.value.IsCertified,
-                    IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
-                    IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
-                    DistrictId: typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
-                    OrganizationId: this.showOrganization == true ? form.getRawValue().OrganizationId : '',
-                    SecondarySchools: form.value.SecondarySchools.filter(school => school !== form.getRawValue().OrganizationId),
-                    Email: form.value.EmailId,
-                    PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
-                    IsActive: form.value.IsActive
-                }
                 this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
                     this.router.navigate(['/manage/employees']);
                     this.notifier.notify('success', 'Updated Successfully');
@@ -274,31 +281,6 @@ export class AddEmployeesComponent implements OnInit {
                     });
             }
             else {
-                let model = {
-                    FirstName: form.value.FirstName,
-                    LastName: form.value.LastName,
-                    UserTypeId: form.value.UserTypeId,
-                    //IF USER TYPE IS 2 i.e ADMIN AND SHOW ORGANIZTION IS TRUE THAN ITS ORGANIZATION ADMIN
-                    //IF USER TYPE IS 2 i.e ADMIN AND SHOW DISTRICT IS TRUE THAN ITS DISTRICT ADMIN
-                    //IF BOTH SCENARIOS ARE FALSE THAN ITS EMPLOYEE ADMIN
-                    RoleId: form.value.UserTypeId === 2 && this.showOrganization == true && typeof form.getRawValue().OrganizationId != 'undefined' && form.getRawValue().OrganizationId ? 2 :
-                        form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? 1 : 3,
-                    // IF USER TYPE IS TEACHER
-                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
-                    specialityTypeId: form.value.UserTypeId === 1 ? form.value.Speciality : 0,
-                    Gender: form.value.Gender,
-                    IsCertified: form.value.IsCertified,
-                    IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
-                    IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
-                    DistrictId: typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
-                    OrganizationId: form.getRawValue().OrganizationId,
-                    SecondarySchools: form.value.SecondarySchools.filter(school => school !== form.getRawValue().OrganizationId),
-                    Email: form.value.EmailId,
-                    PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
-                    IsActive: form.value.IsActive
-                }
-
                 this._dataContext.post('user/insertUser', model).subscribe((data: any) => {
                     this.router.navigate(['/manage/employees']);
                     this.notifier.notify('success', 'Added Successfully');
