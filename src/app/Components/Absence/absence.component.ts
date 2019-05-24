@@ -3,7 +3,6 @@ import { UserService } from '../../Service/user.service';
 import { DataContext } from '../../Services/dataContext.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
 import { SideNavService } from '../SideNav/sideNav.service';
 import { CommunicationService } from '../../Services/communication.service';
 import { UserSession } from '../../Services/userSession.service';
@@ -22,11 +21,15 @@ export class absenceComponent {
     mobileQuery: MediaQueryList;
     private _mobileQueryListener: () => void;
     isOpen = true;
-    constructor(private router: Router, private _userService: UserService, public dialog: MatDialog, 
+    constructor(
+        private _userService: UserService, 
+        public dialog: MatDialog, 
         private dataContext: DataContext,
-        private sideNavService: SideNavService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
+        private sideNavService: SideNavService, 
         private _userSession: UserSession,
-        private _communicationService: CommunicationService) {
+        private _communicationService: CommunicationService,
+        changeDetectorRef: ChangeDetectorRef, 
+        media: MediaMatcher) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
@@ -80,7 +83,9 @@ export class absenceComponent {
 })
 export class PopupDialogForAbsenceDetail {
     msg: string;
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any, private _dataContext: DataContext) {
+    constructor(
+        @Inject(MAT_DIALOG_DATA) public data: any, 
+        private _dataContext: DataContext) {
         console.log(data);
     }
 

@@ -3,12 +3,16 @@
     <mat-dialog-actions>
       <div class="col-md-8 pr-0">
         <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
-        <button [disabled]="reportDetail.statusId == 1 || !reportDetail.substituteRequired" type="button" mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
-        <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default" (click)="performAction('assign')">Assign</button>
-        <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default" (click)="performAction('resend')">Resend</button>
+        <button [disabled]="reportDetail.statusId == 1 || !reportDetail.substituteRequired" type="button"
+          mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
+        <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default"
+          (click)="performAction('assign')">Assign</button>
+        <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default"
+          (click)="performAction('resend')">Resend</button>
       </div>
       <div class="col-md-4 pl-0">
-        <button type="button" mat-raised-button class="btn btn-warning" (click)="performAction('delete')">Delete</button>
+        <button type="button" mat-raised-button class="btn btn-warning"
+          (click)="performAction('delete')">Delete</button>
         <button type="button" mat-raised-button class="btn btn-info" (click)="performAction('edit')">Edit</button>
       </div>
     </mat-dialog-actions>
@@ -41,20 +45,21 @@
         </tr>
         <tr>
           <td>Duration:</td>
-          <td>{{reportDetail.startTime | convertFrom24HourTo12HourFormat}} - {{reportDetail.endTime | convertFrom24HourTo12HourFormat}}</td>   
+          <td>{{reportDetail.startTime | convertFrom24HourTo12HourFormat}} -
+            {{reportDetail.endTime | convertFrom24HourTo12HourFormat}}</td>
         </tr>
         <tr *ngIf="reportDetail.substituteRequired == false">
           <td>Status:</td>
           <td>{{reportDetail.statusTitle}}</td>
         </tr>
         <tr *ngIf='reportDetail.substituteId != -1'>
-          <td>Substitute:</td>        
+          <td>Substitute:</td>
           <td>{{reportDetail.substituteName}}</td>
         </tr>
         <tr *ngIf='reportDetail.substituteId == -1'>
           <td>Substitute:</td>
-          <td >No Substitute</td>
-        </tr>        
+          <td>No Substitute</td>
+        </tr>
         <tr>
           <td>Posted:</td>
           <td>{{reportDetail.postedOn | date:'M/d/y h:mm a'}}</td>
@@ -67,9 +72,9 @@
           <td>Attachment:</td>
           <td *ngIf="reportDetail.anyAttachment == true">
             <div style="text-align: left">
-              <button mat-button type="button" color="warn" (click)="DownloadFile()">
-                Download Attachment
-                <mat-icon>download</mat-icon>                       
+              <button mat-button type="button" color="warn" (click)="DownloadFile()" matTooltip="Download Attachment">
+                <mat-icon>save_alt</mat-icon>
+                {{reportDetail.originalFileName}}
               </button>
             </div>
           </td>
@@ -89,42 +94,42 @@
                 <mat-option *ngFor="let Leave of Leaves" [value]="Leave.leaveTypeId">
                   {{Leave.leaveTypeName}}
                 </mat-option>
-              </mat-select>             
-            </mat-form-field>  
-          </td>       
+              </mat-select>
+            </mat-form-field>
+          </td>
         </tr>
         <tr>
           <td>From:</td>
           <td>
             <mat-form-field>
-              <input matInput
-                [matDatepicker]="StartDatePicker" placeholder="Start Date" formControlName="startDate"
+              <input matInput [matDatepicker]="StartDatePicker" placeholder="Start Date" formControlName="startDate"
                 (dateChange)="SetEndDateValue(absenceForm.value.startDate,absenceForm.value.endDate)">
               <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
               <mat-datepicker [dateClass]="dateClass" #StartDatePicker></mat-datepicker>
-            </mat-form-field>                      
-          </td>       
+            </mat-form-field>
+          </td>
         </tr>
         <tr>
           <td>To:</td>
           <td>
             <mat-form-field>
-              <input matInput [min]="absenceForm.value.startDate"
-                [matDatepicker]="EndDatePicker" placeholder="End Date" formControlName="endDate">
+              <input matInput [min]="absenceForm.value.startDate" [matDatepicker]="EndDatePicker" placeholder="End Date"
+                formControlName="endDate">
               <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
               <mat-datepicker [dateClass]="dateClass" #EndDatePicker></mat-datepicker>
-            </mat-form-field>              
-          </td>  
+            </mat-form-field>
+          </td>
         </tr>
         <tr>
           <td>Duration:</td>
           <td>
-            <mat-form-field class="col-md-4">
-              <mat-select formControlName="durationType" (selectionChange)="onChangeDurationForAbsence($event.value,absenceForm)">
-                  <mat-option [value]="1">Full Day</mat-option>
-                  <mat-option [value]="2">Half Day AM</mat-option>
-                  <mat-option [value]="3">Half Day PM</mat-option>
-                  <mat-option [value]="4">Enter Time Manually</mat-option>
+            <mat-form-field class="row col-md-4">
+              <mat-select formControlName="durationType"
+                (selectionChange)="onChangeDurationForAbsence($event.value,absenceForm)">
+                <mat-option [value]="1">Full Day</mat-option>
+                <mat-option [value]="2">Half Day AM</mat-option>
+                <mat-option [value]="3">Half Day PM</mat-option>
+                <mat-option [value]="4">Enter Time Manually</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field class="col-md-4">
@@ -132,31 +137,36 @@
             </mat-form-field>
             <mat-form-field class="col-md-4">
               <input matInput type="time" placeholder="End Time" formControlName="endTime">
-            </mat-form-field>  
+            </mat-form-field>
           </td>
         </tr>
         <tr *ngIf="reportDetail.substituteRequired == true">
           <td>Status:</td>
-          <td>
-              {{reportDetail.statusTitle}}
-          </td>
-        </tr>    
+          <td>{{reportDetail.statusTitle}}</td>
+        </tr>
         <tr>
           <td>Substitute:</td>
           <td *ngIf='reportDetail.statusId == 2'>{{reportDetail.substituteName}}</td>
           <td *ngIf='reportDetail.statusId != 2'>
-            <mat-form-field>
-              <input type="text" placeholder="Search Substitute Name" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
-                matInput formControlName="substituteId" [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName" multiple>
-                <mat-option (onSelectionChange)="substututeSelection(substutute)" *ngFor="let substutute of Substututes | async"
-                  [value]="substutute">
-                  {{substutute.firstName}}
+            <mat-form-field class="row col-md-9">
+              <input type="text" placeholder="Search Substitute Name"
+                (input)="SearchAvailableSubstitutes($event.target.value)" matInput formControlName="substituteId"
+                [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName" multiple>
+                <mat-option *ngFor="let substitutes of availableSubstitutes | async"
+                  (onSelectionChange)="substututeSelection(substitutes)" [value]="substitutes">
+                  <div class="col-md-7 col-lg-7" style="padding-left: 0px">
+                    <img class="img-circle" [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'"
+                      width="25" height="25">
+                    {{substitutes.firstName}}
+                  </div>
+                  <button mat-raised-button type="button"
+                    style="background-color:lightgreen; color:white; margin-left: 20px">{{substitutes.isActive ? 'Available' : 'Inactivate'}}</button>
                 </mat-option>
-                </mat-autocomplete>
+              </mat-autocomplete>
             </mat-form-field>
-          </td>        
-        </tr>            
+          </td>
+        </tr>
         <tr>
           <td>Posted:</td>
           <td>{{reportDetail.postedOn | date:'M/d/y h:mm a'}}</td>
@@ -173,49 +183,60 @@
           <td></td>
           <td>
             <div *ngIf="reportDetail.anyAttachment == 1">
-              <button mat-button type="button" color="warn" (click)="DownloadFile()">
-                Download Attachment
-                <mat-icon>download</mat-icon>                       
-              </button>          
+              <button mat-button type="button" color="warn" (click)="DownloadFile()" matTooltip="Download Attachment">
+                <mat-icon>save_alt</mat-icon>
+                {{reportDetail.originalFileName}}
+              </button>
             </div>
           </td>
-        </tr>          
-        <tr>           
-          <td>Add Attachment</td>               
-          <td>         
-            <button  mat-button type="button" color="warn" (click)="uploadClick()">
+        </tr>
+        <tr>
+          <td>Add Attachment</td>
+          <td>
+            <button mat-button type="button" color="warn" (click)="uploadClick()" matTooltip="Upload Attachment">
               <mat-icon>file_upload</mat-icon>
-                {{FileName}}
+              {{OriginalFileNameForDisplay}}
+              <span *ngIf='!OriginalFileNameForDisplay'>Upload</span>
             </button>
-            <i *ngIf='FileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip" matTooltip="Remove Attachment"
-                matTooltipPosition="right" (click)="removeAttachedFile()">
-                cancel
+            <i *ngIf='FileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip"
+              matTooltip="Remove Attachment" matTooltipPosition="right" (click)="removeAttachedFile()">
+              cancel
             </i>
             <input type="file" id="UploadButton" (change)="upload($event.target.files)" style="display: none" />
-          </td>               
+          </td>
         </tr>
       </table>
-      <table *ngIf="menuAction=='assign'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">            
+      <table *ngIf="menuAction=='assign'" cellpadding="3" cellspacing="3" width="100%">
         <tr>
-          <div class="col-md-6 col-lg-6">
-            <mat-form-field class="col-md-10 col-lg-10">
-              <input type="text" placeholder="Search Substitute Name" (input)="SearchSubstitutes($event.target.value)"
-                matInput formControlName="substituteId" [matAutocomplete]="auto">
+          <td>
+            <mat-form-field class="col-md-9">
+              <input type="text" placeholder="Search Substitute Name"
+                (input)="SearchAvailableSubstitutes($event.target.value)" matInput formControlName="substituteId"
+                [matAutocomplete]="auto">
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName" multiple>
-              <mat-option (onSelectionChange)="substututeSelection(substutute)" (click)="substututeSelection(substutute)" *ngFor="let substutute of Substututes | async"
-                [value]="substutute">
-                {{substutute.firstName}}
-              </mat-option>
+                <mat-option *ngFor="let substitutes of availableSubstitutes | async"
+                  (onSelectionChange)="substututeSelection(substitutes)" [value]="substitutes">
+                  <div class="col-md-7 col-lg-7" style="padding-left: 0px">
+                    <img class="img-circle" [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'"
+                      width="25" height="25">
+                    {{substitutes.firstName}}
+                  </div>
+                  <b>Select</b>
+                  <button mat-raised-button type="button"
+                    style="background-color:lightgreen; color:white; margin-left: 10px">{{substitutes.isActive ? 'Available' : 'Inactivate'}}</button>
+                </mat-option>
               </mat-autocomplete>
             </mat-form-field>
-          </div>
-          <button type="button" mat-raised-button class="btn btn-info" (click)="onAssign(absenceForm)">Direct Assign</button> 
-        </tr>         
+          </td>
+        </tr>
       </table>
-      <hr>
     </div>
+    <hr>
     <mat-dialog-actions class="m-10">
-      <button *ngIf="menuAction=='edit'" type="submit" mat-raised-button class="btn btn-info" (click)="onSubmit(absenceForm)">Save</button>&nbsp;
+      <button *ngIf="menuAction=='assign'" type="button" mat-raised-button class="btn btn-info" (click)="onAssign(absenceForm)">Direct
+        Assign</button>
+      <button *ngIf="menuAction=='edit'" type="submit" mat-raised-button class="btn btn-info"
+        (click)="onSubmit(absenceForm)">Save</button>&nbsp;
       <button type="button" mat-raised-button class="btn btn-default" (click)="onClose()">Cancel</button>
     </mat-dialog-actions>
   </div>

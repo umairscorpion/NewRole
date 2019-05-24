@@ -119,6 +119,7 @@ export class AddEmployeesComponent implements OnInit {
             var file = new Blob([blob], { type: blob.type });
             let Url = URL.createObjectURL(file);
             this.profilePicture = this.sanitizer.bypassSecurityTrustUrl(Url);
+            this.profilePictureUrl = ImageName;
         },
             error => this.msg = <any>error);
     }
@@ -214,6 +215,12 @@ export class AddEmployeesComponent implements OnInit {
     onSelectProfileImage(event: any) {
         if (event.target.files && event.target.files[0]) {
             let formData = new FormData();
+            formData.append('UserId', this.userIdForUpdate);
+            var mimeType = event.target.files[0].type;
+            if (mimeType.match(/image\/*/) == null) {
+                this.notifier.notify('error', 'Only images are supported.');
+                return;
+            }
             Array.from(event.target.files).forEach((file: File) => formData.append('file', file))
             this.fileService.uploadProfilePicture(formData)
                 .subscribe(responseEvent => {

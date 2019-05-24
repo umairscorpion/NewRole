@@ -182,8 +182,14 @@ export class PopupDialogForSettings {
     ProfilePicture: any;
     userRole: number = this._userSession.getUserRoleId();
     insertAuditLogout: any;
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any, private fileService: FileService,
-        public dialog: MatDialog, private sanitizer: DomSanitizer, private router: Router, private _userSession: UserSession, private auditLogService: AuditLogService) {
+    constructor(
+        @Inject(MAT_DIALOG_DATA) public data: any, 
+        private fileService: FileService,
+        public dialog: MatDialog, 
+        private sanitizer: DomSanitizer, 
+        private router: Router, 
+        private _userSession: UserSession, 
+        private auditLogService: AuditLogService) {
         this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
         this.UserName = this.UserClaim.firstName;
         let profilePicName: string = this.UserClaim.profilePicture;

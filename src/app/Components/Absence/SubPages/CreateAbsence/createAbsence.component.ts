@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
 import { EmployeeService } from '../../../../Service/Manage/employees.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IDistrict } from '../../../../Model/Manage/district';
 import { DataContext } from '../../../../Services/dataContext.service';
@@ -53,7 +52,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     ContactSub: string = '1';
     ContactSubTime: number = null;
     DisableContactSubTimeAccess: boolean = true;
-
     isApprovalNeeded: boolean = false;
     PreferredSubstitutes: any;
     CurrentDate: Date = new Date();
@@ -77,7 +75,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     positions: any;
     Employees: Observable<IEmployee[]>;
     msg: string;
-    FileName: string;
+    OriginalFileName: string;
     AttachedFileType: string;
     AttachedFileExtention: string;
     SubstituteList: Observable<IEmployee[]>;
@@ -90,9 +88,15 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     // for checking that if absence is for need a sub or not
     NeedASub: boolean = false;
     response: number = 0;
-    constructor(private router: Router, notifier: NotifierService, private http: HttpClient, private _formBuilder: FormBuilder,
-        private _EmployeeService: EmployeeService, private _dataContext: DataContext, private _userSession: UserSession,
-        private absenceService: AbsenceService) {
+
+    constructor(
+        private http: HttpClient, 
+        private _formBuilder: FormBuilder,
+        private _EmployeeService: EmployeeService, 
+        private _dataContext: DataContext, 
+        private _userSession: UserSession,
+        private absenceService: AbsenceService,
+        notifier: NotifierService, ) {
         this.notifier = notifier;
     }
 
@@ -332,7 +336,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.notifier.notify('error', 'Already Selected');
             return;
         }
-        
+
         this.absenceFirstFormGroup.value.Substitutes.push(user);
         this.availableSubstitutes = null;
     }
@@ -500,19 +504,20 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         fileUpload.click();
 
     }
+
     upload(files: File[]) {
         this.uploadAndProgress(files);
     }
 
     removeAttachedFile() {
         this.AllAttachedFiles = null;
-        this.FileName = null;
+        this.OriginalFileName = null;
     }
 
     uploadAndProgress(files: File[]) {
         this.AllAttachedFiles = files;
         this.AttachedFileType = files[0].type;
-        this.FileName = this.AllAttachedFiles[0].name;
+        this.OriginalFileName = this.AllAttachedFiles[0].name;
         this.AttachedFileExtention = files[0].name.split('.')[1];
         let formData = new FormData();
         Array.from(files).forEach(file => formData.append('file', file))
@@ -526,6 +531,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 }
             });
     }
+
     //Get Preferred Substitutes
     GetPreferredSubstitutes() {
         let UserId = this.EmployeeIdForAbsence;
@@ -545,7 +551,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                     Substitutes += index === array.length - 1 ? Substitute.userId : Substitute.userId + ",";
                 });
             }
-
             let AbsenceModel = {
                 EmployeeId: this.EmployeeIdForAbsence,
                 AbsenceCreatedByEmployeeId: this._userSession.getUserId(),
@@ -565,10 +570,11 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                     FirstAbsenceForm.getRawValue().Location,
                 SubstituteRequired: +FirstAbsenceForm.value.AbsenceType != 5 ? true : false,
                 AbsenceScope: FirstAbsenceForm.value.AbsenceType,
-                PayrollNotes: SecondAbsenceForm.value.PayRollNotes,
-                SubstituteNotes: SecondAbsenceForm.value.NotesToSubstitute,
+                PayrollNotes: !SecondAbsenceForm.value.PayRollNotes ? 'N/A' : SecondAbsenceForm.value.PayRollNotes,
+                SubstituteNotes: !SecondAbsenceForm.value.NotesToSubstitute ? 'N/A' : SecondAbsenceForm.value.NotesToSubstitute,
                 AnyAttachment: this.AttachedFileName == "" || this.AttachedFileName == undefined ? false : true,
                 AttachedFileName: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileName : 'N/A',
+                OriginalFileName: !this.OriginalFileName ? 'N/A' : this.OriginalFileName ,
                 FileContentType: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileType : 'N/A',
                 FileExtention: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileExtention : 'N/A',
                 SubstituteId: FirstAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 2 ? Substitutes :
@@ -584,7 +590,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                     if (respose == "success") {
                         this.response = 1;
                         stepper.next();
-                        if(this._userSession.getUserRoleId() === 3) this.refreshBalance.next();
+                        if (this._userSession.getUserRoleId() === 3) this.refreshBalance.next();
                     }
                 },
                     (err: HttpErrorResponse) => {
@@ -595,6 +601,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             }
         }
     }
+
     //Check Absence Overlapping
     CheckDataAndTimeOverlape(startDate: Date, endDate: Date, startTime: string, EndTime: string): boolean {
         let Isoverlap: boolean = false;
@@ -665,7 +672,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         return this.positions.find((position: any) => position.id === PostionId);
     }
 
-
     /**
    * @description
    * ABSENCE SECTION END
@@ -721,6 +727,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
      * @description
      * LEAVES SECTION END
      */
+
     ngOnDestroy() {
         console.log("Destroy");
     }

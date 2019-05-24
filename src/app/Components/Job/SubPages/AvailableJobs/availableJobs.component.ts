@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit, Inject, Output, EventEmitter } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { CommunicationService } from '../../../../Services/communication.service';
@@ -7,9 +7,6 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { Absence } from '../../../../Model/absence';
 import { DomSanitizer, SafeUrl } from '../../../../../../node_modules/@angular/platform-browser';
-import { FileService } from '../../../../Services/file.service';
-import { ChangeDetectorRef } from '@angular/core';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { MyJobsComponent } from '../MyJobs/myJobs.component';
 import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
@@ -18,7 +15,6 @@ import * as moment from 'moment';
     selector: 'available-jobs',
     templateUrl: 'availableJobs.component.html'
 })
-
 export class AvailableJobsComponent implements OnInit {
     coloringAbsences = (d: Date) => {
         const date = d.getDate();
@@ -49,9 +45,13 @@ export class AvailableJobsComponent implements OnInit {
     FileStream: any;
     iamRequested: boolean;
 
-    constructor(private _dataContext: DataContext, private _userSession: UserSession,
-        private _formBuilder: FormBuilder, notifier: NotifierService, private fileService: FileService,
-        private _communicationService: CommunicationService, private sanitizer: DomSanitizer, private ref: ChangeDetectorRef) {
+    constructor(
+        private _dataContext: DataContext,
+        private _userSession: UserSession,
+        private _formBuilder: FormBuilder,
+        private _communicationService: CommunicationService,
+        private sanitizer: DomSanitizer,
+        notifier: NotifierService, ) {
         this.notifier = notifier;
     }
     ngAfterViewInit() {
@@ -191,7 +191,7 @@ export class AvailableJobsComponent implements OnInit {
         let DistrictId = this._userSession.getUserDistrictId();
         let Status = 2;
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate.toISOString() + "/" + EndDate.toISOString() +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/"+ false + "/" + Status).subscribe((data: any) => {
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + false + "/" + Status).subscribe((data: any) => {
                 this.myJobs = data;
             },
                 error => this.msg = <any>error);
