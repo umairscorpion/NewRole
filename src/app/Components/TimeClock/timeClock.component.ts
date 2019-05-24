@@ -11,13 +11,13 @@ import { UserSession } from '../../Services/userSession.service';
 import { OnInit, ViewChild } from '@angular/core';
 import { NotifierService } from 'angular-notifier';
 import { HttpErrorResponse } from '@angular/common/http';
-import { TimeClock } from 'src/app/Model/timeclock'
+import { TimeClock } from '../../Model/timeclock'
 import * as moment from 'moment';
-import { EmployeeService } from 'src/app/Service/Manage/employees.service';
-import { DataContext } from 'src/app/Services/dataContext.service';
+import { EmployeeService } from '../../Service/Manage/employees.service';
+import { DataContext } from '../../Services/dataContext.service';
 import { t } from '@angular/core/src/render3';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { TimeClockFilter } from 'src/app/Model/timeclock.filter';
+import { TimeClockFilter } from '../../Model/timeclock.filter';
 
 @Component({
     // selector:'time-clock',

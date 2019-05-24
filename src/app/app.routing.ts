@@ -65,6 +65,7 @@ import { TrainingGuidesComponent } from './Components/TrainingGuides/training-gu
 import { ForgotPasswordComponent } from './Components/User/ForgotPassword/forgot-password.component';
 import { SiteLayoutComponent } from './Components/_layout/site-layout/site-layout.component';
 import { AppLayoutComponent } from './Components/_layout/app-layout/app-layout.component';
+import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-password.component';
 
 
 const appRoutes: Routes = [
@@ -73,7 +74,8 @@ const appRoutes: Routes = [
         component: SiteLayoutComponent,
         children: [
             { path: '', component: LoginComponent },
-            { path: 'forgotPassword', component: ForgotPasswordComponent }
+            { path: 'forgotPassword', component: ForgotPasswordComponent },
+            { path: 'resetPassword', component: ResetPasswordComponent }
         ]
     },
     {

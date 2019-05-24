@@ -31,6 +31,19 @@ export class UserService {
         var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json', 'No-Auth': 'True' });
         return this._http.post(environment.apiUrl + 'auth/login', credentials, { headers: reqHeader });
     }
+
+    forgotPassword(url: string, model: any): Observable<any> {
+        let credentials = JSON.stringify(model);
+        var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json', 'No-Auth': 'True' });
+        return this._http.post(environment.apiUrl + url, credentials, { headers: reqHeader });
+    }
+
+    updatePasswordByActivationCode(url: string, model: any): Observable<any> {
+        let credentials = JSON.stringify(model);
+        var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json', 'No-Auth': 'True' });
+        return this._http.post(environment.apiUrl + url, credentials, { headers: reqHeader });
+    }
+
     userAuthenticationFromGoogle(url: string, model: any): Observable<any> {
         model = JSON.stringify(model);
         var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json', 'No-Auth': 'True' });

@@ -6,7 +6,7 @@ import { CommunicationService } from '../../../../Services/communication.service
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { Absence } from '../../../../Model/absence';
-import { DomSanitizer, SafeUrl } from '../../../../../../node_modules/@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FileService } from '../../../../Services/file.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';

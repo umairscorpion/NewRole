@@ -16,6 +16,7 @@ import { environment } from '../../../../environments/environment';
 
 export class ForgotPasswordComponent implements OnInit {
     private notifier: NotifierService;
+    showForgotPassword: boolean = true;
     hide = true;
     msg: string;
     forgotPasswordform: FormGroup;
@@ -33,14 +34,31 @@ export class ForgotPasswordComponent implements OnInit {
         });
     }
 
-    onSubmit(formData: any) {
+    onSubmit(form: FormGroup) {
         this.msg = "";
-        if (this.forgotPasswordform.valid) {
-            this.notifier.notify('error', 'This feature is in progress.')
+        if (form.valid) {
+            let model = {
+                email: form.value.email
+            }
+            this._userService.forgotPassword('auth/forgotPassword', model).subscribe((response: any) => {
+                if (response) {
+                    this.showForgotPassword = false;
+                    this.notifier.notify('success', 'Forgot password email has been sent, please check your email.')
+                }
+                else {
+                    this.notifier.notify('error', 'Email not exist.')
+                }
+            },
+            (err: HttpErrorResponse) => {
+                this.notifier.notify('error', err.statusText);
+            });
         }
         this.formSubmitAttempt = true;
     }
 
+    gotoLogin() {
+        this.router.navigate(['/']);
+    }
 
     isFieldInvalid(field: string) {
         return (

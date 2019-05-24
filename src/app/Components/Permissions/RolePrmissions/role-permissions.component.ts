@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PermissionCategory } from 'src/app/Model/permissionCategory';
-import { RolePermissionService } from 'src/app/Services/rolePermission.service';
+import { PermissionCategory } from '../../../Model/permissionCategory';
+import { RolePermissionService } from '../../../Services/rolePermission.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Role } from 'src/app/Model/userRoles';
+import { Role } from '../../../Model/userRoles';
 import { UserService } from '../../../Service/user.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 

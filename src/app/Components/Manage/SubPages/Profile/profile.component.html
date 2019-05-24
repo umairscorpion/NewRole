@@ -81,6 +81,11 @@
                                                 style="color: red">
                                                 Minimum 8 characters.
                                             </div>
+                                            <div *ngIf="resetPassAttempt && !resetPasswordForm.controls['password'].hasError('minlength') 
+                                                && !resetPasswordForm.controls['password'].hasError('required') && resetPasswordForm.controls['password'].hasError('pattern')"
+                                                class="col-md-4" style="color: red">
+                                                Not a valid pattern for password.
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>

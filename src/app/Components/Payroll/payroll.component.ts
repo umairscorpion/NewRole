@@ -11,7 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UserService } from '../../Service/user.service';
-import { MediaMatcher } from '../../../../node_modules/@angular/cdk/layout';
+import { MediaMatcher } from '@angular/cdk/layout';
 import { CommunicationService } from '../../Services/communication.service';
 
 @Component({

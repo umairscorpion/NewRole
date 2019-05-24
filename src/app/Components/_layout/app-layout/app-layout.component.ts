@@ -1,10 +1,10 @@
 import { Component, OnInit, HostBinding, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/Service/user.service';
+import { UserService } from '../../../Service/user.service';
 import { SideNavService } from '../../SideNav/sideNav.service';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { AbsenceService } from 'src/app/Services/absence.service';
-import { UserSession } from 'src/app/Services/userSession.service';
+import { AbsenceService } from '../../../Services/absence.service';
+import { UserSession } from '../../../Services/userSession.service';
 import { CommunicationService } from '../../../Services/communication.service';
 import { DataContext } from '../../../Services/dataContext.service';
 import { LeaveBalance } from '../../../Model/leaveBalance';

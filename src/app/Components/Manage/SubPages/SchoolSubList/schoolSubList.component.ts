@@ -3,7 +3,7 @@ import { DataContext } from '../../../../Services/dataContext.service';
 import { EmployeeService } from '../../../../Service/Manage/employees.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { SchoolSubList } from '../../../../Model/SchoolSubList';
-import { MatSelectionList } from '../../../../../../node_modules/@angular/material';
+import { MatSelectionList } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 
 @Component({

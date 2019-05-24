@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ProfileComponent } from 'src/app/Components/Manage/SubPages/Profile/profile.component';
-import { DataContext } from 'src/app/Services/dataContext.service';
+import { ProfileComponent } from '../../Components/Manage/SubPages/Profile/profile.component';
+import { DataContext } from '../../Services/dataContext.service';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({

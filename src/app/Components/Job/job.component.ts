@@ -11,8 +11,8 @@ import { MyJobsComponent } from './SubPages/MyJobs/myJobs.component';
 import { AfterViewInit } from '@angular/core';
 import { Input, ChangeDetectionStrategy } from '@angular/core';
 import { AvailableJobsComponent } from './SubPages/AvailableJobs/availableJobs.component';
-import { AuditFilter } from 'src/app/Model/auditLog';
-import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
+import { AuditFilter } from '../../Model/auditLog';
+import { AuditLogService } from '../../Services/audit_logs/audit-log.service';
 
 
 

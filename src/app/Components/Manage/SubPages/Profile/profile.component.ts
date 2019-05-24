@@ -6,9 +6,9 @@ import { DataContext } from '../../../../Services/dataContext.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { DomSanitizer } from '@angular/platform-browser';
-import { environment } from 'src/environments/environment';
-import { FileService } from 'src/app/Services/file.service';
-import { ShowAttachmentPopupComponent } from 'src/app/Shared/show-attachment-popup/show-attachment-popup.component';
+import { environment } from '../../../../../environments/environment';
+import { FileService } from '../../../../Services/file.service';
+import { ShowAttachmentPopupComponent } from '../../../../Shared/show-attachment-popup/show-attachment-popup.component';
 import { MatDialog } from '@angular/material';
 import { UserService } from '../../../../Service/user.service';
 @Component({
@@ -80,7 +80,7 @@ export class ProfileComponent implements OnInit {
 
         this.resetPasswordForm = this._formBuilder.group({
             currentPassword: ['', Validators.required],
-            password: ['',  [Validators.required, Validators.minLength(8)]],
+            password: ['',  [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+)$/)]],
             confirmPassword: ['', Validators.required]
         });
         this.resetPasswordForm.validator = this.passwordMatchValidator;

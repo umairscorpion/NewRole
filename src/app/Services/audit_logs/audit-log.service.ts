@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { AuditLog, AuditLogView, AuditLogAbsenceView, AuditFilter } from 'src/app/Model/auditLog';
+import { AuditLog, AuditLogView, AuditLogAbsenceView, AuditFilter } from '../../Model/auditLog';
 import { RestService } from '../restService';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AuditLogService extends RestService<AuditLog> {

@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { UsersService } from 'src/app/Services/users.service';
+import { UsersService } from '../../Services/users.service';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { RoleService } from 'src/app/Services/role.service';
-import { UserSummary, User } from 'src/app/Model/user';
-import { RoleSummary } from 'src/app/Model/userRoles';
+import { RoleService } from '../../Services/role.service';
+import { UserSummary, User } from '../../Model/user';
+import { RoleSummary } from '../../Model/userRoles';
 import { UserService } from '../../Service/user.service';
 import { UserEditComponent } from '../User/userEdit/userEdit.component';
 import { MatDialog } from '@angular/material';

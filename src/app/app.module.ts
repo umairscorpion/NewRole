@@ -122,7 +122,7 @@ import { SettingComponent } from './Components/Settings/settings.component';
 //TimeClock And TimeTracker Component
 import { TimeClockComponent } from './Components/TimeClock/timeClock.component';
 import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.component';
-import { EditTimeTracker } from 'src/app/Components/TimeClock/popups/edit-timetracker.popup.component'
+import { EditTimeTracker } from './Components/TimeClock/popups/edit-timetracker.popup.component'
 import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 
 //Services
@@ -138,7 +138,7 @@ import { ReportService } from './Services/report.service';
 import { ErrorHandlerService } from './Services/error-handler/error-handler.service';
 import { ProfileService } from './Services/profile.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { TimeClockService } from 'src/app/Services/timeClock.service'
+import { TimeClockService } from './Services/timeClock.service'
 
 import {
     SocialLoginModule,
@@ -191,6 +191,7 @@ import { SiteHeaderComponent } from './Components/_layout/site-header/site-heade
 import { SiteFooterComponent } from './Components/_layout/site-footer/site-footer.component';
 import { NavbarComponent } from './Components/nav/nav.component';
 import { NavTopBarComponent } from './Components/nav/topBar/navTopBar.component';
+import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-password.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -374,7 +375,8 @@ const customNotifierOptions: NotifierOptions = {
         SelectCheckAllComponent,
         TrainingGuidesComponent,
         ForgotPasswordComponent,
-        NavTopBarComponent
+        NavTopBarComponent,
+        ResetPasswordComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
