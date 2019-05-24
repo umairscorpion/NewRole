@@ -18,7 +18,7 @@ export class EmployeeService {
     getSearchContent(url: string , orgId :number, districtId :number): Observable<IEmployee[]> {
         return this._http.get<IEmployee[]>(environment.apiUrl + url + '/' + orgId + '/' + districtId);
     }
-    getSearchContentByFilter(url: string , orgId :number, districtId :number,searchQuery: string): Observable<IEmployee[]> {
+    getSearchContentByFilter(url: string , orgId :string, districtId :number,searchQuery: string): Observable<IEmployee[]> {
         return this._http.get<IEmployee[]>(environment.apiUrl + url + '/' + orgId + '/' + districtId + '/' + searchQuery);
     }
 

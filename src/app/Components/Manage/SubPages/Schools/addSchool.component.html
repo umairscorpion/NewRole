@@ -68,7 +68,10 @@
                     <td class="col-md-2">Zip Code</td>
                     <td>
                         <mat-form-field class="col-md-4">
-                            <input matInput type="number" placeholder="Zip Code" formControlName="ZipCode">
+                            <input matInput #input maxlength="5" placeholder="Zip Code" formControlName="ZipCode">
+                            <mat-hint align="end">{{input.value?.length || 0}}/5</mat-hint>
+                            <mat-error *ngIf="schoolForm.controls['ZipCode'].hasError('pattern')">Only numbers allowed
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>

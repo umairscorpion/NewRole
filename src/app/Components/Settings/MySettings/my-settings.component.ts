@@ -14,7 +14,6 @@ import { Organization } from '../../../Model/organization';
     styleUrls: ['my-settings.component.scss']
 })
 export class MySettingComponent implements OnInit {
-    displayedColumns: string[] = ['event', 'email', 'text', 'voice'];
     substituteList: User[] = Array<User>();
     UserClaim: any = JSON.parse(localStorage.getItem('userClaims'));
     TimeCustomDelay: string;
@@ -24,6 +23,7 @@ export class MySettingComponent implements OnInit {
     modalTitle: string;
     modalBtnTitle: string;
     Categories: any;
+    NotificationEvents: any;
     PreferredSchools: any;
     OrganizationId: any;
     organizations: Organization[] = Array<Organization>();
@@ -34,6 +34,8 @@ export class MySettingComponent implements OnInit {
     FavoriteSubstututes: Array<any> = [];
     BlockedSubstitutes: Array<any> = [];
     UserRole: number = this._userSession.getUserRoleId();
+    displayedColumns: string[] = ['event', 'email', 'text'];
+    notificationEvents = new MatTableDataSource();
     SubstituteList: any;
     personalFormGroup: FormGroup;
     schoolSettings: FormGroup;
@@ -50,6 +52,7 @@ export class MySettingComponent implements OnInit {
         }
         this.generateForms();
         this.GetSubstituteCategories();
+        this.GetSubstituteNotificationEvents();
         this.GetOrganizations(this._userSession.getUserDistrictId());
     }
 
@@ -58,11 +61,19 @@ export class MySettingComponent implements OnInit {
         if (this.UserClaim.roleId === 4) {
             this.isSubstitute = true;
             this.getPreferredSchools();
-        }
+        }   
     }
     GetSubstituteCategories(): void {
         this._dataContext.get('user/getSubstituteCategories').subscribe((data: any) => {
             this.Categories = data;
+        },
+            error => <any>error);
+    }
+
+    GetSubstituteNotificationEvents(): void {
+        this._dataContext.get('user/getSubstituteNotificationEvents').subscribe((data: any) => {
+            this.NotificationEvents = data;
+            this.notificationEvents.data = data;
         },
             error => <any>error);
     }
@@ -95,6 +106,20 @@ export class MySettingComponent implements OnInit {
             }
 
             this._dataContext.Patch('user/updateUserCategories', model).subscribe((data: any) => {
+            },
+                (err: HttpErrorResponse) => {
+                    this.notifier.notify('error', err.error.error_description);
+                });
+        }
+        this.notifier.notify('success', 'Updated Successfully');
+    }
+
+    UpdateNotificationEvents(Events: any): void {
+        for (let event of Events.options._results) {
+            let model = {
+            }
+
+            this._dataContext.Patch('user/updateNotificationEvents', model).subscribe((data: any) => {
             },
                 (err: HttpErrorResponse) => {
                     this.notifier.notify('error', err.error.error_description);

@@ -13,7 +13,7 @@
     <!-- <form *ngIf='ShowHide'>
         <input type="text" placeholder="search">
     </form> -->
-    <button mat-icon-button>
+    <button mat-icon-button *ngIf = "UserRole != 4 && UserRole != 3">
       <mat-icon class="top-Bar-text" (click)="showSearchPopup()">search</mat-icon>
     </button>
     <button mat-icon-button class="hexagon">

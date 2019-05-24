@@ -1,4 +1,10 @@
-﻿<div class="container">
+﻿<style>
+    .align-anchor {
+        text-align: center;
+        margin-left: 225px;
+    }
+</style>
+<div class="container">
     <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
         <Subzz-app-SideNav></Subzz-app-SideNav>
         <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
@@ -101,7 +107,7 @@
                         </div>
                         <div class="ibox-title">
                             <b>Absence Summary(Total YTD)<span class="stat-percent"
-                                    style="margin-right:10px;">{{dashboardCounter.totalAbsences}}</span></b>
+                                    style="margin-right:10px; margin-top:-10px;font-size: 30px;">{{dashboardCounter.totalAbsences}}</span></b>
                         </div>
                         <div>
                             <canvas id="absenceSummary"></canvas>
@@ -109,7 +115,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="ibox-title">
-                            <b>Top 4 Absence Reason</b>
+                            <b>Top 4 Absence Reasons</b>
                         </div>
                         <div>
                             <canvas id="absenceReason"></canvas>
@@ -120,12 +126,12 @@
                             <b>Pending Time Off Requests
                                 ({{submittedLeaveRequests ? submittedLeaveRequests.length : '0' }})</b>
                         </div>
-                        <div>
+                        <div style="max-height: 333px; overflow:auto">
                             <div *ngIf="submittedLeaveRequests.length == 0">
                                 <h5 style="text-align:center;">No pending requests.</h5>
                             </div>
                             <mat-list>
-                                <mat-list-item style="height: 76px;" *ngFor="let leave of submittedLeaveRequests">
+                                <mat-list-item style="height: 76px;" *ngFor="let leave of submittedLeaveRequests | slice:0:4; let i=index">
                                     <div class="col-md-1">
                                         <img class="img-circle" src="assets/Images/noimage.png" height="30"
                                             width="25" />
@@ -153,6 +159,8 @@
                                     <mat-divider></mat-divider>
                                 </mat-list-item>
                             </mat-list>
+                            <span *ngIf = "showViewMore" class="align-anchor"><a (click)="openLeaveRequestPagePage()"
+                                    style="cursor: pointer;">View More</a></span>
                         </div>
                     </div>
                 </div>
@@ -192,7 +200,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="ibox-title">
+                        <div class="ibox-title">    
                             <b>Top Absences By Grade Level</b>
                         </div>
                         <div>

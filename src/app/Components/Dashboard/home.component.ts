@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../Service/user.service';
 import { SideNavService } from '../SideNav/sideNav.service';
 import { Chart } from 'chart.js'
+import * as ChartDataLabels from 'chartjs-plugin-datalabels';
 import { LeaveRequest } from "../../Model/leaveRequest";
 import { AbsenceService } from "../../Services/absence.service";
 import { UserSession } from "../../Services/userSession.service";
@@ -56,7 +57,7 @@ export class HomeComponent {
     userTemplate: any;
     mobileQuery: MediaQueryList;
     private _mobileQueryListener: () => void;
-
+    showViewMore: boolean = false;
     UserClaim: any;
     msg: string;
     UserName: string;
@@ -105,6 +106,16 @@ export class HomeComponent {
                 }]
             },
             options: {
+                plugins: {
+                    datalabels: {
+                        display: false,
+                        color: 'black',
+                        // anchor:'end',
+                        // clamp:true,
+                        // align:'end',
+                        // offset: -6 
+                    },
+            },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -141,6 +152,16 @@ export class HomeComponent {
                 }]
             },
             options: {
+                plugins: {
+                    datalabels: {
+                        display: false,
+                        color: 'white',
+                        // anchor:'end',
+                        // clamp:true,
+                        // align:'end',
+                        // offset: -6 
+                    },
+            },
                 // scales: {
                 //     yAxes: [{
                 //         ticks: {
@@ -216,6 +237,16 @@ export class HomeComponent {
                 }]
             },
             options: {
+                plugins: {
+                    datalabels: {
+                        display: false,
+                        color: 'black',
+                        anchor:'end',
+                        clamp:true,
+                        align:'end',
+                        offset: -6 
+                    },
+            },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -257,6 +288,17 @@ export class HomeComponent {
                 }]
             },
             options: {
+                plugins: {
+                    datalabels: {
+                        display: false,
+                        color: 'black'
+                        // anchor:'end',
+                        // clamp:true,
+                        // align:'center',
+                        // offset: 8,
+                        // clip:false
+                    },
+            },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -311,7 +353,7 @@ export class HomeComponent {
                     label: 'Filled',
                     data: this.FilledTenDay,
                     backgroundColor: [
-                        "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd" // "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f"
+                        "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f"// "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f"
                         // '#73dad9',
                         // '#73dad9',
                         // '#73dad9',
@@ -345,7 +387,8 @@ export class HomeComponent {
                     label: 'Unfilled',
                     data: this.UnFilledTenDay,
                     backgroundColor: [
-                        "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f", "#3cba9f" // "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f"
+                        "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd"
+                         // "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f"
                         // '#b1ddc4',
                         // '#b1ddc4',
                         // '#b1ddc4',
@@ -377,6 +420,16 @@ export class HomeComponent {
                 }]
             },
             options: {
+                plugins: {
+                    datalabels: {
+                        display: false,
+                        color: 'black',
+                        anchor:'end',
+                        clamp:true,
+                        align:'end',
+                        offset: -6 
+                    },
+            },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -398,8 +451,8 @@ export class HomeComponent {
                 datasets: [{
                     data: this.TotalFilledUnfilled,
                     backgroundColor: [
-                        '#3e95cd',
-                        '#3cba9f'
+                        '#3cba9f','#3e95cd'
+                        
                     ],
                     borderColor: [
                         // '#72b8b7',
@@ -409,16 +462,19 @@ export class HomeComponent {
                     borderWidth: 1
                 }]
             },
+            plugins: [ChartDataLabels],
             options: {
-                //     scales: {
-                //         yAxes: [{
-                //             ticks: {
-                //                 beginAtZero: true
-                //             }
-                //         }]
-                //     }
+                plugins: {
+                    datalabels: {
+                        display: true,
+                        color: 'white',
+                        formatter: function(value, context) {
+                            return value + '%';
+                        }
+                    },
             }
-        });
+        },
+    });
     }
     bindTotalAbsenceByGradeLevel(chartSummary: AbsenceSummary) {
         this.TotalAbsenceByGradeLevel.push(chartSummary.gradeSix);
@@ -487,6 +543,16 @@ export class HomeComponent {
                 }]
             },
             options: {
+                plugins: {
+                    datalabels: {
+                        display: false,
+                        color: 'black',
+                        anchor:'end',
+                        clamp:true,
+                        align:'end',
+                        offset: -6 
+                    },
+            },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -524,13 +590,24 @@ export class HomeComponent {
                 }]
             },
             options: {
+                plugins: {
+                    datalabels: {
+                        display: false,
+                        color: 'black',
+                        anchor:'end',
+                        clamp:true,
+                        align:'end',
+                        offset: -6 
+                    },
+            },
+                
                 scales: {
                     yAxes: [{
                         ticks: {
                             beginAtZero: true
                         }
                     }]
-                }
+                },
             }
         });
     }
@@ -550,6 +627,9 @@ export class HomeComponent {
         let organizationId = this.userSession.getUserOrganizationId() ? this.userSession.getUserOrganizationId() : '-1';
         this.absenceService.getLeaveRequests(districtId, organizationId).subscribe((leaveRequests: LeaveRequest[]) => {
             this.submittedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === false);
+            if(this.submittedLeaveRequests.length > 4){
+                this.showViewMore = true;
+            }
         },
             error => this.msg = <any>error);
     }
@@ -588,6 +668,9 @@ export class HomeComponent {
 
     openDailyReportPage() {
         this.router.navigate(['/reports']);
+    }
+    openLeaveRequestPagePage() {
+        this.router.navigate(['/manage/leave']);
     }
 
     ngOnDestroy(): void {

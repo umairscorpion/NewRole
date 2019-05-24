@@ -1,3 +1,12 @@
+<style>
+    ::ng-deep .mat-checkbox .mat-checkbox-frame {
+      border-color: #76C598;;
+    }
+    
+    ::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+      background-color: #3CCCD1 !important;
+    }
+    </style>
 <div class="main-container">
     <Subzz-app-SideNav></Subzz-app-SideNav>
     <div class="row">
@@ -8,10 +17,11 @@
                         My Settings
                     </mat-card-title>
                     <mat-card-content>
-                        <mat-tab-group class="demo-tab-group" (selectedTabChange)="onChangeTab($event)">
+                        <mat-tab-group class="demo-tab-group">
                             <mat-tab *ngIf='UserRole != 4' label="Substitute Preferences">
                                 <form (ngSubmit)="SaveSubstitutePreference()" [formGroup]="PreferencesFormGroup">
-                                    <div style="padding-top: 10px; min-height:500px" class=" col-md-10 col-md-offset-1 shadow">
+                                    <div style="padding-top: 10px; min-height:500px"
+                                        class=" col-md-10 col-md-offset-1 shadow">
                                         <div style="font-size: 15px" class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-5">
@@ -20,10 +30,14 @@
                                                 </div>
                                                 <div class="col-md-7">
                                                     <mat-form-field class="col-md-5 col-lg-5">
-                                                        <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
-                                                            matInput [matAutocomplete]="autoCom">
+                                                        <input type="text" placeholder="Search Substitute here"
+                                                            aria-label="Number"
+                                                            (input)="SearchSubstitutes($event.target.value)" matInput
+                                                            [matAutocomplete]="autoCom">
                                                         <mat-autocomplete #autoCom="matAutocomplete">
-                                                            <mat-option (onSelectionChange)="SelectToAddInPreferredSubstitute(user)" *ngFor="let user of SubstituteList | async" [value]="">
+                                                            <mat-option
+                                                                (onSelectionChange)="SelectToAddInPreferredSubstitute(user)"
+                                                                *ngFor="let user of SubstituteList | async" [value]="">
                                                                 {{user.firstName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
@@ -35,8 +49,10 @@
                                         <div style="height:175px" class="col-md-12">
                                             <div *ngIf='FavoriteSubstututes && FavoriteSubstututes.length'>
                                                 <a *ngFor="let Substitute of FavoriteSubstututes">
-                                                    <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="FavoriteSubstututes.splice($index,1)" matTooltip="Remove Substitute"
-                                                        matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
+                                                    <mat-icon style="cursor: pointer;" #tooltip="matTooltip"
+                                                        (click)="FavoriteSubstututes.splice($index,1)"
+                                                        matTooltip="Remove Substitute" matTooltipPosition="left">cancel
+                                                    </mat-icon>{{Substitute.firstName}}
                                                     <br>
                                                 </a>
                                             </div>
@@ -49,10 +65,14 @@
                                                 </div>
                                                 <div class="col-md-7">
                                                     <mat-form-field class="col-md-10 col-lg-10">
-                                                        <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
-                                                            matInput [matAutocomplete]="auto">
+                                                        <input type="text" placeholder="Search Substitute here"
+                                                            aria-label="Number"
+                                                            (input)="SearchSubstitutes($event.target.value)" matInput
+                                                            [matAutocomplete]="auto">
                                                         <mat-autocomplete #auto="matAutocomplete">
-                                                            <mat-option (onSelectionChange)="SelectToBlockSubstitite(user)" *ngFor="let user of SubstituteList | async" [value]="">
+                                                            <mat-option
+                                                                (onSelectionChange)="SelectToBlockSubstitite(user)"
+                                                                *ngFor="let user of SubstituteList | async" [value]="">
                                                                 {{user.firstName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
@@ -64,88 +84,179 @@
                                         <div style="height:175px;" class="col-md-12">
                                             <div *ngIf='BlockedSubstitutes && BlockedSubstitutes.length'>
                                                 <a *ngFor="let Substitute of BlockedSubstitutes">
-                                                    <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="BlockedSubstitutes.splice($index,1)" matTooltip="Remove Substitute"
-                                                        matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
+                                                    <mat-icon style="cursor: pointer;" #tooltip="matTooltip"
+                                                        (click)="BlockedSubstitutes.splice($index,1)"
+                                                        matTooltip="Remove Substitute" matTooltipPosition="left">cancel
+                                                    </mat-icon>{{Substitute.firstName}}
                                                     <br>
                                                 </a>
 
                                             </div>
                                         </div>
                                         <div style="text-align: center" class="col-md-12">
-                                            <button mat-raised-button style="color:white; background-color: #04c0be;" type="submit">Save</button>
+                                            <button mat-raised-button style="color:white; background-color: #04c0be;"
+                                                type="submit">Save</button>
                                         </div>
                                     </div>
                                 </form>
                             </mat-tab>
                             <mat-tab *ngIf='isSubstitute' label="School Settings">
                                 <div class="row col-md-8 col-md-offset-2">
-                                    <div class="col-md-8" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
+                                    <div class="col-md-8"
+                                        style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
                                         <p>
                                             <b> Select Schools against which you want to get notifications.</b>
                                         </p>
                                     </div>
                                     <div class="col-md-8" style="height:400px;">
                                         <mat-selection-list #EnabledSchools>
-                                            <mat-list-option *ngFor="let school of PreferredSchools" [value]="school.organizationId" [selected]="school.isEnabled">
+                                            <mat-list-option *ngFor="let school of PreferredSchools"
+                                                [value]="school.organizationId" [selected]="school.isEnabled">
                                                 {{school.organizationName}}
                                             </mat-list-option>
                                         </mat-selection-list>
                                     </div>
                                     <div class="col-md-8" style="text-align: center">
-                                        <button style="background-color: #04c0be; color: white;" mat-raised-button (click)="SavePreferredSchoolSettings(EnabledSchools)">Save</button>
+                                        <button style="background-color: #04c0be; color: white;" mat-raised-button
+                                            (click)="SavePreferredSchoolSettings(EnabledSchools)">Save</button>
                                     </div>
                                 </div>
                             </mat-tab>
                             <mat-tab *ngIf='isSubstitute' label="Categories Settings">
                                 <div class="row col-md-8 col-md-offset-2">
-                                    <div class="col-md-12" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
+                                    <div class="col-md-12"
+                                        style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
                                         <p>
                                             <b> Select Categories against which you want to get notifications.</b>
                                         </p>
                                     </div>
                                     <div class="col-md-12" style="overflow-y: scroll; height:400px;">
                                         <mat-selection-list #Category>
-                                            <mat-list-option *ngFor="let category of Categories" [value]="category.id" [selected]="category.isNotificationSend">
+                                            <mat-list-option *ngFor="let category of Categories" [value]="category.id"
+                                                [selected]="category.isNotificationSend">
                                                 {{category.title}}
                                             </mat-list-option>
                                         </mat-selection-list>
                                     </div>
                                     <div class="col-md-12" style="text-align: center">
-                                        <button style="background-color: #04c0be; color: white;" mat-raised-button (click)="SaveCategories(Category)">Save</button>
+                                        <button style="background-color: #04c0be; color: white;" mat-raised-button
+                                            (click)="SaveCategories(Category)">Save</button>
                                     </div>
                                 </div>
                             </mat-tab>
-                            <mat-tab *ngIf='isSubstitute' label="Notification">
-                                <h3>Notifications</h3>
-                                <div class="row">
-                                    <!-- <div class="col-md-2"><label for="mat-radio-group"
-                                                    style="margin-top:10px; font-weight:100;">Certified:</label></div> -->
-                                    <div class="col-md-3">
-                                        <label for="mat-radio-group" style="margin-top:10px; font-weight:100;">Email Alerts:
-                                        </label>
-                                        <br>
-                                        <mat-radio-group style="margin-top:10px" #radioGroup="matRadioGroup">
-                                            <mat-radio-button color="primary" value="0">No
-                                            </mat-radio-button>
-                                            <br>
-                                            <mat-radio-button color="primary" value="1">Yes
-                                            </mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="mat-radio-group" style="margin-top:10px; font-weight:100;">Text Alerts:
-                                        </label>
-                                        <br>
-                                        <mat-radio-group style="margin-top:10px" #radioGroup="matRadioGroup">
-                                            <mat-radio-button color="primary" value="0">No
-                                            </mat-radio-button>
-                                            <br>
-                                            <mat-radio-button color="primary" value="1">Yes
-                                            </mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
-                            </div>
+                            <mat-tab *ngIf='isSubstitute' label="Notification Settings">
+                                <div class="row col-md-5 col-md-offset-2">
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-top: 25px; text-align: -webkit-center;">
+                                            <!-- <mat-selection-list #Category>
+                                                <mat-list-option *ngFor="let event of NotificationEvents" [value]="event.notificationId"
+                                                    [selected]="event.emailAlert"
+                                                    [selected]="event.textAlert">
+                                                    {{event.eventName}}
+                                                </mat-list-option>
+                                            </mat-selection-list> -->
 
+                                            <!-- <table class="table mat-elevation-z8">
+                                                <thead style="color: rgba(0,0,0,.54);">
+                                                  <tr>
+                                                    <th scope="col" style="color: rgba(0,0,0,.54);">Event</th>
+                                                    <th scope="col"><i class="material-icons">email</i>
+                                                    <span style="padding-top:5px ">Email Alert</span></th>
+                                                    <th scope="col"> <span class="HeaderAlignment">
+                                                        <i class="material-icons">message</i>
+                                                        <span style="padding-top:5px ">Text Message Alert</span>
+                                                    </span></th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody style="color: rgba(0,0,0,.54);">
+                                                  <tr>
+                                                    <td>Job Approved</td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Job Posted</td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>I'm Requested</td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Job Updated</td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Job Assigned</td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Job Released</td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Job Cancelled</td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
+                                                  </tr>
+                                                </tbody>
+                                              </table> -->
+                                             
+                                              <table mat-table [dataSource]="notificationEvents" class="mat-elevation-z8">
+
+                                                <ng-container matColumnDef="event">
+                                                    <th mat-header-cell *matHeaderCellDef> Event </th>
+                                                    <td mat-cell *matCellDef="let row"> {{row.eventName}} </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="email">
+                                                    <th style="padding-left: 70px;" mat-header-cell *matHeaderCellDef>
+                                                        <span class="HeaderAlignment">
+                                                            <i class="material-icons">
+                                                                email
+                                                            </i>
+                                                            <span style="padding-top:5px ">Email Alert</span>
+                                                        </span>
+                                                    </th>
+                                                    <td mat-cell style="padding-left: 100px;" *matCellDef="let row ;let i = index;">
+                                                        <mat-checkbox color="primary"
+                                                            [checked]="row.emailAlert">
+                                                        </mat-checkbox>
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="text">
+                                                    <th mat-header-cell style="padding-left: 70px;" *matHeaderCellDef>
+                                                        <span class="HeaderAlignment">
+                                                            <i class="material-icons">
+                                                                message
+                                                            </i>
+                                                            <span style="padding-top:5px ">Text Message Alert</span>
+                                                        </span>
+                                                    </th>
+                                                    <td mat-cell style="padding-left: 100px;" *matCellDef="let row">
+                                                        <mat-checkbox color="primary"
+                                                            [checked]="row.textAlert">
+                                                        </mat-checkbox>
+                                                    </td>
+                                                </ng-container>
+                                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding-top: 20px">
+                                        <div class="col-md-12" style="text-align: center">
+                                            <button color="primary" style="background-color: #04c0be; color: white;" mat-raised-button
+                                                (click)="SaveNotificationSettings()">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </mat-tab>
                         </mat-tab-group>
                     </mat-card-content>
