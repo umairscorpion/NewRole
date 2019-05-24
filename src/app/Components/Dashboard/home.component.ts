@@ -11,6 +11,7 @@ import { UserSession } from "../../Services/userSession.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { AbsenceSummary } from 'src/app/Model/absence.summary';
 import * as moment from 'moment';
+import { CommunicationService } from "../../Services/communication.service";
 
 @Component({
     selector: 'Subzz-app-dashboard',
@@ -63,15 +64,13 @@ export class HomeComponent {
     isOpen = true;
     constructor(private router: Router, private _userService: UserService, private sideNavService: SideNavService,
         changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private absenceService: AbsenceService,
-        private userSession: UserSession) {
-        // this.toastr.setRootViewContainerRef(vcr);
+        private userSession: UserSession, private _communicationService: CommunicationService) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
     }
 
     ngOnInit(): void {
-
         this.absenceService.getSummary().subscribe((summary: AbsenceSummary[]) => {
             this.bindAbsenceSummary(summary[0]);
             this.bindAbsenceReason(summary[0]);
@@ -152,13 +151,12 @@ export class HomeComponent {
         });
     }
     LoadUserResources(): void {
-        let resourceTypeId = 2;
-        let parentResourceTypeId = -1;
-        let adminPortal = 0;
-        this._userService.getUserResources(resourceTypeId, parentResourceTypeId, adminPortal).subscribe((data: any) => {
-            this.userTemplate = data;
-        },
-            error => this.msg = <any>error);
+        const config = {
+            resourceTypeId: 2,
+            parentResourceTypeId: -1,
+            isAdminPanel: 0
+        }
+        this._communicationService.UpdatePanel(config);
     }
 
     bindAbsenceSummary(chartSummary: AbsenceSummary) {

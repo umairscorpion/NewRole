@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { FileService } from 'src/app/Services/file.service';
 import { ShowAttachmentPopupComponent } from 'src/app/Shared/show-attachment-popup/show-attachment-popup.component';
 import { MatDialog } from '@angular/material';
+import { UserService } from '../../../../Service/user.service';
 @Component({
     templateUrl: 'profile.component.html',
     styleUrls: ['profile.component.css']
@@ -24,6 +25,7 @@ export class ProfileComponent implements OnInit {
     personalFormGroup: FormGroup;
     officialFormGroup: FormGroup;
     PreferencesFormGroup: FormGroup;
+    resetPasswordForm: FormGroup;
     url: string;
     SubstituteList: any;
     FavoriteSubstututes: Array<any> = [];
@@ -37,10 +39,12 @@ export class ProfileComponent implements OnInit {
     CompletedPercentage: number;
     SuccessMessage: boolean;
     SubstituteFiles: any;
+    private resetPassAttempt: boolean;
 
-    constructor(private sanitizer: DomSanitizer, private _formBuilder: FormBuilder,
+    constructor(private sanitizer: DomSanitizer, private _formBuilder: FormBuilder, private userService: UserService,
         notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession,
-        private _employeeService: EmployeeService, private http: HttpClient, private _fileService: FileService, private dialogRef: MatDialog,) {
+        private _employeeService: EmployeeService, private http: HttpClient, private _fileService: FileService,
+        private dialogRef: MatDialog, ) {
         this.notifier = notifier
     }
 
@@ -73,6 +77,14 @@ export class ProfileComponent implements OnInit {
     }
 
     generateForms(): void {
+
+        this.resetPasswordForm = this._formBuilder.group({
+            currentPassword: ['', Validators.required],
+            password: ['',  [Validators.required, Validators.minLength(8)]],
+            confirmPassword: ['', Validators.required]
+        });
+        this.resetPasswordForm.validator = this.passwordMatchValidator;
+
         this.personalFormGroup = this._formBuilder.group({
             FirstName: new FormControl({ value: '' }, Validators.required),
             LastName: ['', Validators.required],
@@ -105,8 +117,39 @@ export class ProfileComponent implements OnInit {
         this.personalFormGroup.setValue(personalFormModel);
     }
 
+    passwordMatchValidator(frm: FormGroup) {
+        return frm.controls['password'].value ===
+            frm.controls['confirmPassword'].value
+            ? null
+            : { mismatch: true };
+    }
+
     onFromSubmit(form: any) {
 
+    }
+
+    submitResetPassForm(form: FormGroup) {
+        if (form.valid) {
+            this.userService.get('user/checkUserPassword/'+ this._userSession.getUserEmailId() + "/" + form.value.currentPassword).
+            subscribe((result: any) => {
+                if (result) {
+                    var model = {
+                        userId: this._userSession.getUserId(),
+                        password: form.value.confirmPassword
+                    }
+                    this.userService.post('user/updatePassword', model).subscribe(result => {
+                        this.notifier.notify('success', 'Password successfully changed');
+                    },
+                        error => this.msg = <any>error);
+                }
+                else {
+                    this.notifier.notify('error', 'Current password not correct.');
+                }
+               
+            },
+                error => this.msg = <any>error);
+        }
+        this.resetPassAttempt = true;
     }
 
     GetSustitutes(): void {
@@ -240,7 +283,7 @@ export class ProfileComponent implements OnInit {
     getSubstututeFiles(): void {
         let model = {
             fileType: "Substitute Files"
-          }
+        }
         this._fileService.getFile(model).subscribe((respose: any) => {
             this.SubstituteFiles = respose;
         });

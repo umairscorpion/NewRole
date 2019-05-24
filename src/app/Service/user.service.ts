@@ -38,11 +38,11 @@ export class UserService {
     }
 
     get(url: string): Observable<any> {
-        return this._http.get(url);
+        return this._http.get(environment.apiUrl + url);
     }
 
     post(url: string, model: any): Observable<any> {    
-        return this._http.patch(environment.apiUrl + url, model);
+        return this._http.post(environment.apiUrl + url, model);
     }
 
     put(url: string, id: number, model: any): Observable<any> {

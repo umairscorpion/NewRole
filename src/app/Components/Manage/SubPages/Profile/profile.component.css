@@ -13,3 +13,7 @@
 .shadow {
       border: solid rgba(0,0,0,.1);
 }
+
+::ng-deep .mat-tab-body-content {
+  overflow: hidden !important;
+}

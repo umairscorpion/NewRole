@@ -7,8 +7,13 @@ import 'rxjs/add/operator/catch';
 export class CommunicationService {
     isOpen = false;
     @Output() AbsenceDetail: EventEmitter<boolean> = new EventEmitter();
+    @Output() updateLeftSidePanel: EventEmitter<boolean> = new EventEmitter();
 
     ViewAbsenceDetail(AbsenceDetail : any) {
         this.AbsenceDetail.emit(AbsenceDetail);
+    }
+
+    UpdatePanel(config: any) {
+        this.updateLeftSidePanel.emit(config);
     }
 }

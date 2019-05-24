@@ -4,6 +4,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MonthlyReportsComponent } from './SubPages/MonthlyReports/monthyReports.component';
 import { DailyReportsComponent } from './SubPages/DailyReports/dailyReports.component';
+import { CommunicationService } from '../../Services/communication.service';
 // import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 @Component({
     templateUrl: 'reports.component.html',
@@ -19,7 +20,7 @@ export class ReportsComponent implements OnInit {
     selectedTab: any;
     private _mobileQueryListener: () => void;
     constructor(private router: Router, private _userService: UserService, changeDetectorRef: ChangeDetectorRef
-        , media: MediaMatcher, private route: ActivatedRoute) {
+        , media: MediaMatcher, private route: ActivatedRoute, private _communicationService: CommunicationService) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
@@ -34,12 +35,12 @@ export class ReportsComponent implements OnInit {
     }
     
     LoadSideNavMenu(): void {
-        let resourceTypeId = 2;
-        let parentResourceTypeId = -1;
-        this._userService.getUserResources(resourceTypeId, parentResourceTypeId, 0).subscribe((data: any) => {
-            this.sideNavMenu = data;
-        },
-            error => this.msg = <any>error);
+        const config = {
+            resourceTypeId: 2,
+            parentResourceTypeId: -1,
+            isAdminPanel: 0
+        }
+        this._communicationService.UpdatePanel(config);
     }
 
     onChangeTab(tab: any) {

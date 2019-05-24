@@ -5,6 +5,9 @@ import { SideNavService } from '../../SideNav/sideNav.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AbsenceService } from 'src/app/Services/absence.service';
 import { UserSession } from 'src/app/Services/userSession.service';
+import { CommunicationService } from '../../../Services/communication.service';
+import { DataContext } from '../../../Services/dataContext.service';
+import { LeaveBalance } from '../../../Model/leaveBalance';
 
 @Component({
   selector: 'app-app-layout',
@@ -12,6 +15,8 @@ import { UserSession } from 'src/app/Services/userSession.service';
   styleUrls: ['./app-layout.component.css']
 })
 export class AppLayoutComponent implements OnInit {
+  parentResourceType: number = 0;
+  employeeLeaveBalance: any;
   @HostBinding('class.is-open')
   userTemplate: any;
   mobileQuery: MediaQueryList;
@@ -20,26 +25,43 @@ export class AppLayoutComponent implements OnInit {
   msg: string;
   UserName: string;
   isOpen = true;
-
+  userRole: number = this.userSession.getUserRoleId();
   constructor(private router: Router, private _userService: UserService, private sideNavService: SideNavService,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private absenceService: AbsenceService,
-    private userSession: UserSession) {
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _communicationService: CommunicationService,
+    private userSession: UserSession, private dataContext: DataContext) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit() {
-    this.loadUserResources();
+    this.loadUserResources(2, -1, 0);
+    this.sideNavService.change.subscribe((isOpen: any) => {
+      this.isOpen = isOpen;
+    });
+    this._communicationService.updateLeftSidePanel.subscribe((config: any) => {
+      this.parentResourceType = config.parentResourceTypeId;
+      this.loadUserResources(config.resourceTypeId, config.parentResourceTypeId, config.isAdminPanel);
+      if (this.parentResourceType === 2 && this.userRole === 3) {
+        this.getEmployeeBalance();
+      }
+    });
   }
 
-  loadUserResources(): void {
-    const resourceTypeId = 2;
-    const parentResourceTypeId = -1;
-    const adminPortal = 0;
+  loadUserResources(resourceTypeId: number, parentResourceTypeId: number, adminPortal: number): void {
     this._userService.getUserResources(resourceTypeId, parentResourceTypeId, adminPortal).subscribe((data: any) => {
       this.userTemplate = data;
     },
       error => this.msg = <any>error);
+  }
+
+  getEmployeeBalance() {
+    this.dataContext.get('Leave/getEmployeeLeaveBalance/' + new Date().getFullYear() + '/' + this.userSession.getUserId()).subscribe((response: LeaveBalance[]) => {
+      this.employeeLeaveBalance = response;
+    })
+  }
+
+  toggle() {
+
   }
 }

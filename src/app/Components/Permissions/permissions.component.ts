@@ -129,6 +129,28 @@ export class PermissionsComponent implements OnInit {
         });
     }
 
+    addUser() {
+        const dialogRef = this.dialog.open(UserEditComponent, {
+            panelClass: 'user-create-dialog',
+            data: new UserSummary()
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && result.user) {
+                if (result.user.userId && result.user.userId.length > 0) {
+                    this.userService.update(result.user).subscribe((data: any) => {
+                        this.loadUsers();
+                    },
+                        error => this.msg = <any>error);
+                } else {
+                    this.userService.create(result.user).subscribe((data: any) => {
+                        this.loadUsers();
+                    },
+                        error => this.msg = <any>error);
+                }
+            }
+        });
+    }
+
     removeUsers() {
         if (this.selectedUsers.length > 0) {
             swal.fire({

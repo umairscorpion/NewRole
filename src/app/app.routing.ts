@@ -63,72 +63,537 @@ import { RolePermissionsComponent } from './Components/Permissions/RolePrmission
 import { MySettingComponent } from './Components/Settings/MySettings/my-settings.component';
 import { TrainingGuidesComponent } from './Components/TrainingGuides/training-guides.component';
 import { ForgotPasswordComponent } from './Components/User/ForgotPassword/forgot-password.component';
+import { SiteLayoutComponent } from './Components/_layout/site-layout/site-layout.component';
+import { AppLayoutComponent } from './Components/_layout/app-layout/app-layout.component';
 
 
 const appRoutes: Routes = [
-    { path: '', component: LoginComponent },
-    { path: 'forgotPassword', component: ForgotPasswordComponent },
-    { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
     {
-        path: 'absence', component: absenceComponent, canActivate: [AuthGuard],
-        children: [{ path: '', redirectTo: 'createAbsence', pathMatch: 'full' },
-        { path: 'createAbsence', component: CreateAbsenceComponent },
-        { path: 'abortedAbsence', component: AbortedAbsenceComponent },
-        { path: 'pastAbsence', component: PastAbsenceComponent },
-        { path: 'upcommingAbsence', component: UpcommingAbsenceComponent }
+        path: '',
+        component: SiteLayoutComponent,
+        children: [
+            { path: '', component: LoginComponent },
+            { path: 'forgotPassword', component: ForgotPasswordComponent }
         ]
     },
     {
-        path: 'manage', component: ManageComponent, canActivate: [AuthGuard],
-        children: [{ path: '', redirectTo: 'organizations', pathMatch: 'full' },
-        { path: 'organizations', component: OrganizationsComponent },
-        { path: 'organizations/addOrganization', component: AddOrganizationComponent },
-        { path: 'districts', component: DistrictsComponent },
-        { path: 'district/addDistrict', component: AddDistrictComponent },
-        { path: 'employees', component: EmployeesComponent },
-        { path: 'employees/addemployee', component: AddEmployeesComponent },
-        { path: 'substitutes', component: SubstitutesComponent },
-        { path: 'substitutes/addSubstitute', component: AddSubstituteComponent },
-        { path: 'leave', component: LeavesComponent },
-        { path: 'leave/AddLeave', component: AddLeaveComponent },
-        { path: 'leave/AddLeaveRequest', component: AddLeaveRequestComponent },
-        { path: 'schools', component: SchoolsComponent },
-        { path: 'schools/AddSchool', component: AddSchoolComponent },
-        { path: 'substitutes/calendar', component: SubstituteCalendarComponent },
+        path: '',
+        component: AppLayoutComponent,
+        children: [
+            {
+                path: 'home', component: HomeComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/home',
+                    title: 'Home',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'absence', component: absenceComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/absence',
+                    title: 'Absence',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                },
+                children: [{
+                    path: '', redirectTo: 'createAbsence', pathMatch: 'full',
+                    data: {
+                        path: '/absence',
+                        title: 'Absence',
+                        type: 'main',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    },
+                },
+                {
+                    path: 'createAbsence', component: CreateAbsenceComponent,
+                    data: {
+                        path: '/absence/createAbsence',
+                        title: 'Create Absence',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    },
+                },
+                {
+                    path: 'abortedAbsence', component: AbortedAbsenceComponent,
+                    data: {
+                        path: '/absence/abortedAbsence',
+                        title: 'Aborted Absence',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'pastAbsence', component: PastAbsenceComponent,
+                    data: {
+                        path: '/absence/pastAbsence',
+                        title: 'Past Absence',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'upcommingAbsence', component: UpcommingAbsenceComponent,
+                    data: {
+                        path: '/absence/upcommingAbsence',
+                        title: 'Upcoming Absence',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                }
+                ]
+            },
+            {
+                path: 'manage', component: ManageComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/manage',
+                    title: 'Manage',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                },
+                children: [{
+                    path: '', redirectTo: 'organizations', pathMatch: 'full',
+                    data: {
+                        path: '/manage',
+                        title: 'Organization',
+                        type: 'main',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'organizations', component: OrganizationsComponent,
+                    data: {
+                        path: '/manage/organizations',
+                        title: 'Organizations',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'organizations/addOrganization', component: AddOrganizationComponent,
+                    data: {
+                        path: '/manage/organizations/addOrganization',
+                        title: 'Add Organization',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'districts', component: DistrictsComponent,
+                    data: {
+                        path: '/manage/districts',
+                        title: 'Districts',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'district/addDistrict', component: AddDistrictComponent,
+                    data: {
+                        path: '/manage/district/addDistrict',
+                        title: 'Add District',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'employees', component: EmployeesComponent,
+                    data: {
+                        path: '/manage/employees',
+                        title: 'Employees',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'employees/addemployee', component: AddEmployeesComponent,
+                    data: {
+                        path: '/manage/employees/addemployee',
+                        title: 'Add Employee',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'substitutes', component: SubstitutesComponent,
+                    data: {
+                        path: '/manage/substitutes',
+                        title: 'Substitutes',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'substitutes/addSubstitute', component: AddSubstituteComponent,
+                    data: {
+                        path: '/manage/substitutes/addSubstitute',
+                        title: 'Add Substitute',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'leave', component: LeavesComponent,
+                    data: {
+                        path: '/manage/leave',
+                        title: 'Leave',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'leave/AddLeave', component: AddLeaveComponent,
+                    data: {
+                        path: '/manage/leave/AddLeave',
+                        title: 'Add Leave',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'leave/AddLeaveRequest', component: AddLeaveRequestComponent,
+                    data: {
+                        path: '/manage/leave/AddLeaveRequest',
+                        title: 'Add Leave Request',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'schools', component: SchoolsComponent,
+                    data: {
+                        path: '/manage/schools',
+                        title: 'Schools',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'schools/AddSchool', component: AddSchoolComponent,
+                    data: {
+                        path: '/manage/schools/AddSchool',
+                        title: 'Add School',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'substitutes/calendar', component: SubstituteCalendarComponent,
+                    data: {
+                        path: '/manage/substitutes/calendar',
+                        title: 'Calendar',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                ]
+            },
+            {
+                path: 'viewjobs', component: JobComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/viewjobs',
+                    title: 'Jobs',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                },
+                children: [{
+                    path: '', redirectTo: 'availableJobs', pathMatch: 'full',
+                    data: {
+                        path: '/viewjobs',
+                        title: 'Jobs',
+                        type: 'main',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'myJobs', component: MyJobsComponent,
+                    data: {
+                        path: '/viewjobs/myJobs',
+                        title: 'My Jobs',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'availableJobs', component: AvailableJobsComponent,
+                    data: {
+                        path: '/viewjobs/availableJobs',
+                        title: 'Available Jobs',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                },
+                {
+                    path: 'pastJobs', component: PastJobsComponent,
+                    data: {
+                        path: '/viewjobs/pastJobs',
+                        title: 'Past Jobs',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: 'DASHBOARD'
+                    }
+                }
 
+                ]
+            },
+            {
+                path: 'reports', component: ReportsComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/reports',
+                    title: 'Report',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+                // children: [{ path: '', redirectTo: 'dailyReports', pathMatch: 'full', },
+                // { path: 'dailyReports', component: DailyReportsComponent },
+                // { path: 'monthlyReports', component: MonthlyReportsComponent },
+                // { path: 'payRollReports', component: PayRollReportsComponent }
+                // ]
+            },
+            {
+                path: 'timetracker', component: TimeTrackerComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/timetracker',
+                    title: 'Time Tracker',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'timeclock', component: TimeClockComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/timeclock',
+                    title: 'Time Clock',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'settings', component: SettingComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/settings',
+                    title: 'Settings',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'mysettings', component: MySettingComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/mysettings',
+                    title: 'My Settings',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'profile', component: ProfileComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/profile',
+                    title: 'Profile',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'permissions', component: PermissionsComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/permissions',
+                    title: 'Permissions',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'role/permissions/:id', component: RolePermissionsComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/role/permissions',
+                    title: 'Permissions',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'contactUs', component: ContactUsComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/contactUs',
+                    title: 'Contact Us',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'calendar', component: SubstituteCalendarComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/calendar',
+                    title: 'Calendar',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'availability', component: SubstituteAvailabilityComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/availability',
+                    title: 'Availability',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'payroll', component: PayRollComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/payroll',
+                    title: 'Payroll',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'auditLog', component: AuditLogComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/auditLog',
+                    title: 'Audit Log',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'trainingGuide', component: TrainingGuidesComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/trainingGuide',
+                    title: 'Training Guide',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            }
         ]
-    },
-    {
-        path: 'viewjobs', component: JobComponent, canActivate: [AuthGuard],
-        children: [{ path: '', redirectTo: 'availableJobs', pathMatch: 'full' },
-        { path: 'myJobs', component: MyJobsComponent },
-        { path: 'availableJobs', component: AvailableJobsComponent },
-        { path: 'pastJobs', component: PastJobsComponent }
-
-        ]
-    },
-    {
-        path: 'reports', component: ReportsComponent, canActivate: [AuthGuard]
-        // children: [{ path: '', redirectTo: 'dailyReports', pathMatch: 'full' },
-        // { path: 'dailyReports', component: DailyReportsComponent },
-        // { path: 'monthlyReports', component: MonthlyReportsComponent },
-        // { path: 'payRollReports', component: PayRollReportsComponent }
-        // ]
-    },
-    { path: 'timetracker', component: TimeTrackerComponent, canActivate: [AuthGuard] },
-    { path: 'timeclock', component: TimeClockComponent, canActivate: [AuthGuard] },
-    { path: 'settings', component: SettingComponent, canActivate: [AuthGuard] },
-    { path: 'mysettings', component: MySettingComponent, canActivate: [AuthGuard] },
-    { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-    { path: 'permissions', component: PermissionsComponent, canActivate: [AuthGuard] },
-    { path: 'role/permissions/:id', component: RolePermissionsComponent, canActivate: [AuthGuard] },
-    { path: 'contactUs', component: ContactUsComponent, canActivate: [AuthGuard] },
-    { path: 'calendar', component: SubstituteCalendarComponent, canActivate: [AuthGuard] },
-    { path: 'availability', component: SubstituteAvailabilityComponent, canActivate: [AuthGuard] },
-    { path: 'payroll', component: PayRollComponent, canActivate: [AuthGuard] },
-    { path: 'auditLog', component: AuditLogComponent, canActivate: [AuthGuard] },
-    { path: 'trainingGuide', component: TrainingGuidesComponent, canActivate: [AuthGuard] }
-];
-
+    }];
 export const routing: ModuleWithProviders =
-    RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'});
+    RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' });

@@ -190,6 +190,7 @@ import { AppHeaderComponent } from './Components/_layout/app-header/app-header.c
 import { SiteHeaderComponent } from './Components/_layout/site-header/site-header.component';
 import { SiteFooterComponent } from './Components/_layout/site-footer/site-footer.component';
 import { NavbarComponent } from './Components/nav/nav.component';
+import { NavTopBarComponent } from './Components/nav/topBar/navTopBar.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -372,7 +373,8 @@ const customNotifierOptions: NotifierOptions = {
         UserEditComponent,
         SelectCheckAllComponent,
         TrainingGuidesComponent,
-        ForgotPasswordComponent
+        ForgotPasswordComponent,
+        NavTopBarComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

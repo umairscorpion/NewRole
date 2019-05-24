@@ -61,8 +61,6 @@ export class JobComponent implements OnInit {
         this.sideNavService.change.subscribe((isOpen: any) => {
             this.isOpen = isOpen;
         });
-
-
         this._communicationService.AbsenceDetail.subscribe((AbsenceDetail: any) => {
             this.JobDetail(AbsenceDetail);
         });
@@ -74,12 +72,12 @@ export class JobComponent implements OnInit {
         }
     }
     LoadSideNavMenu(): void {
-        let resourceTypeId = 2;
-        let parentResourceTypeId = -1;
-        this._userService.getUserResources(resourceTypeId, parentResourceTypeId, 0).subscribe((data: any) => {
-            this.sideNavMenu = data;
-        },
-            error => this.msg = <any>error);
+        const config = {
+            resourceTypeId: 2,
+            parentResourceTypeId: -1,
+            isAdminPanel: 0
+        }
+        this._communicationService.UpdatePanel(config);
     }
 
     JobDetail(data: any) {

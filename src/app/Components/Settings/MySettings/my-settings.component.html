@@ -1,156 +1,153 @@
-<div class="main-container">
-    <Subzz-app-SideNav></Subzz-app-SideNav>
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="row">
-                <mat-card>
-                    <mat-card-title>
-                        My Settings
-                    </mat-card-title>
-                    <mat-card-content>
-                        <mat-tab-group class="demo-tab-group" (selectedTabChange)="onChangeTab($event)">
-                            <mat-tab *ngIf='UserRole != 4' label="Substitute Preferences">
-                                <form (ngSubmit)="SaveSubstitutePreference()" [formGroup]="PreferencesFormGroup">
-                                    <div style="padding-top: 10px; min-height:500px" class=" col-md-10 col-md-offset-1 shadow">
-                                        <div style="font-size: 15px" class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-5">
-                                                    <b> Favorite Substitutes </b>
-                                                    <br> Remaining choices: {{5 - FavoriteSubstututes.length}}
-                                                </div>
-                                                <div class="col-md-7">
-                                                    <mat-form-field class="col-md-5 col-lg-5">
-                                                        <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
-                                                            matInput [matAutocomplete]="autoCom">
-                                                        <mat-autocomplete #autoCom="matAutocomplete">
-                                                            <mat-option (onSelectionChange)="SelectToAddInPreferredSubstitute(user)" *ngFor="let user of SubstituteList | async" [value]="">
-                                                                {{user.firstName}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>
-                                                </div>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="row">
+            <mat-card>
+                <mat-card-title>
+                    My Settings
+                </mat-card-title>
+                <mat-card-content>
+                    <mat-tab-group class="demo-tab-group" (selectedTabChange)="onChangeTab($event)">
+                        <mat-tab *ngIf='UserRole != 4' label="Substitute Preferences">
+                            <form (ngSubmit)="SaveSubstitutePreference()" [formGroup]="PreferencesFormGroup">
+                                <div style="padding-top: 10px; min-height:500px" class=" col-md-10 col-md-offset-1 shadow">
+                                    <div style="font-size: 15px" class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <b> Favorite Substitutes </b>
+                                                <br> Remaining choices: {{5 - FavoriteSubstututes.length}}
+                                            </div>
+                                            <div class="col-md-7">
+                                                <mat-form-field class="col-md-5 col-lg-5">
+                                                    <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
+                                                        matInput [matAutocomplete]="autoCom">
+                                                    <mat-autocomplete #autoCom="matAutocomplete">
+                                                        <mat-option (onSelectionChange)="SelectToAddInPreferredSubstitute(user)" *ngFor="let user of SubstituteList | async" [value]="">
+                                                            {{user.firstName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
                                             </div>
                                         </div>
-                                        <hr>
-                                        <div style="height:175px" class="col-md-12">
-                                            <div *ngIf='FavoriteSubstututes && FavoriteSubstututes.length'>
-                                                <a *ngFor="let Substitute of FavoriteSubstututes">
-                                                    <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="FavoriteSubstututes.splice($index,1)" matTooltip="Remove Substitute"
-                                                        matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
-                                                    <br>
-                                                </a>
+                                    </div>
+                                    <hr>
+                                    <div style="height:175px" class="col-md-12">
+                                        <div *ngIf='FavoriteSubstututes && FavoriteSubstututes.length'>
+                                            <a *ngFor="let Substitute of FavoriteSubstututes">
+                                                <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="FavoriteSubstututes.splice($index,1)" matTooltip="Remove Substitute"
+                                                    matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
+                                                <br>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div style="font-size: 15px" class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <b> Blocked Substitutes </b>
+                                                <br> Remaining choices: {{5 - BlockedSubstitutes.length}}
+                                            </div>
+                                            <div class="col-md-7">
+                                                <mat-form-field class="col-md-10 col-lg-10">
+                                                    <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
+                                                        matInput [matAutocomplete]="auto">
+                                                    <mat-autocomplete #auto="matAutocomplete">
+                                                        <mat-option (onSelectionChange)="SelectToBlockSubstitite(user)" *ngFor="let user of SubstituteList | async" [value]="">
+                                                            {{user.firstName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
                                             </div>
                                         </div>
-                                        <div style="font-size: 15px" class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-5">
-                                                    <b> Blocked Substitutes </b>
-                                                    <br> Remaining choices: {{5 - BlockedSubstitutes.length}}
-                                                </div>
-                                                <div class="col-md-7">
-                                                    <mat-form-field class="col-md-10 col-lg-10">
-                                                        <input type="text" placeholder="Search Substitute here" aria-label="Number" (input)="SearchSubstitutes($event.target.value)"
-                                                            matInput [matAutocomplete]="auto">
-                                                        <mat-autocomplete #auto="matAutocomplete">
-                                                            <mat-option (onSelectionChange)="SelectToBlockSubstitite(user)" *ngFor="let user of SubstituteList | async" [value]="">
-                                                                {{user.firstName}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div style="height:175px;" class="col-md-12">
-                                            <div *ngIf='BlockedSubstitutes && BlockedSubstitutes.length'>
-                                                <a *ngFor="let Substitute of BlockedSubstitutes">
-                                                    <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="BlockedSubstitutes.splice($index,1)" matTooltip="Remove Substitute"
-                                                        matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
-                                                    <br>
-                                                </a>
+                                    </div>
+                                    <hr>
+                                    <div style="height:175px;" class="col-md-12">
+                                        <div *ngIf='BlockedSubstitutes && BlockedSubstitutes.length'>
+                                            <a *ngFor="let Substitute of BlockedSubstitutes">
+                                                <mat-icon style="cursor: pointer;" #tooltip="matTooltip" (click)="BlockedSubstitutes.splice($index,1)" matTooltip="Remove Substitute"
+                                                    matTooltipPosition="left">cancel</mat-icon>{{Substitute.firstName}}
+                                                <br>
+                                            </a>
 
-                                            </div>
-                                        </div>
-                                        <div style="text-align: center" class="col-md-12">
-                                            <button mat-raised-button style="color:white; background-color: #04c0be;" type="submit">Save</button>
                                         </div>
                                     </div>
-                                </form>
-                            </mat-tab>
-                            <mat-tab *ngIf='isSubstitute' label="School Settings">
-                                <div class="row col-md-8 col-md-offset-2">
-                                    <div class="col-md-8" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
-                                        <p>
-                                            <b> Select Schools against which you want to get notifications.</b>
-                                        </p>
-                                    </div>
-                                    <div class="col-md-8" style="height:400px;">
-                                        <mat-selection-list #EnabledSchools>
-                                            <mat-list-option *ngFor="let school of PreferredSchools" [value]="school.organizationId" [selected]="school.isEnabled">
-                                                {{school.organizationName}}
-                                            </mat-list-option>
-                                        </mat-selection-list>
-                                    </div>
-                                    <div class="col-md-8" style="text-align: center">
-                                        <button style="background-color: #04c0be; color: white;" mat-raised-button (click)="SavePreferredSchoolSettings(EnabledSchools)">Save</button>
+                                    <div style="text-align: center" class="col-md-12">
+                                        <button mat-raised-button style="color:white; background-color: #04c0be;" type="submit">Save</button>
                                     </div>
                                 </div>
-                            </mat-tab>
-                            <mat-tab *ngIf='isSubstitute' label="Categories Settings">
-                                <div class="row col-md-8 col-md-offset-2">
-                                    <div class="col-md-12" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
-                                        <p>
-                                            <b> Select Categories against which you want to get notifications.</b>
-                                        </p>
-                                    </div>
-                                    <div class="col-md-12" style="overflow-y: scroll; height:400px;">
-                                        <mat-selection-list #Category>
-                                            <mat-list-option *ngFor="let category of Categories" [value]="category.id" [selected]="category.isNotificationSend">
-                                                {{category.title}}
-                                            </mat-list-option>
-                                        </mat-selection-list>
-                                    </div>
-                                    <div class="col-md-12" style="text-align: center">
-                                        <button style="background-color: #04c0be; color: white;" mat-raised-button (click)="SaveCategories(Category)">Save</button>
-                                    </div>
+                            </form>
+                        </mat-tab>
+                        <mat-tab *ngIf='isSubstitute' label="School Settings">
+                            <div class="row col-md-8 col-md-offset-2">
+                                <div class="col-md-8" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
+                                    <p>
+                                        <b> Select Schools against which you want to get notifications.</b>
+                                    </p>
                                 </div>
-                            </mat-tab>
-                            <mat-tab *ngIf='isSubstitute' label="Notification">
-                                <h3>Notifications</h3>
-                                <div class="row">
-                                    <!-- <div class="col-md-2"><label for="mat-radio-group"
+                                <div class="col-md-8" style="height:400px;">
+                                    <mat-selection-list #EnabledSchools>
+                                        <mat-list-option *ngFor="let school of PreferredSchools" [value]="school.organizationId" [selected]="school.isEnabled">
+                                            {{school.organizationName}}
+                                        </mat-list-option>
+                                    </mat-selection-list>
+                                </div>
+                                <div class="col-md-8" style="text-align: center">
+                                    <button style="background-color: #04c0be; color: white;" mat-raised-button (click)="SavePreferredSchoolSettings(EnabledSchools)">Save</button>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab *ngIf='isSubstitute' label="Categories Settings">
+                            <div class="row col-md-8 col-md-offset-2">
+                                <div class="col-md-12" style="margin-top: 6px;height: 26px;background-color: rgba(209,196,233,.3);">
+                                    <p>
+                                        <b> Select Categories against which you want to get notifications.</b>
+                                    </p>
+                                </div>
+                                <div class="col-md-12" style="overflow-y: scroll; height:400px;">
+                                    <mat-selection-list #Category>
+                                        <mat-list-option *ngFor="let category of Categories" [value]="category.id" [selected]="category.isNotificationSend">
+                                            {{category.title}}
+                                        </mat-list-option>
+                                    </mat-selection-list>
+                                </div>
+                                <div class="col-md-12" style="text-align: center">
+                                    <button style="background-color: #04c0be; color: white;" mat-raised-button (click)="SaveCategories(Category)">Save</button>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab *ngIf='isSubstitute' label="Notification">
+                            <h3>Notifications</h3>
+                            <div class="row">
+                                <!-- <div class="col-md-2"><label for="mat-radio-group"
                                                     style="margin-top:10px; font-weight:100;">Certified:</label></div> -->
-                                    <div class="col-md-3">
-                                        <label for="mat-radio-group" style="margin-top:10px; font-weight:100;">Email Alerts:
-                                        </label>
+                                <div class="col-md-3">
+                                    <label for="mat-radio-group" style="margin-top:10px; font-weight:100;">Email Alerts:
+                                    </label>
+                                    <br>
+                                    <mat-radio-group style="margin-top:10px" #radioGroup="matRadioGroup">
+                                        <mat-radio-button color="primary" value="0">No
+                                        </mat-radio-button>
                                         <br>
-                                        <mat-radio-group style="margin-top:10px" #radioGroup="matRadioGroup">
-                                            <mat-radio-button color="primary" value="0">No
-                                            </mat-radio-button>
-                                            <br>
-                                            <mat-radio-button color="primary" value="1">Yes
-                                            </mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="mat-radio-group" style="margin-top:10px; font-weight:100;">Text Alerts:
-                                        </label>
+                                        <mat-radio-button color="primary" value="1">Yes
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="mat-radio-group" style="margin-top:10px; font-weight:100;">Text Alerts:
+                                    </label>
+                                    <br>
+                                    <mat-radio-group style="margin-top:10px" #radioGroup="matRadioGroup">
+                                        <mat-radio-button color="primary" value="0">No
+                                        </mat-radio-button>
                                         <br>
-                                        <mat-radio-group style="margin-top:10px" #radioGroup="matRadioGroup">
-                                            <mat-radio-button color="primary" value="0">No
-                                            </mat-radio-button>
-                                            <br>
-                                            <mat-radio-button color="primary" value="1">Yes
-                                            </mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
+                                        <mat-radio-button color="primary" value="1">Yes
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
                             </div>
 
-                            </mat-tab>
-                        </mat-tab-group>
-                    </mat-card-content>
-                </mat-card>
-            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card-content>
+            </mat-card>
         </div>
     </div>
 </div>

@@ -1,143 +1,130 @@
-<div class="main-container" style="overflow-x:hidden">
-  <Subzz-app-SideNav></Subzz-app-SideNav>
-  <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-      <mat-card style="min-height: 600px">
-        <mat-card-content>
-          <h2 class="example-h2">Training Guides</h2>
-          <mat-divider></mat-divider>
-          <div class="row" style="padding-top:20px" *ngIf="UserLevelId != 4"></div>
-          <div class="demo-tab-content" *ngIf="UserLevelId == 4">
-            <div class="col-md-12 vertical-center">
-              <div class="row">
-                <div class="col-md-6">
-                  <h3>Files</h3>
-                </div>
-                <div class="col-md-6 col-lg-6" style="margin-top: 10px;text-align: right">
-                  <button mat-button type="button" color="warn" (click)="uploadClick()">
-                    {{OriginalFileNameForDisplay}}
-                    <mat-icon>file_upload</mat-icon>
-                  </button>
-                  <i *ngIf='OriginalFileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip"
-                    matTooltip="Remove Attachment" matTooltipPosition="right" (click)="removeAttachedFile()">
-                    cancel
-                  </i>
-                  <input type="file" id="UploadButton" (change)="upload($event.target.files)" style="display: none" />
-                  <mat-form-field style="margin-left: 10px">
-                    <mat-select placeholder="Add File For" #fileType required>
-                      <mat-option>-- Select Any --</mat-option>
-                      <mat-option value="2">Admin</mat-option>
-                      <mat-option value="3">Staff</mat-option>
-                      <mat-option value="4">Substitute</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <button mat-raised-button (click)="AddFile(fileType)" type="button" mat-raised-button
-                    style="color:white; background-color: #04c0be; margin-left: 10px"
-                    [disabled]="OriginalFileName == null">
-                    Add
-                    <i class="material-icons" matTooltip="Add File">add</i>
-                  </button>
-                </div>
+<div class="row">
+  <div class="col-md-12">
+    <mat-card style="min-height: 600px">
+      <mat-card-content>
+        <h2 class="example-h2">Training Guides</h2>
+        <mat-divider></mat-divider>
+        <div class="row" style="padding-top:20px" *ngIf="UserLevelId != 4"></div>
+        <div class="demo-tab-content" *ngIf="UserLevelId == 4">
+          <div class="col-md-12 vertical-center">
+            <div class="row">
+              <div class="col-md-6">
+                <h3>Files</h3>
+              </div>
+              <div class="col-md-6 col-lg-6" style="margin-top: 10px;text-align: right">
+                <button mat-button type="button" color="warn" (click)="uploadClick()">
+                  {{OriginalFileNameForDisplay}}
+                  <mat-icon>file_upload</mat-icon>
+                </button>
+                <i *ngIf='OriginalFileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip" matTooltip="Remove Attachment"
+                  matTooltipPosition="right" (click)="removeAttachedFile()">
+                  cancel
+                </i>
+                <input type="file" id="UploadButton" (change)="upload($event.target.files)" style="display: none" />
+                <mat-form-field style="margin-left: 10px">
+                  <mat-select placeholder="Add File For" #fileType required>
+                    <mat-option>-- Select Any --</mat-option>
+                    <mat-option value="2">Admin</mat-option>
+                    <mat-option value="3">Staff</mat-option>
+                    <mat-option value="4">Substitute</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button mat-raised-button (click)="AddFile(fileType)" type="button" mat-raised-button style="color:white; background-color: #04c0be; margin-left: 10px"
+                  [disabled]="OriginalFileName == null">
+                  Add
+                  <i class="material-icons" matTooltip="Add File">add</i>
+                </button>
               </div>
             </div>
           </div>
-          <div class="demo-tab-content">
-            <div class="col-md-12 vertical-center">
-              <div class="col-lg-12 col-md-12 mat-elevation-z8">
-                <mat-list class="row">
-                  <div *ngIf="UserRoleId != 4 && UserRoleId != 3">
-                    <h3 class="col-lg-12 col-md-12" style="background: #F5F5F5;" mat-subheader>Admin Guides</h3>
-                    <div class="row" style="margin-left: 5px" *ngFor="let file of AdminGuide">
-                      <div style="margin-top: 10px;">
-                        <mat-form-field class="col-md-3 col-lg-3">
-                          <input disabled="true" matInput [(ngModel)]="file.originalFileName" placeholder="File Name">
-                        </mat-form-field>
-                      </div>
-                      <div style="margin-top: 10px">
-                        <mat-form-field class="col-md-3 col-lg-3">
-                          <input disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File"
-                          matTooltipPosition="below">
-                          <i class="material-icons" (click)="ViewFile(file)">visibility</i>
-                        </a>
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File"
-                          matTooltipPosition="below">
-                          <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
-                        </a>
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File"
-                          matTooltipPosition="below" *ngIf="UserLevelId == 4">
-                          <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
-                        </a>
-                      </div>
+        </div>
+        <div class="demo-tab-content">
+          <div class="col-md-12 vertical-center">
+            <div class="col-lg-12 col-md-12 mat-elevation-z8">
+              <mat-list class="row">
+                <div *ngIf="UserRoleId != 4 && UserRoleId != 3">
+                  <h3 class="col-lg-12 col-md-12" style="background: #F5F5F5;" mat-subheader>Admin Guides</h3>
+                  <div class="row" style="margin-left: 5px" *ngFor="let file of AdminGuide">
+                    <div style="margin-top: 10px;">
+                      <mat-form-field class="col-md-3 col-lg-3">
+                        <input disabled="true" matInput [(ngModel)]="file.originalFileName" placeholder="File Name">
+                      </mat-form-field>
+                    </div>
+                    <div style="margin-top: 10px">
+                      <mat-form-field class="col-md-3 col-lg-3">
+                        <input disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File" matTooltipPosition="below">
+                        <i class="material-icons" (click)="ViewFile(file)">visibility</i>
+                      </a>
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File" matTooltipPosition="below">
+                        <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
+                      </a>
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File" matTooltipPosition="below" *ngIf="UserLevelId == 4">
+                        <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
+                      </a>
                     </div>
                   </div>
-                  <div *ngIf="UserRoleId != 4 && UserRoleId != 1 && UserRoleId != 2">
-                    <h3 class="col-lg-12 col-md-12" style="background: #F5F5F5;" mat-subheader>Staff Guides</h3>
-                    <div class="row" style="margin-left: 5px" *ngFor="let file of StaffGuide">
-                      <div style="margin-top: 10px">
-                        <mat-form-field class="col-md-3 col-lg-3">
-                          <input disabled="true" matInput [(ngModel)]="file.originalFileName" placeholder="File Name">
-                        </mat-form-field>
-                      </div>
-                      <div style="margin-top: 10px">
-                        <mat-form-field class="col-md-3 col-lg-3">
-                          <input disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File"
-                          matTooltipPosition="below">
-                          <i class="material-icons" (click)="ViewFile(file)">visibility</i>
-                        </a>
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File"
-                          matTooltipPosition="below">
-                          <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
-                        </a>
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File"
-                          matTooltipPosition="below" *ngIf="UserLevelId == 4">
-                          <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
-                        </a>
-                      </div>
+                </div>
+                <div *ngIf="UserRoleId != 4 && UserRoleId != 1 && UserRoleId != 2">
+                  <h3 class="col-lg-12 col-md-12" style="background: #F5F5F5;" mat-subheader>Staff Guides</h3>
+                  <div class="row" style="margin-left: 5px" *ngFor="let file of StaffGuide">
+                    <div style="margin-top: 10px">
+                      <mat-form-field class="col-md-3 col-lg-3">
+                        <input disabled="true" matInput [(ngModel)]="file.originalFileName" placeholder="File Name">
+                      </mat-form-field>
+                    </div>
+                    <div style="margin-top: 10px">
+                      <mat-form-field class="col-md-3 col-lg-3">
+                        <input disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File" matTooltipPosition="below">
+                        <i class="material-icons" (click)="ViewFile(file)">visibility</i>
+                      </a>
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File" matTooltipPosition="below">
+                        <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
+                      </a>
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File" matTooltipPosition="below" *ngIf="UserLevelId == 4">
+                        <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
+                      </a>
                     </div>
                   </div>
-                  <div *ngIf="UserRoleId != 3 && UserRoleId != 1 && UserRoleId != 2">
-                    <h3 class="col-lg-12 col-md-12" style="background: #F5F5F5;" mat-subheader>Substitute Guides</h3>
-                    <div class="row" style="margin-left: 5px" *ngFor="let file of SubstituteGuide">
-                      <div style="margin-top: 10px">
-                        <mat-form-field class="col-md-3 col-lg-3">
-                          <input disabled="true" matInput [(ngModel)]="file.originalFileName" placeholder="File Name">
-                        </mat-form-field>
-                      </div>
-                      <div style="margin-top: 10px">
-                        <mat-form-field class="col-md-3 col-lg-3">
-                          <input disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File"
-                          matTooltipPosition="below">
-                          <i class="material-icons" (click)="ViewFile(file)">visibility</i>
-                        </a>
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File"
-                          matTooltipPosition="below">
-                          <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
-                        </a>
-                        <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File"
-                          matTooltipPosition="below" *ngIf="UserLevelId == 4">
-                          <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
-                        </a>
-                      </div>
+                </div>
+                <div *ngIf="UserRoleId != 3 && UserRoleId != 1 && UserRoleId != 2">
+                  <h3 class="col-lg-12 col-md-12" style="background: #F5F5F5;" mat-subheader>Substitute Guides</h3>
+                  <div class="row" style="margin-left: 5px" *ngFor="let file of SubstituteGuide">
+                    <div style="margin-top: 10px">
+                      <mat-form-field class="col-md-3 col-lg-3">
+                        <input disabled="true" matInput [(ngModel)]="file.originalFileName" placeholder="File Name">
+                      </mat-form-field>
+                    </div>
+                    <div style="margin-top: 10px">
+                      <mat-form-field class="col-md-3 col-lg-3">
+                        <input disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File" matTooltipPosition="below">
+                        <i class="material-icons" (click)="ViewFile(file)">visibility</i>
+                      </a>
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File" matTooltipPosition="below">
+                        <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
+                      </a>
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File" matTooltipPosition="below" *ngIf="UserLevelId == 4">
+                        <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
+                      </a>
                     </div>
                   </div>
-                </mat-list>
-              </div>
+                </div>
+              </mat-list>
             </div>
           </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

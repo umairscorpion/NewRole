@@ -1,71 +1,52 @@
-<style>
-  .example-container {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow-x: auto;
-  }
-</style>
-<div class="example-container">
-  <Subzz-app-SideNav></Subzz-app-SideNav>
-  <div class="row">
-    <div class="col-md-1"></div>
-    <div class="row col-md-10 col-md-offset 1 mat-elevation-z8">
-      <h2>Audit Log</h2>
-      <form [formGroup]="auditLogFilter">
-        <div class="row">
-          <div class="col-md-2">
-            <mat-form-field class="w-90">
-              <input matInput placeholder="Search Employee Name" formControlName="searchEmployeeName">
-            </mat-form-field>
-          </div>
-          <div class="col-md-2">
-            <mat-form-field>
-              <input matInput placeholder="Date Range" [satDatepicker]="picker2" formControlName="date">
-              <sat-datepicker #picker2 [rangeMode]="true">
-              </sat-datepicker>
-              <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
-            </mat-form-field>
-          </div>
-          <div class="col-md-2">
-            <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit"
-              (click)="getAuditLog()">Search</button>
-          </div>
-        </div>
-      </form>
+<div class="row">
+  <div class="col-md-12 mat-elevation-z8">
+    <h2>Audit Log</h2>
+    <form [formGroup]="auditLogFilter">
       <div class="row">
-        <div class="m-30">
-          <ngx-datatable class="material" [rows]="auditLog" [columnMode]="'standard'" [headerHeight]="40"
-            [footerHeight]="50" [rowHeight]="'auto'" [limit]="9">
-            <ngx-datatable-column [width]="300" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
-              <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                <div class="ellipsis" [title]="value">
-                  <span>{{row['occurredOn'] | date:'MMM d, hh:mm a'}}</span>
-                </div>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column [width]="300" name="User" prop="user" [flexGrow]="2" cellClass="middle"
-              [draggable]="false">
-              <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                <div class="ellipsis">
-                  <span>{{value}}</span>
-                </div>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column [width]="640" name="Event" prop="event" [flexGrow]="2" cellClass="middle"
-              [draggable]="false">
-              <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                <div class="ellipsis">
-                  <span>{{value}}</span>
-                </div>
-              </ng-template>
-            </ngx-datatable-column>
-          </ngx-datatable>
+        <div class="col-md-2">
+          <mat-form-field class="w-90">
+            <input matInput placeholder="Search Employee Name" formControlName="searchEmployeeName">
+          </mat-form-field>
         </div>
+        <div class="col-md-2">
+          <mat-form-field>
+            <input matInput placeholder="Date Range" [satDatepicker]="picker2" formControlName="date">
+            <sat-datepicker #picker2 [rangeMode]="true">
+            </sat-datepicker>
+            <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit" (click)="getAuditLog()">Search</button>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="m-30">
+        <ngx-datatable class="material" [rows]="auditLog" [columnMode]="'standard'" [headerHeight]="40" [footerHeight]="50" [rowHeight]="'auto'"
+          [limit]="9">
+          <ngx-datatable-column [width]="300" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+              <div class="ellipsis" [title]="value">
+                <span>{{row['occurredOn'] | date:'MMM d, hh:mm a'}}</span>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="300" name="User" prop="user" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+              <div class="ellipsis">
+                <span>{{value}}</span>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="640" name="Event" prop="event" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+              <div class="ellipsis">
+                <span>{{value}}</span>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
       </div>
     </div>
   </div>

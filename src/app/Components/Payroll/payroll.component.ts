@@ -12,6 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UserService } from '../../Service/user.service';
 import { MediaMatcher } from '../../../../node_modules/@angular/cdk/layout';
+import { CommunicationService } from '../../Services/communication.service';
 
 @Component({
     templateUrl: 'payroll.component.html',
@@ -37,7 +38,7 @@ export class PayRollComponent implements OnInit {
 
     constructor(private router: Router, private _districtService: DistrictService, public dialog: MatDialog,
         private _employeeService: EmployeeService, notifier: NotifierService, private _dataContext: DataContext,
-        changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
+        changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _communicationService: CommunicationService,
         public sanitizer: DomSanitizer, private _userSession: UserSession, private fb: FormBuilder, private userService: UserService) {
         this.notifier = notifier;
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -51,15 +52,12 @@ export class PayRollComponent implements OnInit {
     }
 
     LoadUserResources(): void {
-
-        let resourceTypeId = 2;
-        let parentResourceTypeId = -1;
-        let adminPortal = 0;
-        this.userService.getUserResources(resourceTypeId, parentResourceTypeId, adminPortal).subscribe((data: any) => {
-            this.userTemplate = data;
-        },
-            error => this.msg = <any>error);
-            
+        const config = {
+            resourceTypeId: 2,
+            parentResourceTypeId: -1,
+            isAdminPanel: 0
+        }
+        this._communicationService.UpdatePanel(config);
     }
 
     ngAfterViewInit() {

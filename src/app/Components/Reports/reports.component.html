@@ -1,29 +1,16 @@
-<div class="example-container">
-    <Subzz-app-SideNav></Subzz-app-SideNav>
-    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0">
-        <mat-sidenav class="col-md-2" opened="true" [mode]="mobileQuery.matches ? 'side' : 'side'" [fixedInViewport]="mobileQuery.matches"
-            fixedTopGap="56">
-            <mat-nav-list *ngIf='sideNavMenu && sideNavMenu.length' fixedTopGap="56">
-                <a mat-list-item routerLink="../{{sideNavMenuObj.stateMachine}}" [routerLinkActive]="['active']" *ngFor="let sideNavMenuObj of sideNavMenu">{{sideNavMenuObj.name}}</a>
-            </mat-nav-list>
-        </mat-sidenav>
-        <mat-sidenav-content class="col-md-10">
-            <mat-card>
-                <mat-card-content>
-                    <h2 class="example-h2">Reports</h2>
-                    <mat-tab-group class="demo-tab-group" [selectedIndex]="selectedTab" (selectedTabChange)="onChangeTab($event)">
-                        <mat-tab label="Daily">
-                            <daily-reports></daily-reports>
-                        </mat-tab>
-                        <mat-tab label="Monthly">
-                            <monthly-reports></monthly-reports>
-                        </mat-tab>
-                        <mat-tab label="Activity">
-                            <payroll-reports></payroll-reports>
-                        </mat-tab>
-                    </mat-tab-group>
-                </mat-card-content>
-            </mat-card>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
-</div>
+<mat-card>
+    <mat-card-content>
+        <h2 class="example-h2">Reports</h2>
+        <mat-tab-group class="demo-tab-group" [selectedIndex]="selectedTab" (selectedTabChange)="onChangeTab($event)">
+            <mat-tab label="Daily">
+                <daily-reports></daily-reports>
+            </mat-tab>
+            <mat-tab label="Monthly">
+                <monthly-reports></monthly-reports>
+            </mat-tab>
+            <mat-tab label="Activity">
+                <payroll-reports></payroll-reports>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>
