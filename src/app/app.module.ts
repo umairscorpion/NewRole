@@ -191,6 +191,7 @@ import { SiteHeaderComponent } from './Components/_layout/site-header/site-heade
 import { SiteFooterComponent } from './Components/_layout/site-footer/site-footer.component';
 import { NavbarComponent } from './Components/nav/nav.component';
 import { NavTopBarComponent } from './Components/nav/topBar/navTopBar.component';
+import { SharedCalendarComponent } from './Components/Calendar/shared-calendar.component';
 import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-password.component';
 
 export function getAuthServiceConfigs() {
@@ -375,6 +376,7 @@ const customNotifierOptions: NotifierOptions = {
         SelectCheckAllComponent,
         TrainingGuidesComponent,
         ForgotPasswordComponent,
+        SharedCalendarComponent
         NavTopBarComponent,
         ResetPasswordComponent
     ],

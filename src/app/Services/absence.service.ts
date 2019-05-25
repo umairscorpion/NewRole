@@ -12,7 +12,8 @@ import { User } from '../Model/user';
 import { SubstitutePreference } from '../Model/substitutePreference';
 import { LeaveType } from '../Model/leaveType';
 import { LeaveRequest } from '../Model/leaveRequest';
-import { AbsenceSummary} from 'src/app/Model/absence.summary';
+import { AbsenceSummary } from 'src/app/Model/absence.summary';
+import { Absence } from '../Model/absence';
 
 @Injectable()
 export class AbsenceService extends RestService<LeaveType> {
@@ -22,7 +23,7 @@ export class AbsenceService extends RestService<LeaveType> {
   ) {
     super(httpClient);
   }
-  
+
   //For Dashboard Chart
   getSummaryInstance(): Entity {
     return new AbsenceSummary();
@@ -94,5 +95,15 @@ export class AbsenceService extends RestService<LeaveType> {
 
   getsubs(url: string, model: any): Observable<User[]> {
     return this.httpClient.post<User[]>(environment.apiUrl + url, model);
+  }
+
+  CalendarView(startDate: Date, endDate: Date, userId: string) {
+    return this.httpClient
+      .get<Absence[]>(`${environment.apiUrl}Absence/views/calendar/${startDate.toISOString()}/${endDate.toISOString()}/${userId}`)
+      .pipe(catchError(this.errorHandler.handleError),
+        map((response: Absence[]) => {
+          return response.map(item => this.getLeaveTypeRecords().deserialize(item));
+        })
+      );
   }
 }
