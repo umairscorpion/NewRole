@@ -12,7 +12,6 @@ declare const $: any;
 
 
 @Component({
-  // moduleId: module.id,
   selector: 'ng-nav',
   templateUrl: 'nav.template.html'
 })
@@ -36,17 +35,6 @@ export class NavbarComponent implements OnInit {
     return true;
   }
 
-  updatePS(): void {
-    if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
-      const elemSidebar = <HTMLElement>(
-        document.querySelector('.sidebar .sidebar-wrapper')
-      );
-      // let ps = new PerfectScrollbar(elemSidebar, {
-      //   wheelSpeed: 2,
-      //   suppressScrollX: true
-      // });
-    }
-  }
   isMac(): boolean {
     let bool = false;
     if (
