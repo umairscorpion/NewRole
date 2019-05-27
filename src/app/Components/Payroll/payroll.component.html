@@ -1,72 +1,61 @@
-<div class="example-container">
-    <Subzz-app-SideNav></Subzz-app-SideNav>
-    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-        <mat-sidenav class="col-md-2" opened="{{isOpen}}" (keydown.escape)="toggle()" [mode]="mobileQuery.matches ? 'over' : 'side'"
-            [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-            <mat-nav-list *ngIf='userTemplate && userTemplate.length'>
-                <a mat-list-item [routerLinkActive]="['active']" routerLink="/{{userTempplateObj.stateMachine}}" *ngFor="let userTempplateObj of userTemplate">{{userTempplateObj.name}}</a>
-            </mat-nav-list>
-        </mat-sidenav>
-        <mat-sidenav-content class="col-md-10">
-            <mat-card>
-                <mat-card-content>
-                    <h2>Payroll</h2>
-                    <mat-tab-group (selectedTabChange)="onTabChanged($event)">
-                        <mat-tab label="Payroll Report">
-                                <run-payroll></run-payroll>
-                        </mat-tab>
-                        <mat-tab label="Payroll Settings">
-                            <div class="col-md-12 col-lg-12">
-                                <div class="row vertical-center">
-                                    <div class="col-md-5 col-lg-5">
-                                        Weekly Time Limits
-                                    </div>
-                                    <div class="col-md-7 col-lg-7">
-                                        Recurring Weekly Limits
-                                    </div>
-                                </div>
-                                <mat-divider></mat-divider>
-                                <form (ngSubmit)="onUpdateweeklyLimitSetting(weeklyLimitSettings)" [formGroup]="weeklyLimitSettings">
-                                    <div class="row vertical-center" style="min-height: 10vh !important;">
-                                        <div class="col-md-5 col-lg-5">
-                                            Current Weekly Limit: {{!weeklyLimitSettings.getRawValue().isWeeklyLimitApplicable ? weeklyLimitSettings.getRawValue().weeklyHourLimit: ''}} {{!weeklyLimitSettings.getRawValue().isWeeklyLimitApplicable ? 'hours per week': 'There is no weekly limit.'}} 
-                                        </div>
-                                        <div class="col-md-2 col-lg-2">
-                                            <mat-form-field>
-                                                <input matInput formControlName="weeklyHourLimit" type="number" placeholder="Maximum Weekly Hours">
-                                            </mat-form-field>
-                                            <br>
-                                            <mat-checkbox formControlName="isWeeklyLimitApplicable">No weekly limit</mat-checkbox>
-                                        </div>
-                                        <div class="col-md-5 col-lg-5" style="text-align: right;">
-                                            <button mat-raised-button type="submit" style="background-color: #04C0BF">Save</button>
-                                            <button mat-raised-button type="button" (click)="onEditHourLimit()" style="margin-left:3px;background-color: #C3DEF1">Edit</button>
-                                            <button mat-raised-button type="button" style="margin-left:3px;background-color: #FFCB97">Remove</button>
-                                        </div>
-                                    </div>
-                                    <mat-divider></mat-divider>
-                                    <div class="row vertical-center" style="min-height: 10vh !important;">
-                                        <div class="col-md-2 col-lg-2">
-                                            <mat-checkbox formControlName="isDeductOnBreak">Deduct lunch break</mat-checkbox>
-                                        </div>
-                                        <div class="col-md-2 col-lg-2">
-                                            <mat-form-field>
-                                                <mat-select formControlName="deductAfterTime" placeholder="Time">
-                                                    <mat-option value="1">30 Minutes</mat-option>
-                                                    <mat-option value="2">1 Hour</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                </form>
+<mat-card>
+    <mat-card-content>
+        <h2>Payroll</h2>
+        <mat-tab-group (selectedTabChange)="onTabChanged($event)">
+            <mat-tab label="Payroll Report">
+                <run-payroll></run-payroll>
+            </mat-tab>
+            <mat-tab label="Payroll Settings">
+                <div class="col-md-12 col-lg-12">
+                    <div class="row vertical-center">
+                        <div class="col-md-5 col-lg-5">
+                            Weekly Time Limits
+                        </div>
+                        <div class="col-md-7 col-lg-7">
+                            Recurring Weekly Limits
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <form (ngSubmit)="onUpdateweeklyLimitSetting(weeklyLimitSettings)" [formGroup]="weeklyLimitSettings">
+                        <div class="row vertical-center" style="min-height: 10vh !important;">
+                            <div class="col-md-5 col-lg-5">
+                                Current Weekly Limit: {{!weeklyLimitSettings.getRawValue().isWeeklyLimitApplicable ? weeklyLimitSettings.getRawValue().weeklyHourLimit:
+                                ''}} {{!weeklyLimitSettings.getRawValue().isWeeklyLimitApplicable ? 'hours per week': 'There
+                                is no weekly limit.'}}
                             </div>
-                        </mat-tab>
-                        <mat-tab label="Payrates">
-                            <payRate-details></payRate-details>
-                        </mat-tab>
-                    </mat-tab-group>
-                </mat-card-content>
-            </mat-card>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
-</div>
+                            <div class="col-md-2 col-lg-2">
+                                <mat-form-field>
+                                    <input matInput formControlName="weeklyHourLimit" type="number" placeholder="Maximum Weekly Hours">
+                                </mat-form-field>
+                                <br>
+                                <mat-checkbox formControlName="isWeeklyLimitApplicable">No weekly limit</mat-checkbox>
+                            </div>
+                            <div class="col-md-5 col-lg-5" style="text-align: right;">
+                                <button mat-raised-button type="submit" style="background-color: #04C0BF">Save</button>
+                                <button mat-raised-button type="button" (click)="onEditHourLimit()" style="margin-left:3px;background-color: #C3DEF1">Edit</button>
+                                <button mat-raised-button type="button" style="margin-left:3px;background-color: #FFCB97">Remove</button>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="row vertical-center" style="min-height: 10vh !important;">
+                            <div class="col-md-2 col-lg-2">
+                                <mat-checkbox formControlName="isDeductOnBreak">Deduct lunch break</mat-checkbox>
+                            </div>
+                            <div class="col-md-2 col-lg-2">
+                                <mat-form-field>
+                                    <mat-select formControlName="deductAfterTime" placeholder="Time">
+                                        <mat-option value="1">30 Minutes</mat-option>
+                                        <mat-option value="2">1 Hour</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </mat-tab>
+            <mat-tab label="Payrates">
+                <payRate-details></payRate-details>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>

@@ -1,50 +1,47 @@
-<div class="example-container">
-  <Subzz-app-SideNav></Subzz-app-SideNav>
-  <form [formGroup]="userForm">
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-9">
-        <h1>Substitute Availability</h1>
-        <div class="row">
-          <div class="col-md-3">
-            <mat-form-field>
-              <input matInput placeholder="Date Range" [satDatepicker]="picker2" formControlName="date">
-              <sat-datepicker #picker2 [rangeMode]="true">
-              </sat-datepicker>
-              <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
-            </mat-form-field>
-          </div>
-          <div class="col-md-3">
-            <mat-form-field class="w-100">
-              <mat-select placeholder="Filters" formControlName="availabilityStatusId">
-                <mat-option value="0">Available</mat-option>
-                <mat-option value="1">Unavailable</mat-option>
-                <mat-option value="2">Vacation</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="col-md-3">
-            <ng-select #api placeholder="Search by name" formControlName="userId" [items]="resources" [searchable]="false" bindLabel="title" bindValue="id">
-              <ng-template ng-header-tmp>
-                <input style="width: 100%; line-height: 24px" type="text" (input)="api.filter($event.target.value)" />
-              </ng-template>
-              <ng-template ng-option-tmp let-item="item" let-index="index">
-                <div class="media">
-                  <div class="media-body">
-                    <h5 class="subtitle">
-                      <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" width="30" height="30">&nbsp;&nbsp;{{ item.title }}
-                    </h5>
-                  </div>
-                </div>
-              </ng-template>
-            </ng-select>
-          </div>
-          <div class="col-md-3">
-            <button type="button" mat-raised-button class="btn btn-success" (click)="onSubmit(userForm)">Search</button>&nbsp;
-          </div>
+<form [formGroup]="userForm">
+  <div class="row">
+    <div class="col-md-11">
+      <h1>Substitute Availability</h1>
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput placeholder="Date Range" [satDatepicker]="picker2" formControlName="date">
+            <sat-datepicker #picker2 [rangeMode]="true">
+            </sat-datepicker>
+            <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
+          </mat-form-field>
         </div>
-        <div id="calendar" class="substitute-availability"></div>
+        <div class="col-md-3">
+          <mat-form-field class="w-100">
+            <mat-select placeholder="Filters" formControlName="availabilityStatusId">
+              <mat-option value="0">Available</mat-option>
+              <mat-option value="1">Unavailable</mat-option>
+              <mat-option value="2">Vacation</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <ng-select #api placeholder="Search by name" formControlName="userId" [items]="resources" [searchable]="false" bindLabel="title"
+            bindValue="id">
+            <ng-template ng-header-tmp>
+              <input style="width: 100%; line-height: 24px" type="text" (input)="api.filter($event.target.value)" />
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+              <div class="media">
+                <div class="media-body">
+                  <h5 class="subtitle">
+                    <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" width="30" height="30">&nbsp;&nbsp;{{ item.title }}
+                  </h5>
+                </div>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="col-md-3">
+          <button type="button" mat-raised-button class="btn btn-success" (click)="onSubmit(userForm)">Search</button>&nbsp;
+        </div>
       </div>
+      <div id="calendar" class="substitute-availability"></div>
     </div>
-  </form>
-</div>
+  </div>
+</form>

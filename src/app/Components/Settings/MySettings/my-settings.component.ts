@@ -256,4 +256,8 @@ export class MySettingComponent implements OnInit {
     onchangeOrganization() {
         this.getSchoolSettings();
     }
+
+    onChangeTab(tab: any) {
+
+    }
 }

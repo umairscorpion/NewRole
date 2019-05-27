@@ -11,16 +11,16 @@ import { UserSession } from '../../Services/userSession.service';
 import { OnInit, ViewChild } from '@angular/core';
 import { NotifierService } from 'angular-notifier';
 import { HttpErrorResponse } from '@angular/common/http';
-import { TimeClock } from 'src/app/Model/timeclock'
+import { TimeClock } from '../../Model/timeclock'
 import * as moment from 'moment';
-import { EmployeeService } from 'src/app/Service/Manage/employees.service';
-import { DataContext } from 'src/app/Services/dataContext.service';
+import { EmployeeService } from '../../Service/Manage/employees.service';
+import { DataContext } from '../../Services/dataContext.service';
 import { t } from '@angular/core/src/render3';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { TimeClockFilter } from 'src/app/Model/timeclock.filter';
-import { ngxCsv } from 'ngx-csv/ngx-csv';
+import { TimeClockFilter } from '../../Model/timeclock.filter';
+import { ngxCsv } from 'ngx-csv';
 import { SelectionModel } from '@angular/cdk/collections';
-import {EditTimeTracker} from 'src/app/Components/TimeClock/popups/edit-timetracker.popup.component';
+import {EditTimeTracker} from '../TimeClock/popups/edit-timetracker.popup.component';
 import { from } from 'rxjs';
 @Component({
     selector:'time-tracker',

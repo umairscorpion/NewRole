@@ -1,19 +1,19 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatDialog } from '@angular/material';
-import { ReportDetail } from 'src/app/Model/Report/report.detail';
+import { ReportDetail } from '../../../Model/Report/report.detail';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AbsenceService } from 'src/app/Services/absence.service';
+import { AbsenceService } from '../../../Services/absence.service';
 import { HttpErrorResponse, HttpResponse, HttpEventType, HttpClient } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
-import { DataContext } from 'src/app/Services/dataContext.service';
-import { UserSession } from 'src/app/Services/userSession.service';
-import { EmployeeService } from 'src/app/Service/Manage/employees.service';
+import { DataContext } from '../../../Services/dataContext.service';
+import { UserSession } from '../../../Services/userSession.service';
+import { EmployeeService } from '../../../Service/Manage/employees.service';
 import { LeaveType } from '../../../Model/leaveType';
-import { environment } from 'src/environments/environment';
-import { IEmployee } from 'src/app/Model/Manage/employee';
+import { environment } from '../../../../environments/environment';
+import { IEmployee } from '../../../Model/Manage/employee';
 import { Observable } from 'rxjs/Observable';
-import { DomSanitizer, SafeUrl } from '../../../../../node_modules/@angular/platform-browser';
-import { FileService } from 'src/app/Services/file.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { FileService } from '../../../Services/file.service';
 import * as moment from 'moment';
 
 @Component({

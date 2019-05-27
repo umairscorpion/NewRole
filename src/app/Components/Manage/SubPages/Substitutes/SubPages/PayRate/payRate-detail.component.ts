@@ -5,7 +5,7 @@ import { DistrictService } from '../../../../../../Service/Manage/district.servi
 import { UserSession } from '../../../../../../Services/userSession.service';
 import { PayRateSettings } from '../../../../../../Model/payRateSettings';
 import { PayRateRule } from '../../../../../../Model/payRateRule';
-import { NotifierService } from '../../../../../../../../node_modules/angular-notifier';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
     selector: 'payRate-details',

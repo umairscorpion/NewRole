@@ -50,13 +50,12 @@ export class absenceComponent {
     }
 
     LoadSideNavMenu(): void {
-        let resourceTypeId = 3;
-        let parentResourceTypeId = 2;
-        let adminPortal = 0;
-        this._userService.getUserResources(resourceTypeId, parentResourceTypeId, adminPortal).subscribe((data: any) => {
-            this.sideNavMenu = data;
-        },
-            error => this.msg = <any>error);
+        const config = {
+            resourceTypeId: 3,
+            parentResourceTypeId: 2,
+            isAdminPanel: 0
+        }
+        this._communicationService.UpdatePanel(config);
     }
 
     AbsenceDetail(data: any) {

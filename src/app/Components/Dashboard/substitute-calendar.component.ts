@@ -14,11 +14,11 @@ import 'fullcalendar-scheduler';
 import { AvailabilityService } from '../../Services/availability.service';
 import { MatDialog } from '@angular/material';
 import { UnAvailabilityComponent } from './unavailability/unavailability.component';
-import { UserAvailability } from 'src/app/Model/userAvailability';
-import { ReportFilter } from 'src/app/Model/Report/report.filter';
-import { ReportDetail } from 'src/app/Model/Report/report.detail';
-import { ReportService } from 'src/app/Services/report.service';
-import { UserSession } from 'src/app/Services/userSession.service';
+import { UserAvailability } from '../../Model/userAvailability';
+import { ReportFilter } from '../../Model/Report/report.filter';
+import { ReportDetail } from '../../Model/Report/report.detail';
+import { ReportService } from '../../Services/report.service';
+import { UserSession } from '../../Services/userSession.service';
 import { Router } from '@angular/router';
 
 @Component({

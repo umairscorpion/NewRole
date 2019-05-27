@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ShowAttachmentPopupComponent } from 'src/app/Shared/show-attachment-popup/show-attachment-popup.component';
-import { environment } from 'src/environments/environment';
-import { DataContext } from 'src/app/Services/dataContext.service';
-import { UserSession } from 'src/app/Services/userSession.service';
-import { FileService } from 'src/app/Services/file.service';
+import { ShowAttachmentPopupComponent } from '../../Shared/show-attachment-popup/show-attachment-popup.component';
+import { environment } from '../../../environments/environment';
+import { DataContext } from '../../Services/dataContext.service';
+import { UserSession } from '../../Services/userSession.service';
+import { FileService } from '../../Services/file.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
-import { FileManager } from 'src/app/Model/FileSystem/fileManager.detail';
+import { FileManager } from '../../Model/FileSystem/fileManager.detail';
 
 @Component({
   selector: 'app-training-guides',

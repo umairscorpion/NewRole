@@ -6,8 +6,8 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AuditFilter } from 'src/app/Model/auditLog';
-import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
+import { AuditFilter } from '../../../../Model/auditLog';
+import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
 @Component({
     selector: 'upcoming-absences',
     templateUrl: 'upcommingAbsence.component.html'

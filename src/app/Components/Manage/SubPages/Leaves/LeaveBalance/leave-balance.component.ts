@@ -3,11 +3,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@a
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { DistrictService } from '../../../../../Service/Manage/district.service';
 import { UserSession } from '../../../../../Services/userSession.service';
-import { NotifierService } from '../../../../../../../node_modules/angular-notifier';
+import { NotifierService } from 'angular-notifier';
 import { DataContext } from '../../../../../Services/dataContext.service';
 import { LeaveBalance } from '../../../../../Model/leaveBalance';
 import { EmployeeService } from '../../../../../Service/Manage/employees.service';
-import { Observable } from '../../../../../../../node_modules/rxjs';
+import { Observable } from 'rxjs';
 import { IEmployee } from '../../../../../Model/Manage/employee';
 import { User } from '../../../../../Model/user';
 

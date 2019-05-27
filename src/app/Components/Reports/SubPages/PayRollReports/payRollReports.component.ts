@@ -1,12 +1,12 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { ReportService } from 'src/app/Services/report.service';
+import { ReportService } from '../../../../Services/report.service';
 import * as moment from 'moment';
-import { LeaveRequest } from 'src/app/Model/leaveRequest';
+import { LeaveRequest } from '../../../../Model/leaveRequest';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ReportFilter } from 'src/app/Model/Report/report.filter';
-import { ExcelService } from 'src/app/Services/excel.service';
-import { AuditFilter } from 'src/app/Model/auditLog';
-import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
+import { ReportFilter } from '../../../../Model/Report/report.filter';
+import { ExcelService } from '../../../../Services/excel.service';
+import { AuditFilter } from '../../../../Model/auditLog';
+import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
 import { ngxCsv } from 'ngx-csv';
 
 @Component({

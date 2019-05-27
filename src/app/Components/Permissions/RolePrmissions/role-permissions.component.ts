@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { PermissionCategory } from 'src/app/Model/permissionCategory';
-import { RolePermissionService } from 'src/app/Services/rolePermission.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PermissionCategory } from '../../../Model/permissionCategory';
+import { RolePermissionService } from '../../../Services/rolePermission.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Role } from 'src/app/Model/userRoles';
+import { Role } from '../../../Model/userRoles';
 import { UserService } from '../../../Service/user.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 
@@ -24,6 +24,7 @@ export class RolePermissionsComponent implements OnInit {
   private _mobileQueryListener: () => void;
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private rolePermissionService: RolePermissionService,
     private userService: UserService,
     private _formBuilder: FormBuilder,
@@ -57,9 +58,9 @@ export class RolePermissionsComponent implements OnInit {
   }
 
   LoadUserResources(): void {
-    let resourceTypeId = 2;
-    let parentResourceTypeId = -1;
-    let adminPortal = 0;
+    const resourceTypeId = 2;
+    const parentResourceTypeId = -1;
+    const adminPortal = 0;
     this.userService.getUserResources(resourceTypeId, parentResourceTypeId, adminPortal).subscribe((data: any) => {
       this.userTemplate = data;
     },
@@ -87,7 +88,7 @@ export class RolePermissionsComponent implements OnInit {
       role = formGroup.value;
       role.permissionsCategories = this.permissions;
       this.rolePermissionService.updateRolePermissions(role).subscribe(t => {
-        console.log(t);
+        this.router.navigate(['/permissions']);
       });
     }
   }

@@ -122,7 +122,7 @@ import { SettingComponent } from './Components/Settings/settings.component';
 //TimeClock And TimeTracker Component
 import { TimeClockComponent } from './Components/TimeClock/timeClock.component';
 import { TimeTrackerComponent } from './Components/TimeTracker/timeTracker.component';
-import { EditTimeTracker } from 'src/app/Components/TimeClock/popups/edit-timetracker.popup.component'
+import { EditTimeTracker } from './Components/TimeClock/popups/edit-timetracker.popup.component'
 import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 
 //Services
@@ -138,7 +138,7 @@ import { ReportService } from './Services/report.service';
 import { ErrorHandlerService } from './Services/error-handler/error-handler.service';
 import { ProfileService } from './Services/profile.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { TimeClockService } from 'src/app/Services/timeClock.service'
+import { TimeClockService } from './Services/timeClock.service'
 
 import {
     SocialLoginModule,
@@ -183,6 +183,16 @@ import { LeaveBalanceComponent } from './Components/Manage/SubPages/Leaves/Leave
 import { TrainingGuidesComponent } from './Components/TrainingGuides/training-guides.component';
 import { UserEditComponent } from './Components/User/userEdit/userEdit.component';
 import { SelectCheckAllComponent } from './Elements/MultiSelect/multi-select.component';
+import { ForgotPasswordComponent } from './Components/User/ForgotPassword/forgot-password.component';
+import { SiteLayoutComponent } from './Components/_layout/site-layout/site-layout.component';
+import { AppLayoutComponent } from './Components/_layout/app-layout/app-layout.component';
+import { AppHeaderComponent } from './Components/_layout/app-header/app-header.component';
+import { SiteHeaderComponent } from './Components/_layout/site-header/site-header.component';
+import { SiteFooterComponent } from './Components/_layout/site-footer/site-footer.component';
+import { NavbarComponent } from './Components/nav/nav.component';
+import { NavTopBarComponent } from './Components/nav/topBar/navTopBar.component';
+import { SharedCalendarComponent } from './Components/Calendar/shared-calendar.component';
+import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-password.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -284,6 +294,12 @@ const customNotifierOptions: NotifierOptions = {
         SatNativeDateModule,
     ],
     declarations: [
+        SiteLayoutComponent,
+        AppLayoutComponent,
+        AppHeaderComponent,
+        SiteHeaderComponent,
+        SiteFooterComponent,
+        NavbarComponent,
         AppComponent,
         HomeComponent,
         LoginComponent,
@@ -359,6 +375,10 @@ const customNotifierOptions: NotifierOptions = {
         UserEditComponent,
         SelectCheckAllComponent,
         TrainingGuidesComponent,
+        ForgotPasswordComponent,
+        SharedCalendarComponent
+        NavTopBarComponent,
+        ResetPasswordComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
