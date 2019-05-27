@@ -7,4 +7,13 @@ export class SubstituteCategory extends Entity {
     userId: string;
     isNotificationSend: boolean;
     date: string;
+
+// Notification Events For Substitute
+notificationId: number;
+eventId: number;
+emailAlert: boolean;
+textAlert: boolean;
+eventName: string;
+substituteId: string;
+
 }

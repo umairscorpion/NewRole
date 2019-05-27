@@ -38,7 +38,7 @@ export class AddSchoolComponent implements OnInit {
             Name: ['', Validators.required],
             district: [null, Validators.required],
             Address: ['', Validators.required],
-            ZipCode: ['', Validators.required],
+            ZipCode: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
             City: ['', Validators.required],
             StartTime: ['', Validators.required],
             firstHalfEndTime: ['', Validators.required],

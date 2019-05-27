@@ -43,6 +43,10 @@ export class User extends Entity {
     userLevel: number;
     categoryId: number;
     lastActive: string;
+    jobNumber: number;
+    startDate: Date;
+    searchType: number;
+    reportType: number;
 }
 
 export class UserSummary extends Entity {

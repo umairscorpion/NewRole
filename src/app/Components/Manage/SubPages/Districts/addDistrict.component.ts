@@ -34,7 +34,7 @@ export class AddDistrictComponent implements OnInit {
             Name: ['', Validators.required],
             City: ['', Validators.required],
             Address: [''],
-            ZipCode: [''],
+            ZipCode: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
             Country: [''],
             State: [''],
             StartTime: [''],
@@ -42,7 +42,7 @@ export class AddDistrictComponent implements OnInit {
             SecondHaifStartTime: [''],
             EndTime: [''],
             TimeZone: [''],
-            PhoneNo: ['', Validators.required],
+            PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]]
             IsActive: [1]
         });
         this.GetCountries();
