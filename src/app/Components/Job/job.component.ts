@@ -11,8 +11,8 @@ import { MyJobsComponent } from './SubPages/MyJobs/myJobs.component';
 import { AfterViewInit } from '@angular/core';
 import { Input, ChangeDetectionStrategy } from '@angular/core';
 import { AvailableJobsComponent } from './SubPages/AvailableJobs/availableJobs.component';
-import { AuditFilter } from 'src/app/Model/auditLog';
-import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
+import { AuditFilter } from '../../Model/auditLog';
+import { AuditLogService } from '../../Services/audit_logs/audit-log.service';
 
 
 
@@ -61,8 +61,6 @@ export class JobComponent implements OnInit {
         this.sideNavService.change.subscribe((isOpen: any) => {
             this.isOpen = isOpen;
         });
-
-
         this._communicationService.AbsenceDetail.subscribe((AbsenceDetail: any) => {
             this.JobDetail(AbsenceDetail);
         });
@@ -74,12 +72,12 @@ export class JobComponent implements OnInit {
         }
     }
     LoadSideNavMenu(): void {
-        let resourceTypeId = 2;
-        let parentResourceTypeId = -1;
-        this._userService.getUserResources(resourceTypeId, parentResourceTypeId, 0).subscribe((data: any) => {
-            this.sideNavMenu = data;
-        },
-            error => this.msg = <any>error);
+        const config = {
+            resourceTypeId: 2,
+            parentResourceTypeId: -1,
+            isAdminPanel: 0
+        }
+        this._communicationService.UpdatePanel(config);
     }
 
     JobDetail(data: any) {

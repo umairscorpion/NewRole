@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MatExpansionPanel, MatDatepickerInputEvent } from '@angular/material';
-import { DataContext } from 'src/app/Services/dataContext.service';
+import { DataContext } from '../../../Services/dataContext.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ReportFilter } from 'src/app/Model/Report/report.filter';
+import { ReportFilter } from '../../../Model/Report/report.filter';
 import * as moment from 'moment';
-import { UserSession } from 'src/app/Services/userSession.service';
-import { AbsenceService } from 'src/app/Services/absence.service';
-import { LeaveType } from 'src/app/Model/leaveType';
+import { UserSession } from '../../../Services/userSession.service';
+import { AbsenceService } from '../../../Services/absence.service';
+import { LeaveType } from '../../../Model/leaveType';
 import { MatDialog } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
-import { ReportService } from 'src/app/Services/report.service';
+import { ReportService } from '../../../Services/report.service';
 import { DailyReportsComponent } from '../SubPages/DailyReports/dailyReports.component';
 import { PopupForCancelAbsencesComponent } from '../popups/cancel-absence.popup.component';
 

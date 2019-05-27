@@ -10,17 +10,17 @@ import { Router } from '@angular/router';
 import { SideNavService } from './sideNav.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { FileService } from '../../Services/file.service';
-import { AuditFilter } from 'src/app/Model/auditLog';
-import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
+import { AuditFilter } from '../../Model/auditLog';
+import { AuditLogService } from '../../Services/audit_logs/audit-log.service';
 import { merge } from 'rxjs/observable/merge';
 import { startWith } from 'rxjs/operators/startWith';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { map } from 'rxjs/operators/map';
 import { catchError } from 'rxjs/operators/catchError';
 import { of as observableOf } from 'rxjs/observable/of';
-import { DataContext } from 'src/app/Services/dataContext.service';
+import { DataContext } from '../../Services/dataContext.service';
 import { IEmployee } from '../../Model/Manage/employee';
-import { EmployeeService } from 'src/app/Service/Manage/employees.service';
+import { EmployeeService } from '../../Service/Manage/employees.service';
 
 @Component({
     selector: 'Subzz-app-SideNav',

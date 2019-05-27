@@ -47,4 +47,8 @@ export class UserSession {
         return this.UserClaim.userLevel as number;
     }
 
+    getUserEmailId(): string {
+        return this.UserClaim.email as string;
+    }
+
 }

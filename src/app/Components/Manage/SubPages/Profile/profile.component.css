@@ -19,3 +19,7 @@
   width: 50%;
   margin-top: 10px;
 }
+
+::ng-deep .mat-tab-body-content {
+  overflow: hidden !important;
+}

@@ -5,7 +5,7 @@ import { RestService } from './restService';
 import { ErrorHandlerService } from './error-handler/error-handler.service';
 import { Entity } from '../Model/entity';
 import { User, UserSummary } from '../Model/user';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import { UserSession } from './userSession.service';
 import { Observable } from 'rxjs';

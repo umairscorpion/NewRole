@@ -1,17 +1,17 @@
 import { Component, OnInit, ViewChild, ViewChildren, ElementRef, AfterViewInit } from '@angular/core';
-import { ReportService } from 'src/app/Services/report.service';
-import { ReportFilter } from 'src/app/Model/Report/report.filter';
-import { ReportSummary } from 'src/app/Model/Report/report.summary';
+import { ReportService } from '../../../../Services/report.service';
+import { ReportFilter } from '../../../../Model/Report/report.filter';
+import { ReportSummary } from '../../../../Model/Report/report.summary';
 import { ReportConstant } from '../../constants/report.constants';
 import * as moment from 'moment';
-import { ReportDetail } from 'src/app/Model/Report/report.detail';
+import { ReportDetail } from '../../../../Model/Report/report.detail';
 import { MatDialog } from '@angular/material';
 import { ReportDetailsComponent } from '../../popups/report-details.popup.component';
 import { DomSanitizer } from '@angular/platform-browser';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { ExcelService } from '../../../../Services/excel.service';
-import { AuditFilter } from 'src/app/Model/auditLog';
-import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
+import { AuditFilter } from '../../../../Model/auditLog';
+import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
 
 @Component({
     selector:'monthly-reports',

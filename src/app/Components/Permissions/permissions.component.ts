@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { UsersService } from 'src/app/Services/users.service';
+import { UsersService } from '../../Services/users.service';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { RoleService } from 'src/app/Services/role.service';
-import { UserSummary, User } from 'src/app/Model/user';
-import { RoleSummary } from 'src/app/Model/userRoles';
+import { RoleService } from '../../Services/role.service';
+import { UserSummary, User } from '../../Model/user';
+import { RoleSummary } from '../../Model/userRoles';
 import { UserService } from '../../Service/user.service';
 import { UserEditComponent } from '../User/userEdit/userEdit.component';
 import { MatDialog } from '@angular/material';
@@ -111,6 +111,28 @@ export class PermissionsComponent implements OnInit {
         const dialogRef = this.dialog.open(UserEditComponent, {
             panelClass: 'user-create-dialog',
             data: user || new UserSummary()
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && result.user) {
+                if (result.user.userId && result.user.userId.length > 0) {
+                    this.userService.update(result.user).subscribe((data: any) => {
+                        this.loadUsers();
+                    },
+                        error => this.msg = <any>error);
+                } else {
+                    this.userService.create(result.user).subscribe((data: any) => {
+                        this.loadUsers();
+                    },
+                        error => this.msg = <any>error);
+                }
+            }
+        });
+    }
+
+    addUser() {
+        const dialogRef = this.dialog.open(UserEditComponent, {
+            panelClass: 'user-create-dialog',
+            data: new UserSummary()
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.user) {

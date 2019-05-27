@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RoleService } from 'src/app/Services/role.service';
-import { UsersService } from 'src/app/Services/users.service';
+import { RoleService } from '../../../Services/role.service';
+import { UsersService } from '../../../Services/users.service';
 
 @Component({
   selector: 'app-user-edit',

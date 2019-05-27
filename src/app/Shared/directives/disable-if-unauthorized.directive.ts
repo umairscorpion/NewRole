@@ -1,5 +1,5 @@
 import { Directive, ElementRef, OnInit, Input } from '@angular/core';
-import { AuthorizationService } from 'src/app/Services/authorization.service';
+import { AuthorizationService } from '../../Services/authorization.service';
 
 
 @Directive({

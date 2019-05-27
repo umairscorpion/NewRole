@@ -11,7 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { UserService } from '../../../Service/user.service';
 import { SelectionModel } from '@angular/cdk/collections';
-import { ngxCsv } from 'ngx-csv/ngx-csv';
+import { ngxCsv } from 'ngx-csv';
 import { Absence } from '../../../Model/absence';
 import { ReportService } from '../../../Services/report.service';
 import { ReportDetail } from '../../../Model/Report/report.detail';

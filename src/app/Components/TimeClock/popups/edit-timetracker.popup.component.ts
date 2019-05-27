@@ -5,8 +5,8 @@ import { DistrictService } from '../../../Service/Manage/district.service';
 import { UserSession } from '../../../Services/userSession.service';
 import { ReportDetail } from '../../../Model/Report/report.detail';
 import { NotifierService } from 'angular-notifier';
-import { TimeClock } from 'src/app/Model/timeclock';
-import { TimeClockService } from 'src/app/Services/timeClock.service';
+import { TimeClock } from '../../../Model/timeclock';
+import { TimeClockService } from '../../../Services/timeClock.service';
 
 @Component({
     selector: 'edit-timetracker',

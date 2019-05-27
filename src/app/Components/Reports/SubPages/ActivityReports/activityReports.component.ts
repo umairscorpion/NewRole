@@ -1,8 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as moment from 'moment';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { AuditFilter } from 'src/app/Model/auditLog';
-import { AuditLogService } from 'src/app/Services/audit_logs/audit-log.service';
+import { AuditFilter } from '../../../../Model/auditLog';
+import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
 import { ngxCsv } from 'ngx-csv';
 
 @Component({

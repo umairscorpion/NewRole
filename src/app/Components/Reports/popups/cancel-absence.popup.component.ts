@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MatExpansionPanel, MatDatepickerInputEvent, MatDialogRef } from '@angular/material';
-import { DataContext } from 'src/app/Services/dataContext.service';
+import { DataContext } from '../../../Services/dataContext.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ReportFilter } from 'src/app/Model/Report/report.filter';
+import { ReportFilter } from '../../../Model/Report/report.filter';
 import * as moment from 'moment';
-import { UserSession } from 'src/app/Services/userSession.service';
-import { AbsenceService } from 'src/app/Services/absence.service';
-import { LeaveType } from 'src/app/Model/leaveType';
+import { UserSession } from '../../../Services/userSession.service';
+import { AbsenceService } from '../../../Services/absence.service';
+import { LeaveType } from '../../../Model/leaveType';
 import { MatDialog } from '@angular/material';
-import { ReportDetailsComponent } from '../popups/report-details.popup.component';
+import { ReportDetailsComponent } from './report-details.popup.component';
 
 
 @Component({

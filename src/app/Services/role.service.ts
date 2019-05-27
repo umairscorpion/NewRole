@@ -6,7 +6,7 @@ import { UserRole, RoleSummary } from '../Model/userRoles';
 import { ErrorHandlerService } from './error-handler/error-handler.service';
 import { Entity } from '../Model/entity';
 import { catchError, map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
 
