@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatDialog } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ReportDetail } from '../../../Model/Report/report.detail';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AbsenceService } from '../../../Services/absence.service';
-import { HttpErrorResponse, HttpResponse, HttpEventType, HttpClient } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
 import { DataContext } from '../../../Services/dataContext.service';
 import { UserSession } from '../../../Services/userSession.service';
@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FileService } from '../../../Services/file.service';
 import * as moment from 'moment';
+import { User } from 'src/app/Model/user';
 
 @Component({
   selector: 'report-details',
@@ -40,6 +41,7 @@ export class ReportDetailsComponent implements OnInit {
   AllAttachedFiles: any;
   AttachedFileName: string;
   FileName: string;
+  OriginalFileNameForDisplay: string;
   AttachedFileType: string;
   AttachedFileExtention: string;
   CompletedPercentage: number;
@@ -47,6 +49,8 @@ export class ReportDetailsComponent implements OnInit {
   Substututes: Observable<IEmployee[]>;
   ImageURL: SafeUrl = "";
   msg: string;
+  //Available Substitutes
+  availableSubstitutes: Observable<User[]>;
 
   constructor(
     private absenceService: AbsenceService,
@@ -56,9 +60,7 @@ export class ReportDetailsComponent implements OnInit {
     private _dataContext: DataContext,
     private _userSession: UserSession,
     private _employeeService: EmployeeService,
-    private _dialog: MatDialog,
     private http: HttpClient,
-    private _EmployeeService: EmployeeService,
     private fileService: FileService,
     private sanitizer: DomSanitizer,
 
@@ -73,7 +75,6 @@ export class ReportDetailsComponent implements OnInit {
     this.GetLeaveTypes();
     this.GetCreatedAbsencesOfEmployee(this._userSession.getUserId());
     this.GetSustitutes();
-
     this.absenceForm = this._formBuilder.group({
       absenceCreatedByEmployeeId: [''],
       absenceId: [''],
@@ -118,6 +119,7 @@ export class ReportDetailsComponent implements OnInit {
       substituteNotes: [''],
       substituteRequired: [''],
       totalInterval: [''],
+      originalFileName: [''],
     });
   }
 
@@ -150,11 +152,11 @@ export class ReportDetailsComponent implements OnInit {
       let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
       let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
       if (confirmResult) {
-        if (absenceStartDate <= currentDate)
-            { 
-              this.dialogRef.close();
-              this.notifier.notify('error','Not able to release now');
-              return;}
+        if (absenceStartDate <= currentDate) {
+          this.dialogRef.close();
+          this.notifier.notify('error', 'Not able to release now');
+          return;
+        }
         this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
           if (response == "success") {
             this.dialogRef.close('Reload');
@@ -186,17 +188,32 @@ export class ReportDetailsComponent implements OnInit {
     });
   }
 
-  //ASYNC FUNCTION TO SEARCH SUBSTITUTE
-  SearchSubstitutes(SearchedText: string) {
-    let IsSearchSubstitute = 1;
-    let OrgId = this._userSession.getUserOrganizationId();
-    let DistrictId = this._userSession.getUserDistrictId();
-    this.Substututes = this._EmployeeService.searchUser('user/getEmployeeSuggestions', SearchedText, IsSearchSubstitute, OrgId, DistrictId);
-    this.Substututes = this.Substututes.map((users: any) => users.filter(user => user.userId != this._userSession.getUserId()));
+  //Search Available Substitutes
+  SearchAvailableSubstitutes(SearchedText: string): void {
+    if (this.reportDetail.startDate && this.reportDetail.endDate) {
+      let filter = {
+        districtId: this._userSession.getUserDistrictId(),
+        employeeId: this.EmployeeIdForAbsence,
+        startDate: moment(this.reportDetail.startDate).format('MM/DD/YYYY'),
+        endDate: moment(this.reportDetail.endDate).format('MM/DD/YYYY'),
+        startTime: this.reportDetail.startTime,
+        endTime: this.reportDetail.endTime
+      }
+      this.availableSubstitutes = this.http.post<User[]>(environment.apiUrl + 'user/getAvailableSubstitutes', filter);
+      this.availableSubstitutes = this.availableSubstitutes.map((users: any) => users.filter((val: User) => val.firstName.toLowerCase().includes(SearchedText.toLowerCase())));
+    }
+
+    else {
+      this.notifier.notify('error', 'Select Date First to search substitutes');
+    }
   }
 
   //CHANGE OF SELECTED Substutute FOR WHICH WE ASSIGN ABSENCE
   substututeSelection(SubstututesDetail: any) {
+    if (!SubstututesDetail.isActive) {
+      this.notifier.notify('error', 'Inactive Substitute');
+      return;
+    }
     this.EmployeeNameForAbsence = SubstututesDetail.firstName;
     this.EmployeeIdForAbsence = SubstututesDetail.userId;
     this.loginedUserType = SubstututesDetail.userTypeId;
@@ -205,6 +222,7 @@ export class ReportDetailsComponent implements OnInit {
       this.absenceForm.get('OrganizationId').setValue(SubstututesDetail.organizationId);
     }
     this.GetLocationTime(this.EmployeeIdForAbsence, this.AbsenceForUserLevel);
+    this.availableSubstitutes = null;
   }
 
   onSubmit(formGroup: FormGroup) {
@@ -214,6 +232,7 @@ export class ReportDetailsComponent implements OnInit {
         formGroup.get('attachedFileName').setValue(this.AttachedFileName);
         formGroup.get('fileExtention').setValue(this.AttachedFileExtention);
         formGroup.get('fileContentType').setValue(this.AttachedFileType);
+        formGroup.get('originalFileName').setValue(this.FileName);
       }
       if (formGroup.value.substituteId != -1) {
         if (formGroup.value.status == 2) {
@@ -241,10 +260,11 @@ export class ReportDetailsComponent implements OnInit {
         substituteNotes: formGroup.value.substituteNotes,
         anyAttachment: formGroup.value.anyAttachment,
         attachedFileName: formGroup.value.attachedFileName,
+        originalFileName: formGroup.value.originalFileName,
         fileContentType: formGroup.value.fileContentType,
         fileExtention: formGroup.value.fileExtention,
         substituteId: formGroup.value.substituteId,
-      }     
+      }
       this.absenceService.Patch('/Absence/updateAbsence/', AbsenceModel).subscribe((respose: any) => {
         if (respose == "success") {
           this.dialogRef.close('Reload');
@@ -354,12 +374,15 @@ export class ReportDetailsComponent implements OnInit {
   removeAttachedFile() {
     this.AllAttachedFiles = null;
     this.FileName = null;
+    this.OriginalFileNameForDisplay = null;
   }
 
   uploadAndProgress(files: File[]) {
     this.AllAttachedFiles = files;
     this.AttachedFileType = files[0].type;
+    if (!this.AttachedFileType) this.AttachedFileType = "text/plain";
     this.FileName = this.AllAttachedFiles[0].name;
+    this.OriginalFileNameForDisplay = this.FileName.substr(0, 15);
     this.AttachedFileExtention = files[0].name.split('.')[1];
     let formData = new FormData();
     Array.from(files).forEach(file => formData.append('file', file))
@@ -394,7 +417,6 @@ export class ReportDetailsComponent implements OnInit {
   }
 
   getProfilePic(ProfilePictureName: string): SafeUrl {
-    this.ImageURL = 'assets/Images/noimage.png'
     let model = {
       AttachedFileName: ProfilePictureName,
       FileContentType: ProfilePictureName.split('.')[1],

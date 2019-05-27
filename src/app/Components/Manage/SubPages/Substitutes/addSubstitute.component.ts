@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DistrictService } from '../../../../Service/Manage/district.service';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { UserSession } from '../../../../Services/userSession.service';
-import { FormBuilder, FormGroup, Validators, NgForm, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IStates } from '../../../../Model/Lookups/states';
@@ -12,12 +11,13 @@ import { Observable } from 'rxjs/Observable';
 import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
 @Component({
     templateUrl: 'addSubstitute.component.html'
 })
 export class AddSubstituteComponent implements OnInit {
     profilePictureUrl: string
-    userIdForUpdate: string ;
+    userIdForUpdate: string;
     profilePicture: any;
     private notifier: NotifierService;
     userTypes: any;
@@ -29,9 +29,16 @@ export class AddSubstituteComponent implements OnInit {
     @ViewChild('modal') modal: ModalComponent;
     msg: string;
     substituteForm: FormGroup;
-    constructor(private router: Router, private fb: FormBuilder, private _dataContext: DataContext,
-        notifier: NotifierService, private route: ActivatedRoute, private _userSession: UserSession,
-        private fileService: FileService, private sanitizer: DomSanitizer) {
+
+    constructor(
+        private router: Router,
+        private fb: FormBuilder,
+        private _dataContext: DataContext,
+        notifier: NotifierService,
+        private route: ActivatedRoute,
+        private _userSession: UserSession,
+        private fileService: FileService,
+        private sanitizer: DomSanitizer) {
         this.notifier = notifier;
     }
 
@@ -78,7 +85,7 @@ export class AddSubstituteComponent implements OnInit {
                         PhoneNumber: data[0].phoneNumber,
                         PayRate: data[0].payRate as string,
                         HourLimit: data[0].hourLimit,
-                        IsActive:data[0].isActive
+                        IsActive: data[0].isActive
                     }
                     this.getProfileImage(data[0].profilePicture);
                     this.substituteForm.setValue(SubstituteModel);
@@ -102,7 +109,6 @@ export class AddSubstituteComponent implements OnInit {
 
     getProfileImage(ImageName: string) {
         let ImageURL: SafeUrl = "";
-
         let model = {
             AttachedFileName: ImageName,
             FileContentType: ImageName.split('.')[1],
@@ -112,6 +118,7 @@ export class AddSubstituteComponent implements OnInit {
             var file = new Blob([blob], { type: blob.type });
             let Url = URL.createObjectURL(file);
             this.profilePicture = this.sanitizer.bypassSecurityTrustUrl(Url);
+            this.profilePictureUrl = ImageName;
         },
             error => this.msg = <any>error);
     }
@@ -155,6 +162,12 @@ export class AddSubstituteComponent implements OnInit {
     onSelectProfileImage(event: any) {
         if (event.target.files && event.target.files[0]) {
             let formData = new FormData();
+            formData.append('UserId', this.userIdForUpdate);
+            var mimeType = event.target.files[0].type;
+            if (mimeType.match(/image\/*/) == null) {
+                this.notifier.notify('error', 'Only images are supported.');
+                return;
+            }
             Array.from(event.target.files).forEach((file: File) => formData.append('file', file))
             this.fileService.uploadProfilePicture(formData)
                 .subscribe(responseEvent => {
@@ -180,28 +193,28 @@ export class AddSubstituteComponent implements OnInit {
     onSubmitSubstituteForm(form: any) {
         this.msg = "";
         if (this.substituteForm.valid) {
+            let model = {
+                UserId: this.userIdForUpdate,
+                FirstName: form.value.FirstName,
+                LastName: form.value.LastName,
+                UserTypeId: form.value.UserTypeId,
+                RoleId: 4,
+                // IF USER TYPE IS TEACHER
+                TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
+                Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
+                Gender: form.value.Gender,
+                IsCertified: form.value.IsCertified,
+                IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
+                IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
+                DistrictId: form.getRawValue().District,
+                Email: form.value.Email,
+                PhoneNumber: form.value.PhoneNumber,
+                ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
+                PayRate: form.value.PayRate,
+                HourLimit: form.value.HourLimit,
+                IsActive: form.value.IsActive
+            }
             if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
-                let model = {
-                    UserId: this.userIdForUpdate,
-                    FirstName: form.value.FirstName,
-                    LastName: form.value.LastName,
-                    UserTypeId: form.value.UserTypeId,
-                    RoleId: 4,
-                    // IF USER TYPE IS TEACHER
-                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
-                    Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
-                    Gender: form.value.Gender,
-                    IsCertified: form.value.IsCertified,
-                    IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
-                    IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
-                    DistrictId: form.getRawValue().District,
-                    Email: form.value.Email,
-                    PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
-                    PayRate: form.value.PayRate,
-                    HourLimit: form.value.HourLimit,
-                    IsActive: form.value.IsActive
-                }
                 this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
                     this.router.navigate(['/manage/substitutes']);
                     this.notifier.notify('success', 'Updated Successfully');
@@ -211,26 +224,6 @@ export class AddSubstituteComponent implements OnInit {
                     });
             }
             else {
-                let model = {
-                    FirstName: form.value.FirstName,
-                    LastName: form.value.LastName,
-                    UserTypeId: form.value.UserTypeId,
-                    RoleId: 4,
-                    // IF USER TYPE IS TEACHER
-                    TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
-                    Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
-                    Gender: form.value.Gender,
-                    IsCertified: form.value.IsCertified,
-                    IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
-                    IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
-                    DistrictId: form.getRawValue().District,
-                    Email: form.value.Email,
-                    PhoneNumber: form.value.PhoneNumber,
-                    ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
-                    PayRate: form.value.PayRate,
-                    HourLimit: form.value.HourLimit,
-                    IsActive: form.value.IsActive
-                }
                 this._dataContext.post('user/insertUser', model).subscribe((data: any) => {
                     this.router.navigate(['/manage/substitutes']);
                     this.notifier.notify('success', 'Added Successfully');

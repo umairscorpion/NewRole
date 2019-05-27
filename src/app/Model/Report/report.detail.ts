@@ -35,4 +35,5 @@ export class ReportDetail extends Entity {
   absenceScope: number;
   employeeId: string;
   isApproved: boolean;
+  originalFileName: string;
 }

@@ -22,12 +22,12 @@
     max-height: 500px;
   }
 </style>
-<h3>Employees</h3>
+<h3>Staff</h3>
 <div>
   <div class="row">
     <div class="col-md-12 col-lg-12" style="text-align: right">
       <a routerLink="/manage/employees/addemployee">
-        <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add</button>
+        <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
       </a>
     </div>
   </div>
@@ -95,7 +95,7 @@
             <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
               <i class="material-icons" (click)="ViewEmployeeDetail(row)">visibility</i>
             </a>
-            <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above" [checked]="row.isActive" (change)="updateEmployee(row)" color=""></mat-slide-toggle>
+            <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateEmployeeStatus(row)" color=""></mat-slide-toggle>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

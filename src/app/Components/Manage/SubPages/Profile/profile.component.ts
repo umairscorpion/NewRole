@@ -40,7 +40,7 @@ export class ProfileComponent implements OnInit {
     SuccessMessage: boolean;
     SubstituteFiles: any;
     public resetPassAttempt: boolean;
-
+    OriginalFileNameForDisplay: any;
     constructor(private sanitizer: DomSanitizer, private _formBuilder: FormBuilder, private userService: UserService,
         notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession,
         private _employeeService: EmployeeService, private http: HttpClient, private _fileService: FileService,
@@ -264,6 +264,7 @@ export class ProfileComponent implements OnInit {
     removeAttachedFile() {
         this.AllAttachedFiles = null;
         this.OriginalFileName = null;
+        this.OriginalFileNameForDisplay = null;
     }
 
     uploadAndProgress(files: File[]) {
@@ -271,6 +272,7 @@ export class ProfileComponent implements OnInit {
         this.FileContentType = files[0].type;
         if (!this.FileContentType) this.FileContentType = "text/plain";
         this.OriginalFileName = this.AllAttachedFiles[0].name;
+        this.OriginalFileNameForDisplay = this.OriginalFileName.substr(0, 15);  
         this.FileExtention = files[0].name.split('.')[1];
         let formData = new FormData();
         Array.from(files).forEach(file => formData.append('file', file))
@@ -290,6 +292,10 @@ export class ProfileComponent implements OnInit {
     }
 
     AddFile() {
+        if(this.OriginalFileName == null) {
+            this.notifier.notify('error', 'Please upload file');
+            return;
+          }
         let model = {
             originalFileName: this.OriginalFileName,
             fileName: this.FileName,

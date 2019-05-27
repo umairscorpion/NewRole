@@ -12,7 +12,6 @@ declare const $: any;
 
 
 @Component({
-  // moduleId: module.id,
   selector: 'ng-nav',
   templateUrl: 'nav.template.html'
 })

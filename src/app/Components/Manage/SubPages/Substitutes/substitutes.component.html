@@ -5,7 +5,7 @@
       <mat-tab label="Substitutes">
         <div class="row col-md-12 col-lg-12" style="text-align: right">
           <a routerLink="/manage/substitutes/addSubstitute">
-            <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add</button>
+            <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
           </a>
         </div>
         <div class="row col-md-12 col-lg-12">
@@ -59,7 +59,7 @@
                   <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
                     <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
                   </a>
-                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above" [checked]="row.isActive" (change)="updateSubstitute(row)" color=""></mat-slide-toggle>
+                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)" color=""></mat-slide-toggle>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

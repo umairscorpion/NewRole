@@ -40,7 +40,7 @@ export class SideNavComponent implements OnInit {
     //For Storing Current Screen Size
     screenHeight: any;
     screenWidth: any;
-    
+    UserRole: number = this._userSession.getUserRoleId();
     @HostListener('window:resize', ['$event'])
     getScreenSize(event?) {
         //   this.screenHeight = window.innerHeight;
@@ -121,17 +121,24 @@ export class SideNavComponent implements OnInit {
     styleUrls: ['sideNav.component.css']
 })
 export class PopupDialogForSearch {
+    dataSourceForUsers = new MatTableDataSource();
+    dataSourceForReport = new MatTableDataSource();
     dataSource = new MatTableDataSource();
     isLoadingResults = true;
     DataSourceEmployeesObj: DataSourceEmployees | null;
     isRateLimitReached = false;
     resultsLength = 0;
     employeeName: string = '';
+    showSearchDiv: boolean = false;
+    resultNotFindDiv: boolean = false;
+    showSearchReportDiv: boolean = false;
+    private dialogRefSearch: any;
     msg: string;
     @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatSort) sort: MatSort;
     displayedColumns = ['firstName', 'LastName', 'Email', 'Type'];
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any, public sanitizer: DomSanitizer, private _dataContext: DataContext,
+    displayedColumnsForReports = ['employee', 'jobNumber', 'date', 'link'];
+    constructor(private router: Router,public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public sanitizer: DomSanitizer, private _dataContext: DataContext,
     private _userSession:UserSession,  private _employeeService:EmployeeService) {
     }
     ngOnInit(): void {
@@ -151,14 +158,67 @@ export class PopupDialogForSearch {
         this.dataSource.paginator = this.paginator;
       }
     Search(searchQuery: string) {
-        let OrgId = -1;
+        this.showSearchDiv = false;
+        this.resultNotFindDiv = false;
+        this.showSearchReportDiv = false;
+        let OrgId = this._userSession.getUserOrganizationId();
         let DistrictId = this._userSession.getUserDistrictId();
         this._employeeService.getSearchContentByFilter('user/searchContent',OrgId, DistrictId, searchQuery).subscribe((data: any) => {
-          this.dataSource.data = data;
+        this.dataSourceForUsers.data = data.filter(t => t.searchType === 1);
+        this.dataSourceForReport.data = data.filter(t => t.searchType === 2);
+        if(this.dataSourceForUsers.data.length > 0 && this.dataSourceForReport.data.length > 0)
+        {
+        this.showSearchDiv = true;
+        this.resultNotFindDiv = false;
+        this.showSearchReportDiv = true;
+        }
+        else if(this.dataSourceForUsers.data.length > 0 || this.dataSourceForReport.data.length < 0)
+        {
+        this.showSearchDiv = true;
+        this.resultNotFindDiv = false;
+        this.showSearchReportDiv = false;
+        }
+        else if(this.dataSourceForUsers.data.length < 0 || this.dataSourceForReport.data.length > 0)
+        {
+        this.showSearchDiv = false;
+        this.resultNotFindDiv = false;
+        this.showSearchReportDiv = true;
+        }
+        else
+        {
+            this.resultNotFindDiv = true;
+        }
+
+
+
+
+
+
+        // if(this.dataSourceForUsers.data.length > 0 || this.dataSourceForReport.data.length > 0)
+        //  {
+        //      if(this.dataSourceForUsers.data.length > 0)
+        //      {
+        //         this.showSearchDiv = true;
+        //         this.resultNotFindDiv = false; 
+        //      }
+        //       this.showSearchReportDiv = true;
+        //       this.showSearchDiv = true;
+        //       this.resultNotFindDiv = false;
+        //   }
+        //    else {
+        //     this.showSearchReportDiv = false;
+        //     this.showSearchDiv = false;
+        //      this.resultNotFindDiv = true;
+        //    }
         },
+
           error => this.msg = <any>error);
         
       }
+      openDailyReportPage() {
+        this.dialog.closeAll();
+        this.router.navigate(['/reports']);
+    }
     
 }
 export class DataSourceEmployees {
@@ -182,8 +242,14 @@ export class PopupDialogForSettings {
     ProfilePicture: any;
     userRole: number = this._userSession.getUserRoleId();
     insertAuditLogout: any;
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any, private fileService: FileService,
-        public dialog: MatDialog, private sanitizer: DomSanitizer, private router: Router, private _userSession: UserSession, private auditLogService: AuditLogService) {
+    constructor(
+        @Inject(MAT_DIALOG_DATA) public data: any, 
+        private fileService: FileService,
+        public dialog: MatDialog, 
+        private sanitizer: DomSanitizer, 
+        private router: Router, 
+        private _userSession: UserSession, 
+        private auditLogService: AuditLogService) {
         this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
         this.UserName = this.UserClaim.firstName;
         let profilePicName: string = this.UserClaim.profilePicture;

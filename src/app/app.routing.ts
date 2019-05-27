@@ -32,7 +32,7 @@ import { AuditLogComponent } from './Components/Audit-Log/audit-log.component';
 import { ReportsComponent } from './Components/Reports/reports.component';
 import { DailyReportsComponent } from './Components/Reports/SubPages/DailyReports/dailyReports.component';
 import { MonthlyReportsComponent } from './Components/Reports/SubPages/MonthlyReports/monthyReports.component';
-import { PayRollReportsComponent } from './Components/Reports/SubPages/PayRollReports/payRollReports.component';
+import { ActivityReportsComponent } from './Components/Reports/SubPages/ActivityReports/activityReports.component';
 
 //Permission Component
 import { PermissionsComponent } from './Components/Permissions/permissions.component';
