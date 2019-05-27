@@ -1,121 +1,101 @@
-<div class="main-container" style="overflow-x:hidden">
-    <Subzz-app-SideNav></Subzz-app-SideNav>
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <mat-card style="min-height: 600px">
-                <mat-card-content>
-                    <h2 class="example-h2">Profile</h2>
-                    <mat-tab-group class="demo-tab-group">
-                        <mat-tab label="Personal Info">
-                            <div class="demo-tab-content">
-                                <form (ngSubmit)="onSubmitPersonalForm(personalFormGroup)"
-                                    [formGroup]="personalFormGroup">
-                                    <table class="col-md-6 col-lg-6 col-md-offset-1 profileForm-table">
-                                        <tr>
-                                            <td>First Name</td>
-                                            <td>
-                                                <mat-form-field>
-                                                    <input matInput placeholder="First Name"
-                                                        formControlName="FirstName">
-                                                </mat-form-field>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Last Name</td>
-                                            <td>
-                                                <mat-form-field>
-                                                    <input matInput placeholder="Last Name" formControlName="LastName">
-                                                </mat-form-field>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mobile Number</td>
-                                            <td>
-                                                <mat-form-field>
-                                                    <input matInput placeholder="Mobile Number"
-                                                        formControlName="PhoneNumber">
-                                                </mat-form-field>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Work Email</td>
-                                            <td>
-                                                <mat-form-field>
-                                                    <input matInput placeholder="Work Email" formControlName="Email">
-                                                </mat-form-field>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <div class="col-md-4">
-                                        <div>
-                                            <h5>Profile Picture</h5>
-                                        </div>
-                                        <div>
-                                            <img [src]="ProfilePicture" width="150" height="150">
-                                        </div>
-                                        <div>
-                                            <input type="file" id="UploadButton" style="display: none;"
-                                                (change)="onSelectFile($event)">
-                                            <button mat-button type="button" matTooltip="Upload Image"
-                                                (click)="uploadClick()"
-                                                style="color:white; background-color: #04c0be; padding: 0px 7px;">
-                                                Upload
-                                                <i class="material-icons">add</i>
-                                            </button>
-                                        </div>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <mat-card style="min-height: 600px">
+            <mat-card-content>
+                <h2 class="example-h2">Profile</h2>
+                <mat-tab-group class="demo-tab-group">
+                    <mat-tab label="Personal Info">
+                        <div class="demo-tab-content">
+                            <form (ngSubmit)="onSubmitPersonalForm(personalFormGroup)" [formGroup]="personalFormGroup">
+                                <table class="col-md-6 col-lg-6 col-md-offset-1 profileForm-table">
+                                    <tr>
+                                        <td>First Name</td>
+                                        <td>
+                                            <mat-form-field>
+                                                <input matInput placeholder="First Name" formControlName="FirstName">
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last Name</td>
+                                        <td>
+                                            <mat-form-field>
+                                                <input matInput placeholder="Last Name" formControlName="LastName">
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mobile Number</td>
+                                        <td>
+                                            <mat-form-field>
+                                                <input matInput placeholder="Mobile Number" formControlName="PhoneNumber">
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Work Email</td>
+                                        <td>
+                                            <mat-form-field>
+                                                <input matInput placeholder="Work Email" formControlName="Email">
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="col-md-4">
+                                    <div>
+                                        <h5>Profile Picture</h5>
                                     </div>
-                                    <div class="col-md-6 col-lg-6 col-md-offset-1" style="padding-top: 10px; padding-left: 0px">
-                                        <button mat-raised-button style="color:white; background-color: #04c0be;"
-                                            type="submit">Save</button>
+                                    <div>
+                                        <img [src]="ProfilePicture" width="150" height="150">
                                     </div>
-                                </form>
-                            </div>
-                        </mat-tab>
-                        <mat-tab *ngIf='UserRole == 4' label="Files">
-                            <div class="demo-tab-content">
-                                <div class="col-md-12 vertical-center">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h3>Files</h3>
-                                        </div>
-                                        <div class="col-md-6 col-lg-6" style="margin-top: 10px; text-align: right">
-                                            <button mat-button type="button" color="warn" (click)="uploadClick()">
-                                                <mat-icon>file_upload</mat-icon>
-                                                {{OriginalFileNameForDisplay}}
-                                                <span *ngIf='!OriginalFileNameForDisplay'>Upload</span>
-                                            </button>
-                                            <i *ngIf='OriginalFileName' style="cursor: pointer;" class="material-icons"
-                                                #tooltip="matTooltip" matTooltip="Remove File"
-                                                matTooltipPosition="right" (click)="removeAttachedFile()">
-                                                cancel
-                                            </i>
-                                            <input type="file" id="UploadButton" (change)="upload($event.target.files)"
-                                                style="display: none" />
-                                            <button mat-raised-button (click)="AddFile()" type="button"
-                                                mat-raised-button style="color:white; background-color: #04c0be;">
-                                                Add
-                                                <i class="material-icons" matTooltip="Add File">add</i>
-                                            </button>
-                                        </div>
+                                    <div>
+                                        <input type="file" id="UploadButton" style="display: none;" (change)="onSelectFile($event)">
+                                        <button mat-button type="button" matTooltip="Upload Image" (click)="uploadClick()" style="color:white; background-color: #04c0be; padding: 0px 7px;">
+                                            Upload
+                                            <i class="material-icons">add</i>
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="col-md-12 col-lg-12" *ngIf="SubstituteFiles">
-                                    <div class="col-lg-12 col-md-12 mat-elevation-z8">
-                                        <div class="row" *ngFor="let file of SubstituteFiles">
-                                            <div style="margin-top: 10px">
-                                                <mat-form-field class="col-md-3 col-lg-3">
-                                                    <input disabled="true" matInput [(ngModel)]="file.originalFileName"
-                                                        placeholder="File Name">
-                                                </mat-form-field>
-                                            </div>
-                                            <div style="margin-top: 10px">
-                                                <mat-form-field class="col-md-3 col-lg-3">
-                                                    <input disabled="true" matInput [(ngModel)]="file.date"
-                                                    type="datetime-local" placeholder="Date">
-                                                </mat-form-field>
+                                <div class="col-md-6 col-lg-6 col-md-offset-1" style="padding-top: 10px; padding-left: 0px">
+                                    <button mat-raised-button style="color:white; background-color: #04c0be;" type="submit">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Change Password">
+                        <form (ngSubmit)="submitResetPassForm(resetPasswordForm)" [formGroup]="resetPasswordForm">
+                            <div class="col-md-12">
+                                <div class="col-md-10 col-md-offset-1">
+                                    <b> Please note that when changing your password, we ask you to set yourself a secure password
+                                        that contains both uppercase and lowercase letters as well as numbers. This is for
+                                        your own safety.
+                                    </b>
+                                </div>
+                                <table class="col-md-6 col-md-offset-1">
+                                    <tr>
+                                        <td class="col-md-2">Current Password</td>
+                                        <td>
+                                            <mat-form-field class="col-md-4">
+                                                <input autocomplete="off" type="password" matInput placeholder="Current Password" formControlName="currentPassword">
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-md-2">New Password</td>
+                                        <td>
+                                            <mat-form-field class="col-md-4">
+                                                <input autocomplete="off" type="password" matInput placeholder="New Password" formControlName="password">
+                                                <mat-error *ngIf="resetPasswordForm.controls['password'].hasError('required')">
+                                                    Password is required.
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <div *ngIf="resetPassAttempt && resetPasswordForm.controls['password'].hasError('minlength') 
+                                                        && !resetPasswordForm.controls['password'].hasError('required')"
+                                                class="col-md-4" style="color: red">
+                                                Minimum 8 characters.
                                             </div>
                                             <div *ngIf="resetPassAttempt && !resetPasswordForm.controls['password'].hasError('minlength') 
-                                                && !resetPasswordForm.controls['password'].hasError('required') && resetPasswordForm.controls['password'].hasError('pattern')"
+                                                        && !resetPasswordForm.controls['password'].hasError('required') && resetPasswordForm.controls['password'].hasError('pattern')"
                                                 class="col-md-4" style="color: red">
                                                 Not a valid pattern for password.
                                             </div>
@@ -166,49 +146,32 @@
                                     </div>
                                 </div>
                             </div>
-                        </mat-tab>
-                        <mat-tab label="Change Password">
-
-                        </mat-tab>
-                        <mat-tab *ngIf='UserRole != 4' label="Official Information">
-                            <div class="demo-tab-content">
-                                <form (ngSubmit)="onFromSubmit(officialFormGroup)" [formGroup]="officialFormGroup">
-                                    <table class="col-md-12 col-lg-12">
-                                        <tr>
-                                            <td>
-                                                <mat-form-field class="demo-full-width">
-                                                    <input matInput placeholder="Employee ID"
-                                                        formControlName="EmployeeID">
-                                                </mat-form-field>
-                                            </td>
-                                            <td>
-                                                <mat-form-field class="demo-full-width">
-                                                    <input matInput placeholder="Employee Type"
-                                                        formControlName="EmployeeType">
-                                                </mat-form-field>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <mat-form-field class="demo-full-width">
-                                                    <input matInput placeholder="Certified" formControlName="Certified">
-                                                </mat-form-field>
-                                            </td>
-                                            <td>
-                                                <mat-form-field class="demo-full-width">
-                                                    <input matInput placeholder="Organization"
-                                                        formControlName="Organization">
-                                                </mat-form-field>
-                                            </td>
-                                        </tr>
-                                        <tr style="text-align: right">
-                                            <td colspan="2" class="content-center">
-                                                <button disabled mat-raised-button color="primary"
-                                                    type="submit">Save</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </form>
+                            <div class="col-md-12 col-lg-12" *ngIf="SubstituteFiles">
+                                <div class="col-lg-12 col-md-12 mat-elevation-z8">
+                                    <div class="row" *ngFor="let file of SubstituteFiles">
+                                        <div style="margin-top: 10px">
+                                            <mat-form-field class="col-md-3 col-lg-3">
+                                                <input disabled="true" matInput [(ngModel)]="file.originalFileName" placeholder="File Name">
+                                            </mat-form-field>
+                                        </div>
+                                        <div style="margin-top: 10px">
+                                            <mat-form-field class="col-md-3 col-lg-3">
+                                                <input disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
+                                            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File" matTooltipPosition="below">
+                                                <i class="material-icons" (click)="ViewFile(file)">visibility</i>
+                                            </a>
+                                            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File" matTooltipPosition="below">
+                                                <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
+                                            </a>
+                                            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File" matTooltipPosition="below">
+                                                <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </mat-tab>
@@ -248,8 +211,46 @@
                                 </table>
                             </form>
                         </div>
-                    </mat-tab>
-                    <!-- <mat-tab *ngIf='UserRole != 4' label="Substitute Preferences">
+    </div>
+    </mat-tab>
+    <mat-tab *ngIf='UserRole != 4' label="Official Information">
+        <div class="demo-tab-content">
+            <form (ngSubmit)="onFromSubmit(officialFormGroup)" [formGroup]="officialFormGroup">
+                <table class="col-md-12 col-lg-12">
+                    <tr>
+                        <td>
+                            <mat-form-field class="demo-full-width">
+                                <input matInput placeholder="Employee ID" formControlName="EmployeeID">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="demo-full-width">
+                                <input matInput placeholder="Employee Type" formControlName="EmployeeType">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field class="demo-full-width">
+                                <input matInput placeholder="Certified" formControlName="Certified">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="demo-full-width">
+                                <input matInput placeholder="Organization" formControlName="Organization">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr style="text-align: right">
+                        <td colspan="2" class="content-center">
+                            <button disabled mat-raised-button color="primary" type="submit">Save</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </mat-tab>
+    <!-- <mat-tab *ngIf='UserRole != 4' label="Substitute Preferences">
                             <form (ngSubmit)="SaveSubstitutePreference()" [formGroup]="PreferencesFormGroup">
                                 <div style="padding-top: 10px; min-height:500px" class=" col-md-10 col-md-offset-1 shadow">
                                     <div style="font-size: 15px" class="col-md-12">
@@ -317,7 +318,7 @@
                                 </div>
                             </form>
                         </mat-tab> -->
-                    <!-- <mat-tab label="Add Schedule">
+    <!-- <mat-tab label="Add Schedule">
                             <div class="row col-md-12" style="padding-top:10px">
                                 <div class="col-md-2">
                                     <mat-form-field>
@@ -351,8 +352,7 @@
                                 </div>
                             </div>
                         </mat-tab> -->
-                </mat-tab-group>
-            </mat-card-content>
-        </mat-card>
-    </div>
+    </mat-tab-group>
+    </mat-card-content>
+    </mat-card>
 </div>

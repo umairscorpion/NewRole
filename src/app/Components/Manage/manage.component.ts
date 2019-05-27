@@ -3,7 +3,6 @@ import { UserService } from '../../Service/user.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { SideNavService } from '../SideNav/sideNav.service';
 import { Router } from '@angular/router';
-import { SideNavService } from '../SideNav/sideNav.service'; 
 import { CommunicationService } from '../../Services/communication.service';
 
 @Component({
@@ -19,10 +18,6 @@ export class ManageComponent {
     private _mobileQueryListener: () => void;
     constructor(private router: Router, private _userService: UserService, changeDetectorRef: ChangeDetectorRef, 
         private sideNavService: SideNavService, media: MediaMatcher, private _communicationService: CommunicationService) {
-        private _userService: UserService,
-        changeDetectorRef: ChangeDetectorRef,
-        private sideNavService: SideNavService,
-        media: MediaMatcher) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
