@@ -22,15 +22,15 @@
             </div>
             <div class='row col-md-10 col-md-offset-1'>
                 <div class='col-md-3 heading'>Start Time:</div>
-                <div class='col-md-3'>{{data[0].districtStartTime }}</div>
+                <div class='col-md-3'>{{data[0].districtStartTime | convertFrom24HourTo12HourFormat}}</div>
                 <div class='col-md-3 heading'>First Half End:</div>
-                <div class='col-md-3'>{{data[0].district1stHalfEnd}}</div>
+                <div class='col-md-3'>{{data[0].district1stHalfEnd | convertFrom24HourTo12HourFormat}}</div>
             </div>
             <div class='row col-md-10 col-md-offset-1'>
                 <div class='col-md-3  heading'>Second Half Start: </div>
-                <div class='col-md-3'>{{data[0].district2ndHalfStart}}</div>
+                <div class='col-md-3'>{{data[0].district2ndHalfStart | convertFrom24HourTo12HourFormat}}</div>
                 <div class='col-md-3 heading'>End Time: </div>
-                <div class='col-md-3'>{{data[0].districtEndTime}}</div>
+                <div class='col-md-3'>{{data[0].districtEndTime | convertFrom24HourTo12HourFormat}}</div>
             </div>
             <div class='row col-md-10 col-md-offset-1'>
                 <div class='col-md-3 heading'>Time Zone:</div>

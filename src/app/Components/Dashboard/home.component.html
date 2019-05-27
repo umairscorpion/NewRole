@@ -1,4 +1,10 @@
-﻿<h3>
+<style>
+    .align-anchor {
+        text-align: center;
+        margin-left: 225px;
+    }
+</style>
+<h3>
     Data Dashboard</h3>
 <div class="row">
     <div class="col-xs-3">
@@ -17,7 +23,6 @@
                 <small style="color: white">Previous Day</small>
                 <div style="color: white">{{dashboardCounter.totalPrevious}}</div>
             </div>
-
         </div>
     </div>
     <div class="col-xs-3">
@@ -33,23 +38,69 @@
                     * 100 : dashboardCounter.filled === dashboardCounter.filledPrevious ? 0 : 100}}%
                     <i class="fa fa-level-up"></i>
                 </div>
-                <small style="color: white">Previous Day</small>
-                <div style="color: white">{{dashboardCounter.filledPrevious}}</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-3">
-        <div class="ibox ">
-            <div class="ibox-title" style="background-color:#11c0c9;">
-                <span class="stat-percent" style="font-size: 20px;margin-right:10px;color: white">{{dashboardCounter.unfilled}}</span>
-                <h5 class="label label-primary" style="line-height:2px!important;font-size: 92%!important;background-color: #2FC6D1">
-                    Unfilled</h5>
-            </div>
-            <div class="ibox-content" style="background-color:#57d3d9;">
-                <div class="stat-percent font-bold text-navy" style="color: white">
-                    {{dashboardCounter.unfilledPrevious !==0 ? (dashboardCounter.unfilled - dashboardCounter.unfilledPrevious) /dashboardCounter.unfilledPrevious
-                    * 100 : dashboardCounter.unfilled === dashboardCounter.unfilledPrevious ? 0 : 100}}%
-                    <i class="fa fa-level-up" style="color: white"></i>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div style="margin-top: -20px; margin-left: 12px; cursor: pointer;">
+                            <a (click)="openDailyReportPage()">Jump to reports</a>
+                        </div>
+                        <div class="ibox-title">
+                            <b>Absence Summary(Total YTD)<span class="stat-percent"
+                                    style="margin-right:10px; margin-top:-10px;font-size: 30px;">{{dashboardCounter.totalAbsences}}</span></b>
+                        </div>
+                        <div>
+                            <canvas id="absenceSummary"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="ibox-title">
+                            <b>Top 4 Absence Reasons</b>
+                        </div>
+                        <div>
+                            <canvas id="absenceReason"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="ibox-title">
+                            <b>Pending Time Off Requests
+                                ({{submittedLeaveRequests ? submittedLeaveRequests.length : '0' }})</b>
+                        </div>
+                        <div style="max-height: 333px; overflow:auto">
+                            <div *ngIf="submittedLeaveRequests.length == 0">
+                                <h5 style="text-align:center;">No pending requests.</h5>
+                            </div>
+                            <mat-list>
+                                <mat-list-item style="height: 76px;" *ngFor="let leave of submittedLeaveRequests | slice:0:4; let i=index">
+                                    <div class="col-md-1">
+                                        <img class="img-circle" src="assets/Images/noimage.png" height="30"
+                                            width="25" />
+                                    </div>
+                                    <div style="font-size: 10px" class="col-md-4">
+                                        <b>{{leave.employeeName}}</b>
+                                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days'
+                                        : 'Day'}}
+                                    </div>
+                                    <div style="font-size: 11px" class="col-md-4">
+                                        {{ leave.startDate | date:'E, M/d/y' }}
+                                        <div *ngIf="leave.startDate != leave.endDate">
+                                            {{ leave.endDate | date:'E, M/d/y' }}</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <i class="material-icons"
+                                            style="cursor: pointer;color:#00B945;font-weight: bold;"
+                                            #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="above"
+                                            (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)">check</i>
+                                        <i class="material-icons"
+                                            style="cursor: pointer;color:#D70812;font-weight: bold;"
+                                            #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="above"
+                                            (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)">close</i>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                </mat-list-item>
+                            </mat-list>
+                            <span *ngIf = "showViewMore" class="align-anchor"><a (click)="openLeaveRequestPagePage()"
+                                    style="cursor: pointer;">View More</a></span>
+                        </div>
+                    </div>
                 </div>
                 <small style="color: white">Previous Day</small>
                 <div style="color: white">{{dashboardCounter.unfilledPrevious}}</div>
@@ -115,10 +166,13 @@
                         <b>{{leave.employeeName}}</b>
                         <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
                     </div>
-                    <div style="font-size: 11px" class="col-md-4">
-                        {{ leave.startDate | date:'E, M/d/y' }}
-                        <div *ngIf="leave.startDate != leave.endDate">
-                            {{ leave.endDate | date:'E, M/d/y' }}</div>
+                    <div class="col-md-4">
+                        <div class="ibox-title">    
+                            <b>Top Absences By Grade Level</b>
+                        </div>
+                        <div>
+                            <canvas id="absencesByGradeLevel">{{absenceSummary}}</canvas>
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="Approve"
