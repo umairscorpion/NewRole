@@ -66,6 +66,7 @@ import { ForgotPasswordComponent } from './Components/User/ForgotPassword/forgot
 import { SiteLayoutComponent } from './Components/_layout/site-layout/site-layout.component';
 import { AppLayoutComponent } from './Components/_layout/app-layout/app-layout.component';
 import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-password.component';
+import { SharedCalendarComponent } from './Components/Calendar/shared-calendar.component';
 
 
 const appRoutes: Routes = [
@@ -504,6 +505,18 @@ const appRoutes: Routes = [
                 data: {
                     path: '/permissions',
                     title: 'Permissions',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: 'DASHBOARD'
+                }
+            },
+            {
+                path: 'shared-calendar', component: SharedCalendarComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/shared-calendar',
+                    title: 'Shared Calendar',
                     type: 'main',
                     icontype: 'apps',
                     collapse: 'components',

@@ -321,5 +321,10 @@ export class PopupDialogForSettings {
         this.dialog.closeAll();
         this.router.navigate(['/trainingGuide']);
     }
+
+    openSharedCalendar() {
+        this.dialog.closeAll();
+        this.router.navigate(['/shared-calendar']);
+    }
 }
 

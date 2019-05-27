@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-12">
         <mat-card style="min-height: 600px">
             <mat-card-content>
                 <h2 class="example-h2">Profile</h2>
@@ -211,46 +211,8 @@
                                 </table>
                             </form>
                         </div>
-    </div>
-    </mat-tab>
-    <mat-tab *ngIf='UserRole != 4' label="Official Information">
-        <div class="demo-tab-content">
-            <form (ngSubmit)="onFromSubmit(officialFormGroup)" [formGroup]="officialFormGroup">
-                <table class="col-md-12 col-lg-12">
-                    <tr>
-                        <td>
-                            <mat-form-field class="demo-full-width">
-                                <input matInput placeholder="Employee ID" formControlName="EmployeeID">
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="demo-full-width">
-                                <input matInput placeholder="Employee Type" formControlName="EmployeeType">
-                            </mat-form-field>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <mat-form-field class="demo-full-width">
-                                <input matInput placeholder="Certified" formControlName="Certified">
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="demo-full-width">
-                                <input matInput placeholder="Organization" formControlName="Organization">
-                            </mat-form-field>
-                        </td>
-                    </tr>
-                    <tr style="text-align: right">
-                        <td colspan="2" class="content-center">
-                            <button disabled mat-raised-button color="primary" type="submit">Save</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
-    </mat-tab>
-    <!-- <mat-tab *ngIf='UserRole != 4' label="Substitute Preferences">
+                    </mat-tab>
+                    <!-- <mat-tab *ngIf='UserRole != 4' label="Substitute Preferences">
                             <form (ngSubmit)="SaveSubstitutePreference()" [formGroup]="PreferencesFormGroup">
                                 <div style="padding-top: 10px; min-height:500px" class=" col-md-10 col-md-offset-1 shadow">
                                     <div style="font-size: 15px" class="col-md-12">
@@ -318,7 +280,7 @@
                                 </div>
                             </form>
                         </mat-tab> -->
-    <!-- <mat-tab label="Add Schedule">
+                    <!-- <mat-tab label="Add Schedule">
                             <div class="row col-md-12" style="padding-top:10px">
                                 <div class="col-md-2">
                                     <mat-form-field>
@@ -352,7 +314,8 @@
                                 </div>
                             </div>
                         </mat-tab> -->
-    </mat-tab-group>
-    </mat-card-content>
-    </mat-card>
+                </mat-tab-group>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>

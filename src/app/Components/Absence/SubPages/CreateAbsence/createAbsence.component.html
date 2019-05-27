@@ -251,9 +251,9 @@
                                         Add Attachment
                                         <button mat-button type="button" color="warn" (click)="uploadClick()">
                                             <mat-icon style="color: #8fc903;">file_upload</mat-icon>
-                                            {{FileName}}
+                                            {{OriginalFileName}}
                                         </button>
-                                        <i *ngIf='FileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip" matTooltip="Remove Attachment"
+                                        <i *ngIf='OriginalFileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip" matTooltip="Remove Attachment"
                                             matTooltipPosition="right" (click)="removeAttachedFile()">
                                             cancel
                                         </i>

@@ -42,7 +42,7 @@ export class AddDistrictComponent implements OnInit {
             SecondHaifStartTime: [''],
             EndTime: [''],
             TimeZone: [''],
-            PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]]
+            PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
             IsActive: [1]
         });
         this.GetCountries();

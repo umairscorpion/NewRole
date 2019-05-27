@@ -86,7 +86,7 @@
                             </mat-radio-group>
                         </td>
                     </tr>
-                    <tr *ngIf='radioGroupForLocation.value == "2"'>
+                    <tr *ngIf='employeeForm.value.WorkLocaion == "2"'>
                         <td class="col-md-3">Primary School</td>
                         <td>
                             <mat-form-field class="col-md-7">
@@ -99,7 +99,7 @@
                             </mat-form-field>
                         </td>
                     </tr>
-                    <tr *ngIf='(radioGroupForLocation.value == "2") && (employeeForm.value.UserTypeId == 2 || employeeForm.value.UserTypeId == 3 || employeeForm.value.UserTypeId == 4)'>
+                    <tr *ngIf='(employeeForm.value.WorkLocaion == "2") && (employeeForm.value.UserTypeId == 2 || employeeForm.value.UserTypeId == 3 || employeeForm.value.UserTypeId == 4)'>
                         <td class="col-md-3">Can also access the schools</td>
                         <td>
                             <mat-form-field class="col-md-7">
