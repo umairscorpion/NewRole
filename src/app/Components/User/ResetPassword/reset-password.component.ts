@@ -21,7 +21,7 @@ export class ResetPasswordComponent implements OnInit {
     resetPasswordForm: FormGroup;
     email: string;
     activationKey: string;
-    private resetPassAttempt: boolean;
+    public resetPassAttempt: boolean;
     constructor(private fb: FormBuilder, private _userService: UserService,
         private router: Router, private activatedRoute: ActivatedRoute,
         notifier: NotifierService, private _dataContext: DataContext,

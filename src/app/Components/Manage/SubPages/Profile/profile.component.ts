@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
     CompletedPercentage: number;
     SuccessMessage: boolean;
     SubstituteFiles: any;
-    private resetPassAttempt: boolean;
+    public resetPassAttempt: boolean;
 
     constructor(private sanitizer: DomSanitizer, private _formBuilder: FormBuilder, private userService: UserService,
         notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession,

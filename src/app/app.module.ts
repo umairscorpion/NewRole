@@ -376,7 +376,7 @@ const customNotifierOptions: NotifierOptions = {
         SelectCheckAllComponent,
         TrainingGuidesComponent,
         ForgotPasswordComponent,
-        SharedCalendarComponent
+        SharedCalendarComponent,
         NavTopBarComponent,
         ResetPasswordComponent
     ],
