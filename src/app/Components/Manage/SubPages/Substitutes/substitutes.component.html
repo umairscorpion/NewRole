@@ -1,15 +1,16 @@
 <mat-card>
-  <mat-card-content>
-    <h2>Substitutes</h2>
-    <mat-tab-group (selectedTabChange)="onTabChanged($event)">
-      <mat-tab label="Substitutes">
+  <mat-card-title>Substitutes</mat-card-title>
+  <mat-tab-group (selectedTabChange)="onTabChanged($event)">
+    <mat-tab label="Substitutes">
+      <mat-card>
         <div class="row col-md-12 col-lg-12" style="text-align: right">
           <a routerLink="/manage/substitutes/addSubstitute">
-            <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
+            <button mat-raised-button style="background: #3CCCD1; color: white;"
+              [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
           </a>
         </div>
         <div class="row col-md-12 col-lg-12">
-          <div class="mat-elevation-z8">
+          <div class="example-container mat-elevation-z8">
             <div class="example-header">
               <mat-form-field>
                 <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Substitutes">
@@ -44,22 +45,31 @@
 
               <ng-container matColumnDef="Active">
                 <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
-                <mat-cell *matCellDef="let Substitute"> {{Substitute.lastActive == '0' ? 'Today' : Substitute.lastActive == null ? 'Not Yet Login' : Substitute.lastActive + ' days ago'  }}</mat-cell>
+                <mat-cell *matCellDef="let Substitute">
+                  {{Substitute.lastActive == '0' ? 'Today' : Substitute.lastActive == null ? 'Not Yet Login' : Substitute.lastActive + ' days ago'  }}
+                </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="action">
                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                  <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Substitute" matTooltipPosition="below">
-                    <i class="material-icons" (click)="DeleteSubstitute(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">delete_sweep</i>
+                  <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Substitute"
+                    matTooltipPosition="below">
+                    <i class="material-icons" (click)="DeleteSubstitute(row)"
+                      [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">delete_sweep</i>
                   </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute" matTooltipPosition="below">
-                    <i class="material-icons" (click)="EditSubstitute(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">edit</i>
+                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute"
+                    matTooltipPosition="below">
+                    <i class="material-icons" (click)="EditSubstitute(row)"
+                      [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">edit</i>
                   </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
+                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail"
+                    matTooltipPosition="below">
                     <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
                   </a>
-                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)" color=""></mat-slide-toggle>
+                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
+                    [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above"
+                    [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)" color=""></mat-slide-toggle>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -69,13 +79,15 @@
             </mat-paginator>
           </div>
         </div>
-      </mat-tab>
-      <mat-tab label="Positions">
+      </mat-card>
+    </mat-tab>
+    <mat-tab label="Positions">
+      <mat-card>
         <position-table></position-table>
-      </mat-tab>
-      <mat-tab label="School Sub List">
-        <school-sub-list></school-sub-list>
-      </mat-tab>
-    </mat-tab-group>
-  </mat-card-content>
+      </mat-card>
+    </mat-tab>
+    <mat-tab label="School Sub List">
+      <school-sub-list></school-sub-list>
+    </mat-tab>
+  </mat-tab-group>
 </mat-card>

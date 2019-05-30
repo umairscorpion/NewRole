@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:61137/api/'
+  apiUrl: 'http://localhost:61137/api/',
+  profileImageUrl: 'http://localhost:61137/Profile/'
 };
 
 /*

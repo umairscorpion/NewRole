@@ -3,7 +3,8 @@
         <mat-tab label="Substitute List">
             <div class="col-md-12">
                 <div class="row" style="text-align:right !important; padding-top: 10px; padding-bottom: 10px">
-                    <button mat-raised-button (click)="showSubstitutes =! showSubstitutes" style="background: #3CCCD1; color: white;">Add Substitutes</button>
+                    <button mat-raised-button (click)="showSubstitutes =! showSubstitutes" style="background: rgb(145, 172, 174); color: white;">View/Edit</button>
+                    <button mat-raised-button (click)="showSubstitutes =! showSubstitutes" style="background: #3CCCD1; color: white; margin-left: 5px">Add Substitutes</button>
                 </div>
                 <div *ngIf="showSubstitutes" class="row shaded-border" style="padding-top: 10px">
                     <div class="col-md-4" style="border-right:1px solid #ccc">
@@ -52,7 +53,8 @@
         <mat-tab label="Blocked List">
             <div class="col-md-12">
                 <div class="row" style="text-align:right !important; padding-top: 10px; padding-bottom: 10px">
-                    <button mat-raised-button (click)="showBlockedSubstitutes =! showBlockedSubstitutes" style="background: #3CCCD1; color: white;">Add Substitutes</button>
+                    <button mat-raised-button (click)="showBlockedSubstitutes =! showBlockedSubstitutes" style="background: rgb(145, 172, 174); color: white;">View/Edit</button>
+                    <button mat-raised-button (click)="showBlockedSubstitutes =! showBlockedSubstitutes" style="background: #3CCCD1; color: white; margin-left: 5px">Add Substitutes</button>
                 </div>
                 <div *ngIf="showBlockedSubstitutes" class="row shaded-border" style="padding-top: 10px">
                     <div class="col-md-4" style="border-right:1px solid #ccc">

@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-content>
-        <h2 class="example-h2">Jobs</h2>
+        <mat-card-title>Jobs</mat-card-title>
         <mat-tab-group class="demo-tab-group" (selectedTabChange)="onTabChange($event)">
             <mat-tab label="Open({{available}})">
                 <available-jobs (AvailableCountEvent)="AvailableJobCounter($event)"></available-jobs>

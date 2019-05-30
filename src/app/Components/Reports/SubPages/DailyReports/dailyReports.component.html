@@ -95,9 +95,8 @@
             <ngx-datatable-column [width]="260" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="row">
-                  <div class="col-md-1 photo">
-                    <!-- <img [src]="getImage(row['substituteProfilePicUrl'])" /> -->
-                    <mat-icon>person</mat-icon>
+                  <div class="col-md-1">
+                    <img class="img-circle" [src]="getImage(row['substituteProfilePicUrl'])" width="25" height="25"/>
                   </div>
                   <div class="col-md-8">
                     <div class="ellipsis">

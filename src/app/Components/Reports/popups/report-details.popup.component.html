@@ -19,7 +19,7 @@
     <hr>
     <div>
       <div class="avatar-wrapper">
-        <img class="profile-pic" src="" />
+        <img class="profile-pic" [src]="getImage(reportDetail.substituteProfilePicUrl)" width="150" height="150"  />
       </div>
       <div class="text-center">
         <h4>{{reportDetail.employeeName}}</h4>
@@ -156,8 +156,7 @@
                 <mat-option *ngFor="let substitutes of availableSubstitutes | async"
                   (onSelectionChange)="substututeSelection(substitutes)" [value]="substitutes">
                   <div class="col-md-7 col-lg-7" style="padding-left: 0px">
-                    <img class="img-circle" [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'"
-                      width="25" height="25">
+                    <img class="img-circle" [src]="getImage(substitutes.profilePicture)" width="25" height="25">
                     {{substitutes.firstName}}
                   </div>
                   <button mat-raised-button type="button"
@@ -217,8 +216,7 @@
                 <mat-option *ngFor="let substitutes of availableSubstitutes | async"
                   (onSelectionChange)="substututeSelection(substitutes)" [value]="substitutes">
                   <div class="col-md-7 col-lg-7" style="padding-left: 0px">
-                    <img class="img-circle" [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'"
-                      width="25" height="25">
+                    <img class="img-circle" [src]="getImage(substitutes.profilePicture)" width="25" height="25">
                     {{substitutes.firstName}}
                   </div>
                   <b>Select</b>

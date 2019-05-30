@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <mat-card style="min-height: 600px">
       <mat-card-content>
-        <h2 class="example-h2">Training Guides</h2>
+        <mat-card-title>Training Guides</mat-card-title>
         <mat-divider></mat-divider>
         <div class="row" style="padding-top:20px" *ngIf="UserLevelId != 4"></div>
         <div class="demo-tab-content" *ngIf="UserLevelId == 4">
@@ -11,14 +11,14 @@
               <div class="col-md-6">
                 <h3>Files</h3>
               </div>
-              <div class="col-md-6 col-lg-6" style="margin-top: 10px;text-align: right">
+              <div class="col-md-6 col-lg-6" style="margin-top: 10px; text-align: right">
                 <button mat-button type="button" color="warn" (click)="uploadClick()">
                   <mat-icon>file_upload</mat-icon>
-                    {{OriginalFileNameForDisplay}}
-                    <span *ngIf='!OriginalFileNameForDisplay'>Upload</span>
+                  {{OriginalFileNameForDisplay}}
+                  <span *ngIf='!OriginalFileNameForDisplay'>Upload</span>
                 </button>
-                <i *ngIf='OriginalFileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip" matTooltip="Remove Attachment"
-                    matTooltip="Remove File" matTooltipPosition="right" (click)="removeAttachedFile()">
+                <i *ngIf='OriginalFileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip"
+                  matTooltip="Remove File" matTooltipPosition="right" (click)="removeAttachedFile()">
                   cancel
                 </i>
                 <input type="file" id="UploadButton" (change)="upload($event.target.files)" style="display: none" />
@@ -30,8 +30,9 @@
                     <mat-option value="4">Substitute</mat-option>
                   </mat-select>
                 </mat-form-field>
-                <button mat-raised-button (click)="AddFile(fileType)" type="button" mat-raised-button style="color:white; background-color: #04c0be; margin-left: 10px"
-                    style="color:white; background-color: #04c0be; margin-left: 10px">
+                <button mat-raised-button (click)="AddFile(fileType)" type="button" mat-raised-button
+                  style="color:white; background-color: #04c0be; margin-left: 10px"
+                  style="color:white; background-color: #04c0be; margin-left: 10px">
                   Add
                   <i class="material-icons" matTooltip="Add File">add</i>
                 </button>
@@ -53,17 +54,21 @@
                     </div>
                     <div style="margin-top: 10px">
                       <mat-form-field class="col-md-3 col-lg-3">
-                          <input type="datetime-local" disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
+                        <input type="datetime-local" disabled="true" matInput [(ngModel)]="file.date"
+                          placeholder="Date">
                       </mat-form-field>
                     </div>
                     <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
-                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File" matTooltipPosition="below">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File"
+                        matTooltipPosition="below">
                         <i class="material-icons" (click)="ViewFile(file)">visibility</i>
                       </a>
-                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File" matTooltipPosition="below">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File"
+                        matTooltipPosition="below">
                         <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
                       </a>
-                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File" matTooltipPosition="below" *ngIf="UserLevelId == 4">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File"
+                        matTooltipPosition="below" *ngIf="UserLevelId == 4">
                         <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
                       </a>
                     </div>
@@ -79,17 +84,21 @@
                     </div>
                     <div style="margin-top: 10px">
                       <mat-form-field class="col-md-3 col-lg-3">
-                          <input type="datetime-local" disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
+                        <input type="datetime-local" disabled="true" matInput [(ngModel)]="file.date"
+                          placeholder="Date">
                       </mat-form-field>
                     </div>
                     <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
-                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File" matTooltipPosition="below">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File"
+                        matTooltipPosition="below">
                         <i class="material-icons" (click)="ViewFile(file)">visibility</i>
                       </a>
-                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File" matTooltipPosition="below">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File"
+                        matTooltipPosition="below">
                         <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
                       </a>
-                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File" matTooltipPosition="below" *ngIf="UserLevelId == 4">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File"
+                        matTooltipPosition="below" *ngIf="UserLevelId == 4">
                         <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
                       </a>
                     </div>
@@ -105,17 +114,21 @@
                     </div>
                     <div style="margin-top: 10px">
                       <mat-form-field class="col-md-3 col-lg-3">
-                          <input type="datetime-local" disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
+                        <input type="datetime-local" disabled="true" matInput [(ngModel)]="file.date"
+                          placeholder="Date">
                       </mat-form-field>
                     </div>
                     <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
-                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File" matTooltipPosition="below">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File"
+                        matTooltipPosition="below">
                         <i class="material-icons" (click)="ViewFile(file)">visibility</i>
                       </a>
-                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File" matTooltipPosition="below">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File"
+                        matTooltipPosition="below">
                         <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
                       </a>
-                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File" matTooltipPosition="below" *ngIf="UserLevelId == 4">
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File"
+                        matTooltipPosition="below" *ngIf="UserLevelId == 4">
                         <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
                       </a>
                     </div>

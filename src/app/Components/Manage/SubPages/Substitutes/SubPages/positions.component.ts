@@ -1,15 +1,11 @@
-import { Component, ViewChild, OnInit, Inject } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
+import { Component, ViewChild, OnInit} from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { IDistrict } from '../../../../../Model/Manage/district';
 import { DistrictService } from '../../../../../Service/Manage/district.service';
-import { EmployeeService } from '../../../../../Service/Manage/employees.service';
-import { DataContext } from '../../../../../Services/dataContext.service';
 import { UserSession } from '../../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
-import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HttpErrorResponse } from '@angular/common/http';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { PositionComponent } from './popups/position-detail.popup.component';
 
 @Component({
@@ -29,15 +25,22 @@ export class PositionsComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     Employees: any
     msg: string;
-    constructor(private router: Router, private _districtService: DistrictService, public dialog: MatDialog,
-        private _employeeService: EmployeeService, notifier: NotifierService, private _dataContext: DataContext,
-        public sanitizer: DomSanitizer, private _userSession: UserSession, private fb: FormBuilder) {
-        this.notifier = notifier;
-    }
+
+    constructor(
+        private _districtService: DistrictService, 
+        public dialog: MatDialog,
+        notifier: NotifierService,
+        public sanitizer: DomSanitizer, 
+        private _userSession: UserSession, 
+        private fb: FormBuilder) {
+            this.notifier = notifier;
+        }
+
     ngOnInit(): void {
         this.intializeForms();
         this.getpositions();
     }
+
     ngAfterViewInit() {
         this.positionsDataSource.sort = this.sort;
         this.positionsDataSource.paginator = this.paginator;

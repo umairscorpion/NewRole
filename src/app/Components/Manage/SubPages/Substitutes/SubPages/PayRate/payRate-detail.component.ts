@@ -1,6 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { DistrictService } from '../../../../../../Service/Manage/district.service';
 import { UserSession } from '../../../../../../Services/userSession.service';
 import { PayRateSettings } from '../../../../../../Model/payRateSettings';
@@ -19,10 +18,13 @@ export class PayRateComponent implements OnInit {
     position: FormGroup;
     msg: string;
     positions: PayRateSettings[];
-    constructor(private fb: FormBuilder, notifier: NotifierService, private districtService: DistrictService,
+
+    constructor(
+        notifier: NotifierService, 
+        private districtService: DistrictService,
         private userSession: UserSession) {
-        this.notifier = notifier;
-    }
+            this.notifier = notifier;
+        }
 
     ngOnInit() {
         this.getpositions();
