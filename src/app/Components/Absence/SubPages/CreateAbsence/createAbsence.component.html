@@ -152,7 +152,7 @@
                                             </tag-input>
                                             <mat-option *ngFor="let substitute of availableSubstitutes | async" (click)="SelectSubstituteForDirectAssign(substitute)" style="padding: 0px !important;">
                                                 <div class="col-md-6 col-lg-6">
-                                                    <img class="img-circle" [src]="profilePicture ? profilePicture : 'assets/Images/noimage.png'" width="25" height="25"> {{substitute.firstName}}
+                                                    <img class="img-circle" [src]="getImage(substitute.profilePicture)" width="25" height="25"> {{substitute.firstName}}
                                                 </div>
                                                 <div style="color: darkblue" class="col-md-2 col-lg-2">
                                                    <b>Select</b> 

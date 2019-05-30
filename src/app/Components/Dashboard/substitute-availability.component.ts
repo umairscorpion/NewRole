@@ -1,12 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
-
+import { FormBuilder, FormGroup } from '@angular/forms';
 import * as $ from 'jquery';
 import * as moment from 'moment';
 import 'fullcalendar';
@@ -29,8 +22,7 @@ export class SubstituteAvailabilityComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
-    private availabilityService: AvailabilityService
-  ) {
+    private availabilityService: AvailabilityService) {
     const curr = new Date;
     const first = curr.getDate() - (curr.getDay() - 1);
     const last = first + 4;

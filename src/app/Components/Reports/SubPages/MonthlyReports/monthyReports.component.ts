@@ -169,9 +169,9 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         });
     }
 
-    getImage(profileImageUrl: string) {
-        if (profileImageUrl && profileImageUrl.length > 0) {
-            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrl + '/wwwroot/Profile/' + profileImageUrl);
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
         }
     }
 }

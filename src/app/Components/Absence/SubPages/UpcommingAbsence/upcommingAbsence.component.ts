@@ -1,11 +1,9 @@
-import { Component, ViewChild, OnInit, Inject, Output, EventEmitter } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { CommunicationService } from '../../../../Services/communication.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
-import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
 import { AuditFilter } from '../../../../Model/auditLog';
 import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
 @Component({
@@ -24,11 +22,15 @@ export class UpcommingAbsenceComponent implements OnInit {
     FileStream: any;
     insertAbsencesLogView: any;
 
-    constructor(private _dataContext: DataContext, private _userSession: UserSession,
-        notifier: NotifierService, private _communicationService: CommunicationService,
+    constructor(
+        private _dataContext: DataContext, 
+        private _userSession: UserSession,
+        notifier: NotifierService, 
+        private _communicationService: CommunicationService,
         private auditLogService: AuditLogService) {
         this.notifier = notifier;
     }
+
     ngOnInit(): void {
         this.GetAbsences();
     }

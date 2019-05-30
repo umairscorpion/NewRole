@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit, Inject, Output, EventEmitter } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommunicationService } from '../../../../Services/communication.service';
@@ -7,8 +7,6 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../../Service/user.service';
-import { environment } from '../../../../../environments/environment.prod';
-import { HttpErrorResponse } from '@angular/common/http';
 import * as moment from 'moment';
 
 @Component({
@@ -31,9 +29,13 @@ export class MyJobsComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
 
-    constructor(private _dataContext: DataContext, private _userSession: UserSession,
-        private _formBuilder: FormBuilder, private userService: UserService, private router: Router,
-        notifier: NotifierService, private _communicationService: CommunicationService, private activatedRoute: ActivatedRoute) {
+    constructor(
+        private _dataContext: DataContext, 
+        private _userSession: UserSession,
+        private _formBuilder: FormBuilder,
+        notifier: NotifierService, 
+        private _communicationService: CommunicationService, 
+        private activatedRoute: ActivatedRoute) {
         this.notifier = notifier;
     }
 
@@ -113,7 +115,6 @@ export class MyJobsComponent implements OnInit {
     ngOnChanges() {
         alert("Inti");
     }
-
 
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe((params: any) => {

@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { UsersService } from 'src/app/Services/users.service';
 
 @Component({
     templateUrl: 'addSubstitute.component.html'
@@ -38,7 +39,8 @@ export class AddSubstituteComponent implements OnInit {
         private route: ActivatedRoute,
         private _userSession: UserSession,
         private fileService: FileService,
-        private sanitizer: DomSanitizer) {
+        private sanitizer: DomSanitizer,
+        private userService: UsersService) {
         this.notifier = notifier;
     }
 
@@ -108,13 +110,11 @@ export class AddSubstituteComponent implements OnInit {
     }
 
     getProfileImage(ImageName: string) {
-        let ImageURL: SafeUrl = "";
         let model = {
             AttachedFileName: ImageName,
             FileContentType: ImageName.split('.')[1],
         }
         this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
-            let newBlob = new Blob([blob]);
             var file = new Blob([blob], { type: blob.type });
             let Url = URL.createObjectURL(file);
             this.profilePicture = this.sanitizer.bypassSecurityTrustUrl(Url);
@@ -195,43 +195,54 @@ export class AddSubstituteComponent implements OnInit {
         if (this.substituteForm.valid) {
             let model = {
                 UserId: this.userIdForUpdate,
-                FirstName: form.value.FirstName,
-                LastName: form.value.LastName,
-                UserTypeId: form.value.UserTypeId,
-                RoleId: 4,
-                // IF USER TYPE IS TEACHER
-                TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
-                Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
-                Gender: form.value.Gender,
-                IsCertified: form.value.IsCertified,
-                IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
-                IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
-                DistrictId: form.getRawValue().District,
-                Email: form.value.Email,
-                PhoneNumber: form.value.PhoneNumber,
-                ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
-                PayRate: form.value.PayRate,
-                HourLimit: form.value.HourLimit,
-                IsActive: form.value.IsActive
+                Email: form.value.Email
             }
-            if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
-                this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
-                    this.router.navigate(['/manage/substitutes']);
-                    this.notifier.notify('success', 'Updated Successfully');
-                },
-                    (err: HttpErrorResponse) => {
-                        this.notifier.notify('error', err.error.error_description);
-                    });
-            }
-            else {
-                this._dataContext.post('user/insertUser', model).subscribe((data: any) => {
-                    this.router.navigate(['/manage/substitutes']);
-                    this.notifier.notify('success', 'Added Successfully');
-                },
-                    (err: HttpErrorResponse) => {
-                        this.notifier.notify('error', err.error.error_description);
-                    });
-            }
+            this.userService.post('user/verify', model).subscribe((result: any) => {
+                if (result) {
+                    this.notifier.notify('error', 'This email address belongs to another user. Please try with other one.');
+                }
+                else {
+                    let model = {
+                        UserId: this.userIdForUpdate,
+                        FirstName: form.value.FirstName,
+                        LastName: form.value.LastName,
+                        UserTypeId: form.value.UserTypeId,
+                        RoleId: 4,
+                        // IF USER TYPE IS TEACHER
+                        TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
+                        Speciality: form.value.UserTypeId === 1 ? form.value.Speciality : 'N/A',
+                        Gender: form.value.Gender,
+                        IsCertified: form.value.IsCertified,
+                        IsSubscribedEmail: form.value.IsSubscribedEmail == '1' ? true : false,
+                        IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
+                        DistrictId: form.getRawValue().District,
+                        Email: form.value.Email,
+                        PhoneNumber: form.value.PhoneNumber,
+                        ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
+                        PayRate: form.value.PayRate,
+                        HourLimit: form.value.HourLimit,
+                        IsActive: form.value.IsActive
+                    }
+                    if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
+                        this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
+                            this.router.navigate(['/manage/substitutes']);
+                            this.notifier.notify('success', 'Updated Successfully');
+                        },
+                            (err: HttpErrorResponse) => {
+                                this.notifier.notify('error', err.error.error_description);
+                            });
+                    }
+                    else {
+                        this._dataContext.post('user/insertUser', model).subscribe((data: any) => {
+                            this.router.navigate(['/manage/substitutes']);
+                            this.notifier.notify('success', 'Added Successfully');
+                        },
+                            (err: HttpErrorResponse) => {
+                                this.notifier.notify('error', err.error.error_description);
+                            });
+                    }
+                }
+            });
         }
     }
 }

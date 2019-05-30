@@ -1,74 +1,81 @@
 <mat-card>
   <mat-card-content>
-    <h2 class="example-h2">Leave</h2>
+    <mat-card-title>Leave</mat-card-title>
     <mat-tab-group class="demo-tab-group">
       <mat-tab label="Leave">
-        <div class="demo-tab-content">
-          <h3>Leave Type</h3>
-          <div>
-            <div class="row col-md-12 col-lg-12" style="text-align: right">
-              <a routerLink="./AddLeave">
-                <button mat-raised-button style="background-color:#04c0be; color: white;" [hideIfUnauthorized]="'ADD_EDIT_LEAVE_TYPE'">Add Leave</button>
-              </a>
+        <mat-card>
+          <div class="demo-tab-content">
+            <h4>Leave Type</h4>
+            <div>
+              <div class="row col-md-12 col-lg-12" style="text-align: right">
+                <a routerLink="./AddLeave">
+                  <button mat-raised-button style="background-color:#04c0be; color: white;"
+                    [hideIfUnauthorized]="'ADD_EDIT_LEAVE_TYPE'">Add Leave</button>
+                </a>
+              </div>
+            </div>
+            <div class="row col-md-12 col-lg-12">
+              <div class="example-container mat-elevation-z8">
+                <!-- <div class="example-header">
+      <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+      </div> -->
+                <mat-table #table [dataSource]="dataSourceForLeaveTypes" matSort>
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="LeaveTypeName">
+                    <mat-header-cell *matHeaderCellDef> Leave Type </mat-header-cell>
+                    <mat-cell *matCellDef="let LeaveType"> {{LeaveType.leaveTypeName}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="Allowance">
+                    <mat-header-cell *matHeaderCellDef> Subtract Allowance </mat-header-cell>
+                    <mat-cell *matCellDef="let LeaveType">
+                      <i class="material-icons">
+                        {{LeaveType.isSubtractAllowance ? 'check' : 'close' }}
+                      </i>
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="Approval">
+                    <mat-header-cell *matHeaderCellDef> Approval Required </mat-header-cell>
+                    <mat-cell *matCellDef="let LeaveType">
+                      <i class="material-icons">
+                        {{LeaveType.isApprovalRequired ? 'check' : 'close' }}
+                      </i>
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="Visible">
+                    <mat-header-cell *matHeaderCellDef> Make Visible </mat-header-cell>
+                    <mat-cell *matCellDef="let LeaveType">
+                      <i class="material-icons">
+                        {{LeaveType.isVisible ? 'check' : 'close' }}
+                      </i>
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="CreatedDate">
+                    <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
+                    <mat-cell *matCellDef="let LeaveType"> {{LeaveType.createdDate | date }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <i class="material-icons" style="cursor: pointer; color: #448ac9" #tooltip="matTooltip"
+                        matTooltip="Delete Leave" matTooltipPosition="below" (click)="deleteLeaveType(row.leaveTypeId)"
+                        [hideIfUnauthorized]="'ADD_EDIT_LEAVE_TYPE'">delete_sweep</i>
+                      <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:  #448ac9"
+                        #tooltip="matTooltip" matTooltip="Edit Leave" matTooltipPosition="below"
+                        (click)="editLeaveType(row.leaveTypeId)" [hideIfUnauthorized]="'ADD_EDIT_LEAVE_TYPE'">edit</i>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveTypes"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumnsForLeaveTypes;"></mat-row>
+                </mat-table>
+                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+                </mat-paginator>
+              </div>
             </div>
           </div>
-          <div class="row col-md-12 col-lg-12">
-            <div class="example-container mat-elevation-z8">
-              <!-- <div class="example-header">
-    <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-    </mat-form-field>
-    </div> -->
-              <mat-table #table [dataSource]="dataSourceForLeaveTypes" matSort>
-                <!-- Position Column -->
-                <ng-container matColumnDef="LeaveTypeName">
-                  <mat-header-cell *matHeaderCellDef> Leave Type </mat-header-cell>
-                  <mat-cell *matCellDef="let LeaveType"> {{LeaveType.leaveTypeName}} </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="Allowance">
-                  <mat-header-cell *matHeaderCellDef> Subtract Allowance </mat-header-cell>
-                  <mat-cell *matCellDef="let LeaveType">
-                    <i class="material-icons">
-                      {{LeaveType.isSubtractAllowance ? 'check' : 'close' }}
-                    </i>
-                  </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="Approval">
-                  <mat-header-cell *matHeaderCellDef> Approval Required </mat-header-cell>
-                  <mat-cell *matCellDef="let LeaveType">
-                    <i class="material-icons">
-                      {{LeaveType.isApprovalRequired ? 'check' : 'close' }}
-                    </i>
-                  </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="Visible">
-                  <mat-header-cell *matHeaderCellDef> Make Visible </mat-header-cell>
-                  <mat-cell *matCellDef="let LeaveType">
-                    <i class="material-icons">
-                      {{LeaveType.isVisible ? 'check' : 'close' }}
-                    </i>
-                  </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="CreatedDate">
-                  <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
-                  <mat-cell *matCellDef="let LeaveType"> {{LeaveType.createdDate | date }}
-                  </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="action">
-                  <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-                  <mat-cell *matCellDef="let row">
-                    <i class="material-icons" style="cursor: pointer; color: #448ac9" #tooltip="matTooltip" matTooltip="Delete Leave" matTooltipPosition="below" (click)="deleteLeaveType(row.leaveTypeId)" [hideIfUnauthorized]="'ADD_EDIT_LEAVE_TYPE'">delete_sweep</i>
-                    <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:  #448ac9" #tooltip="matTooltip" matTooltip="Edit Leave" matTooltipPosition="below" (click)="editLeaveType(row.leaveTypeId)" [hideIfUnauthorized]="'ADD_EDIT_LEAVE_TYPE'">edit</i>
-                  </mat-cell>
-                </ng-container>
-                <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveTypes"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumnsForLeaveTypes;"></mat-row>
-              </mat-table>
-              <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
-              </mat-paginator>
-            </div>
-          </div>
-        </div>
+        </mat-card>
       </mat-tab>
       <mat-tab label="Time Off Requests ({{submittedLeaveRequests.length}})">
         <!-- md-dynamic-height md-stretch-tabs -->
@@ -84,7 +91,8 @@
                       </div>
                       <div class="col-md-5">
                         {{leave.employeeName}}
-                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
+                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }}
+                        {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
                       </div>
                     </div>
                     <div class="col-md-3">
@@ -92,10 +100,12 @@
                       <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)"
+                        #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a;font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)"
+                        #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
                       </button>
                     </div>
@@ -110,7 +120,8 @@
                       </div>
                       <div class="col-md-5">
                         {{leave.employeeName}}
-                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
+                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }}
+                        {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
                       </div>
                     </div>
                     <div class="col-md-3">
@@ -121,11 +132,14 @@
                       <button mat-icon-button #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)"
+                        #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
-                        <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;" class="fa fa-mail-forward"></i>
+                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId)"
+                        #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
+                        <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
+                          class="fa fa-mail-forward"></i>
                       </button>
                     </div>
                     <mat-divider></mat-divider>
@@ -139,7 +153,8 @@
                       </div>
                       <div class="col-md-5">
                         {{leave.employeeName}}
-                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }} {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
+                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }}
+                        {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
                       </div>
                     </div>
                     <div class="col-md-3">
@@ -147,14 +162,18 @@
                       <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)"
+                        #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
                       </button>
                       <button mat-icon-button #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below" #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
-                        <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;" class="fa fa-mail-forward"></i>
+                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId)"
+                        #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below" #tooltip="matTooltip"
+                        matTooltip="Archive" matTooltipPosition="below">
+                        <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
+                          class="fa fa-mail-forward"></i>
                       </button>
                     </div>
                     <mat-divider></mat-divider>
@@ -182,10 +201,12 @@
                       <br> {{leave.createdDate | date}}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)"
+                        #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)"
+                        #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
                       </button>
                     </div>
@@ -215,10 +236,12 @@
                       <br> {{leave.createdDate | date}}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)"
+                        #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="color:#00B945;font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)" #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
+                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)"
+                        #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
                       </button>
                     </div>
@@ -239,7 +262,8 @@
             </div>
             <div class="col-lg-2 vertical-center" style="text-align: right">
               <a>
-                <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#04C0Be;color: white" [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">Create Allowance</button>
+                <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#04C0Be;color: white"
+                  [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">Create Allowance</button>
               </a>
             </div>
           </div>
@@ -251,16 +275,24 @@
                 <br> Yearly Allowance {{allowance.yearlyAllowance}}
               </div>
               <div class="col-md-3" style="text-align: center">
-                <mat-slide-toggle #tooltip="matTooltip" [matTooltip]="allowance.isEnalbled ? 'click to disable' : 'click to enable'" matTooltipPosition="left" [checked]="allowance.isEnalbled" (change)="updateAllowance(allowance)" color=""></mat-slide-toggle>
-                <i class="material-icons" style="cursor: pointer;margin-left: 10px ; color:#448ac9" #tooltip="matTooltip" matTooltip="Edit Allowance" matTooltipPosition="below" (click)="editAllowance(allowance)" [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">edit</i>
-                <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:#448ac9" #tooltip="matTooltip" matTooltip="Delete Allowance" matTooltipPosition="below" (click)="deleteAllowance(allowance.id)" [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">delete_sweep</i>
+                <mat-slide-toggle #tooltip="matTooltip"
+                  [matTooltip]="allowance.isEnalbled ? 'click to disable' : 'click to enable'" matTooltipPosition="left"
+                  [checked]="allowance.isEnalbled" (change)="updateAllowance(allowance)" color=""></mat-slide-toggle>
+                <i class="material-icons" style="cursor: pointer;margin-left: 10px ; color:#448ac9"
+                  #tooltip="matTooltip" matTooltip="Edit Allowance" matTooltipPosition="below"
+                  (click)="editAllowance(allowance)" [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">edit</i>
+                <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:#448ac9" #tooltip="matTooltip"
+                  matTooltip="Delete Allowance" matTooltipPosition="below" (click)="deleteAllowance(allowance.id)"
+                  [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">delete_sweep</i>
               </div>
             </div>
           </div>
         </div>
       </mat-tab>
       <mat-tab label="Employee Leave Balance">
+        <mat-card>
         <leave-balance></leave-balance>
+      </mat-card>
       </mat-tab>
     </mat-tab-group>
   </mat-card-content>

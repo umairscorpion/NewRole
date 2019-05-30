@@ -22,71 +22,74 @@
         max-height: 500px;
     }
 </style>
-<h3>Past Absences</h3>
-<div class="row">
-    <div class="col-md-12 col-lg-12">
-        <div class="example-container mat-elevation-z8">
-            <div class="example-header">
-                <!-- <mat-form-field>
-                <input matInput placeholder="Filter">
-              </mat-form-field> -->
-            </div>
-
-            <mat-table #table [dataSource]="PastAbsences" matSort>
-                <!-- Position Column -->
-                <ng-container matColumnDef="AbsenceDate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Absence Date </mat-header-cell>
-                    <mat-cell *matCellDef="let Absence"> {{Absence.startDate | date}}
-                        <br> {{Absence.startTime | convertFrom24HourTo12HourFormat }}-{{Absence.endTime | convertFrom24HourTo12HourFormat
+<mat-card>
+    <mat-card-title>Past Absences</mat-card-title>
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="example-container mat-elevation-z8">
+                <div class="example-header">
+                    <mat-form-field>
+                        <input matInput placeholder="Filter">
+                    </mat-form-field>
+                </div>
+                <mat-table #table [dataSource]="PastAbsences" matSort>
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="AbsenceDate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Absence Date </mat-header-cell>
+                        <mat-cell *matCellDef="let Absence"> {{Absence.startDate | date}}
+                            <br> {{Absence.startTime | convertFrom24HourTo12HourFormat }}-{{Absence.endTime | convertFrom24HourTo12HourFormat
                         }} </mat-cell>
-                </ng-container>
+                    </ng-container>
 
-                <ng-container matColumnDef="Posted">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Posted </mat-header-cell>
-                    <mat-cell *matCellDef="let Absence"> {{Absence.createdDate | date}}
-                        <br> By: {{Absence.createdByUser}} </mat-cell>
-                </ng-container>
+                    <ng-container matColumnDef="Posted">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Posted </mat-header-cell>
+                        <mat-cell *matCellDef="let Absence"> {{Absence.createdDate | date}}
+                            <br> By: {{Absence.createdByUser}} </mat-cell>
+                    </ng-container>
 
-                <ng-container matColumnDef="Location">
-                    <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
-                    <mat-cell *matCellDef="let Absence">
-                        {{Absence.organizationName ? Absence.organizationName : Absence.absenceLocation }}
-                        <br> {{Absence.organizationName ? Absence.organizationAddress : Absence.districtAddress }}</mat-cell>
-                </ng-container>
+                    <ng-container matColumnDef="Location">
+                        <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+                        <mat-cell *matCellDef="let Absence">
+                            {{Absence.organizationName ? Absence.organizationName : Absence.absenceLocation }}
+                            <br> {{Absence.organizationName ? Absence.organizationAddress : Absence.districtAddress }}
+                        </mat-cell>
+                    </ng-container>
 
-                <ng-container matColumnDef="Status">
-                    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-                    <mat-cell *matCellDef="let Absence"> {{Absence.absenceStatusDescription}} </mat-cell>
-                </ng-container>
+                    <ng-container matColumnDef="Status">
+                        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let Absence"> {{Absence.absenceStatusDescription}} </mat-cell>
+                    </ng-container>
 
-                <ng-container matColumnDef="Substitute">
-                    <mat-header-cell *matHeaderCellDef> Substitute </mat-header-cell>
-                    <mat-cell *matCellDef="let Absence"> {{Absence.substituteName ? Absence.substituteName: 'N/A'}} </mat-cell>
-                </ng-container>
+                    <ng-container matColumnDef="Substitute">
+                        <mat-header-cell *matHeaderCellDef> Substitute </mat-header-cell>
+                        <mat-cell *matCellDef="let Absence"> {{Absence.substituteName ? Absence.substituteName: 'N/A'}}
+                        </mat-cell>
+                    </ng-container>
 
-                <ng-container matColumnDef="Action">
-                    <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-                    <mat-cell *matCellDef="let Absence">
-                        <button mat-icon-button [matMenuTriggerFor]="menu">
-                            <mat-icon>more_vert</mat-icon>
-                        </button>
-                        <mat-menu #menu="matMenu">
-                            <button *ngIf="loginUserRole !== 3" (click)="UpdateStatus(Absence, 4)" mat-menu-item>
-                                <mat-icon>cancel</mat-icon>
-                                <span>Cancel</span>
+                    <ng-container matColumnDef="Action">
+                        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                        <mat-cell *matCellDef="let Absence">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
-                            <button (click)="ShowAbsenceDetail(Absence)" mat-menu-item>
-                                <mat-icon>visibility</mat-icon>
-                                <span>view</span>
-                            </button>
-                        </mat-menu>
-                    </mat-cell>
-                </ng-container>
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
-            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
-            </mat-paginator>
+                            <mat-menu #menu="matMenu">
+                                <button *ngIf="loginUserRole !== 3" (click)="UpdateStatus(Absence, 4)" mat-menu-item>
+                                    <mat-icon>cancel</mat-icon>
+                                    <span>Cancel</span>
+                                </button>
+                                <button (click)="ShowAbsenceDetail(Absence)" mat-menu-item>
+                                    <mat-icon>visibility</mat-icon>
+                                    <span>view</span>
+                                </button>
+                            </mat-menu>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+                </mat-paginator>
+            </div>
         </div>
     </div>
-</div>
+</mat-card>

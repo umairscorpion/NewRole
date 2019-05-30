@@ -197,9 +197,9 @@ export class AvailableJobsComponent implements OnInit {
                 error => this.msg = <any>error);
     }
 
-    getProfilePic(ProfilePictureName: string): SafeUrl {
-        if (ProfilePictureName && ProfilePictureName.length > 0) {
-            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrl + '/wwwroot/Profile/' + ProfilePictureName);
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
         }
     }
 

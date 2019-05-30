@@ -13,7 +13,6 @@ import { environment } from '../../../../environments/environment';
 import { IEmployee } from '../../../Model/Manage/employee';
 import { Observable } from 'rxjs/Observable';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { FileService } from '../../../Services/file.service';
 import * as moment from 'moment';
 import { User } from 'src/app/Model/user';
 
@@ -44,10 +43,8 @@ export class ReportDetailsComponent implements OnInit {
   OriginalFileNameForDisplay: string;
   AttachedFileType: string;
   AttachedFileExtention: string;
-  CompletedPercentage: number;
   SuccessMessage: boolean;
   Substututes: Observable<IEmployee[]>;
-  ImageURL: SafeUrl = "";
   msg: string;
   //Available Substitutes
   availableSubstitutes: Observable<User[]>;
@@ -61,7 +58,6 @@ export class ReportDetailsComponent implements OnInit {
     private _userSession: UserSession,
     private _employeeService: EmployeeService,
     private http: HttpClient,
-    private fileService: FileService,
     private sanitizer: DomSanitizer,
 
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -284,7 +280,7 @@ export class ReportDetailsComponent implements OnInit {
     this.loginedUserRole = this._userSession.getUserRoleId();
     this.loginedUserType = this._userSession.getUserTypeId();
     this.AbsenceForUserLevel = this.loginedUserLevel;
-    this.GetLocationTime(this.EmployeeIdForAbsence, this.loginedUserLevel)
+    this.GetLocationTime(this.EmployeeIdForAbsence, this.loginedUserLevel);
   }
 
   //Get Location Time For User
@@ -416,21 +412,11 @@ export class ReportDetailsComponent implements OnInit {
     });
   }
 
-  getProfilePic(ProfilePictureName: string): SafeUrl {
-    let model = {
-      AttachedFileName: ProfilePictureName,
-      FileContentType: ProfilePictureName.split('.')[1],
+  getImage(imageName: string) {
+    if (imageName && imageName.length > 0) {
+        return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
     }
-    this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
-      let newBlob = new Blob([blob]);
-      var file = new Blob([blob], { type: blob.type });
-      let Url = URL.createObjectURL(file);
-      this.ImageURL = this.sanitizer.bypassSecurityTrustUrl(Url);
-      return this.ImageURL;
-    },
-      error => this.msg = <any>error);
-    return this.ImageURL;
-  }
+}
 
   displayName(user?: any): string | undefined {
     return user ? user.firstName : undefined;

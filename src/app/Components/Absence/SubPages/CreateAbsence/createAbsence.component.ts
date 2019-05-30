@@ -15,6 +15,7 @@ import { LeaveType } from '../../../../Model/leaveType';
 import { AbsenceService } from '../../../../Services/absence.service';
 import { environment } from '../../../../../environments/environment';
 import { User } from '../../../../Model/user';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'create-absence',
@@ -96,7 +97,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         private _dataContext: DataContext, 
         private _userSession: UserSession,
         private absenceService: AbsenceService,
-        notifier: NotifierService, ) {
+        notifier: NotifierService,
+        private sanitizer: DomSanitizer ) {
         this.notifier = notifier;
     }
 
@@ -730,5 +732,11 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         console.log("Destroy");
+    }
+
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
+        }
     }
 }
