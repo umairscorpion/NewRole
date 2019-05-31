@@ -1,7 +1,7 @@
 ﻿<div class="row">
   <div class="col-md-2">
-    <div class="row col-md-12 col-md-offset 1 mat-elevation-z8" *ngIf="loginedUserRole == 1 || loginedUserRole == 2 || loginedUserRole == 5"
-      style="margin-top: 20px; margin-left: 8px; font-size: 12px;">
+    <div class="row mat-elevation-z8" *ngIf="loginedUserRole == 1 || loginedUserRole == 2 || loginedUserRole == 5"
+      style="margin-top: 20px; margin-left: 3px; font-size: 12px;">
       <table *ngIf="substituteAvailibiltySummary" cellpadding="4" cellspacing="4">
         <tr>
           <th>
@@ -29,7 +29,7 @@
       <div class="text-muted text-center" style="margin-bottom: 5px; margin-top: 5px">
         <b>{{date}} ({{todayTotalAbsenceDetails.length}})</b>
       </div>
-      <div *ngFor="let absence of todayTotalAbsenceDetails | slice:0:5; let i=index" style="margin-left: -15px; margin-bottom: 5px">
+      <div *ngFor="let absence of todayTotalAbsenceDetails | slice:0:5; let i=index" style="margin-left: -12px; margin-bottom: 5px">
         <div class="col-md-12" *ngIf="absence.statusId == 1 || absence.statusId == 2">
           <b>{{absence.employeeName}}</b>
           <br> {{absence.reason}} {{absence.startTime | convertFrom24HourTo12HourFormat}} - {{absence.endTime | convertFrom24HourTo12HourFormat}}
@@ -43,7 +43,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-10">
+  <div class="col-md-9">
     <h2>Calendar</h2>
     <div id="calendar"></div>
   </div>

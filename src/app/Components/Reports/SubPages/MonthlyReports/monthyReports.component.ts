@@ -72,7 +72,6 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         const date = new Date();
         filters.fromDate = moment(new Date(date.getFullYear(), date.getMonth(), 1)).format('YYYY-MM-DD');
         filters.toDate = moment(new Date(date.getFullYear(), date.getMonth() + 1, 0)).format('YYYY-MM-DD');
-        this.date = moment(filters.fromDate).format('dddd, MM/DD/YYYY');
         this.reportService.getSummary(filters).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
             this.bindChart(summary[0]);
@@ -169,9 +168,9 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         });
     }
 
-    getImage(profileImageUrl: string) {
-        if (profileImageUrl && profileImageUrl.length > 0) {
-            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrl + '/wwwroot/Profile/' + profileImageUrl);
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
         }
     }
 }

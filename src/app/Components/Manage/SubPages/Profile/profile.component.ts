@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EmployeeService } from '../../../../Service/Manage/employees.service';
-import { HttpErrorResponse, HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators, FormControl, NgForm } from '@angular/forms';
+import { HttpErrorResponse, HttpClient, HttpResponse, HttpEventType } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
     officialFormGroup: FormGroup;
     PreferencesFormGroup: FormGroup;
     resetPasswordForm: FormGroup;
-    url: string;
+    profilePictureUrl: string;
     SubstituteList: any;
     FavoriteSubstututes: Array<any> = [];
     BlockedSubstitutes: Array<any> = [];
@@ -41,9 +41,17 @@ export class ProfileComponent implements OnInit {
     SubstituteFiles: any;
     public resetPassAttempt: boolean;
     OriginalFileNameForDisplay: any;
-    constructor(private sanitizer: DomSanitizer, private _formBuilder: FormBuilder, private userService: UserService,
-        notifier: NotifierService, private _datacontext: DataContext, private _userSession: UserSession,
-        private _employeeService: EmployeeService, private http: HttpClient, private _fileService: FileService,
+
+    constructor(
+        private sanitizer: DomSanitizer,
+        private _formBuilder: FormBuilder,
+        private userService: UserService,
+        notifier: NotifierService,
+        private _datacontext: DataContext,
+        private _userSession: UserSession,
+        private _employeeService: EmployeeService,
+        private http: HttpClient,
+        private _fileService: FileService,
         private dialogRef: MatDialog, ) {
         this.notifier = notifier
     }
@@ -59,20 +67,41 @@ export class ProfileComponent implements OnInit {
 
     onSubmitPersonalForm(form: any) {
         if (this.personalFormGroup.valid) {
-            let personalFormModel = {
+            let model = {
                 UserId: this.LoginedUserId,
-                FirstName: form.value.FirstName,
-                LastName: form.value.LastName,
-                Email: form.value.Email,
-                PhoneNumber: form.value.PhoneNumber,
-                ProfilePicture: this.ProfilePicture,
+                Email: form.value.Email
             }
-            this._datacontext.Patch('user/updateUser', personalFormModel).subscribe((data: any) => {
-                this.notifier.notify('success', 'Updated Successfully');
-            },
-                (err: HttpErrorResponse) => {
-                    // this.toastr.error(err.error.error_description, 'Oops!');
-                });
+            this.userService.post('user/verify', model).subscribe((result: any) => {
+                if (result) {
+                    this.notifier.notify('error', 'This email address belongs to another user. Please try with other one.');
+                }
+                else {
+                    let personalFormModel = {
+                        UserId: this.LoginedUserId,
+                        FirstName: form.value.FirstName,
+                        LastName: form.value.LastName,
+                        Email: form.value.Email,
+                        PhoneNumber: form.value.PhoneNumber,
+                        ProfilePicture: this.profilePictureUrl
+                    }
+                    this._datacontext.Patch('user/updateUserProfile', personalFormModel).subscribe((data: any) => {
+                        this.notifier.notify('success', 'Updated Successfully');
+                        let personalFormModel = {
+                            FirstName: data.firstName,
+                            LastName: data.lastName,
+                            Email: data.email,
+                            PhoneNumber: data.phoneNumber
+                        }
+                
+                        this.LoginedUserId = this.UserClaim.id;
+                        this.getProfileImage(data.profilePicture);
+                        this.personalFormGroup.setValue(personalFormModel);
+                    },
+                        (err: HttpErrorResponse) => {
+                            // this.toastr.error(err.error.error_description, 'Oops!');
+                        });
+                }
+            });
         }
     }
 
@@ -80,7 +109,7 @@ export class ProfileComponent implements OnInit {
 
         this.resetPasswordForm = this._formBuilder.group({
             currentPassword: ['', Validators.required],
-            password: ['',  [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+)$/)]],
+            password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+)$/)]],
             confirmPassword: ['', Validators.required]
         });
         this.resetPasswordForm.validator = this.passwordMatchValidator;
@@ -88,8 +117,8 @@ export class ProfileComponent implements OnInit {
         this.personalFormGroup = this._formBuilder.group({
             FirstName: new FormControl({ value: '' }, Validators.required),
             LastName: ['', Validators.required],
-            Email: ['', Validators.required],
-            PhoneNumber: ['', Validators.required]
+            Email: ['', [Validators.required, Validators.email]],
+            PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]]
         });
 
         this.officialFormGroup = this._formBuilder.group({
@@ -113,7 +142,7 @@ export class ProfileComponent implements OnInit {
         }
 
         this.LoginedUserId = this.UserClaim.id;
-        this.ProfilePicture = this.sanitizer.bypassSecurityTrustUrl(this.UserClaim.profilePicture);
+        this.getProfileImage(this.UserClaim.profilePicture);
         this.personalFormGroup.setValue(personalFormModel);
     }
 
@@ -130,24 +159,24 @@ export class ProfileComponent implements OnInit {
 
     submitResetPassForm(form: FormGroup) {
         if (form.valid) {
-            this.userService.get('user/checkUserPassword/'+ this._userSession.getUserEmailId() + "/" + form.value.currentPassword).
-            subscribe((result: any) => {
-                if (result) {
-                    var model = {
-                        userId: this._userSession.getUserId(),
-                        password: form.value.confirmPassword
+            this.userService.get('user/checkUserPassword/' + this._userSession.getUserEmailId() + "/" + form.value.currentPassword).
+                subscribe((result: any) => {
+                    if (result) {
+                        var model = {
+                            userId: this._userSession.getUserId(),
+                            password: form.value.confirmPassword
+                        }
+                        this.userService.post('user/updatePassword', model).subscribe(result => {
+                            this.notifier.notify('success', 'Password successfully changed');
+                        },
+                            error => this.msg = <any>error);
                     }
-                    this.userService.post('user/updatePassword', model).subscribe(result => {
-                        this.notifier.notify('success', 'Password successfully changed');
-                    },
-                        error => this.msg = <any>error);
-                }
-                else {
-                    this.notifier.notify('error', 'Current password not correct.');
-                }
-               
-            },
-                error => this.msg = <any>error);
+                    else {
+                        this.notifier.notify('error', 'Current password not correct.');
+                    }
+
+                },
+                    error => this.msg = <any>error);
         }
         this.resetPassAttempt = true;
     }
@@ -163,7 +192,6 @@ export class ProfileComponent implements OnInit {
     }
 
     //Starting Functions Related To Preference Tab
-
     GetFavoritSubstitutes() {
         let UserId = this._userSession.getUserId();
         this._datacontext.get('user/getFavoriteSubstitutes' + '/' + UserId).subscribe((data: any) => {
@@ -238,7 +266,6 @@ export class ProfileComponent implements OnInit {
                 this.notifier.notify('error', err.error.error_description);
             });
     }
-
     //Ended Funtions Related To Preference Tab
 
     onSelectFile(event: any) {
@@ -272,7 +299,7 @@ export class ProfileComponent implements OnInit {
         this.FileContentType = files[0].type;
         if (!this.FileContentType) this.FileContentType = "text/plain";
         this.OriginalFileName = this.AllAttachedFiles[0].name;
-        this.OriginalFileNameForDisplay = this.OriginalFileName.substr(0, 15);  
+        this.OriginalFileNameForDisplay = this.OriginalFileName.substr(0, 15);
         this.FileExtention = files[0].name.split('.')[1];
         let formData = new FormData();
         Array.from(files).forEach(file => formData.append('file', file))
@@ -292,10 +319,10 @@ export class ProfileComponent implements OnInit {
     }
 
     AddFile() {
-        if(this.OriginalFileName == null) {
+        if (this.OriginalFileName == null) {
             this.notifier.notify('error', 'Please upload file');
             return;
-          }
+        }
         let model = {
             originalFileName: this.OriginalFileName,
             fileName: this.FileName,
@@ -350,5 +377,47 @@ export class ProfileComponent implements OnInit {
                 window.URL.revokeObjectURL(data);
             }, 100);
         });
+    }
+
+    getProfileImage(ImageName: string) {
+        let model = {
+            AttachedFileName: ImageName,
+            FileContentType: ImageName.split('.')[1],
+        }
+        this._fileService.getProfilePic(model).subscribe((blob: Blob) => {
+            let newBlob = new Blob([blob]);
+            var file = new Blob([blob], { type: blob.type });
+            let Url = URL.createObjectURL(file);
+            this.ProfilePicture = this.sanitizer.bypassSecurityTrustUrl(Url);
+            this.profilePictureUrl = ImageName;
+        },
+            error => this.msg = <any>error);
+    }
+
+    // On Selecting Profile Image
+    onSelectProfileImage(event: any) {
+        if (event.target.files && event.target.files[0]) {
+            let formData = new FormData();
+            formData.append('UserId', this.LoginedUserId);
+            var mimeType = event.target.files[0].type;
+            if (mimeType.match(/image\/*/) == null) {
+                this.notifier.notify('error', 'Only images are supported.');
+                return;
+            }
+            Array.from(event.target.files).forEach((file: File) => formData.append('file', file))
+            this._fileService.uploadProfilePicture(formData)
+                .subscribe(responseEvent => {
+                    if (responseEvent.type === HttpEventType.UploadProgress) {
+
+                    } else if (responseEvent instanceof HttpResponse) {
+                        this.profilePictureUrl = responseEvent.body.toString();
+                        var reader = new FileReader();
+                        reader.readAsDataURL(event.target.files[0]);
+                        reader.onload = (event: any) => {
+                            this.ProfilePicture = event.target.result;
+                        }
+                    }
+                });
+        }
     }
 }

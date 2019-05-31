@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit, Inject, Output, EventEmitter } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommunicationService } from '../../../../Services/communication.service';
@@ -10,7 +10,6 @@ import { NotifierService } from 'angular-notifier';
     selector: 'past-jobs',
     templateUrl: 'pastJobs.component.html'
 })
-
 export class PastJobsComponent implements OnInit {
     PastJobCount:any;
     @Output() PastCountEvent = new EventEmitter<string>();
@@ -27,8 +26,12 @@ export class PastJobsComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
 
-    constructor(private _dataContext: DataContext, private _userSession: UserSession, private _formBuilder: FormBuilder,
-        notifier: NotifierService, private _communicationService: CommunicationService) {
+    constructor(
+        private _dataContext: DataContext, 
+        private _userSession: UserSession, 
+        private _formBuilder: FormBuilder,
+        notifier: NotifierService, 
+        private _communicationService: CommunicationService) {
         this.notifier = notifier;
     }
 

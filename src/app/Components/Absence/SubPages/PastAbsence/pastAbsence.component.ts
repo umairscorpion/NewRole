@@ -1,13 +1,13 @@
-import { Component, ViewChild, OnInit, Inject, Output, EventEmitter } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { CommunicationService } from '../../../../Services/communication.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
-import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
 import { AuditFilter } from '../../../../Model/auditLog';
 import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
+import * as moment from 'moment';
+
 @Component({
     selector: 'past-absences',
     templateUrl: 'pastAbsence.component.html'
@@ -25,17 +25,22 @@ export class PastAbsenceComponent implements OnInit {
     FileStream: any;
     insertAbsencesLogView: any;
 
-    constructor(private _dataContext: DataContext, private _userSession: UserSession,
-        notifier: NotifierService, private _communicationService: CommunicationService,
-        private auditLogService: AuditLogService) 
-        { this.notifier = notifier; this.loginUserRole = _userSession.getUserRoleId() }
+    constructor(
+        private _dataContext: DataContext,
+        private _userSession: UserSession,
+        notifier: NotifierService,
+        private _communicationService: CommunicationService,
+        private auditLogService: AuditLogService) {
+        this.notifier = notifier; this.loginUserRole = _userSession.getUserRoleId()
+    }
+
     ngOnInit(): void {
         this.GetAbsences();
     }
 
     ngAfterViewInit() {
         this.PastAbsences.sort = this.sort;
-        this.PastAbsences.paginator = this.paginator;   
+        this.PastAbsences.paginator = this.paginator;
     }
 
     GetAbsences(): void {
@@ -51,7 +56,13 @@ export class PastAbsenceComponent implements OnInit {
 
     UpdateStatus(SelectedRow: any, StatusId: number) {
         let confirmResult = confirm('Are you sure you want to cancel this absence?');
+        let absenceStartDate = moment(SelectedRow.startDate).format('MM/DD/YYYY');
+        let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
         if (confirmResult) {
+            if (absenceStartDate <= currentDate) {
+                this.notifier.notify('error', 'Not able to cancel now');
+                return;
+            }
             this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                 if (response == "success") {
                     this.notifier.notify('success', 'Cancelled Successfully.');
@@ -62,7 +73,7 @@ export class PastAbsenceComponent implements OnInit {
         }
     }
 
-    ShowAbsenceDetail(AbsenceDetail: any) {      
+    ShowAbsenceDetail(AbsenceDetail: any) {
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
         const model = new AuditFilter();
         model.entityId = AbsenceDetail.absenceId;

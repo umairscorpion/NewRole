@@ -27,8 +27,14 @@
                                     <tr>
                                         <td>Mobile Number</td>
                                         <td>
-                                            <mat-form-field>
-                                                <input matInput placeholder="Mobile Number" formControlName="PhoneNumber">
+                                            <mat-form-field hintLabel="Max 11 characters">
+                                                <input matInput #input maxlength="11" formControlName="PhoneNumber"
+                                                    placeholder="Mobile Number">
+                                                <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
+                                                <mat-error
+                                                    *ngIf="personalFormGroup.controls['PhoneNumber'].hasError('pattern')">
+                                                    Only numbers allowed
+                                                </mat-error>
                                             </mat-form-field>
                                         </td>
                                     </tr>
@@ -36,7 +42,12 @@
                                         <td>Work Email</td>
                                         <td>
                                             <mat-form-field>
-                                                <input matInput placeholder="Work Email" formControlName="Email">
+                                                <input matInput type="email" placeholder="Work Email"
+                                                    formControlName="Email">
+                                                <mat-error
+                                                    *ngIf="personalFormGroup.controls['Email'].hasError('email')">Not a
+                                                    valid email
+                                                </mat-error>
                                             </mat-form-field>
                                         </td>
                                     </tr>
@@ -48,16 +59,21 @@
                                     <div>
                                         <img [src]="ProfilePicture" width="150" height="150">
                                     </div>
-                                    <div>
-                                        <input type="file" id="UploadButton" style="display: none;" (change)="onSelectFile($event)">
-                                        <button mat-button type="button" matTooltip="Upload Image" (click)="uploadClick()" style="color:white; background-color: #04c0be; padding: 0px 7px;">
+                                    <div style="padding-top: 5px">
+                                        <input type="file" id="UploadButton" style="display: none;"
+                                            (change)="onSelectProfileImage($event)">
+                                        <button mat-button type="button" matTooltip="Upload Image"
+                                            (click)="uploadClick()"
+                                            style="color:white; background-color: #04c0be; padding: 0px 7px;">
                                             Upload
                                             <i class="material-icons">add</i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-lg-6 col-md-offset-1" style="padding-top: 10px; padding-left: 0px">
-                                    <button mat-raised-button style="color:white; background-color: #04c0be;" type="submit">Save</button>
+                                <div class="col-md-6 col-lg-6 col-md-offset-1"
+                                    style="padding-top: 10px; padding-left: 0px">
+                                    <button mat-raised-button style="color:white; background-color: #04c0be;"
+                                        type="submit">Save</button>
                                 </div>
                             </form>
                         </div>
@@ -66,8 +82,10 @@
                         <form (ngSubmit)="submitResetPassForm(resetPasswordForm)" [formGroup]="resetPasswordForm">
                             <div class="col-md-12">
                                 <div class="col-md-10 col-md-offset-1">
-                                    <b> Please note that when changing your password, we ask you to set yourself a secure password
-                                        that contains both uppercase and lowercase letters as well as numbers. This is for
+                                    <b> Please note that when changing your password, we ask you to set yourself a
+                                        secure password
+                                        that contains both uppercase and lowercase letters as well as numbers. This is
+                                        for
                                         your own safety.
                                     </b>
                                 </div>
@@ -76,7 +94,8 @@
                                         <td class="col-md-2">Current Password</td>
                                         <td>
                                             <mat-form-field class="col-md-4">
-                                                <input autocomplete="off" type="password" matInput placeholder="Current Password" formControlName="currentPassword">
+                                                <input autocomplete="off" type="password" matInput
+                                                    placeholder="Current Password" formControlName="currentPassword">
                                             </mat-form-field>
                                         </td>
                                     </tr>
@@ -84,8 +103,10 @@
                                         <td class="col-md-2">New Password</td>
                                         <td>
                                             <mat-form-field class="col-md-4">
-                                                <input autocomplete="off" type="password" matInput placeholder="New Password" formControlName="password">
-                                                <mat-error *ngIf="resetPasswordForm.controls['password'].hasError('required')">
+                                                <input autocomplete="off" type="password" matInput
+                                                    placeholder="New Password" formControlName="password">
+                                                <mat-error
+                                                    *ngIf="resetPasswordForm.controls['password'].hasError('required')">
                                                     Password is required.
                                                 </mat-error>
                                             </mat-form-field>
@@ -104,8 +125,10 @@
                                     <tr>
                                         <td class="col-md-2">Confirm Password</td>
                                         <mat-form-field class="col-md-4">
-                                            <input autocomplete="off" type="password" matInput placeholder="Confirm Password" formControlName="confirmPassword">
-                                            <mat-error *ngIf="resetPasswordForm.controls['confirmPassword'].hasError('required')">
+                                            <input autocomplete="off" type="password" matInput
+                                                placeholder="Confirm Password" formControlName="confirmPassword">
+                                            <mat-error
+                                                *ngIf="resetPasswordForm.controls['confirmPassword'].hasError('required')">
                                                 Confirm Password is required.
                                             </mat-error>
                                         </mat-form-field>
@@ -117,7 +140,9 @@
                                 </table>
                             </div>
                             <div class="row col-md-offset-1" style="padding-top: 30px">
-                                <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px" type="submit">Change Password</button>
+                                <button mat-raised-button
+                                    style="background-color: #04c0be; color: white; margin-left: 5px"
+                                    type="submit">Change Password</button>
                             </div>
                         </form>
                     </mat-tab>
@@ -128,18 +153,21 @@
                                     <div class="col-md-6">
                                         <h3>Files</h3>
                                     </div>
-                                    <div class="col-md-6 col-lg-6" style="margin-top: 10px">
+                                    <div class="col-md-6 col-lg-6" style="margin-top: 10px; text-align: right">
                                         <button mat-button type="button" color="warn" (click)="uploadClick()">
                                             <mat-icon>file_upload</mat-icon>
-                                            {{OriginalFileName}}
+                                            {{OriginalFileNameForDisplay}}
+                                            <span *ngIf='!OriginalFileNameForDisplay'>Upload</span>
                                         </button>
-                                        <i *ngIf='FileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip" matTooltip="Remove Attachment"
-                                            matTooltipPosition="right" (click)="removeAttachedFile()">
+                                        <i *ngIf='OriginalFileName' style="cursor: pointer;" class="material-icons"
+                                            #tooltip="matTooltip" matTooltip="Remove File" matTooltipPosition="right"
+                                            (click)="removeAttachedFile()">
                                             cancel
                                         </i>
-                                        <input type="file" id="UploadButton" (change)="upload($event.target.files)" style="display: none" />
-                                        <button mat-raised-button (click)="AddFile()" type="button" mat-raised-button style="color:white; background-color: #04c0be;"
-                                            [disabled]="FileName == null">
+                                        <input type="file" id="UploadButton" (change)="upload($event.target.files)"
+                                            style="display: none" />
+                                        <button mat-raised-button (click)="AddFile()" type="button" mat-raised-button
+                                            style="color:white; background-color: #04c0be;">
                                             Add
                                             <i class="material-icons" matTooltip="Add File">add</i>
                                         </button>
@@ -151,22 +179,27 @@
                                     <div class="row" *ngFor="let file of SubstituteFiles">
                                         <div style="margin-top: 10px">
                                             <mat-form-field class="col-md-3 col-lg-3">
-                                                <input disabled="true" matInput [(ngModel)]="file.originalFileName" placeholder="File Name">
+                                                <input disabled="true" matInput [(ngModel)]="file.originalFileName"
+                                                    placeholder="File Name">
                                             </mat-form-field>
                                         </div>
                                         <div style="margin-top: 10px">
                                             <mat-form-field class="col-md-3 col-lg-3">
-                                                <input disabled="true" matInput [(ngModel)]="file.date" placeholder="Date">
+                                                <input type="datetime-local" disabled="true" matInput
+                                                    [(ngModel)]="file.date" placeholder="Date">
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
-                                            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View File" matTooltipPosition="below">
+                                            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                                                matTooltip="View File" matTooltipPosition="below">
                                                 <i class="material-icons" (click)="ViewFile(file)">visibility</i>
                                             </a>
-                                            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File" matTooltipPosition="below">
+                                            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                                                matTooltip="Download File" matTooltipPosition="below">
                                                 <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
                                             </a>
-                                            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File" matTooltipPosition="below">
+                                            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                                                matTooltip="Delete File" matTooltipPosition="below">
                                                 <i class="material-icons" (click)="DeleteFile(file)">delete_sweep</i>
                                             </a>
                                         </div>
@@ -187,7 +220,8 @@
                                         </td>
                                         <td>
                                             <mat-form-field class="demo-full-width">
-                                                <input matInput placeholder="Employee Type" formControlName="EmployeeType">
+                                                <input matInput placeholder="Employee Type"
+                                                    formControlName="EmployeeType">
                                             </mat-form-field>
                                         </td>
                                     </tr>
@@ -199,13 +233,15 @@
                                         </td>
                                         <td>
                                             <mat-form-field class="demo-full-width">
-                                                <input matInput placeholder="Organization" formControlName="Organization">
+                                                <input matInput placeholder="Organization"
+                                                    formControlName="Organization">
                                             </mat-form-field>
                                         </td>
                                     </tr>
                                     <tr style="text-align: right">
                                         <td colspan="2" class="content-center">
-                                            <button disabled mat-raised-button color="primary" type="submit">Save</button>
+                                            <button disabled mat-raised-button color="primary"
+                                                type="submit">Save</button>
                                         </td>
                                     </tr>
                                 </table>

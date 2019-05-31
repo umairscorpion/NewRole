@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-content>
-        <h2 class="example-h2">Reports</h2>
+        <mat-card-title>Reports</mat-card-title>
         <mat-tab-group class="demo-tab-group" [selectedIndex]="selectedTab" (selectedTabChange)="onChangeTab($event)">
             <mat-tab label="Daily">
                 <daily-reports></daily-reports>
@@ -9,7 +9,7 @@
                 <monthly-reports></monthly-reports>
             </mat-tab>
             <mat-tab label="Activity">
-                            <activity-reports></activity-reports>
+                <activity-reports></activity-reports>
             </mat-tab>
         </mat-tab-group>
     </mat-card-content>

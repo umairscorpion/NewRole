@@ -22,50 +22,53 @@
     max-height: 500px;
   }
 </style>
-<h3>Staff</h3>
-<div>
-  <div class="row">
-    <div class="col-md-12 col-lg-12" style="text-align: right">
-      <a routerLink="/manage/employees/addemployee">
-        <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
-      </a>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12 col-lg-12">
-    <div class="example-container mat-elevation-z8">
-      <div class="row example-header">
-        <div class="col-md-3">
-          <mat-form-field>
-            <input matInput #inputName [(ngModel)]="employeeName" placeholder="Search Employee">
-          </mat-form-field>
-        </div>
-        <div class="col-md-3">
-          <mat-form-field>
-            <input matInput #inputLoc [(ngModel)]="location" placeholder="Search Location">
-          </mat-form-field>
-        </div>
-        <div>
-          <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit" (click)="applyFilter(inputName, inputLoc)">Search</button>
+<mat-card>
+    <mat-card-title>Staff</mat-card-title>
+    <div>
+      <div class="row">
+        <div class="col-md-12 col-lg-12" style="text-align: right">
+          <a routerLink="/manage/employees/addemployee">
+            <button mat-raised-button style="background: #3CCCD1; color: white;"
+              [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
+          </a>
         </div>
       </div>
-      <mat-table #table [dataSource]="dataSource" matSort>
-        <!-- Position Column -->
-        <ng-container matColumnDef="firstName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-          <mat-cell *matCellDef="let iEmployee"> {{iEmployee.firstName}} </mat-cell>
-        </ng-container>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12">
+        <div class="example-container mat-elevation-z8">
+          <div class="row example-header">
+            <div class="col-md-3">
+              <mat-form-field>
+                <input matInput #inputName [(ngModel)]="employeeName" placeholder="Search Employee">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <input matInput #inputLoc [(ngModel)]="location" placeholder="Search Location">
+              </mat-form-field>
+            </div>
+            <div>
+              <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit"
+                (click)="applyFilter(inputName, inputLoc)">Search</button>
+            </div>
+          </div>
+          <mat-table #table [dataSource]="dataSource" matSort>
+            <!-- Position Column -->
+            <ng-container matColumnDef="firstName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+              <mat-cell *matCellDef="let iEmployee"> {{iEmployee.firstName}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="LastName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-          <mat-cell *matCellDef="let iEmployee"> {{iEmployee.lastName}} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="LastName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+              <mat-cell *matCellDef="let iEmployee"> {{iEmployee.lastName}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="Email">
-          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-          <mat-cell *matCellDef="let iEmployee"> {{iEmployee.email}} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="Email">
+              <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+              <mat-cell *matCellDef="let iEmployee"> {{iEmployee.email}} </mat-cell>
+            </ng-container>
 
         <ng-container matColumnDef="PhoneNumber">
           <mat-header-cell *matHeaderCellDef> Phone No </mat-header-cell>
@@ -112,5 +115,4 @@
       <mat-paginator [length]="resultsLength" [pageSize]="30">
       </mat-paginator>
     </div>
-  </div>
-</div>
+</mat-card>

@@ -1,6 +1,6 @@
 ﻿import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, ViewChild, Inject, HostListener } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { UserService } from '../../Service/user.service';
 import { UserSession } from '../../Services/userSession.service';
@@ -12,15 +12,10 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { FileService } from '../../Services/file.service';
 import { AuditFilter } from '../../Model/auditLog';
 import { AuditLogService } from '../../Services/audit_logs/audit-log.service';
-import { merge } from 'rxjs/observable/merge';
-import { startWith } from 'rxjs/operators/startWith';
-import { switchMap } from 'rxjs/operators/switchMap';
-import { map } from 'rxjs/operators/map';
-import { catchError } from 'rxjs/operators/catchError';
-import { of as observableOf } from 'rxjs/observable/of';
 import { DataContext } from '../../Services/dataContext.service';
 import { IEmployee } from '../../Model/Manage/employee';
 import { EmployeeService } from '../../Service/Manage/employees.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'Subzz-app-SideNav',
@@ -242,6 +237,7 @@ export class PopupDialogForSettings {
     ProfilePicture: any;
     userRole: number = this._userSession.getUserRoleId();
     insertAuditLogout: any;
+    profilePicName: any;
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any, 
         private fileService: FileService,
@@ -252,26 +248,15 @@ export class PopupDialogForSettings {
         private auditLogService: AuditLogService) {
         this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
         this.UserName = this.UserClaim.firstName;
-        let profilePicName: string = this.UserClaim.profilePicture;
-        let model = {
-            AttachedFileName: profilePicName,
-            FileContentType: profilePicName.split('.')[1],
-            UserId: _userSession.getUserId()
-        }
-
-        this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
-            let newBlob = new Blob([blob]);
-            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(newBlob);
-                return;
-            }
-            var file = new Blob([blob], { type: blob.type });
-            let Url = URL.createObjectURL(file);
-            this.ProfilePicture = this.sanitizer.bypassSecurityTrustUrl(Url);
-        },
-            error => this.msg = <any>error);
-
+        this.profilePicName = this.UserClaim.profilePicture;
     }
+    
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
+        }
+    }
+
     Logout() {
         const model = new AuditFilter();
         this.auditLogService.insertAuditLogout(model).subscribe((result: any) => {

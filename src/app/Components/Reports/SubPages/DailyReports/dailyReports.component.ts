@@ -80,7 +80,6 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
     }
 
     onSubmit($event) {
-
         this.date = moment($event.formValue.fromDate).format('dddd, MM/DD/YYYY');
         this.reportService.getSummary($event.formValue).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
@@ -164,9 +163,9 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
         });
     }
  
-    getImage(profileImageUrl: string) {
-        if (profileImageUrl && profileImageUrl.length > 0) {
-            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrl + '/wwwroot/Profile/' + profileImageUrl);
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
         }
     }
 }

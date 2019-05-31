@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataContext } from '../../../../Services/dataContext.service';
-import { EmployeeService } from '../../../../Service/Manage/employees.service';
-import { UserSession } from '../../../../Services/userSession.service';
 import { SchoolSubList } from '../../../../Model/SchoolSubList';
 import { MatSelectionList } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
@@ -23,8 +21,11 @@ export class SchoolSubListComponent implements OnInit {
     selectedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
     blockedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
     selectedBlockedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
-    constructor(private _employeeService: EmployeeService, private userSession: UserSession,
-        private dataContext: DataContext, notifier: NotifierService) { this.notifier = notifier; }
+    constructor(
+        private dataContext: DataContext, 
+        notifier: NotifierService) { 
+            this.notifier = notifier; 
+        }
 
     ngOnInit(): void {
         this.getSustitutes();
