@@ -36,4 +36,5 @@ export class ReportDetail extends Entity {
   employeeId: string;
   isApproved: boolean;
   originalFileName: string;
+  employeeProfilePicUrl: string;
 }
