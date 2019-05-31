@@ -80,7 +80,6 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
     }
 
     onSubmit($event) {
-
         this.date = moment($event.formValue.fromDate).format('dddd, MM/DD/YYYY');
         this.reportService.getSummary($event.formValue).subscribe((summary: ReportSummary[]) => {
             this.resetChart();

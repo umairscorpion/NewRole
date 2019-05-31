@@ -6,6 +6,8 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { AuditFilter } from '../../../../Model/auditLog';
 import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
+import * as moment from 'moment';
+
 @Component({
     selector: 'upcoming-absences',
     templateUrl: 'upcommingAbsence.component.html'
@@ -23,9 +25,9 @@ export class UpcommingAbsenceComponent implements OnInit {
     insertAbsencesLogView: any;
 
     constructor(
-        private _dataContext: DataContext, 
+        private _dataContext: DataContext,
         private _userSession: UserSession,
-        notifier: NotifierService, 
+        notifier: NotifierService,
         private _communicationService: CommunicationService,
         private auditLogService: AuditLogService) {
         this.notifier = notifier;
@@ -62,7 +64,13 @@ export class UpcommingAbsenceComponent implements OnInit {
 
     UpdateStatus(SelectedRow: any, StatusId: number) {
         let confirmResult = confirm('Are you sure you want to cancel this absence?');
+        let absenceStartDate = moment(SelectedRow.startDate).format('MM/DD/YYYY');
+        let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
         if (confirmResult) {
+            if (absenceStartDate <= currentDate) {
+                this.notifier.notify('error', 'Not able to cancel now');
+                return;
+            }
             this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                 if (response == "success") {
                     this.notifier.notify('success', 'Cancelled Successfully.');

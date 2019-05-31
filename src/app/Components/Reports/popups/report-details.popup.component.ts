@@ -12,7 +12,7 @@ import { LeaveType } from '../../../Model/leaveType';
 import { environment } from '../../../../environments/environment';
 import { IEmployee } from '../../../Model/Manage/employee';
 import { Observable } from 'rxjs/Observable';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { User } from 'src/app/Model/user';
 
@@ -135,7 +135,14 @@ export class ReportDetailsComponent implements OnInit {
     else if (action === 'delete') {
       let confirmResult = confirm('Are you sure you want to cancel this absence?');
       let StatusId = 4;
+      let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
+      let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
       if (confirmResult) {
+        if (absenceStartDate <= currentDate) {
+          this.dialogRef.close();
+          this.notifier.notify('error', 'Not able to cancel now');
+          return;
+        }
         this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
           this.dialogRef.close('Reload');
           this.notifier.notify('success', 'Cancelled Successfully.');
