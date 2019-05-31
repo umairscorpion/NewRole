@@ -89,9 +89,9 @@
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
           <mat-cell *matCellDef="let row">
-            <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Send Welcome Letter" (click)="sendWelcomeLetter(row)" matTooltipPosition="below">
+            <!-- <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Send Welcome Letter" (click)="sendWelcomeLetter(row)" matTooltipPosition="below">
               Send Welcome
-            </a>
+            </a> -->
             <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Employee" matTooltipPosition="below">
               <i class="material-icons" (click)="DeleteEmployee(row)" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">delete_sweep</i>
             </a>
