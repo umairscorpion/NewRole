@@ -109,7 +109,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.GetLeaveTypes();
         this.GetDistricts();
         this.GetDistricts();
-        this.getAbsenceTypes(this._userSession.getUserDistrictId(), this._userSession.getUserOrganizationId());
         if (this._userSession.getUserRoleId() != 5)
             this.GetOrganizations(this._userSession.getUserDistrictId());
         this.GetPositions();
@@ -210,6 +209,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.GetCreatedAbsencesOfEmployee(this.EmployeeIdForAbsence);
         this.AbsenceForUserLevel = this.loginedUserLevel;
         this.GetLocationTime(this.EmployeeIdForAbsence, this.loginedUserLevel)
+        this.getAbsenceTypes(this._userSession.getUserDistrictId(), this._userSession.getUserOrganizationId());
     }
 
     //Get Location Time For User

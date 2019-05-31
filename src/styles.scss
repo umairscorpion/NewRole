@@ -397,3 +397,10 @@ div.center-text{
   flex: 0 0 5% !important;
   min-width: 100px !important;
 }
+
+.mat-drawer {
+  overflow-y: hidden !important;
+}
+.mat-drawer-inner-container {
+  overflow: hidden !important;
+}
