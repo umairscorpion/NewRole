@@ -71,12 +71,13 @@
 
         <ng-container matColumnDef="Time">
             <th mat-header-cell *matHeaderCellDef> Time </th>
-            <td mat-cell *matCellDef="let report"> {{report.startTime | convertFrom24HourTo12HourFormat}}- {{report.endTime | convertFrom24HourTo12HourFormat}} </td>
+            <td mat-cell *matCellDef="let report"> {{report.startTime | convertFrom24HourTo12HourFormat}}- {{report.endTime | convertFrom24HourTo12HourFormat}}
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="Hours">
             <th mat-header-cell *matHeaderCellDef> Hours </th>
-            <td mat-cell *matCellDef="let report"> {{ report.dailyHours }}  </td>
+            <td mat-cell *matCellDef="let report"> {{ report.dailyHours }} </td>
         </ng-container>
 
         <ng-container matColumnDef="Notes">
@@ -91,12 +92,12 @@
 
         <ng-container matColumnDef="Rate">
             <th mat-header-cell *matHeaderCellDef> Rate </th>
-            <td mat-cell *matCellDef="let report"> $ {{ report.payRate }}  </td>
+            <td mat-cell *matCellDef="let report"> $ {{ report.payRate }} </td>
         </ng-container>
 
         <ng-container matColumnDef="Additional">
             <th mat-header-cell *matHeaderCellDef> Additional </th>
-            <td mat-cell *matCellDef="let report">  </td>
+            <td mat-cell *matCellDef="let report"> </td>
         </ng-container>
 
         <ng-container matColumnDef="Gross">

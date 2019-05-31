@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, NgForm } from '@angula
 import { EmployeeService } from '../../Service/Manage/employees.service';
 import { TimeClock } from '../../Model/timeclock';
 import { Organization } from '../../Model/organization';
+import { AbsenceScope } from '../../Model/absenceScope';
 @Component({
     templateUrl: 'settings.component.html',
     styleUrls: ['settings.component.css']
@@ -37,6 +38,7 @@ export class SettingComponent implements OnInit {
     UserRole: number = this._userSession.getUserRoleId();
     SubstituteList: any;
     personalFormGroup: FormGroup;
+    absenceTypes: AbsenceScope[] = Array<AbsenceScope>();
 
     constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession: UserSession,
         private _formBuilder: FormBuilder, private _employeeService: EmployeeService) {
@@ -160,7 +162,18 @@ export class SettingComponent implements OnInit {
 
     getSchoolSettings() {
         this._dataContext.getById('School/getSchoolById', this.OrganizationId).subscribe((org: Organization) => {
-            this.schoolSettings.patchValue({ ...org[0] });
+            this.schoolSettings.patchValue({...org[0]});
+        },
+            error => <any>error);
+    }
+
+    getAbsenceTypes(orgId: string) {
+        const model = {
+            schoolId: orgId ? orgId : "-1",
+            SchoolDistrictId: this._userSession.getUserDistrictId()
+        }
+        this._dataContext.post('School/getAbsenceScopes', model).subscribe((scopes: AbsenceScope[]) => {
+            this.absenceTypes = scopes;
         },
             error => <any>error);
     }
@@ -169,7 +182,8 @@ export class SettingComponent implements OnInit {
         this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
             this.organizations = data;
             if (this._userSession.getUserRoleId() === 2) {
-                this.OrganizationId = this._userSession.getUserOrganizationId()
+                this.OrganizationId = this._userSession.getUserOrganizationId();
+                this.getAbsenceTypes(this.OrganizationId);
                 this.getSchoolSettings();
                 this.accessibilityOfOrganizationDropdown = true;
             }
@@ -177,7 +191,17 @@ export class SettingComponent implements OnInit {
             error => <any>error);
     }
 
-    submitGeneralSettings(org: FormGroup) {
+    submitGeneralSettings(org: FormGroup, absenceTypes: AbsenceScope[]) {
+        absenceTypes.forEach(type => {
+            type.organizatonId = org.value.schoolId
+            type.districtId = this._userSession.getUserDistrictId();
+        });
+        this._dataContext.post('school/updateAbsenceScopes', absenceTypes).subscribe((data: any) => {
+            this.getAbsenceTypes(this.OrganizationId);
+        },
+            (err: HttpErrorResponse) => {
+                this.notifier.notify('error', err.message);
+            });
         this._dataContext.Patch('school/updateSchool', org.value).subscribe((data: any) => {
             this.notifier.notify('success', 'Updated Successfully.');
         },
@@ -187,7 +211,12 @@ export class SettingComponent implements OnInit {
     }
 
     onchangeOrganization() {
+        this.getAbsenceTypes(this.OrganizationId);
         this.getSchoolSettings();
     }
+
+    absenceVisibilityChanged(absecetype, $event) {
+        absecetype.visibility = !absecetype.visibility;
+      }
 
 }

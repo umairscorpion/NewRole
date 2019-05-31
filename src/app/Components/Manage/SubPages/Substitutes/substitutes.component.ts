@@ -11,6 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
+import { User } from '../../../../Model/user';
 
 @Component({
   templateUrl: 'substitutes.component.html',
@@ -102,6 +103,30 @@ export class SubstitutesComponent implements OnInit {
       });
     },
       error => <any>error);
+  }
+
+  sendWelcomeLetter(user: User) {
+    let userToSendWelcomeLetter = {
+      userId: user.userId,
+      email: user.email,
+      password: user.password,
+      firstName: user.firstName
+    }
+    this._dataContext.post('Communication/sendWellcomeLetter', userToSendWelcomeLetter).subscribe(result => {
+      this.notifier.notify('success', 'Email Send Successfully.');
+    },
+      error => this.msg = <any>error);
+  }
+
+  resetPassword(userdId: string) {
+    let model = {
+      userId: userdId,
+      password: '1234567890'
+    }
+    this._dataContext.post('user/updatePassword', model).subscribe(result => {
+      this.notifier.notify('success', 'The password for the selected account has been reset to the schools default password.');
+    },
+      error => this.msg = <any>error);
   }
 
   GetPositions(): void {

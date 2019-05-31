@@ -387,3 +387,13 @@ div.center-text{
 .mat-drawer-content {
   overflow: hidden !important;
 }
+
+.mat-column-Approver {
+  flex: 0 0 5% !important;
+  min-width: 50px !important;
+}
+
+.mat-column-Role {
+  flex: 0 0 5% !important;
+  min-width: 100px !important;
+}

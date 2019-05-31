@@ -86,6 +86,9 @@
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
           <mat-cell *matCellDef="let row">
+            <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Send Welcome Letter" (click)="sendWelcomeLetter(row)" matTooltipPosition="below">
+              Send Welcome
+            </a>
             <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Employee" matTooltipPosition="below">
               <i class="material-icons" (click)="DeleteEmployee(row)" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">delete_sweep</i>
             </a>
@@ -95,7 +98,12 @@
             <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
               <i class="material-icons" (click)="ViewEmployeeDetail(row)">visibility</i>
             </a>
-            <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateEmployeeStatus(row)" color=""></mat-slide-toggle>
+            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Reset Password" (click)="resetPassword(row.userId)"
+              matTooltipPosition="below">
+              reset
+            </a>
+            <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'"
+              matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateEmployeeStatus(row)" color=""></mat-slide-toggle>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

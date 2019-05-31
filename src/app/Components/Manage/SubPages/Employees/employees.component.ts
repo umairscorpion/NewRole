@@ -13,6 +13,7 @@ import { startWith } from 'rxjs/operators/startWith';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { NotifierService } from 'angular-notifier';
 import { PopupDialogForEmployeeDetail } from './popups/viewEmployee.popup.component';
+import { User } from '../../../../Model/user';
 
 @Component({
   templateUrl: 'employees.component.html'
@@ -45,7 +46,6 @@ export class EmployeesComponent implements OnInit {
 
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
@@ -165,12 +165,33 @@ export class EmployeesComponent implements OnInit {
     },
       error => <any>error);
   }
+
+  sendWelcomeLetter(user: User) {
+    let userToSendWelcomeLetter = {
+      userId: user.userId,
+      email: user.email,
+    }
+    this._dataContext.post('Communication/sendWellcomeLetter', user).subscribe(result => {
+      this.notifier.notify('success', 'Email Send Successfully.');
+    },
+      error => this.msg = <any>error);
+  }
+
+  resetPassword(userdId: string) {
+    let model = {
+      userId: userdId,
+      password: '1234567890'
+    }
+    this._dataContext.post('user/updatePassword', model).subscribe(result => {
+      this.notifier.notify('success', 'The password for the selected account has been reset to the schools default password.');
+    },
+      error => this.msg = <any>error);
+  }
 }
 
 export class DataSourceEmployees {
   constructor(private _dataContext: DataContext, private _UserSession: UserSession) { }
   getRepoIssues(sort: string, order: string, page: number): Observable<IEmployee[]> {
-
     let RoleId = 3;
     let OrgId = this._UserSession.getUserOrganizationId();
     let DistrictId = this._UserSession.getUserDistrictId();

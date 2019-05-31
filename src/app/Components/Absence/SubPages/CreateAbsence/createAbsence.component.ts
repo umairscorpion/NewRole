@@ -15,6 +15,7 @@ import { LeaveType } from '../../../../Model/leaveType';
 import { AbsenceService } from '../../../../Services/absence.service';
 import { environment } from '../../../../../environments/environment';
 import { User } from '../../../../Model/user';
+import { AbsenceScope } from '../../../../Model/absenceScope';
 
 @Component({
     selector: 'create-absence',
@@ -88,12 +89,13 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     // for checking that if absence is for need a sub or not
     NeedASub: boolean = false;
     response: number = 0;
+    absenceTypes: AbsenceScope[] = Array<AbsenceScope>();
 
     constructor(
-        private http: HttpClient, 
+        private http: HttpClient,
         private _formBuilder: FormBuilder,
-        private _EmployeeService: EmployeeService, 
-        private _dataContext: DataContext, 
+        private _EmployeeService: EmployeeService,
+        private _dataContext: DataContext,
         private _userSession: UserSession,
         private absenceService: AbsenceService,
         notifier: NotifierService, ) {
@@ -105,6 +107,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.GetLeaveTypes();
         this.GetDistricts();
         this.GetDistricts();
+        this.getAbsenceTypes(this._userSession.getUserDistrictId(), this._userSession.getUserOrganizationId());
         if (this._userSession.getUserRoleId() != 5)
             this.GetOrganizations(this._userSession.getUserDistrictId());
         this.GetPositions();
@@ -142,7 +145,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             AbsenceEndDate: ['', Validators.required],
             // SubRequired: ['1'],
             PositionId: [''],
-            AbsenceType: ['4', Validators.required],
+            AbsenceType: [Validators.required],
             Substitutes: [[]]
         });
 
@@ -240,6 +243,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.loginedUserType = EmployeeDetail.userTypeId;
         this.AbsenceForUserLevel = EmployeeDetail.userLevel;
         this.GetCreatedAbsencesOfEmployee(this.EmployeeIdForAbsence);
+        this.getAbsenceTypes(EmployeeDetail.districtId, EmployeeDetail.organizationId);
         if (this.AbsenceForUserLevel == 3) {
             this.absenceFirstFormGroup.get('OrganizationId').setValue(EmployeeDetail.organizationId);
         }
@@ -541,6 +545,19 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             error => this.msg = <any>error);
     }
 
+    //Get Absence Type
+    getAbsenceTypes(districtId: number, organizationId: string) {
+        const model = {
+            schoolId: organizationId ? organizationId : "-1",
+            SchoolDistrictId: districtId
+        }
+        this._dataContext.post('School/getAbsenceScopes', model).subscribe((scopes: AbsenceScope[]) => {
+            this.absenceTypes = scopes.filter(type => type.visibility === true);
+            this.absenceFirstFormGroup.get('AbsenceType').setValue(this.absenceTypes[0].absenceType);
+        },
+            error => <any>error);
+    }
+
     //ON CREATING ABSENCE CLICK
     createAbsenceSubmission(FirstAbsenceForm: any, SecondAbsenceForm: any, stepper: MatStepper) {
         if (this.absenceFirstFormGroup.valid && this.absenceSecondFormGroup.valid) {
@@ -551,6 +568,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                     Substitutes += index === array.length - 1 ? Substitute.userId : Substitute.userId + ",";
                 });
             }
+            
             let AbsenceModel = {
                 EmployeeId: this.EmployeeIdForAbsence,
                 AbsenceCreatedByEmployeeId: this._userSession.getUserId(),
@@ -574,7 +592,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 SubstituteNotes: !SecondAbsenceForm.value.NotesToSubstitute ? 'N/A' : SecondAbsenceForm.value.NotesToSubstitute,
                 AnyAttachment: this.AttachedFileName == "" || this.AttachedFileName == undefined ? false : true,
                 AttachedFileName: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileName : 'N/A',
-                OriginalFileName: !this.OriginalFileName ? 'N/A' : this.OriginalFileName ,
+                OriginalFileName: !this.OriginalFileName ? 'N/A' : this.OriginalFileName,
                 FileContentType: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileType : 'N/A',
                 FileExtention: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileExtention : 'N/A',
                 SubstituteId: FirstAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 2 ? Substitutes :

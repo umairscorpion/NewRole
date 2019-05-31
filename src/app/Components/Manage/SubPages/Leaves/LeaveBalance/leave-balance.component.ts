@@ -10,6 +10,7 @@ import { EmployeeService } from '../../../../../Service/Manage/employees.service
 import { Observable } from 'rxjs';
 import { IEmployee } from '../../../../../Model/Manage/employee';
 import { User } from '../../../../../Model/user';
+import { ngxCsv } from '../../../../../../../node_modules/ngx-csv';
 
 @Component({
     selector: 'leave-balance',
@@ -57,9 +58,24 @@ export class LeaveBalanceComponent implements OnInit {
     applyFilter() {
         this.dataContext.get('Leave/getEmployeeLeaveBalance/' + this.year + '/' + this.employee.userId).subscribe((response: LeaveBalance[]) => {
             this.employeeLeaveBalance.data = response;
-        })
+        });
     }
 
+    generateCSV() {
+        var configuration = {
+            fieldSeparator: ',',
+            quoteStrings: '"',
+            decimalseparator: '.',
+            showLabels: true,
+            showTitle: true,
+            title: 'Payroll Report',
+            useBom: false,
+            noDownload: false,
+            headers: ['Employee', 'Reason', 'start Date', 'End Date', 'Location', 'Accepted Date', 'Status']
+        };
+        new ngxCsv(JSON.stringify(this.employeeLeaveBalance.data), new Date().toLocaleDateString(), configuration);
+    }
+    
     //For Display Employee name in text box
     displayName(user?: any): string | undefined {
         return user ? user.firstName : undefined;

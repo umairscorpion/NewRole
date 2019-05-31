@@ -47,6 +47,7 @@ export class User extends Entity {
     startDate: Date;
     searchType: number;
     reportType: number;
+    password: string;
 }
 
 export class UserSummary extends Entity {

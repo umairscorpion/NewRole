@@ -38,7 +38,7 @@ export class absenceComponent {
     ngOnInit(): void {
         this.LoadSideNavMenu();
         this.sideNavService.change.subscribe((isOpen: any) => {
-            this.isOpen = isOpen;
+            this.isOpen = isOpen;        
         });
         this._communicationService.AbsenceDetail.subscribe((AbsenceDetail: any) => {
             this.AbsenceDetail(AbsenceDetail);

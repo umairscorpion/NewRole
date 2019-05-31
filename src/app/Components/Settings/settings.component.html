@@ -178,7 +178,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <form [formGroup]="schoolSettings" (ngSubmit)="submitGeneralSettings(schoolSettings)">
+                            <form [formGroup]="schoolSettings" (ngSubmit)="submitGeneralSettings(schoolSettings, absenceTypes)">
                                 <div class="row col-md-12">
                                     <b>School Times</b>
                                     <br>
@@ -247,6 +247,20 @@
                                     </mat-form-field>
                                     to accept the request before we notify the rest of your sub.
                                 </div>
+                                <mat-divider></mat-divider>
+                                <b>Substitute Options Dropdown</b>
+                                <mat-list-item class="row col-md-12" *ngFor="let type of absenceTypes">
+                                    <div class="col-md-3">
+                                        <h5 mat-line>{{type.title}}</h5>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <mat-radio-group>
+                                            <mat-radio-button [value]="'true'" [checked]="type.visibility" (change)="absenceVisibilityChanged(type, $event)">Visible</mat-radio-button>&nbsp;
+                                            <mat-radio-button [value]="'false'" [checked]="!type.visibility" (change)="absenceVisibilityChanged(type, $event)">Not Visible</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                </mat-list-item>
                                 <mat-divider></mat-divider>
                                 <div class="row col-md-12">
                                     <button mat-raised-button type="submit" style="background-color: #74a4a7; color: white;">Save</button>
