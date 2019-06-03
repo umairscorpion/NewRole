@@ -11,6 +11,7 @@ import { FileService } from '../../../../Services/file.service';
 import { ShowAttachmentPopupComponent } from '../../../../Shared/show-attachment-popup/show-attachment-popup.component';
 import { MatDialog } from '@angular/material';
 import { UserService } from '../../../../Service/user.service';
+
 @Component({
     templateUrl: 'profile.component.html',
     styleUrls: ['profile.component.css']

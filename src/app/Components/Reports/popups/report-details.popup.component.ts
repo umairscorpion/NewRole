@@ -421,9 +421,9 @@ export class ReportDetailsComponent implements OnInit {
 
   getImage(imageName: string) {
     if (imageName && imageName.length > 0) {
-        return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
+      return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
     }
-}
+  }
 
   displayName(user?: any): string | undefined {
     return user ? user.firstName : undefined;

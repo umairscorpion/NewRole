@@ -1,6 +1,6 @@
-﻿import { Component, ViewContainerRef, ChangeDetectorRef, OnDestroy, HostBinding, Input } from "@angular/core";
+﻿import { Component, ChangeDetectorRef, HostBinding } from "@angular/core";
 import { MediaMatcher } from '@angular/cdk/layout';
-import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
+import { MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { UserService } from '../../Service/user.service';
 import { SideNavService } from '../SideNav/sideNav.service';
@@ -13,13 +13,14 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { AbsenceSummary } from 'src/app/Model/absence.summary';
 import * as moment from 'moment';
 import { CommunicationService } from "../../Services/communication.service";
+import { environment } from "src/environments/environment";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
     selector: 'Subzz-app-dashboard',
     templateUrl: `home.component.html`,
     styleUrls: ['home.component.css']
 })
-
 export class HomeComponent {
     userId: string = this.userSession.getUserId();
     submittedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
@@ -63,9 +64,16 @@ export class HomeComponent {
     msg: string;
     UserName: string;
     isOpen = true;
-    constructor(private router: Router, private _userService: UserService, private sideNavService: SideNavService,
-        changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private absenceService: AbsenceService,
-        private userSession: UserSession, private _communicationService: CommunicationService) {
+
+    constructor(
+        private router: Router,
+        private sideNavService: SideNavService,
+        changeDetectorRef: ChangeDetectorRef,
+        media: MediaMatcher,
+        private absenceService: AbsenceService,
+        private userSession: UserSession,
+        private _communicationService: CommunicationService,
+        private sanitizer: DomSanitizer) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
@@ -114,7 +122,7 @@ export class HomeComponent {
                         // align:'end',
                         // offset: -6 
                     },
-            },
+                },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -160,7 +168,7 @@ export class HomeComponent {
                         // align:'end',
                         // offset: -6 
                     },
-            },
+                },
                 // scales: {
                 //     yAxes: [{
                 //         ticks: {
@@ -171,6 +179,7 @@ export class HomeComponent {
             }
         });
     }
+
     LoadUserResources(): void {
         const config = {
             resourceTypeId: 2,
@@ -239,12 +248,12 @@ export class HomeComponent {
                     datalabels: {
                         display: false,
                         color: 'black',
-                        anchor:'end',
-                        clamp:true,
-                        align:'end',
-                        offset: -6 
+                        anchor: 'end',
+                        clamp: true,
+                        align: 'end',
+                        offset: -6
                     },
-            },
+                },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -296,7 +305,7 @@ export class HomeComponent {
                         // offset: 8,
                         // clip:false
                     },
-            },
+                },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -307,6 +316,7 @@ export class HomeComponent {
             }
         });
     }
+
     bindFilledUnfilled(chartSummary: AbsenceSummary) {
         //Filled Ten Days 
         this.FilledTenDay.push(chartSummary.filledPreviousMinusTen);
@@ -386,7 +396,7 @@ export class HomeComponent {
                     data: this.UnFilledTenDay,
                     backgroundColor: [
                         "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd", "#3e95cd"
-                         // "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f"
+                        // "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f"
                         // '#b1ddc4',
                         // '#b1ddc4',
                         // '#b1ddc4',
@@ -422,12 +432,12 @@ export class HomeComponent {
                     datalabels: {
                         display: false,
                         color: 'black',
-                        anchor:'end',
-                        clamp:true,
-                        align:'end',
-                        offset: -6 
+                        anchor: 'end',
+                        clamp: true,
+                        align: 'end',
+                        offset: -6
                     },
-            },
+                },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -439,6 +449,7 @@ export class HomeComponent {
         });
 
     }
+
     bindTotalFilledUnfilled(chartSummary: AbsenceSummary) {
         this.TotalFilledUnfilled.push(chartSummary.totalFilled);
         this.TotalFilledUnfilled.push(chartSummary.totalUnfilled);
@@ -449,8 +460,8 @@ export class HomeComponent {
                 datasets: [{
                     data: this.TotalFilledUnfilled,
                     backgroundColor: [
-                        '#3cba9f','#3e95cd'
-                        
+                        '#3cba9f', '#3e95cd'
+
                     ],
                     borderColor: [
                         // '#72b8b7',
@@ -466,14 +477,15 @@ export class HomeComponent {
                     datalabels: {
                         display: true,
                         color: 'white',
-                        formatter: function(value, context) {
+                        formatter: function (value, context) {
                             return value + '%';
                         }
                     },
-            }
-        },
-    });
+                }
+            },
+        });
     }
+
     bindTotalAbsenceByGradeLevel(chartSummary: AbsenceSummary) {
         this.TotalAbsenceByGradeLevel.push(chartSummary.gradeSix);
         this.TotalAbsenceByGradeLevel.push(chartSummary.gradeSeven);
@@ -518,6 +530,7 @@ export class HomeComponent {
             }
         });
     }
+
     bindAbsenceByDayWeek(chartSummary: AbsenceSummary) {
         this.AbsencesByWeekDay.push(chartSummary.weekDayMonday);
         this.AbsencesByWeekDay.push(chartSummary.weekDayTuesday);
@@ -545,12 +558,12 @@ export class HomeComponent {
                     datalabels: {
                         display: false,
                         color: 'black',
-                        anchor:'end',
-                        clamp:true,
-                        align:'end',
-                        offset: -6 
+                        anchor: 'end',
+                        clamp: true,
+                        align: 'end',
+                        offset: -6
                     },
-            },
+                },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -561,6 +574,7 @@ export class HomeComponent {
             }
         });
     }
+
     bindAbsenceBySubject(chartSummary: AbsenceSummary) {
         this.AbsenceBySubject.push(chartSummary.subjectMath);
         this.AbsenceBySubject.push(chartSummary.subjectScience);
@@ -592,13 +606,13 @@ export class HomeComponent {
                     datalabels: {
                         display: false,
                         color: 'black',
-                        anchor:'end',
-                        clamp:true,
-                        align:'end',
-                        offset: -6 
+                        anchor: 'end',
+                        clamp: true,
+                        align: 'end',
+                        offset: -6
                     },
-            },
-                
+                },
+
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -625,7 +639,7 @@ export class HomeComponent {
         let organizationId = this.userSession.getUserOrganizationId() ? this.userSession.getUserOrganizationId() : '-1';
         this.absenceService.getLeaveRequests(districtId, organizationId).subscribe((leaveRequests: LeaveRequest[]) => {
             this.submittedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === false);
-            if(this.submittedLeaveRequests.length > 4){
+            if (this.submittedLeaveRequests.length > 4) {
                 this.showViewMore = true;
             }
         },
@@ -667,11 +681,18 @@ export class HomeComponent {
     openDailyReportPage() {
         this.router.navigate(['/reports']);
     }
+
     openLeaveRequestPagePage() {
         this.router.navigate(['/manage/leave']);
     }
 
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this._mobileQueryListener);
+    }
+
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
+        }
     }
 }

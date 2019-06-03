@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <mat-card style="min-height: 600px">
             <mat-card-content>
-                <h2 class="example-h2">Profile</h2>
+                <mat-card-title>Profile</mat-card-title>
                 <mat-tab-group class="demo-tab-group">
                     <mat-tab label="Personal Info">
                         <div class="demo-tab-content">
@@ -81,7 +81,7 @@
                     <mat-tab label="Change Password">
                         <form (ngSubmit)="submitResetPassForm(resetPasswordForm)" [formGroup]="resetPasswordForm">
                             <div class="col-md-12">
-                                <div class="col-md-10 col-md-offset-1">
+                                <div class="col-md-10 col-md-offset-1" style="padding-top: 10px">
                                     <b> Please note that when changing your password, we ask you to set yourself a
                                         secure password
                                         that contains both uppercase and lowercase letters as well as numbers. This is

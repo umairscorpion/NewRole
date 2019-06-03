@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DistrictService } from '../../../../Service/Manage/district.service';
-import { FormBuilder, FormGroup, Validators, FormControl, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbsenceService } from '../../../../Services/absence.service';
 import { UserSession } from '../../../../Services/userSession.service';
@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LeaveType } from '../../../../Model/leaveType';
 import { NotifierService } from 'angular-notifier';
 import { Allowance } from '../../../../Model/Manage/allowance.detail';
-// import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 @Component({
     templateUrl: 'addLeave.component.html'
 })
@@ -19,8 +19,13 @@ export class AddLeaveComponent implements OnInit {
     leaveIdForEdit: number = 0;
     LeaveForm: FormGroup;
 
-    constructor(private _FormBuilder: FormBuilder, private userSession: UserSession, private districtService: DistrictService,
-        private absenceService: AbsenceService, private route: ActivatedRoute, notifier: NotifierService) {
+    constructor(
+        private _FormBuilder: FormBuilder,
+        private userSession: UserSession,
+        private districtService: DistrictService,
+        private absenceService: AbsenceService,
+        private route: ActivatedRoute,
+        notifier: NotifierService) {
         this.notifier = notifier;
     }
 
