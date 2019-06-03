@@ -129,64 +129,6 @@
                             <div class="row col-md-5 col-md-offset-2">
                                 <div class="row">
                                     <div class="col-md-12" style="margin-top: 25px; text-align: -webkit-center;">
-                                        <!-- <mat-selection-list #Category>
-                                                <mat-list-option *ngFor="let event of NotificationEvents" [value]="event.notificationId"
-                                                    [selected]="event.emailAlert"
-                                                    [selected]="event.textAlert">
-                                                    {{event.eventName}}
-                                                </mat-list-option>
-                                            </mat-selection-list> -->
-
-                                        <!-- <table class="table mat-elevation-z8">
-                                                <thead style="color: rgba(0,0,0,.54);">
-                                                  <tr>
-                                                    <th scope="col" style="color: rgba(0,0,0,.54);">Event</th>
-                                                    <th scope="col"><i class="material-icons">email</i>
-                                                    <span style="padding-top:5px ">Email Alert</span></th>
-                                                    <th scope="col"> <span class="HeaderAlignment">
-                                                        <i class="material-icons">message</i>
-                                                        <span style="padding-top:5px ">Text Message Alert</span>
-                                                    </span></th>
-                                                  </tr>
-                                                </thead>
-                                                <tbody style="color: rgba(0,0,0,.54);">
-                                                  <tr>
-                                                    <td>Job Approved</td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>Job Posted</td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>I'm Requested</td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>Job Updated</td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>Job Assigned</td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>Job Released</td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>Job Cancelled</td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                    <td><mat-checkbox color="primary"></mat-checkbox></td>
-                                                  </tr>
-                                                </tbody>
-                                              </table> -->
 
                                         <table mat-table [dataSource]="notificationEvents" class="mat-elevation-z8">
 
@@ -205,7 +147,7 @@
                                                     </span>
                                                 </th>
                                                 <td mat-cell style="padding-left: 100px;" *matCellDef="let row ;let i = index;">
-                                                    <mat-checkbox color="primary" [checked]="row.emailAlert">
+                                                    <mat-checkbox color="primary" (change)="onChangeEmail(row)" [checked]="row.emailAlert">
                                                     </mat-checkbox>
                                                 </td>
                                             </ng-container>
@@ -219,7 +161,7 @@
                                                     </span>
                                                 </th>
                                                 <td mat-cell style="padding-left: 100px;" *matCellDef="let row">
-                                                    <mat-checkbox color="primary" [checked]="row.textAlert">
+                                                    <mat-checkbox color="primary" (change)="onChangeText(row)" [checked]="row.textAlert">
                                                     </mat-checkbox>
                                                 </td>
                                             </ng-container>
@@ -231,7 +173,7 @@
                                 </div>
                                 <div class="row" style="padding-top: 20px">
                                     <div class="col-md-12" style="text-align: center">
-                                        <button color="primary" style="background-color: #04c0be; color: white;" mat-raised-button (click)="SaveNotificationSettings()">Save</button>
+                                        <button color="primary" style="background-color: #04c0be; color: white;" mat-raised-button (click)="UpdateNotificationEvents(notificationEvents)">Save</button>
                                     </div>
                                 </div>
                             </div>

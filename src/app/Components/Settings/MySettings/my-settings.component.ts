@@ -39,6 +39,7 @@ export class MySettingComponent implements OnInit {
     SubstituteList: any;
     personalFormGroup: FormGroup;
     schoolSettings: FormGroup;
+    SubstituteId: any;
 
     constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession: UserSession,
         private _formBuilder: FormBuilder, private _employeeService: EmployeeService) {
@@ -61,7 +62,7 @@ export class MySettingComponent implements OnInit {
         if (this.UserClaim.roleId === 4) {
             this.isSubstitute = true;
             this.getPreferredSchools();
-        }   
+        }
     }
     GetSubstituteCategories(): void {
         this._dataContext.get('user/getSubstituteCategories').subscribe((data: any) => {
@@ -112,20 +113,31 @@ export class MySettingComponent implements OnInit {
                 });
         }
         this.notifier.notify('success', 'Updated Successfully');
+
     }
 
-    UpdateNotificationEvents(Events: any): void {
-        for (let event of Events.options._results) {
-            let model = {
-            }
+    UpdateNotificationEvents(Event: any): void {
+        let data = this.notificationEvents.data;
+        
+        this._dataContext.Patch('user/updateNotificationEvents', data).subscribe((data: any) => {
 
-            this._dataContext.Patch('user/updateNotificationEvents', model).subscribe((data: any) => {
-            },
-                (err: HttpErrorResponse) => {
-                    this.notifier.notify('error', err.error.error_description);
-                });
-        }
-        this.notifier.notify('success', 'Updated Successfully');
+            this.notifier.notify('success', 'Updated Successfully');
+            this.GetSubstituteNotificationEvents();
+        },
+            (err: HttpErrorResponse) => {
+                this.notifier.notify('error', err.error.error_description);
+            });
+
+    }
+
+    onChangeEmail(event){
+        event.emailAlert = !event.emailAlert;
+        
+    }
+
+    onChangeText(event){
+        event.textAlert = !event.textAlert;
+        
     }
 
     SavePreferredSchoolSettings(AllSchools: any): void {
@@ -226,7 +238,7 @@ export class MySettingComponent implements OnInit {
             isAbsenceLimit: ['']
         });
     }
-    
+
     SelectToBlockSubstitite(Substitute: any) {
         this.SubstituteList = null;
         if (this.BlockedSubstitutes.find((obj: any) => obj.userId == Substitute.userId)) {
