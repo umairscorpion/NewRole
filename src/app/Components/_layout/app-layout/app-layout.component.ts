@@ -16,7 +16,7 @@ import { LeaveBalance } from '../../../Model/leaveBalance';
 })
 export class AppLayoutComponent implements OnInit {
   parentResourceType: number = 0;
-  employeeLeaveBalance: any;
+  employeeLeaveBalance: LeaveBalance[] = Array<LeaveBalance>();
   @HostBinding('class.is-open')
   userTemplate: any;
   mobileQuery: MediaQueryList;
@@ -56,9 +56,15 @@ export class AppLayoutComponent implements OnInit {
   }
 
   getEmployeeBalance() {
-    this.dataContext.get('Leave/getEmployeeLeaveBalance/' + new Date().getFullYear() + '/' + this.userSession.getUserId()).subscribe((response: LeaveBalance[]) => {
-      this.employeeLeaveBalance = response;
-    })
+    let filter = {
+            organizationId: this.userSession.getUserOrganizationId(),
+            districtId: this.userSession.getUserDistrictId(),
+            year: new Date().getFullYear(),
+            userId: this.userSession.getUserId()
+        }
+        this.dataContext.post('Leave/getEmployeeLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
+            this.employeeLeaveBalance = response;
+        })
   }
 
   toggle() {

@@ -47,7 +47,13 @@ export class absenceComponent {
     }
 
     getEmployeeBalance() {
-        this.dataContext.get('Leave/getEmployeeLeaveBalance/' + new Date().getFullYear() + '/' + this._userSession.getUserId()).subscribe((response: LeaveBalance[]) => {
+        let filter = {
+            organizationId: this._userSession.getUserOrganizationId(),
+            districtId: this._userSession.getUserDistrictId(),
+            year: new Date().getFullYear(),
+            userId: this._userSession.getUserId()
+        }
+        this.dataContext.post('Leave/getEmployeeLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
             this.employeeLeaveBalance = response;
         })
     }
