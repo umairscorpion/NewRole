@@ -29,4 +29,5 @@ export class LeaveRequest extends Entity {
     deniedBy: string;
     cancelledDate: string;
     cancelledBy: string;
+    employeeProfilePicUrl: string;
 }

@@ -87,7 +87,7 @@
                   <mat-list-item style="height: 76px;" class="row" *ngFor="let leave of submittedLeaveRequests">
                     <div class="col-md-6">
                       <div class="col-md-1">
-                        <img class="img-circle" src="assets/Images/noimage.png" height="40" width="40" />
+                        <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40" width="40" />
                       </div>
                       <div class="col-md-5">
                         {{leave.employeeName}}
@@ -116,7 +116,7 @@
                   <mat-list-item style="height: 76px;" class="row" *ngFor="let leave of approvedLeaveRequests">
                     <div class="col-md-6">
                       <div class="col-md-1">
-                        <img class="img-circle" src="assets/Images/noimage.png" height="40" width="40" />
+                        <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40" width="40" />
                       </div>
                       <div class="col-md-5">
                         {{leave.employeeName}}
@@ -149,7 +149,7 @@
                   <mat-list-item style="height: 76px;" class="row" *ngFor="let leave of deniedLeaveRequests">
                     <div class="col-md-6">
                       <div class="col-md-1">
-                        <img class="img-circle" src="assets/Images/noimage.png" height="40" width="40" />
+                        <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40" width="40" />
                       </div>
                       <div class="col-md-5">
                         {{leave.employeeName}}
@@ -189,7 +189,7 @@
                   <mat-list-item style="height: 76px;" class="row" *ngFor="let leave of archivedApprovedLeaveRequests">
                     <div class="col-md-6">
                       <div class="col-md-1">
-                        <img class="img-circle" src="assets/Images/noimage.png" height="40" width="40" />
+                        <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40" width="40" />
                       </div>
                       <div class="col-md-5">
                         {{ leave.employeeName }}
@@ -224,7 +224,7 @@
                   <mat-list-item style="height: 76px;" class="row" *ngFor="let leave of archivedDeniedLeaveRequests">
                     <div class="col-md-6">
                       <div class="col-md-1">
-                        <img class="img-circle" src="assets/Images/noimage.png" height="40" width="40" />
+                        <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40" width="40" />
                       </div>
                       <div class="col-md-5">
                         {{leave.employeeName}}

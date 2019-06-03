@@ -11,6 +11,9 @@ import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
 import { AllowanceComponent } from './popups/add-allowance.popup.component';
 import { Allowance } from '../../../../Model/Manage/allowance.detail';
+import { environment } from 'src/environments/environment';
+import { DomSanitizer } from '@angular/platform-browser';
+
 @Component({
     templateUrl: 'leaves.component.html',
     styleUrls: ['leave.component.css']
@@ -34,8 +37,16 @@ export class LeavesComponent implements OnInit {
     archivedDeniedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
     archivedApprovedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
 
-    constructor(private _districtService: DistrictService, private userSession: UserSession, private router: Router,
-        private absenceService: AbsenceService, notifier: NotifierService, public dialog: MatDialog) { this.notifier = notifier; }
+    constructor(
+        private _districtService: DistrictService,
+        private userSession: UserSession,
+        private router: Router,
+        private absenceService: AbsenceService,
+        notifier: NotifierService,
+        public dialog: MatDialog,
+        private sanitizer: DomSanitizer) {
+        this.notifier = notifier;
+    }
 
     ngOnInit(): void {
         this.GetLeaveTypes();
@@ -250,6 +261,12 @@ export class LeavesComponent implements OnInit {
                 this.notifier.notify('success', 'Deleted Successfully');
                 this.getAllowances();
             });
+        }
+    }
+
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
     }
 }
