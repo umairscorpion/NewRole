@@ -93,3 +93,7 @@
    .matrow:nth-child(odd) {
     background-color: #fafafa8c;
   }
+
+  .right-content {
+    min-height: 385px;
+  }

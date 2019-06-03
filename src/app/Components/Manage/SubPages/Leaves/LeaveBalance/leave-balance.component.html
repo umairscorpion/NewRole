@@ -13,7 +13,7 @@
             </div>
             <div>
                 <mat-form-field class="col-md-2 col-lg-2">
-                    <input type="text" placeholder="Search Employee Name" aria-label="Number" (input)="SearchEmployees($event.target.value)"
+                    <input #inputva type="text" placeholder="Search Employee Name" aria-label="Number" (input)="SearchEmployees($event.target.value)"
                         matInput [(ngModel)]="employee" [matAutocomplete]="auto">
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
                         <mat-option *ngFor="let employee of employees | async" [value]="employee">
@@ -23,7 +23,7 @@
                 </mat-form-field>
             </div>
             <div class="col-md-2 col-lg-2">
-                <button mat-raised-button type="button" style="background-color: #04c0be; color: white;" (click)="applyFilter()">Search</button>
+                <button mat-raised-button type="button" style="background-color: #04c0be; color: white;" (click)="applyFilter(inputva)">Search</button>
             </div>
             <div class="col-md-2 col-lg-2">
                 <button mat-raised-button printSectionId="htmlForPrint" ngxPrint style="background:#F0F1F3; color:#A1A1A3; margin-left:5px"
@@ -39,26 +39,30 @@
             <mat-table #table [dataSource]="employeeLeaveBalance" matSort>
                 <ng-container matColumnDef="Year">
                     <mat-header-cell *matHeaderCellDef> Year </mat-header-cell>
-                    <mat-cell *matCellDef="let LeaveType"> </mat-cell>
+                    <mat-cell *matCellDef="let LeaveType"> 2019 </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Name">
                     <mat-header-cell *matHeaderCellDef> Employee Name </mat-header-cell>
                     <mat-cell *matCellDef="let LeaveType">
+                        {{LeaveType.userName}}
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Personal">
                     <mat-header-cell *matHeaderCellDef> Personal Leave </mat-header-cell>
                     <mat-cell *matCellDef="let LeaveType">
+                            {{LeaveType.personal ? LeaveType.personal: 'Not Created any Leave'}}
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Sick">
                     <mat-header-cell *matHeaderCellDef> Sick Leave </mat-header-cell>
                     <mat-cell *matCellDef="let LeaveType">
+                            {{LeaveType.sick ? LeaveType.sick: 'Not Created any Leave'}}
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Vacation">
                     <mat-header-cell *matHeaderCellDef> Vacation Leave </mat-header-cell>
                     <mat-cell *matCellDef="let LeaveType">
+                            {{LeaveType.vacation ? LeaveType.vacation: 'Not Created any Leave'}}
                     </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveRequests"></mat-header-row>

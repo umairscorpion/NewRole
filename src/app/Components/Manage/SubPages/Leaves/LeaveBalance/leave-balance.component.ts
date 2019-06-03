@@ -33,10 +33,19 @@ export class LeaveBalanceComponent implements OnInit {
     }
 
     ngOnInit() {
-        for (let i= 0; i < 5; i++ ) {
+        for (let i = 0; i < 5; i++) {
             this.years.push(new Years(new Date().getFullYear() + i));
         }
         this.getLeaveEmployeeLeaveBalance();
+        this.employeeLeaveBalance.filterPredicate = (data: any, filtersJson: string) => {
+            const matchFilter = [];
+            const filters = JSON.parse(filtersJson);
+
+            const userName = 'userName';
+            const sch = data[userName] === null ? '' : data[userName];
+            matchFilter.push(sch.toLowerCase().includes(filters[0].value.toLowerCase()));
+            return matchFilter.every(Boolean);
+        };
     }
 
     //ASYNC FUNCTION TO SEARCH EMPLOYEE
@@ -50,15 +59,28 @@ export class LeaveBalanceComponent implements OnInit {
     }
 
     getLeaveEmployeeLeaveBalance() {
-        this.dataContext.get('Leave/getEmployeeLeaveBalance/' + this.year + '/' + "-1").subscribe((response: LeaveBalance[]) => {
+        let filter = {
+            organizationId: this.userSession.getUserOrganizationId(),
+            districtId: this.userSession.getUserDistrictId(),
+            year: this.year,
+            userId: "All"
+        }
+        this.dataContext.post('Leave/getEmployeeLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
             this.employeeLeaveBalance.data = response;
         })
     }
 
-    applyFilter() {
-        this.dataContext.get('Leave/getEmployeeLeaveBalance/' + this.year + '/' + this.employee.userId).subscribe((response: LeaveBalance[]) => {
-            this.employeeLeaveBalance.data = response;
+    applyFilter(employeeName: any) {
+        const tableFilters = [];
+        tableFilters.push({
+            id: 'userName',
+            value: employeeName.value
         });
+
+        this.employeeLeaveBalance.filter = JSON.stringify(tableFilters);
+        if (this.employeeLeaveBalance.paginator) {
+            this.employeeLeaveBalance.paginator.firstPage();
+        }
     }
 
     generateCSV() {
@@ -75,7 +97,7 @@ export class LeaveBalanceComponent implements OnInit {
         };
         new ngxCsv(JSON.stringify(this.employeeLeaveBalance.data), new Date().toLocaleDateString(), configuration);
     }
-    
+
     //For Display Employee name in text box
     displayName(user?: any): string | undefined {
         return user ? user.firstName : undefined;

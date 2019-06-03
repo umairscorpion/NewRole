@@ -1,6 +1,9 @@
-export class LeaveBalance {
-    Id: number;
-    Balance: number;
-    LeaveTitle: number;
-    EmployeeName: number;
+export interface LeaveBalance {
+    userId: string;
+    personal: string;
+    sick: string;
+    vacation: string;
+    userName: number;
+    organizationId: string;
+    districtId: number;
 }
