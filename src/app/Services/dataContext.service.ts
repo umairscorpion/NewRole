@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, ResponseContentType } from '@angular/http';
+import { Response } from '@angular/http';
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
@@ -12,26 +12,33 @@ import { BehaviorSubject } from 'rxjs';
 export class DataContext {
     baseUrl = environment.apiUrl;
     private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
     constructor(private _http: HttpClient) { }
+
     //userAuthentication(userName, password) {
     //    var data = "username=" + userName + "&password=" + password + "&grant_type=password";
     //    var reqHeader = new HttpHeaders({ 'Content-Type': 'application/x-www-urlencoded', 'No-Auth': 'True' });
     //    return this.http.post(this.rootUrl + '/token', data, { headers: reqHeader });
     //}
+
     get isLoggedIn() {
         return this.loggedIn.asObservable();
     }
+
     getUserClaims() {
         return this._http.get(this.baseUrl + 'user/reference/GetUserClaims');
     }
+
     getUserResources(resourceTypeId: number, parentResourceTypeId: number, IsAdminPortal: number) {
         return this._http.get(this.baseUrl + 'user/GetUserResources/' + resourceTypeId + '/' + parentResourceTypeId + '/' + IsAdminPortal);
     }
+
     userAuthentication(url: string, model: any): Observable<any> {
         let body = "username=" + model.userName + "&password=" + model.password + "&grant_type=password";
         var reqHeader = new HttpHeaders({ 'Content-Type': 'application/x-www-urlencoded', 'No-Auth': 'True' });
         return this._http.post(url + "Token", body, { headers: reqHeader });
     }
+
     //Funtions For crud operations
     get(url: string): Observable<any> {
         return this._http.get(this.baseUrl + url);
@@ -71,9 +78,11 @@ export class DataContext {
         console.error(error);
         return Observable.throw(error.json().error || 'Server error');
     }
+
     login() {
         this.loggedIn.next(true);
     }
+
     logout() {
         this.loggedIn.next(false);
     }

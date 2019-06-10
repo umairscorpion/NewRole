@@ -5,8 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommunicationService } from '../../../../Services/communication.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../../../Service/user.service';
+import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 
 @Component({

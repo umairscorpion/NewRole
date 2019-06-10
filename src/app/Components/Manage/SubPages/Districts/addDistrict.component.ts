@@ -8,6 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs/Observable';
 import { DataContext } from '../../../../Services/dataContext.service';
+
 @Component({
     templateUrl: 'addDistrict.component.html',
     styleUrls: ['district.component.css']
@@ -18,23 +19,25 @@ export class AddDistrictComponent implements OnInit {
     states: Observable<IStates[]>;
     msg: string;
     districtForm: FormGroup;
-    districtIdForUpdate : any = 0;
+    districtIdForUpdate: any = 0;
     getDistrictById: any;
+
     constructor(
-        private router: Router, 
-        private fb: FormBuilder,  
+        private router: Router,
+        private fb: FormBuilder,
         private route: ActivatedRoute,
-        private _districtService: DistrictService, 
+        private _districtService: DistrictService,
         private _dataContext: DataContext,
         notifier: NotifierService) {
         this.notifier = notifier;
     }
+
     ngOnInit(): void {
         this.districtForm = this.fb.group({
             Name: ['', Validators.required],
             City: ['', Validators.required],
             Address: [''],
-            ZipCode: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+            ZipCode: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             Country: [''],
             State: [''],
             StartTime: [''],
@@ -42,14 +45,13 @@ export class AddDistrictComponent implements OnInit {
             SecondHaifStartTime: [''],
             EndTime: [''],
             TimeZone: [''],
-            PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+            PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             IsActive: [1]
         });
         this.GetCountries();
-        this.route.queryParams.subscribe((params : any) => {
-            if(params['Id'])
-            {
-                let DistrictId = params.Id ;
+        this.route.queryParams.subscribe((params: any) => {
+            if (params['Id']) {
+                let DistrictId = params.Id;
                 this._dataContext.getById('district/getDistrictById', DistrictId).subscribe((data: any) => {
                     this.getDistrictById = data;
                     let DistrictModel = {
@@ -67,17 +69,14 @@ export class AddDistrictComponent implements OnInit {
                         PhoneNo: data[0].districtPhone,
                         IsActive: data[0].isActive
                     }
-                    
                     this.districtForm.setValue(DistrictModel);
                     this.states = this._districtService.getStatesByCountryId('districtLookup/getStateByCountryId', data[0].countryId);
                     this.districtForm.get('State').setValue(data[0].districtStateId);
-                    // this.states.subscribe((nnnnnn : any) => { this.districtForm.get('State').setValue(data[0].districtStateId); });
-                    
                     this.districtIdForUpdate = DistrictId;
                 },
                     error => <any>error);
             }
-            });
+        });
     }
 
     GetCountries(): void {
@@ -90,13 +89,12 @@ export class AddDistrictComponent implements OnInit {
     onChange(countryId: any) {
         this.states = this._districtService.getStatesByCountryId('districtLookup/getStateByCountryId', countryId);
     }
-    
-    onSubmit(form: any) {
 
+    onSubmit(form: any) {
         if (this.districtForm.valid) {
             if (this.CheckTime(form.value)) {
                 let model = {
-                    DistrictId : this.districtIdForUpdate,
+                    DistrictId: this.districtIdForUpdate,
                     DistrictName: form.value.Name,
                     City: form.value.City,
                     DistrictAddress: form.value.Address,
@@ -111,8 +109,7 @@ export class AddDistrictComponent implements OnInit {
                     DistrictPhone: form.value.PhoneNo,
                     IsActive: form.value.IsActive
                 }
-                if (this.districtIdForUpdate > 0)
-                {                    
+                if (this.districtIdForUpdate > 0) {
                     this._dataContext.Patch('district/updateDistrict', model).subscribe((data: any) => {
                         this.router.navigate(['/manage/districts']);
                         this.notifier.notify('success', 'Updated Successfully.');
@@ -121,8 +118,7 @@ export class AddDistrictComponent implements OnInit {
                             this.notifier.notify('error', err.error.error_description);
                         });
                 }
-                else
-                {
+                else {
                     this._districtService.post('District/insertDistrict', model).subscribe((data: any) => {
                         this.router.navigate(['/manage/districts']);
                         this.notifier.notify('success', 'Saved Successfully.');
@@ -130,11 +126,11 @@ export class AddDistrictComponent implements OnInit {
                         (err: HttpErrorResponse) => {
                             this.notifier.notify('error', err.error);
                         });
-                } 
+                }
             }
         }
     }
-    
+
     CheckTime(district: any): boolean {
         if (district.StartTime > district.EndTime || district.firstHalfEndTime > district.SecondHaifStartTime ||
             district.StartTime > district.SecondHaifStartTime || district.StartTime > district.firstHalfEndTime ||

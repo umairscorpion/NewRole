@@ -9,7 +9,7 @@ export class CommunicationService {
     @Output() AbsenceDetail: EventEmitter<boolean> = new EventEmitter();
     @Output() updateLeftSidePanel: EventEmitter<boolean> = new EventEmitter();
 
-    ViewAbsenceDetail(AbsenceDetail : any) {
+    ViewAbsenceDetail(AbsenceDetail: any) {
         this.AbsenceDetail.emit(AbsenceDetail);
     }
 

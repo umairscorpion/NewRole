@@ -48,6 +48,12 @@ export class AppLayoutComponent implements OnInit {
     });
   }
 
+  onActivate(componentReference) {
+    componentReference.refreshEmployeeBalance.subscribe((data) => {
+      this.getEmployeeBalance();
+   });
+  }
+
   loadUserResources(resourceTypeId: number, parentResourceTypeId: number, adminPortal: number): void {
     this._userService.getUserResources(resourceTypeId, parentResourceTypeId, adminPortal).subscribe((data: any) => {
       this.userTemplate = data;
@@ -57,17 +63,16 @@ export class AppLayoutComponent implements OnInit {
 
   getEmployeeBalance() {
     let filter = {
-            organizationId: this.userSession.getUserOrganizationId(),
-            districtId: this.userSession.getUserDistrictId(),
-            year: new Date().getFullYear(),
-            userId: this.userSession.getUserId()
-        }
-        this.dataContext.post('Leave/getEmployeeLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
-            this.employeeLeaveBalance = response;
-        })
+      organizationId: this.userSession.getUserOrganizationId(),
+      districtId: this.userSession.getUserDistrictId(),
+      year: new Date().getFullYear(),
+      userId: this.userSession.getUserId()
+    }
+    this.dataContext.post('Leave/getEmployeeLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
+      this.employeeLeaveBalance = response;
+    })
   }
 
   toggle() {
-
   }
 }

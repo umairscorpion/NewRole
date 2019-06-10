@@ -12,19 +12,19 @@
                             <div class="row" style="height:56.56px;" *ngIf='loginedUserRole != 3'>
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6" style="margin-top:16px">
-                                        <mat-radio-group (change)="onChangeAbsenceFor($event)" style="padding-left: 13px;" #radioGroup="matRadioGroup">
+                                        <mat-radio-group formControlName="selfEmployeeVacancy" (change)="onChangeAbsenceFor(absenceFirstFormGroup.value.selfEmployeeVacancy)" style="padding-left: 13px;">
                                             <mat-radio-button color="primary" value="1" checked>Self</mat-radio-button>
                                             <mat-radio-button style="padding-left: 10px;" color="primary" value="2">Employee</mat-radio-button>
                                             <mat-radio-button style="padding-left: 10px;" color="primary" value="3">Find a Sub</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
                                     <div class="col-md-6 col-lg-6">
-                                        <mat-form-field class="col-md-10 col-lg-10" *ngIf='radioGroup.value == "2"'>
+                                        <mat-form-field class="col-md-10 col-lg-10" *ngIf='absenceFirstFormGroup.value.selfEmployeeVacancy == "2"'>
                                             <input type="text" placeholder="Search Employee Name" aria-label="Number" (input)="SearchEmployees($event.target.value)"
                                                 matInput formControlName="EmployeeId" [matAutocomplete]="auto">
-                                            <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
                                                 <mat-option (onSelectionChange)="employeeSelection(employee)" *ngFor="let employee of Employees | async"
-                                                    [value]="employee.firstName">
+                                                    [value]="employee">
                                                     {{employee.firstName}}
                                                 </mat-option>
                                             </mat-autocomplete>
@@ -198,7 +198,7 @@
                                                         </mat-select>
                                                     </mat-form-field>
                                                     <mat-form-field class="col-md-4">
-                                                        <input matInput type="number" [disabled]="DisableContactSubTimeAccess" placeholder="Wait Time" [(value)]="ContactSubTime">
+                                                        <input matInput type="number" min="0" [disabled]="DisableContactSubTimeAccess" placeholder="Wait Time" [(value)]="ContactSubTime">
                                                         <span matSuffix>min</span>
                                                     </mat-form-field>
                                                 </div>

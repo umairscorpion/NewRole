@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { EmployeeService } from '../../../../Service/Manage/employees.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -7,7 +7,7 @@ import { DataContext } from '../../../../Services/dataContext.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { MatStepper } from '@angular/material/stepper';
 import { IEmployee } from '../../../../Model/Manage/employee';
-import { MatRadioChange, MatExpansionPanel, MatSelect } from '@angular/material';
+import { MatRadioChange, MatExpansionPanel, MatSelect, MatRadioGroup, MatRadioButton } from '@angular/material';
 import { HttpClient, HttpResponse, HttpEventType } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { NotifierService } from 'angular-notifier';
@@ -17,6 +17,7 @@ import { environment } from '../../../../../environments/environment';
 import { User } from '../../../../Model/user';
 import { AbsenceScope } from '../../../../Model/absenceScope';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Absence } from '../../../../Model/absence';
 
 @Component({
     selector: 'create-absence',
@@ -134,6 +135,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         });
 
         this.absenceFirstFormGroup = this._formBuilder.group({
+            selfEmployeeVacancy: ['1'],
             EmployeeId: [''],
             Reason: [null, Validators.required],
             StartTime: [{ value: '08:00:00', disabled: true }],
@@ -163,7 +165,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         EndDate.setMonth(this.CurrentDate.getMonth() + 6)
         this._dataContext.get('Absence/getAbsencesScheduleEmployee/' + StartDate.toISOString() + "/" + EndDate.toISOString()
             + "/" + employeeId).subscribe((data: any) => {
-                this.EmployeeSchedule = data;
+                this.EmployeeSchedule = data.filter((absence:Absence) => absence.status != 4);
             },
                 error => this.msg = <any>error);
     }
@@ -384,9 +386,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
 
     // ON CHANGING ABSENCE FOR SELF OR EMPLOYEE
-    onChangeAbsenceFor(event: MatRadioChange) {
+    onChangeAbsenceFor(event: any) {
 
-        if (+event.value == 2) {
+        if (+event == 2) {
             this.NeedASub = false;
             this.absenceFirstFormGroup.controls['PositionId'].clearValidators();
             this.absenceFirstFormGroup.controls['PositionId'].updateValueAndValidity();
@@ -396,7 +398,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
             this.absenceFirstFormGroup.controls['OrganizationId'].disable();
         }
-        else if (+event.value == 3) {
+        else if (+event == 3) {
             // this.absenceFirstFormGroup.get('SubRequired').setValue('1');
             this.absenceFirstFormGroup.controls["PositionId"].setValidators([Validators.required]);
             this.absenceFirstFormGroup.controls['PositionId'].updateValueAndValidity();
@@ -663,12 +665,22 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
 
     goToNextForm(stepper: MatStepper) {
+        if (+this.absenceFirstFormGroup.value.selfEmployeeVacancy === 2) {
+            if (!(this.absenceFirstFormGroup.value.EmployeeId instanceof Object)) {
+                this.notifier.notify('error', 'Select Employee');
+                return;
+            }
+        }
+        if (+this.absenceFirstFormGroup.value.AbsenceType === 3 && this.PreferredSubstitutes.length === 0) {
+            this.notifier.notify('error', 'There is no Preffered Substitiute.');
+            return;
+        }
         if (+this.absenceFirstFormGroup.value.AbsenceType === 1 || +this.absenceFirstFormGroup.value.AbsenceType === 2) {
             if (this.absenceFirstFormGroup.value.Substitutes.length > 0) {
                 stepper.next();
             }
             else {
-                this.notifier.notify('error', 'Select Substitute')
+                this.notifier.notify('error', 'Select Substitute');
             }
         }
         else {
@@ -685,6 +697,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.response = 0;
         this.ngOnInit();
         stepper.reset();
+        this.onChangeAbsenceFor("1");
     }
 
     GetPositionText(): any {

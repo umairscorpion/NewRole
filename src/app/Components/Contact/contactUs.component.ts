@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild ,ChangeDetectorRef, HostBinding } from '@angular/core';
-// import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { Component } from '@angular/core';
 
 @Component({
     templateUrl: 'contactUs.component.html',

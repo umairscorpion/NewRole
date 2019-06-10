@@ -1,22 +1,18 @@
-import { Component, ChangeDetectorRef, HostBinding, Inject } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { UserService } from '../../Service/user.service';
 import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { TimeClockService } from '../../Services/timeClock.service';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
 import { SideNavService } from '../SideNav/sideNav.service';
-import { CommunicationService } from '../../Services/communication.service';
 import { UserSession } from '../../Services/userSession.service';
 import { OnInit, ViewChild } from '@angular/core';
 import { NotifierService } from 'angular-notifier';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TimeClock } from '../../Model/timeclock'
 import * as moment from 'moment';
-import { EmployeeService } from '../../Service/Manage/employees.service';
 import { DataContext } from '../../Services/dataContext.service';
-import { t } from '@angular/core/src/render3';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { TimeClockFilter } from '../../Model/timeclock.filter';
 
 @Component({
@@ -51,8 +47,7 @@ export class TimeClockComponent implements OnInit {
     private timeClockFormGroup: FormGroup;
     CurrentDate: Date = new Date;
 
-
-    constructor(private router: Router,
+    constructor(
         private _userService: UserService,
         public dialog: MatDialog,
         private dataContext: DataContext,
@@ -62,9 +57,7 @@ export class TimeClockComponent implements OnInit {
         media: MediaMatcher,
         private _userSession: UserSession,
         private timeClockService: TimeClockService,
-        notifier: NotifierService,
-        private _communicationService: CommunicationService,
-        private employeeService: EmployeeService) {
+        notifier: NotifierService) {
         this.notifier = notifier;
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -80,7 +73,6 @@ export class TimeClockComponent implements OnInit {
             this.isOpen = isOpen;
         });
     }
-
 
     ngAfterViewInit() {
         this.timeClockDetail.sort = this.sort;
@@ -102,7 +94,7 @@ export class TimeClockComponent implements OnInit {
             viewDataBy: ['1']
         });
     }
-   
+
     checkTimeClock(): boolean {
         return this.timeClockFormGroup.get('viewDataBy').value != "2" ? true : false;
     }
@@ -206,37 +198,36 @@ export class TimeClockComponent implements OnInit {
 
     GetTimeClockDataWithFilter() {
         const filters = TimeClockFilter.initial();
-             filters.isDaysSelected = 0;
-             filters.startDate = moment().subtract(7, 'days').toISOString();
-             filters.endDate = moment(new Date()).toISOString();
-             this.timeClockService.getTimeClockSummary(filters).subscribe((data: TimeClock[]) => {
-                 this.timeClockDetail.data = data;
-                 this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
-                 this.totalBreaks = data.filter((t: TimeClock) => t.status === 1).length;
-                 this.withoutBreaks = data.filter((t: TimeClock) => t.status === 0).length;
-             },
-                error => this.msg = <any>error);
+        filters.isDaysSelected = 0;
+        filters.startDate = moment().subtract(7, 'days').toISOString();
+        filters.endDate = moment(new Date()).toISOString();
+        this.timeClockService.getTimeClockSummary(filters).subscribe((data: TimeClock[]) => {
+            this.timeClockDetail.data = data;
+            this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
+            this.totalBreaks = data.filter((t: TimeClock) => t.status === 1).length;
+            this.withoutBreaks = data.filter((t: TimeClock) => t.status === 0).length;
+        },
+            error => this.msg = <any>error);
     }
 
     OnchangeTimeClockView(Datatype: number) {
         if (+Datatype === 1) {
-             this.GetTimeClockDataWithFilter();
+            this.GetTimeClockDataWithFilter();
         }
         else {
-             const filters = TimeClockFilter.initial();
-             filters.isDaysSelected = 1;
-             filters.startDate = moment().subtract(7, 'days').toISOString();
-             filters.endDate = moment(new Date()).toISOString();
-             this.timeClockService.getTimeClockSummary(filters).subscribe((data: TimeClock[]) => {
-                 this.timeClockDetail.data = data;
-                 this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
-                 this.totalBreaks = data.filter((t: TimeClock) => t.status === 1).length;
-                 this.withoutBreaks = data.filter((t: TimeClock) => t.status === 0).length;
+            const filters = TimeClockFilter.initial();
+            filters.isDaysSelected = 1;
+            filters.startDate = moment().subtract(7, 'days').toISOString();
+            filters.endDate = moment(new Date()).toISOString();
+            this.timeClockService.getTimeClockSummary(filters).subscribe((data: TimeClock[]) => {
+                this.timeClockDetail.data = data;
+                this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
+                this.totalBreaks = data.filter((t: TimeClock) => t.status === 1).length;
+                this.withoutBreaks = data.filter((t: TimeClock) => t.status === 0).length;
 
-             },
-                 error => this.msg = <any>error);
+            },
+                error => this.msg = <any>error);
         }
 
     }
-
 }

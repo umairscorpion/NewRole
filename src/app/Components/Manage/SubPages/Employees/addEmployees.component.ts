@@ -8,6 +8,7 @@ import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from 'src/app/Service/user.service';
+
 @Component({
     templateUrl: 'addEmployees.component.html',
     styleUrls: ['employee.component.css']
@@ -58,7 +59,7 @@ export class AddEmployeesComponent implements OnInit {
             OrganizationId: [''],
             SecondarySchools: [],
             EmailId: ['', [Validators.required, Validators.email]],
-            PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+            PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             IsActive: [1]
         });
         if (this._userSession.getUserRoleId() == 2) {

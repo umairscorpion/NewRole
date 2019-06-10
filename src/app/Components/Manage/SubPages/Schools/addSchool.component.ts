@@ -20,13 +20,14 @@ export class AddSchoolComponent implements OnInit {
     modalBtnTitle: string;
 
     constructor(
-        private router: Router, 
-        private fb: FormBuilder, 
+        private router: Router,
+        private fb: FormBuilder,
         private route: ActivatedRoute,
-        private _dataContext: DataContext,       
+        private _dataContext: DataContext,
         notifier: NotifierService) {
         this.notifier = notifier;
     }
+
     ngOnInit(): void {
         this.GetDistricts();
         this.GenerateSchoolForm();
@@ -38,21 +39,19 @@ export class AddSchoolComponent implements OnInit {
             Name: ['', Validators.required],
             district: [null, Validators.required],
             Address: ['', Validators.required],
-            ZipCode: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+            ZipCode: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             City: ['', Validators.required],
             StartTime: ['', Validators.required],
             firstHalfEndTime: ['', Validators.required],
             SecondHalfStartTime: ['', Validators.required],
             EndTime: ['', Validators.required],
             TimeZone: [null, Validators.required],
-            PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+            PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             releaseJobTime: ['0'],
             notifyOthersTime: ['0'],
             dailyAbenceLimit: [0],
             isAbsenceLimit: [false],
             IsActive: [1]
-            // NoOfEmployees: ['', Validators.required],
-            // EmailId: ['', [Validators.required, Validators.email]],
         });
     }
 

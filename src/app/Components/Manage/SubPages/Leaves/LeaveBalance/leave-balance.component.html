@@ -4,7 +4,7 @@
         <div class="row">
             <div>
                 <mat-form-field class="col-md-2">
-                    <mat-select placeholder="Year" [ngModel]="year">
+                    <mat-select placeholder="Year" [(ngModel)]="year">
                         <mat-option *ngFor="let year of years" [value]="year.value">
                             {{year.value}}
                         </mat-option>

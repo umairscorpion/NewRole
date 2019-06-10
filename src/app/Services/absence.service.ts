@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-
 import { catchError, map } from 'rxjs/operators';
-import { Lookup } from '../Model/lookup';
 import { environment } from '../../environments/environment';
 import { Entity } from '../Model/entity';
 import { HttpClient } from '@angular/common/http';
@@ -9,7 +7,6 @@ import { ErrorHandlerService } from './error-handler/error-handler.service';
 import { Observable } from 'rxjs';
 import { RestService } from './restService';
 import { User } from '../Model/user';
-import { SubstitutePreference } from '../Model/substitutePreference';
 import { LeaveType } from '../Model/leaveType';
 import { LeaveRequest } from '../Model/leaveRequest';
 import { AbsenceSummary } from 'src/app/Model/absence.summary';
@@ -58,7 +55,6 @@ export class AbsenceService extends RestService<LeaveType> {
   //       })
   //     );
   // }
-
 
   getLeaveTypeRecords(): Entity {
     return new LeaveType();

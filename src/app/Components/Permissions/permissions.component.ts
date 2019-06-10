@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { UsersService } from '../../Services/users.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { RoleService } from '../../Services/role.service';
@@ -34,8 +34,7 @@ export class PermissionsComponent implements OnInit {
         private _userService: UserService,
         media: MediaMatcher,
         changeDetectorRef: ChangeDetectorRef,
-        private dialog: MatDialog,
-    ) {
+        private dialog: MatDialog) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);

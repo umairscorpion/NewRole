@@ -36,11 +36,11 @@
             </div>
             <div class="col-md-6">
                 <div class="col-md-6">Start Time:</div>
-                <div class="col-md-6">{{data.startTime | date:'shortTime'}}</div>
+                <div class="col-md-6">{{data.startTime | convertFrom24HourTo12HourFormat }}</div>
             </div>
             <div class="col-md-6">
                 <div class="col-md-6">End Time:</div>
-                <div class="col-md-6">{{data.endTime | date:'shortTime'}}</div>
+                <div class="col-md-6">{{data.endTime | convertFrom24HourTo12HourFormat }}</div>
             </div>
             <div class="col-md-6">
                 <div class="col-md-6">Notes to Substitute:</div>

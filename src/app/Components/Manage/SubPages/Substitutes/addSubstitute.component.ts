@@ -57,7 +57,7 @@ export class AddSubstituteComponent implements OnInit {
             Gender: ['M', Validators.required],
             District: ['', Validators.required],
             Email: ['', [Validators.required, Validators.email]],
-            PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+            PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             PayRate: ['0'],
             HourLimit: ['0'],
             IsActive: [1]
