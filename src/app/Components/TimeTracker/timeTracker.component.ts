@@ -1,27 +1,21 @@
-import { Component, ChangeDetectorRef, HostBinding, Inject } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { UserService } from '../../Service/user.service';
 import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { TimeClockService } from '../../Services/timeClock.service';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
 import { SideNavService } from '../SideNav/sideNav.service';
-import { CommunicationService } from '../../Services/communication.service';
 import { UserSession } from '../../Services/userSession.service';
 import { OnInit, ViewChild } from '@angular/core';
 import { NotifierService } from 'angular-notifier';
-import { HttpErrorResponse } from '@angular/common/http';
 import { TimeClock } from '../../Model/timeclock'
 import * as moment from 'moment';
-import { EmployeeService } from '../../Service/Manage/employees.service';
-import { DataContext } from '../../Services/dataContext.service';
-import { t } from '@angular/core/src/render3';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { TimeClockFilter } from '../../Model/timeclock.filter';
 import { ngxCsv } from 'ngx-csv';
 import { SelectionModel } from '@angular/cdk/collections';
 import {EditTimeTracker} from '../TimeClock/popups/edit-timetracker.popup.component';
-import { from } from 'rxjs';
+
 @Component({
     selector:'time-tracker',
     templateUrl: 'timeTracker.component.html',
@@ -52,25 +46,21 @@ export class TimeTrackerComponent implements OnInit {
     timeTrackerDetail = new MatTableDataSource();
     private timeClockFormGroup: FormGroup;
     CurrentDate: Date = new Date;
-
     // Time Tracker Code
     TimeTrackerFilter: FormGroup;
     allTimeTrackerDataInCurrentState: TimeClock[] = Array<TimeClock>();
     selection = new SelectionModel<TimeClock>(true, []);
 
-    constructor(private router: Router,
+    constructor(
         private _userService: UserService,
         public dialog: MatDialog,
-        private dataContext: DataContext,
         private _formBuilder: FormBuilder,
         private sideNavService: SideNavService,
         changeDetectorRef: ChangeDetectorRef,
         media: MediaMatcher,
         private _userSession: UserSession,
         private timeClockService: TimeClockService,
-        notifier: NotifierService,
-        private _communicationService: CommunicationService,
-        private employeeService: EmployeeService) {
+        notifier: NotifierService) {
         this.notifier = notifier;
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -80,6 +70,7 @@ export class TimeTrackerComponent implements OnInit {
         const last = first + 4;
         this.intializeFilter(first, last);
     }
+
     ngOnInit(): void {
         // this.GetTimeTrackerData();
         this.LoadSideNavMenu();

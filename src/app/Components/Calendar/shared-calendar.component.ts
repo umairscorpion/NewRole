@@ -1,18 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
-
 import * as $ from 'jquery';
 import * as moment from 'moment';
 import 'fullcalendar';
 import 'fullcalendar-scheduler';
 import { AvailabilityService } from '../../Services/availability.service';
-import { MatDialog } from '@angular/material';
 import { UserAvailability } from 'src/app/Model/userAvailability';
 import { ReportFilter } from 'src/app/Model/Report/report.filter';
 import { ReportDetail } from 'src/app/Model/Report/report.detail';
@@ -32,16 +23,13 @@ export class SharedCalendarComponent implements OnInit {
   date: string = moment().format('dddd, MM/DD/YYYY');
   todayTotalAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
   loginedUserRole = 0;
+
   constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialog,
     private availabilityService: AvailabilityService,
     private absenceService: AbsenceService,
     private reportService: ReportService,
     private _userSession: UserSession,
-    private router: Router,
-  ) {
-
+    private router: Router) {
   }
 
   ngOnInit() {

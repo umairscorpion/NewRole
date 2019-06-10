@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Inject, ChangeDetectorRef, HostBinding } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { IDistrict } from '../../Model/Manage/district';
 import { DistrictService } from '../../Service/Manage/district.service';
 import { EmployeeService } from '../../Service/Manage/employees.service';
@@ -45,6 +45,7 @@ export class PayRollComponent implements OnInit {
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
     }
+
     ngOnInit(): void {
         this.intializeForms();
         this.GetPositions();
@@ -61,7 +62,6 @@ export class PayRollComponent implements OnInit {
     }
 
     ngAfterViewInit() {
-
     }
 
     intializeForms() {
@@ -101,7 +101,7 @@ export class PayRollComponent implements OnInit {
     onTabChanged(tab: any) {
         if (tab.index === 1) {
             this._districtService.getById('district/getDistrictById', this._userSession.getUserDistrictId()).subscribe((data: any) => {
-                this.weeklyLimitSettings.patchValue({...data[0]});
+                this.weeklyLimitSettings.patchValue({ ...data[0] });
             },
                 error => this.msg = <any>error);
         }

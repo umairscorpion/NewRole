@@ -12,8 +12,7 @@ import { Entity } from '../Model/entity';
 export class FileService extends RestService<FileManager> {
   constructor(
     protected httpClient: HttpClient,
-    protected errorHandler: ErrorHandlerService
-  ) {
+    protected errorHandler: ErrorHandlerService) {
     super(httpClient);
   }
 
@@ -46,5 +45,4 @@ export class FileService extends RestService<FileManager> {
   deleteFile(url: string, model: any): Observable<any> {
     return this.httpClient.patch(environment.apiUrl + url, model);
   }
-
 }

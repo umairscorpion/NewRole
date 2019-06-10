@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Entity } from '../Model/entity';
@@ -13,8 +12,7 @@ import { Observable } from 'rxjs';
 export class LookupService extends RestService<Lookup> {
   constructor(
     protected httpClient: HttpClient,
-    protected errorHandler: ErrorHandlerService
-  ) {
+    protected errorHandler: ErrorHandlerService) {
     super(httpClient);
   }
 

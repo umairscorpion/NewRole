@@ -54,6 +54,7 @@ export class AvailableJobsComponent implements OnInit {
         notifier: NotifierService, ) {
         this.notifier = notifier;
     }
+    
     ngAfterViewInit() {
         this.AvailableJobs.sort = this.sort;
         this.AvailableJobs.paginator = this.paginator;
@@ -160,6 +161,7 @@ export class AvailableJobsComponent implements OnInit {
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
 
     }
+
     ShowAttachment(AbsenceDetail: any) {
         AbsenceDetail.isShowAttachment = true;
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);

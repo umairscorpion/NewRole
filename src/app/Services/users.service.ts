@@ -1,23 +1,18 @@
 import { Injectable } from '@angular/core';
-
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { RestService } from './restService';
 import { ErrorHandlerService } from './error-handler/error-handler.service';
 import { Entity } from '../Model/entity';
 import { User, UserSummary } from '../Model/user';
 import { environment } from '../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
-import { UserSession } from './userSession.service';
 import { Observable } from 'rxjs';
-
 
 @Injectable()
 export class UsersService extends RestService<User> {
   constructor(
     protected httpClient: HttpClient,
-    protected errorHandler: ErrorHandlerService,
-    private _UserSession: UserSession
-  ) {
+    protected errorHandler: ErrorHandlerService) {
     super(httpClient);
   }
 

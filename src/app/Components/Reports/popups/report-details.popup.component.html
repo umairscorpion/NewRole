@@ -19,14 +19,14 @@
     <hr>
     <div>
       <div class="avatar-wrapper">
-        <img class="profile-pic" [src]="getImage(reportDetail.employeeProfilePicUrl)" width="150" height="150"  />
+        <img class="profile-pic" [src]="getImage(reportDetail.employeeProfilePicUrl)" width="150" height="150" />
       </div>
       <div class="text-center">
         <h4>{{reportDetail.employeeName}}</h4>
       </div>
       <div class="absence-summary-title p-2 mt-2">Absence Summary</div>
       <br>
-      <table *ngIf="menuAction=='view'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
+      <table *ngIf="menuAction == 'view' || menuAction == 'delete'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
         <tr>
           <td>ID:</td>
           <td>{{reportDetail.absenceId}}</td>
@@ -81,7 +81,7 @@
           <td *ngIf="reportDetail.anyAttachment == false">No Attachment</td>
         </tr>
       </table>
-      <table *ngIf="menuAction=='edit'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
+      <table *ngIf="menuAction == 'edit'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
         <tr>
           <td>ID:</td>
           <td>{{reportDetail.absenceId}}</td>
@@ -205,7 +205,7 @@
           </td>
         </tr>
       </table>
-      <table *ngIf="menuAction=='assign'" cellpadding="3" cellspacing="3" width="100%">
+      <table *ngIf="menuAction == 'assign'" cellpadding="3" cellspacing="3" width="100%">
         <tr>
           <td>
             <mat-form-field class="col-md-9">
@@ -231,7 +231,8 @@
     </div>
     <hr>
     <mat-dialog-actions class="m-10">
-      <button *ngIf="menuAction=='assign'" type="button" mat-raised-button class="btn btn-info" (click)="onAssign(absenceForm)">Direct
+      <button *ngIf="menuAction=='assign'" type="button" mat-raised-button class="btn btn-info"
+        (click)="onAssign(absenceForm)">Direct
         Assign</button>
       <button *ngIf="menuAction=='edit'" type="submit" mat-raised-button class="btn btn-info"
         (click)="onSubmit(absenceForm)">Save</button>&nbsp;

@@ -50,5 +50,4 @@ export class UserSession {
     getUserEmailId(): string {
         return this.UserClaim.email as string;
     }
-
 }
