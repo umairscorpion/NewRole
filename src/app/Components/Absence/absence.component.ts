@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, HostBinding, Inject } from '@angular/core';
+import { Component, ChangeDetectorRef, HostBinding, Inject, ViewChild } from '@angular/core';
 import { UserService } from '../../Service/user.service';
 import { DataContext } from '../../Services/dataContext.service';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -7,12 +7,14 @@ import { SideNavService } from '../SideNav/sideNav.service';
 import { CommunicationService } from '../../Services/communication.service';
 import { UserSession } from '../../Services/userSession.service';
 import { LeaveBalance } from '../../Model/leaveBalance';
+import { UpcommingAbsenceComponent } from './SubPages/UpcommingAbsence/upcommingAbsence.component';
 
 @Component({
     templateUrl: 'absence.component.html',
     styleUrls: ['absence.component.css']
 })
 export class absenceComponent {
+    @ViewChild(UpcommingAbsenceComponent) private getUpcomingAbsences: UpcommingAbsenceComponent;
     employeeLeaveBalance: any;
     sideNavMenu: any;
     msg: string;
@@ -44,6 +46,12 @@ export class absenceComponent {
             this.AbsenceDetail(AbsenceDetail);
         });
         if(this._userSession.getUserRoleId() === 3) this.getEmployeeBalance();
+    }
+
+    onTabChange(tabIndex: any) {
+        if (tabIndex.index == 1) {
+            this.getUpcomingAbsences.GetAbsences();
+        }
     }
 
     getEmployeeBalance() {
