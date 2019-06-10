@@ -1,5 +1,4 @@
-import { Component, ChangeDetectorRef, HostBinding, Inject, ViewChild } from '@angular/core';
-import { Component, ChangeDetectorRef, HostBinding, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectorRef, HostBinding, Inject, Output, EventEmitter, ViewChild } from '@angular/core';
 import { UserService } from '../../Service/user.service';
 import { DataContext } from '../../Services/dataContext.service';
 import { MediaMatcher } from '@angular/cdk/layout';
