@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataContext } from '../../../Services/dataContext.service';
 import { UserSession } from '../../../Services/userSession.service';
 import { MatTableDataSource } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../../../Model/user';
-import { SocialUser } from 'angular-6-social-login';
-import { FormBuilder, FormGroup, Validators, FormControl, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { EmployeeService } from '../../../Service/Manage/employees.service';
 import { Organization } from '../../../Model/organization';
+
 @Component({
     templateUrl: 'my-settings.component.html',
     styleUrls: ['my-settings.component.scss']
@@ -41,10 +41,15 @@ export class MySettingComponent implements OnInit {
     schoolSettings: FormGroup;
     SubstituteId: any;
 
-    constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession: UserSession,
-        private _formBuilder: FormBuilder, private _employeeService: EmployeeService) {
+    constructor(
+        private _dataContext: DataContext,
+        notifier: NotifierService,
+        private _userSession: UserSession,
+        private _formBuilder: FormBuilder,
+        private _employeeService: EmployeeService) {
         this.notifier = notifier;
     }
+
     ngOnInit(): void {
         this.ManageDefultValuesAgainstDifferentUserRoles();
         if (this._userSession.getUserRoleId() != 4) {
@@ -64,6 +69,7 @@ export class MySettingComponent implements OnInit {
             this.getPreferredSchools();
         }
     }
+
     GetSubstituteCategories(): void {
         this._dataContext.get('user/getSubstituteCategories').subscribe((data: any) => {
             this.Categories = data;
@@ -78,6 +84,7 @@ export class MySettingComponent implements OnInit {
         },
             error => <any>error);
     }
+
     getPreferredSchools(): void {
         let UserId = this._userSession.getUserId();
         this._dataContext.get('user/GetSubstitutePreferredSchools/' + UserId).subscribe((data: any) => {
@@ -99,6 +106,7 @@ export class MySettingComponent implements OnInit {
                 this.notifier.notify('error', err.error.error_description);
             });
     }
+
     SaveCategories(Categories: any): void {
         for (let category of Categories.options._results) {
             let model = {
@@ -118,7 +126,7 @@ export class MySettingComponent implements OnInit {
 
     UpdateNotificationEvents(Event: any): void {
         let data = this.notificationEvents.data;
-        
+
         this._dataContext.Patch('user/updateNotificationEvents', data).subscribe((data: any) => {
 
             this.notifier.notify('success', 'Updated Successfully');
@@ -130,14 +138,13 @@ export class MySettingComponent implements OnInit {
 
     }
 
-    onChangeEmail(event){
+    onChangeEmail(event) {
         event.emailAlert = !event.emailAlert;
-        
+
     }
 
-    onChangeText(event){
+    onChangeText(event) {
         event.textAlert = !event.textAlert;
-        
     }
 
     SavePreferredSchoolSettings(AllSchools: any): void {
@@ -186,6 +193,7 @@ export class MySettingComponent implements OnInit {
         else
             this.notifier.notify('error', 'Already added five substitutes.');
     }
+
     GetOrganizations(DistrictId: number): void {
         this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
             this.organizations = data;
@@ -197,6 +205,7 @@ export class MySettingComponent implements OnInit {
         },
             error => <any>error);
     }
+
     GetFavoritSubstitutes() {
         let UserId = this._userSession.getUserId();
         this._dataContext.get('user/getFavoriteSubstitutes' + '/' + UserId).subscribe((data: any) => {
@@ -212,6 +221,7 @@ export class MySettingComponent implements OnInit {
         },
             error => this.msg = <any>error);
     }
+
     generateForms(): void {
         this.PreferencesFormGroup = this._formBuilder.group({
             BlockedSubstitutes: [''],
@@ -254,9 +264,11 @@ export class MySettingComponent implements OnInit {
         else
             this.notifier.notify('error', 'Already added five substitutes.');
     }
+
     removePreferredSub(index: number) {
         this.FavoriteSubstututes.splice(index, 1);
     }
+
     submitGeneralSettings(org: FormGroup) {
         this._dataContext.Patch('school/updateSchool', org.value).subscribe((data: any) => {
             this.notifier.notify('success', 'Updated Successfully.');
@@ -265,11 +277,11 @@ export class MySettingComponent implements OnInit {
                 this.notifier.notify('error', err.message);
             });
     }
+
     onchangeOrganization() {
         this.getSchoolSettings();
     }
 
     onChangeTab(tab: any) {
-
     }
 }

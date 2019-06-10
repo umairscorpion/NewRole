@@ -1,5 +1,4 @@
 <div style="margin: -4%;">
-
     <mat-dialog-actions>
         <div class="col-md-8 pr-0">
             <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
@@ -8,7 +7,7 @@
     <hr>
     <div *ngIf='data.isShowAttachment == false'>
         <div class="avatar-wrapper">
-            <img class="profile-pic" src="" />
+            <img class="profile-pic" [src]="getImage(data.profilePicture)" />
         </div>
         <div class="text-center">
             <h4>{{data.employeeName}}</h4>
@@ -45,7 +44,8 @@
             </tr>
             <tr>
                 <td>Employee:</td>
-                <td>{{data.employeeName}}, {{data.organizationName ? data.organizationName : data.absenceLocation }}</td>
+                <td>{{data.employeeName}}, {{data.organizationName ? data.organizationName : data.absenceLocation }}
+                </td>
             </tr>
             <tr>
                 <td>Attachment:</td>
@@ -61,7 +61,6 @@
             </tr>
         </table>
     </div>
-
     <div class="row" *ngIf='data.isShowAttachment == true'>
         <div class="col-md-12" style="text-align:right;padding-right: 28px; padding-bottom: 5px;"><button mat-button
                 type="button" color="warn" (click)="DownloadFile()">
@@ -69,6 +68,6 @@
                     get_app
                 </i>Download</button></div>
         <div class="col-md-12"><iframe [src]='attachFileUrl'
-                style="height: 460px; width:730px;margin-left: 15px;"></iframe></div>
+                style="height: 560px; width:730px;margin-left: 15px;"></iframe></div>
     </div>
 </div>

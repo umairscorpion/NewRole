@@ -6,16 +6,15 @@ import { RestService } from './restService';
 import { RolePermission } from '../Model/rolePermissions';
 import { ErrorHandlerService } from './error-handler/error-handler.service';
 import { environment } from '../../environments/environment';
-import { PermissionCategory } from '../Model/permissionCategory';
 import { Entity } from '../Model/entity';
 import { Role } from '../Model/userRoles';
 
 @Injectable()
 export class RolePermissionService extends RestService<RolePermission> {
+
   constructor(
     protected httpClient: HttpClient,
-    protected errorHandler: ErrorHandlerService
-  ) {
+    protected errorHandler: ErrorHandlerService) {
     super(httpClient);
   }
 
@@ -52,7 +51,6 @@ export class RolePermissionService extends RestService<RolePermission> {
         })
       );
   }
-
 
   getInstance(): Entity {
     return new RolePermission();

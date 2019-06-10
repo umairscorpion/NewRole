@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
 import { RestService } from './restService';
 import { UserRole, RoleSummary } from '../Model/userRoles';
@@ -9,13 +8,12 @@ import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
-
 @Injectable()
 export class RoleService extends RestService<UserRole> {
+
   constructor(
     protected httpClient: HttpClient,
-    protected errorHandler: ErrorHandlerService
-  ) {
+    protected errorHandler: ErrorHandlerService) {
     super(httpClient);
   }
 

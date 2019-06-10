@@ -1,9 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { DistrictService } from '../../../Service/Manage/district.service';
-import { UserSession } from '../../../Services/userSession.service';
-import { ReportDetail } from '../../../Model/Report/report.detail';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { TimeClock } from '../../../Model/timeclock';
 import { TimeClockService } from '../../../Services/timeClock.service';
@@ -16,9 +12,12 @@ import { TimeClockService } from '../../../Services/timeClock.service';
 export class EditTimeTracker implements OnInit {
     private notifier: NotifierService;
     msg: string;
-    constructor(private dialogRef: MatDialogRef<EditTimeTracker>, private fb: FormBuilder, private timeClockService: TimeClockService,
-        @Inject(MAT_DIALOG_DATA) public timeTracker: TimeClock, notifier: NotifierService,
-        private districtService: DistrictService, private userSession: UserSession) {
+
+    constructor(
+        private dialogRef: MatDialogRef<EditTimeTracker>,
+        private timeClockService: TimeClockService,
+        @Inject(MAT_DIALOG_DATA) public timeTracker: TimeClock,
+        notifier: NotifierService) {
         this.notifier = notifier;
     }
 
@@ -32,11 +31,11 @@ export class EditTimeTracker implements OnInit {
     onUpdateTimeTracker(timeTrackerDetail: TimeClock) {
         let TimeModel = {
             clockInDate: timeTrackerDetail.clockInDate,
-            clockInTime:timeTrackerDetail.startTime,
-            clockOutTime:timeTrackerDetail.endTime,
-            userId:timeTrackerDetail.userId,
-            timeClockId:timeTrackerDetail.timeClockId
-            
+            clockInTime: timeTrackerDetail.startTime,
+            clockOutTime: timeTrackerDetail.endTime,
+            userId: timeTrackerDetail.userId,
+            timeClockId: timeTrackerDetail.timeClockId
+
         }
         this.timeClockService.Patch('/Time/updateTimeClockData/', TimeModel).subscribe((respose: any) => {
             if (respose == "success") {

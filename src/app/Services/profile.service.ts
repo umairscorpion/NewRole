@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-
-import { catchError, map } from 'rxjs/operators';
 import { Lookup } from '../Model/lookup';
 import { environment } from '../../environments/environment';
 import { Entity } from '../Model/entity';
@@ -13,10 +11,10 @@ import { SubstitutePreference } from '../Model/substitutePreference';
 
 @Injectable()
 export class ProfileService extends RestService<User> {
+
   constructor(
     protected httpClient: HttpClient,
-    protected errorHandler: ErrorHandlerService
-  ) {
+    protected errorHandler: ErrorHandlerService) {
     super(httpClient);
   }
 
@@ -29,7 +27,7 @@ export class ProfileService extends RestService<User> {
       .get<Lookup[]>(`${environment.apiUrl}/user/favoriteSubstituteCategory` + '/' + userId + '/' + searchText);
   }
 
-  InsertCategory (subCategory: SubstitutePreference) {
+  InsertCategory(subCategory: SubstitutePreference) {
     return this.httpClient
       .post<number>(`${environment.apiUrl}/user/insertPreferredSSubstituteCategory`, subCategory);
   }

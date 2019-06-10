@@ -12,10 +12,10 @@ import { LeaveRequest } from '../Model/leaveRequest';
 
 @Injectable()
 export class ReportService extends RestService<any> {
+
   constructor(
     protected httpClient: HttpClient,
-    protected errorHandler: ErrorHandlerService
-  ) {
+    protected errorHandler: ErrorHandlerService) {
     super(httpClient);
   }
 

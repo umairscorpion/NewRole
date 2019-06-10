@@ -1,16 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataContext } from '../../Services/dataContext.service';
 import { UserSession } from '../../Services/userSession.service';
-import { MatTableDataSource } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../../Model/user';
-import { SocialUser } from 'angular-6-social-login';
-import { FormBuilder, FormGroup, Validators, FormControl, NgForm } from '@angular/forms';
-import { EmployeeService } from '../../Service/Manage/employees.service';
-import { TimeClock } from '../../Model/timeclock';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Organization } from '../../Model/organization';
 import { AbsenceScope } from '../../Model/absenceScope';
+
 @Component({
     templateUrl: 'settings.component.html',
     styleUrls: ['settings.component.css']
@@ -40,10 +37,14 @@ export class SettingComponent implements OnInit {
     personalFormGroup: FormGroup;
     absenceTypes: AbsenceScope[] = Array<AbsenceScope>();
 
-    constructor(private _dataContext: DataContext, notifier: NotifierService, private _userSession: UserSession,
-        private _formBuilder: FormBuilder, private _employeeService: EmployeeService) {
+    constructor(
+        private _dataContext: DataContext,
+        notifier: NotifierService,
+        private _userSession: UserSession,
+        private _formBuilder: FormBuilder) {
         this.notifier = notifier;
     }
+
     ngOnInit(): void {
         for (let i = 0; i <= 4; i++) {
             this.substituteList.push(new User());
@@ -162,7 +163,7 @@ export class SettingComponent implements OnInit {
 
     getSchoolSettings() {
         this._dataContext.getById('School/getSchoolById', this.OrganizationId).subscribe((org: Organization) => {
-            this.schoolSettings.patchValue({...org[0]});
+            this.schoolSettings.patchValue({ ...org[0] });
         },
             error => <any>error);
     }
@@ -217,6 +218,5 @@ export class SettingComponent implements OnInit {
 
     absenceVisibilityChanged(absecetype, $event) {
         absecetype.visibility = !absecetype.visibility;
-      }
-
+    }
 }
