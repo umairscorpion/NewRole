@@ -1,3 +1,4 @@
+import { Component, ChangeDetectorRef, HostBinding, Inject, ViewChild } from '@angular/core';
 import { Component, ChangeDetectorRef, HostBinding, Inject, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../Service/user.service';
 import { DataContext } from '../../Services/dataContext.service';
@@ -7,12 +8,14 @@ import { SideNavService } from '../SideNav/sideNav.service';
 import { CommunicationService } from '../../Services/communication.service';
 import { UserSession } from '../../Services/userSession.service';
 import { LeaveBalance } from '../../Model/leaveBalance';
+import { UpcommingAbsenceComponent } from './SubPages/UpcommingAbsence/upcommingAbsence.component';
 
 @Component({
     templateUrl: 'absence.component.html',
     styleUrls: ['absence.component.css']
 })
 export class absenceComponent {
+    @ViewChild(UpcommingAbsenceComponent) private getUpcomingAbsences: UpcommingAbsenceComponent;
     @Output() refreshEmployeeBalance: EventEmitter<any> = new EventEmitter();
     employeeLeaveBalance: any;
     sideNavMenu: any;
@@ -44,6 +47,12 @@ export class absenceComponent {
         this._communicationService.AbsenceDetail.subscribe((AbsenceDetail: any) => {
             this.AbsenceDetail(AbsenceDetail);
         });
+    }
+
+    onTabChange(tabIndex: any) {
+        if (tabIndex.index == 1) {
+            this.getUpcomingAbsences.GetAbsences();
+        }
     }
 
     getEmployeeBalance() {

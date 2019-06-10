@@ -36,6 +36,10 @@ export class MySettingComponent implements OnInit {
     UserRole: number = this._userSession.getUserRoleId();
     displayedColumns: string[] = ['event', 'email', 'text'];
     notificationEvents = new MatTableDataSource();
+    displayedColumnsForCategories: string[] = ['category', 'notification'];
+    categoriesForNotification = new MatTableDataSource();
+    displayedColumnsForSchools: string[] = ['school', 'notification'];
+    schoolsForNotification = new MatTableDataSource();
     SubstituteList: any;
     personalFormGroup: FormGroup;
     schoolSettings: FormGroup;
@@ -73,6 +77,7 @@ export class MySettingComponent implements OnInit {
     GetSubstituteCategories(): void {
         this._dataContext.get('user/getSubstituteCategories').subscribe((data: any) => {
             this.Categories = data;
+            this.categoriesForNotification.data = data;
         },
             error => <any>error);
     }
@@ -89,6 +94,7 @@ export class MySettingComponent implements OnInit {
         let UserId = this._userSession.getUserId();
         this._dataContext.get('user/GetSubstitutePreferredSchools/' + UserId).subscribe((data: any) => {
             this.PreferredSchools = data;
+            this.schoolsForNotification.data = data;
         },
             error => <any>error);
     }
@@ -106,23 +112,38 @@ export class MySettingComponent implements OnInit {
                 this.notifier.notify('error', err.error.error_description);
             });
     }
+    // SaveCategories(Categories: any): void {
+    //     for (let category of Categories.options._results) {
+    //         let model = {
+    //             OrganizationId: category.value,
+    //             IsEnabled: category.selected
+    //         }
+
+    //         this._dataContext.Patch('user/updateUserCategories', model).subscribe((data: any) => {
+    //         },
+    //             (err: HttpErrorResponse) => {
+    //                 this.notifier.notify('error', err.error.error_description);
+    //             });
+    //     }
+    //     this.notifier.notify('success', 'Updated Successfully');
+
+    // }
 
     SaveCategories(Categories: any): void {
-        for (let category of Categories.options._results) {
-            let model = {
-                OrganizationId: category.value,
-                IsEnabled: category.selected
-            }
-
-            this._dataContext.Patch('user/updateUserCategories', model).subscribe((data: any) => {
+        
+            let data = this.categoriesForNotification.data;
+            this._dataContext.Patch('user/updateUserCategories', data).subscribe((data: any) => {
+                this.notifier.notify('success', 'Updated Successfully');
             },
                 (err: HttpErrorResponse) => {
                     this.notifier.notify('error', err.error.error_description);
                 });
-        }
-        this.notifier.notify('success', 'Updated Successfully');
+ }
 
-    }
+ onChangeCategory(event)
+ {
+    event.isNotificationSend = !event.isNotificationSend;
+ }
 
     UpdateNotificationEvents(Event: any): void {
         let data = this.notificationEvents.data;
@@ -147,20 +168,35 @@ export class MySettingComponent implements OnInit {
         event.textAlert = !event.textAlert;
     }
 
+    // SavePreferredSchoolSettings(AllSchools: any): void {
+    //     for (let School of AllSchools.options._results) {
+    //         let model = {
+    //             OrganizationId: School.value,
+    //             IsEnabled: School.selected,
+    //             UserId: this._userSession.getUserId()
+    //         }
+    //         this._dataContext.Patch('user/UpdateEnabledSchools', model).subscribe((data: any) => {
+    //         },
+    //             (err: HttpErrorResponse) => {
+    //                 this.notifier.notify('error', err.error.error_description);
+    //             });
+    //     }
+    //     this.notifier.notify('success', 'Updated Successfully');
+    // }
+
     SavePreferredSchoolSettings(AllSchools: any): void {
-        for (let School of AllSchools.options._results) {
-            let model = {
-                OrganizationId: School.value,
-                IsEnabled: School.selected,
-                UserId: this._userSession.getUserId()
-            }
-            this._dataContext.Patch('user/UpdateEnabledSchools', model).subscribe((data: any) => {
+        let data = this.schoolsForNotification.data;
+            this._dataContext.Patch('user/UpdateEnabledSchools', data).subscribe((data: any) => {
+                this.notifier.notify('success', 'Updated Successfully');
             },
                 (err: HttpErrorResponse) => {
                     this.notifier.notify('error', err.error.error_description);
                 });
-        }
-        this.notifier.notify('success', 'Updated Successfully');
+     }
+
+     onChangeSchool(event){
+        event.isEnabled = !event.isEnabled;
+        
     }
 
     getSchoolSettings() {
