@@ -102,9 +102,16 @@ export class LeaveBalanceComponent implements OnInit {
             title: 'Payroll Report',
             useBom: false,
             noDownload: false,
-            headers: ['Employee', 'Reason', 'start Date', 'End Date', 'Location', 'Accepted Date', 'Status']
+            headers: ['Employee Name', 'Personal Leave', 'Sick Leave', 'Vacation Leave']
         };
-        new ngxCsv(JSON.stringify(this.employeeLeaveBalance.data), new Date().toLocaleDateString(), configuration);
+        let leaveReportTorint = this.employeeLeaveBalance.data.filter(function (balance: LeaveBalance) {
+            delete balance.userId;
+            delete balance.districtId;
+            delete balance.organizationId;
+            delete balance.year;
+            return true;
+        });
+        new ngxCsv(JSON.stringify(leaveReportTorint), new Date().toLocaleDateString(), configuration);
     }
 
     //For Display Employee name in text box

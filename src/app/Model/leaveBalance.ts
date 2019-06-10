@@ -1,9 +1,10 @@
 export interface LeaveBalance {
     userId: string;
+    userName: number;
     personal: string;
     sick: string;
     vacation: string;
-    userName: number;
     organizationId: string;
     districtId: number;
+    year: number;
 }

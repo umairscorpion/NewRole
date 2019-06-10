@@ -49,9 +49,11 @@ export class AppLayoutComponent implements OnInit {
   }
 
   onActivate(componentReference) {
-    componentReference.refreshEmployeeBalance.subscribe((data) => {
-      this.getEmployeeBalance();
-   });
+    if (this.userRole === 3) {
+      componentReference.refreshEmployeeBalance.subscribe((data) => {
+        this.getEmployeeBalance();
+      });
+    }
   }
 
   loadUserResources(resourceTypeId: number, parentResourceTypeId: number, adminPortal: number): void {

@@ -26,7 +26,7 @@
                 <button mat-raised-button type="button" style="background-color: #04c0be; color: white;" (click)="applyFilter(inputva)">Search</button>
             </div>
             <div class="col-md-2 col-lg-2">
-                <button mat-raised-button printSectionId="htmlForPrint" ngxPrint style="background:#F0F1F3; color:#A1A1A3; margin-left:5px"
+                <button mat-raised-button (click)="generateCSV()" style="background:#F0F1F3; color:#A1A1A3; margin-left:5px"
                     type="button">
                     <i class="material-icons">
                         print

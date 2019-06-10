@@ -698,6 +698,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.ngOnInit();
         stepper.reset();
         this.onChangeAbsenceFor("1");
+        this.removeAttachedFile();
     }
 
     GetPositionText(): any {
