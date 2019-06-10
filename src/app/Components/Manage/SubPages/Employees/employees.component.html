@@ -101,7 +101,10 @@
               </a>
               <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Reset Password" (click)="resetPassword(row.userId)"
                 matTooltipPosition="below">
-                reset
+                <span class="fa-passwd-reset fa-stack">
+                  <i class="fa fa-undo fa-stack-2x"></i>
+                  <i class="fa fa-lock fa-stack-1x"></i>
+                </span>
               </a>
               <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'"
                 matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateEmployeeStatus(row)" color=""></mat-slide-toggle>

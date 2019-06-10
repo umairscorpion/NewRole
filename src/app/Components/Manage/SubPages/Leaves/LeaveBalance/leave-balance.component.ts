@@ -71,16 +71,25 @@ export class LeaveBalanceComponent implements OnInit {
     }
 
     applyFilter(employeeName: any) {
-        const tableFilters = [];
-        tableFilters.push({
-            id: 'userName',
-            value: employeeName.value
-        });
-
-        this.employeeLeaveBalance.filter = JSON.stringify(tableFilters);
-        if (this.employeeLeaveBalance.paginator) {
-            this.employeeLeaveBalance.paginator.firstPage();
+        let filter = {
+            organizationId: this.userSession.getUserOrganizationId(),
+            districtId: this.userSession.getUserDistrictId(),
+            year: this.year,
+            userId: "All"
         }
+        this.dataContext.post('Leave/getEmployeeLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
+            this.employeeLeaveBalance.data = response;
+            const tableFilters = [];
+            tableFilters.push({
+                id: 'userName',
+                value: employeeName.value
+            });
+
+            this.employeeLeaveBalance.filter = JSON.stringify(tableFilters);
+            if (this.employeeLeaveBalance.paginator) {
+                this.employeeLeaveBalance.paginator.firstPage();
+            }
+        })
     }
 
     generateCSV() {

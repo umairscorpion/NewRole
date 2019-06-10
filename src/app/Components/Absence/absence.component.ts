@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, HostBinding, Inject } from '@angular/core';
+import { Component, ChangeDetectorRef, HostBinding, Inject, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../Service/user.service';
 import { DataContext } from '../../Services/dataContext.service';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -13,6 +13,7 @@ import { LeaveBalance } from '../../Model/leaveBalance';
     styleUrls: ['absence.component.css']
 })
 export class absenceComponent {
+    @Output() refreshEmployeeBalance: EventEmitter<any> = new EventEmitter();
     employeeLeaveBalance: any;
     sideNavMenu: any;
     msg: string;
@@ -43,19 +44,10 @@ export class absenceComponent {
         this._communicationService.AbsenceDetail.subscribe((AbsenceDetail: any) => {
             this.AbsenceDetail(AbsenceDetail);
         });
-        if(this._userSession.getUserRoleId() === 3) this.getEmployeeBalance();
     }
 
     getEmployeeBalance() {
-        let filter = {
-            organizationId: this._userSession.getUserOrganizationId(),
-            districtId: this._userSession.getUserDistrictId(),
-            year: new Date().getFullYear(),
-            userId: this._userSession.getUserId()
-        }
-        this.dataContext.post('Leave/getEmployeeLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
-            this.employeeLeaveBalance = response;
-        })
+        this.refreshEmployeeBalance.emit('emit');
     }
 
     LoadSideNavMenu(): void {
