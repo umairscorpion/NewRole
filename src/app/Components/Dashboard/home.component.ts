@@ -88,14 +88,14 @@ export class HomeComponent implements OnInit {
         if (!this.userSession.isViewedNewVersion()) {
             this.settingsService.getVersionUpdate().subscribe(t => {
                 console.log(t);
-                // const dialogRef = this.dialogRef.open(SplashScreenComponent,
-                //     {
-                //         panelClass: 'splash-screen-dialog',
-                //         data: t
-                //     });
-                // dialogRef.afterClosed().subscribe(result => {
-                //     // update is viewed flag to true in user table.
-                // });
+                const dialogRef = this.dialogRef.open(SplashScreenComponent,
+                    {
+                        panelClass: 'splash-screen-dialog',
+                        data: t
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    // update is viewed flag to true in user table.
+                });
             });
 
         }
