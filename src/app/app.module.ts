@@ -193,6 +193,9 @@ import { NavbarComponent } from './Components/nav/nav.component';
 import { NavTopBarComponent } from './Components/nav/topBar/navTopBar.component';
 import { SharedCalendarComponent } from './Components/Calendar/shared-calendar.component';
 import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-password.component';
+import { EventAddComponent } from './Components/Calendar/event-add/event-add.component';
+import { SplashScreenComponent } from './Components/Dashboard/splash-screen/splash-screen.component';
+import { SettingsService } from './Services/settings.service';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -378,7 +381,9 @@ const customNotifierOptions: NotifierOptions = {
         ForgotPasswordComponent,
         SharedCalendarComponent,
         NavTopBarComponent,
-        ResetPasswordComponent
+        ResetPasswordComponent,
+        EventAddComponent,
+        SplashScreenComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -399,7 +404,9 @@ const customNotifierOptions: NotifierOptions = {
         EditTimeTracker,
         EditPayrollComponent,
         ShowAttachmentPopupComponent,
-        UserEditComponent
+        UserEditComponent,
+        EventAddComponent,
+        SplashScreenComponent
     ],
     providers: [
         UserService,
@@ -435,7 +442,8 @@ const customNotifierOptions: NotifierOptions = {
         AvailabilityService,
         RolePermissionService,
         AuthorizationService,
-        AuditLogService
+        AuditLogService,
+        SettingsService
     ],
     bootstrap: [AppComponent],
 

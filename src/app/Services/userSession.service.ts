@@ -50,4 +50,8 @@ export class UserSession {
     getUserEmailId(): string {
         return this.UserClaim.email as string;
     }
+
+    isViewedNewVersion(): boolean {
+        return this.UserClaim.isViewedNewVersion as boolean;
+    }
 }
