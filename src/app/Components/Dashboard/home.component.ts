@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import { CommunicationService } from "../../Services/communication.service";
 import { environment } from "src/environments/environment";
 import { DomSanitizer } from "@angular/platform-browser";
+import { DashboardSummary } from "src/app/Model/DashboardSummary";
 import { SplashScreenComponent } from "./splash-screen/splash-screen.component";
 import { SettingsService } from "src/app/Services/settings.service";
 
@@ -29,12 +30,16 @@ export class HomeComponent implements OnInit {
     absenceSummary: any;
     absenceSummary1 = [];
     FilledTenDay = [];
+    AbsenceReason = [];
+    AbsenceReasonTitle = [];
     UnFilledTenDay = [];
     previousDates = [];
     TotalFilledUnfilled = [];
     TotalAbsenceByGradeLevel = [];
+    TotalAbsenceByGradeLevelTitle = [];
     AbsencesByWeekDay = [];
     AbsenceBySubject = [];
+    AbsenceBySubjectTitle = [];
     displayedColumnsForTopTenTeachers: string[] = ['Teacher', 'Absence'];
     previousDateMinusOne = moment().subtract(1, 'days').format('MM/DD');
     previousDateMinusTwo = moment().subtract(2, 'days').format('MM/DD');
@@ -47,7 +52,7 @@ export class HomeComponent implements OnInit {
     previousDateMinusNine = moment().subtract(9, 'days').format('MM/DD');
     previousDateMinusTen = moment().subtract(10, 'days').format('MM/DD');
     absenceReason1 = [];
-    dashboardCounter: AbsenceSummary = new AbsenceSummary();
+    dashboardCounter: DashboardSummary = new DashboardSummary();
     absenceChartSummary: AbsenceSummary = new AbsenceSummary();
     topCounter: AbsenceSummary;
     absenceReason: any;
@@ -85,6 +90,15 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.absenceService.getSummary().subscribe((summary: any) => {
+             this.bindAbsenceSummary(summary);
+             this.bindAbsenceReason(summary);
+             this.bindFilledUnfilled(summary);
+             this.bindTotalFilledUnfilled(summary);
+             this.bindAbsenceByDayWeek(summary);
+             this.bindAbsenceBySubject(summary);
+             this.bindTotalAbsenceByGradeLevel(summary);
+             this.dashboardCounter = summary.absenceSummary[0];
         if (!this.userSession.isViewedNewVersion()) {
             this.settingsService.getVersionUpdate().subscribe(t => {
                 console.log(t);
@@ -99,16 +113,6 @@ export class HomeComponent implements OnInit {
             });
 
         }
-
-        this.absenceService.getSummary().subscribe((summary: AbsenceSummary[]) => {
-            this.bindAbsenceSummary(summary[0]);
-            this.bindAbsenceReason(summary[0]);
-            this.bindFilledUnfilled(summary[0]);
-            this.bindTotalFilledUnfilled(summary[0]);
-            this.bindAbsenceByDayWeek(summary[0]);
-            // this.bindAbsenceBySubject(summary[0]);
-            // this.bindTotalAbsenceByGradeLevel(summary[0]);
-            this.dashboardCounter = summary[0];
         });
         this.getTopTenTeachers();
         this.GetLeaveRequests();
@@ -116,88 +120,6 @@ export class HomeComponent implements OnInit {
             this.isOpen = isOpen;
         });
         this.LoadUserResources();
-        this.absenceSummary = new Chart('absenceBySubject', {
-            type: 'horizontalBar',
-            data: {
-                labels: ["Math", "Science", "Reading", "Social Studies", "English", "Special Education", "Physical Education", "Career Tech", "Art"],
-                datasets: [{
-                    label: 'Absence By Subject',
-                    data: [12, 19, 3, 5, 10, 15, 14, 10, 5],
-                    backgroundColor: [
-                        "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#c45850", "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"
-                    ],
-                    borderColor: [
-
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    datalabels: {
-                        display: false,
-                        color: 'black',
-                        // anchor:'end',
-                        // clamp:true,
-                        // align:'end',
-                        // offset: -6 
-                    },
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-        this.absenceSummary = new Chart('absencesByGradeLevel', {
-            type: 'pie',
-            data: {
-                labels: ["6th", "7th", "8th", "9th", "10th", "11th"],
-                datasets: [{
-                    data: [12, 19, 3, 5, 5, 12],
-                    backgroundColor: [
-                        '#3e95cd',
-                        '#3cba9f',
-                        '#8e5ea2',
-                        "#c45850",
-                        '#3e95cd',
-                        '#3cba9f'
-                    ],
-                    borderColor: [
-                        // '#72b8b7',
-                        // '#7cbb98',
-                        // '#f5c89b',
-                        // 'rgba(75, 192, 192, 1)',
-                        // 'rgba(153, 102, 255, 1)',
-                        // '#72b8b7'
-
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    datalabels: {
-                        display: false,
-                        color: 'white',
-                        // anchor:'end',
-                        // clamp:true,
-                        // align:'end',
-                        // offset: -6 
-                    },
-                },
-                // scales: {
-                //     yAxes: [{
-                //         ticks: {
-                //             beginAtZero: true
-                //         }
-                //     }]
-                // }
-            }
-        });
     }
 
     LoadUserResources(): void {
@@ -209,19 +131,19 @@ export class HomeComponent implements OnInit {
         this._communicationService.UpdatePanel(config);
     }
 
-    bindAbsenceSummary(chartSummary: AbsenceSummary) {
-        this.absenceSummary1.push(chartSummary.january);
-        this.absenceSummary1.push(chartSummary.february);
-        this.absenceSummary1.push(chartSummary.march);
-        this.absenceSummary1.push(chartSummary.april);
-        this.absenceSummary1.push(chartSummary.may);
-        this.absenceSummary1.push(chartSummary.june);
-        this.absenceSummary1.push(chartSummary.july);
-        this.absenceSummary1.push(chartSummary.august);
-        this.absenceSummary1.push(chartSummary.september);
-        this.absenceSummary1.push(chartSummary.october);
-        this.absenceSummary1.push(chartSummary.november);
-        this.absenceSummary1.push(chartSummary.december);
+    bindAbsenceSummary(chartSummary: DashboardSummary) {
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].january);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].february);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].march);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].april);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].may);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].june);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].july);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].august);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].september);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].october);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].november);
+        this.absenceSummary1.push(chartSummary.absenceSummary[0].december);
 
         this.absenceSummary = new Chart('absenceSummary', {
             type: 'bar',
@@ -285,18 +207,18 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    bindAbsenceReason(chartSummary: AbsenceSummary) {
-        this.absenceReason1.push(chartSummary.personalLeave);
-        this.absenceReason1.push(chartSummary.illnessSelf);
-        this.absenceReason1.push(chartSummary.other);
-        this.absenceReason1.push(chartSummary.pd);
+    bindAbsenceReason(chartSummary: DashboardSummary) {
+        this.AbsenceReason.push(chartSummary.absenceSummary[0].personalLeave);
+        this.AbsenceReason.push(chartSummary.absenceSummary[0].illnessSelf);
+        this.AbsenceReason.push(chartSummary.absenceSummary[0].other);
+        this.AbsenceReason.push(chartSummary.absenceSummary[0].pd);
         this.absenceReason = new Chart('absenceReason', {
             type: 'horizontalBar',
             data: {
-                labels: ["Personal Leave", "illness Self", "Other", "PD"],
+                labels: ["Personal Leave","ilness Self","Other","PD"],
                 datasets: [{
                     label: 'Absence Reason',
-                    data: this.absenceReason1,
+                    data: this.AbsenceReason,
                     backgroundColor: [
                         "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"
                         // '#73dad9',
@@ -337,29 +259,29 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    bindFilledUnfilled(chartSummary: AbsenceSummary) {
+    bindFilledUnfilled(chartSummary: DashboardSummary) {
         //Filled Ten Days 
-        this.FilledTenDay.push(chartSummary.filledPreviousMinusTen);
-        this.FilledTenDay.push(chartSummary.filledPreviousMinusNine);
-        this.FilledTenDay.push(chartSummary.filledPreviousMinusEight);
-        this.FilledTenDay.push(chartSummary.filledPreviousMinusSeven);
-        this.FilledTenDay.push(chartSummary.filledPreviousMinusSix);
-        this.FilledTenDay.push(chartSummary.filledPreviousMinusFive);
-        this.FilledTenDay.push(chartSummary.filledPreviousMinusFour);
-        this.FilledTenDay.push(chartSummary.filledPreviousMinusThree);
-        this.FilledTenDay.push(chartSummary.filledPreviousMinusTwo);
-        this.FilledTenDay.push(chartSummary.filledPreviousMinusOne);
+        this.FilledTenDay.push(chartSummary.absenceSummary[0].filledPreviousMinusTen);
+        this.FilledTenDay.push(chartSummary.absenceSummary[0].filledPreviousMinusNine);
+        this.FilledTenDay.push(chartSummary.absenceSummary[0].filledPreviousMinusEight);
+        this.FilledTenDay.push(chartSummary.absenceSummary[0].filledPreviousMinusSeven);
+        this.FilledTenDay.push(chartSummary.absenceSummary[0].filledPreviousMinusSix);
+        this.FilledTenDay.push(chartSummary.absenceSummary[0].filledPreviousMinusFive);
+        this.FilledTenDay.push(chartSummary.absenceSummary[0].filledPreviousMinusFour);
+        this.FilledTenDay.push(chartSummary.absenceSummary[0].filledPreviousMinusThree);
+        this.FilledTenDay.push(chartSummary.absenceSummary[0].filledPreviousMinusTwo);
+        this.FilledTenDay.push(chartSummary.absenceSummary[0].filledPreviousMinusOne);
         //UnFilled Ten Days
-        this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusTen);
-        this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusNine);
-        this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusEight);
-        this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusSeven);
-        this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusSix);
-        this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusFive);
-        this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusFour);
-        this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusThree);
-        this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusTwo);
-        this.UnFilledTenDay.push(chartSummary.unfilledPreviousMinusOne);
+        this.UnFilledTenDay.push(chartSummary.absenceSummary[0].unfilledPreviousMinusTen);
+        this.UnFilledTenDay.push(chartSummary.absenceSummary[0].unfilledPreviousMinusNine);
+        this.UnFilledTenDay.push(chartSummary.absenceSummary[0].unfilledPreviousMinusEight);
+        this.UnFilledTenDay.push(chartSummary.absenceSummary[0].unfilledPreviousMinusSeven);
+        this.UnFilledTenDay.push(chartSummary.absenceSummary[0].unfilledPreviousMinusSix);
+        this.UnFilledTenDay.push(chartSummary.absenceSummary[0].unfilledPreviousMinusFive);
+        this.UnFilledTenDay.push(chartSummary.absenceSummary[0].unfilledPreviousMinusFour);
+        this.UnFilledTenDay.push(chartSummary.absenceSummary[0].unfilledPreviousMinusThree);
+        this.UnFilledTenDay.push(chartSummary.absenceSummary[0].unfilledPreviousMinusTwo);
+        this.UnFilledTenDay.push(chartSummary.absenceSummary[0].unfilledPreviousMinusOne);
         //Filled Unfilled Ten days Labels
         this.previousDates.push(this.previousDateMinusTen);
         this.previousDates.push(this.previousDateMinusNine);
@@ -470,9 +392,9 @@ export class HomeComponent implements OnInit {
 
     }
 
-    bindTotalFilledUnfilled(chartSummary: AbsenceSummary) {
-        this.TotalFilledUnfilled.push(chartSummary.totalFilled);
-        this.TotalFilledUnfilled.push(chartSummary.totalUnfilled);
+    bindTotalFilledUnfilled(chartSummary: DashboardSummary) {
+        this.TotalFilledUnfilled.push(chartSummary.absenceSummary[0].totalFilled);
+        this.TotalFilledUnfilled.push(chartSummary.absenceSummary[0].totalUnfilled);
         this.totalFilledUnfilled = new Chart('fillRate', {
             type: 'pie',
             data: {
@@ -506,17 +428,13 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    bindTotalAbsenceByGradeLevel(chartSummary: AbsenceSummary) {
-        this.TotalAbsenceByGradeLevel.push(chartSummary.gradeSix);
-        this.TotalAbsenceByGradeLevel.push(chartSummary.gradeSeven);
-        this.TotalAbsenceByGradeLevel.push(chartSummary.gradeEight);
-        this.TotalAbsenceByGradeLevel.push(chartSummary.gradeNine);
-        this.TotalAbsenceByGradeLevel.push(chartSummary.gradeTen);
-        this.TotalAbsenceByGradeLevel.push(chartSummary.gradeEleven);
+    bindTotalAbsenceByGradeLevel(chartSummary: DashboardSummary) {
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].total)
+        this.TotalAbsenceByGradeLevelTitle.push(chartSummary.absenceByGradeLevel[0].title)
         this.totalAbsenceByGradeLevel = new Chart('absencesByGradeLevel', {
             type: 'pie',
             data: {
-                labels: ["6th", "7th", "8th", "9th", "10th", "11th"],
+                labels: this.TotalAbsenceByGradeLevelTitle,
                 datasets: [{
                     data: this.TotalAbsenceByGradeLevel,
                     backgroundColor: [
@@ -551,12 +469,12 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    bindAbsenceByDayWeek(chartSummary: AbsenceSummary) {
-        this.AbsencesByWeekDay.push(chartSummary.weekDayMonday);
-        this.AbsencesByWeekDay.push(chartSummary.weekDayTuesday);
-        this.AbsencesByWeekDay.push(chartSummary.weekDayWednesday);
-        this.AbsencesByWeekDay.push(chartSummary.weekDayThursday);
-        this.AbsencesByWeekDay.push(chartSummary.weekDayFriday);
+    bindAbsenceByDayWeek(chartSummary: DashboardSummary) {
+        this.AbsencesByWeekDay.push(chartSummary.absenceSummary[0].weekDayMonday);
+        this.AbsencesByWeekDay.push(chartSummary.absenceSummary[0].weekDayTuesday);
+        this.AbsencesByWeekDay.push(chartSummary.absenceSummary[0].weekDayWednesday);
+        this.AbsencesByWeekDay.push(chartSummary.absenceSummary[0].weekDayThursday);
+        this.AbsencesByWeekDay.push(chartSummary.absenceSummary[0].weekDayFriday);
         this.absencesByWeekDay = new Chart('absenceByDayOfWeek', {
             type: 'bar',
             data: {
@@ -595,23 +513,17 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    bindAbsenceBySubject(chartSummary: AbsenceSummary) {
-        this.AbsenceBySubject.push(chartSummary.subjectMath);
-        this.AbsenceBySubject.push(chartSummary.subjectScience);
-        this.AbsenceBySubject.push(chartSummary.subjectReading);
-        this.AbsenceBySubject.push(chartSummary.subjectSocial);
-        this.AbsenceBySubject.push(chartSummary.subjectEnglish);
-        this.AbsenceBySubject.push(chartSummary.subjectSpecial);
-        this.AbsenceBySubject.push(chartSummary.subjectPhysical);
-        this.AbsenceBySubject.push(chartSummary.subjectCareer);
-        this.AbsenceBySubject.push(chartSummary.subjectArt);
+    bindAbsenceBySubject(chartSummary: DashboardSummary) {
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].total);
+        this.AbsenceBySubjectTitle.push(chartSummary.absenceBySubject[0].title)
         this.absenceBySubject = new Chart('absenceBySubject', {
             type: 'horizontalBar',
             data: {
-                labels: ["Math", "Science", "Reading", "Social Studies", "English", "Special Education", "Physical Education", "Career Tech", "Art"],
+                // labels: ["Math", "Science", "Reading", "Social Studies", "English", "Special Education", "Physical Education", "Career Tech", "Art"],
+                labels: this.AbsenceBySubjectTitle,
                 datasets: [{
                     // label: 'Absence By Subject',
-                    data: this.absenceBySubject,
+                    data: this.AbsenceBySubject,
                     backgroundColor: [
                         "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f"
                     ],
@@ -645,7 +557,7 @@ export class HomeComponent implements OnInit {
     }
 
     getTopTenTeachers() {
-        this.absenceService.getTopTenTeachers().subscribe((details: AbsenceSummary[]) => {
+        this.absenceService.getTopTenTeachers().subscribe((details: DashboardSummary[]) => {
             this.topTenTeachers.data = details;
         });
 

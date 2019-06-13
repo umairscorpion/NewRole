@@ -7,6 +7,7 @@ import { NotifierService } from 'angular-notifier';
 import { AuditFilter } from '../../../../Model/auditLog';
 import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
 import * as moment from 'moment';
+import swal from 'sweetalert2';
 
 @Component({
     selector: 'upcoming-absences',
@@ -62,22 +63,53 @@ export class UpcommingAbsenceComponent implements OnInit {
         });
     }
 
+    // UpdateStatus(SelectedRow: any, StatusId: number) {
+    //     let confirmResult = confirm('Are you sure you want to cancel this absence?');
+    //     let absenceStartDate = moment(SelectedRow.startDate).format('MM/DD/YYYY');
+    //     let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
+    //     if (confirmResult) {
+    //         if (absenceStartDate <= currentDate) {
+    //             this.notifier.notify('error', 'Not able to cancel now');
+    //             return;
+    //         }
+    //         this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+    //             if (response == "success") {
+    //                 this.notifier.notify('success', 'Cancelled Successfully.');
+    //                 this.GetAbsences();
+    //             }
+    //         },
+    //             error => this.msg = <any>error);
+    //     }
+    // }
+
     UpdateStatus(SelectedRow: any, StatusId: number) {
-        let confirmResult = confirm('Are you sure you want to cancel this absence?');
         let absenceStartDate = moment(SelectedRow.startDate).format('MM/DD/YYYY');
         let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
-        if (confirmResult) {
-            if (absenceStartDate <= currentDate) {
-                this.notifier.notify('error', 'Not able to cancel now');
-                return;
-            }
-            this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-                if (response == "success") {
-                    this.notifier.notify('success', 'Cancelled Successfully.');
-                    this.GetAbsences();
+        swal.fire({
+            title: 'Cancel',
+            text:
+                'Are you sure you want to cancel this absence?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+        }).then(r => {
+            if (r.value) {
+                if (absenceStartDate <= currentDate) {
+                    this.notifier.notify('error', 'Not able to cancel now');
+                    return;
                 }
-            },
+                this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                    if (response == "success") {
+                        this.notifier.notify('success', 'Cancelled Successfully.');
+                        this.GetAbsences();
+                    }
+              },
                 error => this.msg = <any>error);
-        }
+            }
+        });
     }
 }
