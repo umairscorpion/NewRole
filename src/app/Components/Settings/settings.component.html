@@ -167,6 +167,7 @@
                             </div>
                         </mat-tab>
                         <mat-tab *ngIf='!isSubstitute && UserRole != 3' label="General">
+                            <div style="margin-left:20px;">
                             <div class="row col-md-12" style="text-align: center">
                                 <mat-form-field class="col-md-3 col-lg-3">
                                     <mat-select placeholder="School" (selectionChange)="onchangeOrganization()" [disabled]="accessibilityOfOrganizationDropdown"
@@ -263,9 +264,10 @@
                                 </mat-list-item>
                                 <mat-divider></mat-divider>
                                 <div class="row col-md-12">
-                                    <button mat-raised-button type="submit" style="background-color: #74a4a7; color: white;">Save</button>
+                                    <button mat-raised-button type="submit" style="background-color: #74a4a7; color: white; margin-top: 10px;">Save</button>
                                 </div>
                             </form>
+                        </div>
                         </mat-tab>
                     </mat-tab-group>
                 </mat-card-content>

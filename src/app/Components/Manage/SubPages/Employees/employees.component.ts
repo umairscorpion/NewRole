@@ -14,6 +14,7 @@ import { switchMap } from 'rxjs/operators/switchMap';
 import { NotifierService } from 'angular-notifier';
 import { PopupDialogForEmployeeDetail } from './popups/viewEmployee.popup.component';
 import { User } from '../../../../Model/user';
+import swal from 'sweetalert2';
 
 @Component({
   templateUrl: 'employees.component.html'
@@ -132,16 +133,40 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
+  // DeleteEmployee(SelectedRow: any) {
+  //  var confirmResult = confirm('Are you sure you want to delete Employee?');
+  //  if (confirmResult) {
+  //      this._dataContext.delete('user/', SelectedRow.userId).subscribe((data: any) => {
+  //        this.notifier.notify('success', 'Deleted Successfully');
+  //        this.ngOnInit();
+  //      },
+  //        error => this.msg = <any>error);
+  //    }
+  //  }
+
   DeleteEmployee(SelectedRow: any) {
-    var confirmResult = confirm('Are you sure you want to delete Employee?');
-    if (confirmResult) {
-      this._dataContext.delete('user/', SelectedRow.userId).subscribe((data: any) => {
-        this.notifier.notify('success', 'Deleted Successfully');
-        this.ngOnInit();
-      },
-        error => this.msg = <any>error);
-    }
-  }
+    
+        swal.fire({
+            title: 'Delete',
+            text:
+                'Are you sure, you want to delete the selected Employee?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+        }).then(r => {
+            if (r.value) {
+              this._dataContext.delete('user/', SelectedRow.userId).subscribe((data: any) => {
+                this.notifier.notify('success', 'Deleted Successfully');
+                this.ngOnInit();
+              },
+                error => this.msg = <any>error);
+            }
+        });
+}
 
   EditEmployee(SelectedRow: any) {
     this.router.navigate(['/manage/employees/addemployee'], { queryParams: { Id: SelectedRow.userId } });

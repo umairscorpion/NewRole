@@ -3,6 +3,7 @@ import { MatPaginator, MatTableDataSource, MatSort, MAT_DIALOG_DATA, MatDialog }
 import { IDistrict } from '../../../../Model/Manage/district';
 import { DistrictService } from '../../../../Service/Manage/district.service';
 import { DataContext } from '../../../../Services/dataContext.service';
+import swal from 'sweetalert2';
 
 import { Router } from '@angular/router';
 @Component({
@@ -69,16 +70,41 @@ export class DistrictsComponent {
       error => <any>error);
   }
 
+  // deleteDistrict(SelectedRow: any) {
+  //   var confirmResult = confirm('Are you sure you want to delete ' + SelectedRow.DistrictName + ' District?');
+  //   if (confirmResult) {
+  //     this._districtService.delete('district/', SelectedRow.districtId).subscribe((data: any) => {
+  //       this.GetDistricts();
+  //     },
+  //       error => this.msg = <any>error);
+  //   }
+  // }
+
   deleteDistrict(SelectedRow: any) {
-    var confirmResult = confirm('Are you sure you want to delete ' + SelectedRow.DistrictName + ' District?');
-    if (confirmResult) {
-      this._districtService.delete('district/', SelectedRow.districtId).subscribe((data: any) => {
-        this.GetDistricts();
-      },
-        error => this.msg = <any>error);
-    }
-  }
+    
+    swal.fire({
+        title: 'Delete',
+        text:
+            'Are you sure, you want to delete the selected District?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-danger',
+        cancelButtonClass: 'btn btn-success',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        buttonsStyling: false
+    }).then(r => {
+        if (r.value) {
+          this._districtService.delete('district/', SelectedRow.districtId).subscribe((data: any) => {
+            this.GetDistricts();
+          },
+            error => this.msg = <any>error);
+        }
+    });
 }
+}
+
+
 
 @Component({
   templateUrl: 'viewDistrict.html',
