@@ -1,17 +1,15 @@
 import { Component, ChangeDetectorRef, HostBinding, Inject, Output, EventEmitter, ViewChild } from '@angular/core';
-import { UserService } from '../../Service/user.service';
 import { DataContext } from '../../Services/dataContext.service';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { SideNavService } from '../SideNav/sideNav.service';
 import { CommunicationService } from '../../Services/communication.service';
 import { UserSession } from '../../Services/userSession.service';
-import { LeaveBalance } from '../../Model/leaveBalance';
 import { UpcommingAbsenceComponent } from './SubPages/UpcommingAbsence/upcommingAbsence.component';
 
 @Component({
     templateUrl: 'absence.component.html',
-    styleUrls: ['absence.component.css']
+    styleUrls: ['absence.component.scss']
 })
 export class absenceComponent {
     @ViewChild(UpcommingAbsenceComponent) private getUpcomingAbsences: UpcommingAbsenceComponent;
@@ -24,14 +22,13 @@ export class absenceComponent {
     mobileQuery: MediaQueryList;
     private _mobileQueryListener: () => void;
     isOpen = true;
+
     constructor(
-        private _userService: UserService, 
-        public dialog: MatDialog, 
-        private dataContext: DataContext,
-        private sideNavService: SideNavService, 
+        public dialog: MatDialog,
+        private sideNavService: SideNavService,
         private _userSession: UserSession,
         private _communicationService: CommunicationService,
-        changeDetectorRef: ChangeDetectorRef, 
+        changeDetectorRef: ChangeDetectorRef,
         media: MediaMatcher) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -41,7 +38,7 @@ export class absenceComponent {
     ngOnInit(): void {
         this.LoadSideNavMenu();
         this.sideNavService.change.subscribe((isOpen: any) => {
-            this.isOpen = isOpen;        
+            this.isOpen = isOpen;
         });
         this._communicationService.AbsenceDetail.subscribe((AbsenceDetail: any) => {
             this.AbsenceDetail(AbsenceDetail);
@@ -72,7 +69,7 @@ export class absenceComponent {
         this.dialog.open(PopupDialogForAbsenceDetail, {
             data,
             height: '500px',
-            width: '750px',
+            width: '650px',
             panelClass: 'AbsenceDetail-popup',
         });
     }
@@ -84,15 +81,15 @@ export class absenceComponent {
 
 @Component({
     templateUrl: 'absenceDetail.html',
-    styleUrls: ['absence.component.css']
+    styleUrls: ['absence.component.scss']
 })
 export class PopupDialogForAbsenceDetail {
     msg: string;
+
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: any, 
-        private _dataContext: DataContext) {
-        console.log(data);
-    }
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        private _dataContext: DataContext,
+        private dialogRef: MatDialogRef<absenceComponent>) { }
 
     DownloadFile(): void {
         let model = { AttachedFileName: this.data.attachedFileName, FileContentType: this.data.fileContentType }
@@ -117,4 +114,8 @@ export class PopupDialogForAbsenceDetail {
         },
             error => this.msg = <any>error);
     }
+
+    onClose() {
+        this.dialogRef.close();
+      }
 }

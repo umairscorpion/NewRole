@@ -60,9 +60,11 @@ export class ReportDetailsComponent implements OnInit {
     private http: HttpClient,
     private sanitizer: DomSanitizer,
 
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.reportDetail = data;
+    if(this.reportDetail.originalFileName) {
+      this.reportDetail.originalFileName = this.reportDetail.originalFileName.substr(0, 15);
+    }   
     this.notifier = notifier;
   }
 

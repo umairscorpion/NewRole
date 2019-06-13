@@ -56,8 +56,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
         private dialogRef: MatDialog,
         private sanitizer: DomSanitizer,
         private excelService: ExcelService,
-        private auditLogService: AuditLogService
-    ) {
+        private auditLogService: AuditLogService) {
     }
 
     ngOnInit(): void {

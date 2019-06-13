@@ -11,16 +11,18 @@ import { DataContext } from '../../../../Services/dataContext.service';
 
 @Component({
     templateUrl: 'addDistrict.component.html',
-    styleUrls: ['district.component.css']
+    styleUrls: ['district.component.scss']
 })
 export class AddDistrictComponent implements OnInit {
     private notifier: NotifierService;
     countries: ICountry[];
     states: Observable<IStates[]>;
+    timezones: any;
     msg: string;
     districtForm: FormGroup;
     districtIdForUpdate: any = 0;
     getDistrictById: any;
+    countryCode: string;
 
     constructor(
         private router: Router,
@@ -40,15 +42,16 @@ export class AddDistrictComponent implements OnInit {
             ZipCode: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             Country: [''],
             State: [''],
-            StartTime: [''],
-            firstHalfEndTime: [''],
-            SecondHaifStartTime: [''],
-            EndTime: [''],
+            StartTime: ['', Validators.required],
+            firstHalfEndTime: ['', Validators.required],
+            SecondHaifStartTime: ['', Validators.required],
+            EndTime: ['', Validators.required],
             TimeZone: [''],
             PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             IsActive: [1]
         });
         this.GetCountries();
+        this.GetTimeZone();
         this.route.queryParams.subscribe((params: any) => {
             if (params['Id']) {
                 let DistrictId = params.Id;
@@ -86,8 +89,20 @@ export class AddDistrictComponent implements OnInit {
             error => <any>error);
     }
 
+    GetTimeZone(): void {
+        this._districtService.getCountries('districtLookup/getTimeZone').subscribe((data: any) => {
+            this.timezones = data;
+        },
+            error => <any>error);
+    }
+
     onChange(countryId: any) {
+        
         this.states = this._districtService.getStatesByCountryId('districtLookup/getStateByCountryId', countryId);
+    }
+
+    setCountryCode(countryCode: any) {
+        this.countryCode = countryCode;
     }
 
     onSubmit(form: any) {
@@ -132,6 +147,32 @@ export class AddDistrictComponent implements OnInit {
     }
 
     CheckTime(district: any): boolean {
+        if (district.StartTime > district.EndTime) {
+            this.districtForm.get('StartTime').setValue(null);
+            this.districtForm.get('EndTime').setValue(null);
+        }
+        if (district.firstHalfEndTime > district.SecondHaifStartTime) {
+            this.districtForm.get('firstHalfEndTime').setValue(null);
+            this.districtForm.get('SecondHaifStartTime').setValue(null);
+        }
+        if (district.StartTime > district.SecondHaifStartTime ) {
+            this.districtForm.get('StartTime').setValue(null);
+            this.districtForm.get('SecondHaifStartTime').setValue(null);
+        }
+        if (district.StartTime > district.firstHalfEndTime) {
+            this.districtForm.get('StartTime').setValue(null);
+            this.districtForm.get('firstHalfEndTime').setValue(null);
+        }
+        if (district.EndTime < district.StartTime) {
+            this.districtForm.get('EndTime').setValue(null);
+            this.districtForm.get('StartTime').setValue(null);
+        }
+        if (district.EndTime < district.SecondHaifStartTime) {
+            this.districtForm.get('EndTime').setValue(null);
+        }
+        if (district.EndTime < district.firstHalfEndTime) {
+            this.districtForm.get('EndTime').setValue(null);
+        }
         if (district.StartTime > district.EndTime || district.firstHalfEndTime > district.SecondHaifStartTime ||
             district.StartTime > district.SecondHaifStartTime || district.StartTime > district.firstHalfEndTime ||
             district.EndTime < district.StartTime || district.EndTime < district.SecondHaifStartTime ||

@@ -1,8 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { UserService } from '../../Service/user.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { SideNavService } from '../SideNav/sideNav.service';
-import { Router } from '@angular/router';
 import { CommunicationService } from '../../Services/communication.service';
 
 @Component({
@@ -16,8 +14,12 @@ export class ManageComponent {
     // @HostBinding('class.is-open')
     mobileQuery: MediaQueryList;
     private _mobileQueryListener: () => void;
-    constructor(private router: Router, private _userService: UserService, changeDetectorRef: ChangeDetectorRef, 
-        private sideNavService: SideNavService, media: MediaMatcher, private _communicationService: CommunicationService) {
+    
+    constructor( 
+        changeDetectorRef: ChangeDetectorRef, 
+        private sideNavService: SideNavService, 
+        media: MediaMatcher, 
+        private _communicationService: CommunicationService) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);

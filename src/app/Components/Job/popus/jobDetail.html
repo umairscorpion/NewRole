@@ -43,21 +43,23 @@
                     'Second Half' : 'Custom Time'}}</td>
             </tr>
             <tr>
-                <td>Employee:</td>
-                <td>{{data.employeeName}}, {{data.organizationName ? data.organizationName : data.absenceLocation }}
-                </td>
+                <td>Start Time:</td>
+                <td>{{data.startTime}}</td>
+            </tr>
+            <tr>
+                <td>End Time:</td>
+                <td>{{data.endTime}}</td>
             </tr>
             <tr>
                 <td>Attachment:</td>
-                <td>
-                    <div *ngIf='data.anyAttachment'>
-                        <button mat-button type="button" color="warn" (click)="DownloadFile()">
-                            Download Attachment
-                            <mat-icon>download</mat-icon>
-                            {{data.fileName}}
-                        </button>
-                    </div>
+                <td *ngIf='data.anyAttachment'>
+                    <button mat-button type="button" color="warn" (click)="DownloadFile()"
+                        matTooltip="Download Attachment">
+                        <mat-icon>save_alt</mat-icon>
+                        {{data.originalFileName}}
+                    </button>
                 </td>
+                <td *ngIf="!data.anyAttachment">No Attachment</td>
             </tr>
         </table>
     </div>

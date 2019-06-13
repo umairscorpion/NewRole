@@ -1,28 +1,33 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import {MatPaginator, MatTableDataSource , MatSort, MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { DataContext } from '../../../../Services/dataContext.service';
-// import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
+
 @Component({
-    templateUrl: 'schools.component.html'
+  templateUrl: 'schools.component.html'
 })
 export class SchoolsComponent implements OnInit {
-    private notifier: NotifierService;
-    displayedColumns = ['SchoolName', 'SchoolAddress', 'ZipCode', 'DistrictName','action'];
-    dataSource = new MatTableDataSource();
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
-    msg : string;
-    constructor( private router: Router, private _dataContext: DataContext, public dialog: MatDialog,
-      notifier: NotifierService ){
-        this.notifier = notifier;
-    }
+  private notifier: NotifierService;
+  displayedColumns = ['SchoolName', 'SchoolAddress', 'ZipCode', 'DistrictName', 'action'];
+  dataSource = new MatTableDataSource();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  msg: string;
+
+  constructor(
+    private router: Router,
+    private _dataContext: DataContext,
+    public dialog: MatDialog,
+    notifier: NotifierService) {
+    this.notifier = notifier;
+  }
+
   ngOnInit(): void {
     this.GetSchools();
   }
-  
-    ngAfterViewInit() {
+
+  ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
@@ -31,7 +36,7 @@ export class SchoolsComponent implements OnInit {
     this._dataContext.get('school/getSchools').subscribe((data: any) => {
       this.dataSource.data = data;
     },
-        error => this.msg = <any>error);
+      error => this.msg = <any>error);
   }
 
   applyFilter(filterValue: string) {
@@ -57,15 +62,15 @@ export class SchoolsComponent implements OnInit {
       this.dialog.open(PopupDialogForSchoolDetail, {
         data,
         height: '500px',
-        width: '750px',
-       
-    });
+        width: '650px',
+
+      });
     },
-        error => <any>error);
+      error => <any>error);
   }
 
   deleteSchool(SelectedRow: any) {
-    var confirmResult = confirm('Are you sure you want to delete '+ SelectedRow.schoolName +' School?');
+    var confirmResult = confirm('Are you sure you want to delete ' + SelectedRow.schoolName + ' School?');
     if (confirmResult) {
       this._dataContext.delete('school/', SelectedRow.schoolId).subscribe((data: any) => {
         this.notifier.notify('success', 'Deleted Successfully.');
@@ -76,13 +81,17 @@ export class SchoolsComponent implements OnInit {
   }
 }
 
-
 @Component({
   templateUrl: 'viewSchool.html',
-  styleUrls: ['school.component.css']
+  styleUrls: ['school.component.scss']
 })
 export class PopupDialogForSchoolDetail {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log(data);
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<SchoolsComponent>) { }
+
+  onClose() {
+    this.dialogRef.close();
   }
 }

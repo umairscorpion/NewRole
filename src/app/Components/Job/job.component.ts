@@ -87,8 +87,8 @@ export class JobComponent implements OnInit {
         this.matDialog.closeAll();
         this.matDialog.open(PopupDialogForJobDetail, {
             data,
-            height: '600px',
-            width: '750px',
+            height: '550px',
+            width: '650px',
             panelClass: 'AbsenceDetail-popup',
         });
         const model = new AuditFilter();

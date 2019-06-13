@@ -1,67 +1,73 @@
-<div class="row">
-    <div class="row" style="text-align: center">
-        <h3>Absence Detail (
-            <b>{{data.absenceLocation}}</b>)</h3>
-    </div>
-    <div class="row">
-        <div class="col-md-12 col-xs-12" style="padding-top: 15px">
-            <div class="col-md-6">
-                <div class="col-md-6">Employee:</div>
-                <div class="col-md-6">{{data.employeeName}}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">Position:</div>
-                <div class="col-md-6">{{data.positionDescription}}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">Start Date::</div>
-                <div class="col-md-6">{{data.startDate | date}}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">End Date:</div>
-                <div class="col-md-6">{{data.endDate | date}}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">Substitute Required:</div>
-                <div class="col-md-6">{{data.substituteRequired ? 'Yes' : 'No'}}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">Absence Reason:</div>
-                <div class="col-md-6">{{data.absenceReasonDescription}}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">Absence Type:</div>
-                <div class="col-md-6">{{data.durationType == 1 ? 'Full Day' : data.durationType == 2 ? 'First Half' : data.durationType == 3 ?
-                    'Second Half' : 'Custom Time'}}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">Start Time:</div>
-                <div class="col-md-6">{{data.startTime | convertFrom24HourTo12HourFormat }}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">End Time:</div>
-                <div class="col-md-6">{{data.endTime | convertFrom24HourTo12HourFormat }}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">Notes to Substitute:</div>
-                <div class="col-md-6">{{data.substituteNotes}}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">Status</div>
-                <div class="col-md-6">{{data.absenceStatusDescription}}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-6">PayRoll Notes:</div>
-                <div class="col-md-6">{{data.payrollNotes}}</div>
-            </div>
-            <div *ngIf='data.anyAttachment' style="text-align: center">
-                <button mat-button type="button" color="warn" (click)="DownloadFile()">
-                    Download Attachment
-                    <mat-icon>download</mat-icon>
-                    {{FileName}}
-                </button>
-            </div>
+<div style="margin: -4%;">
+    <mat-dialog-actions>
+        <div class="col-md-8 pr-0">
+            <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
         </div>
+    </mat-dialog-actions>
+    <hr>
+    <div>
+        <div class="absence-summary-title p-5 mt-5">Absence Detail</div>
+        <br>
+        <table class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
+            <tr>
+                <td>Employee:</td>
+                <td>{{data.employeeName}}</td>
+            </tr>
+            <tr>
+                <td>Position:</td>
+                <td>{{data.positionDescription}}</td>
+            </tr>
+            <tr>
+                <td>Start Date:</td>
+                <td>{{data.startDate | date}}</td>
+            </tr>
+            <tr>
+                <td>End Date:</td>
+                <td>{{data.endDate | date}}</td>
+            </tr>
+            <tr>
+                <td>Substitute Required:</td>
+                <td>{{data.substituteRequired ? 'Yes' : 'No'}}</td>
+            </tr>
+            <tr>
+                <td>Absence Reason:</td>
+                <td>{{data.absenceReasonDescription}}</td>
+            </tr>
+            <tr>
+                <td>Absence Type:</td>
+                <td>{{data.durationType == 1 ? 'Full Day' : data.durationType == 2 ? 'First Half' : data.durationType == 3 ?
+                    'Second Half' : 'Custom Time'}}</td>
+            </tr>
+            <tr>
+                <td>Start Time:</td>
+                <td>{{data.startTime | convertFrom24HourTo12HourFormat }}</td>
+            </tr>
+            <tr>
+                <td>End Time:</td>
+                <td>{{data.endTime | convertFrom24HourTo12HourFormat }}</td>
+            </tr>
+            <tr>
+                <td>Status:</td>
+                <td>{{data.absenceStatusDescription}}</td>
+            </tr>
+            <tr>
+                <td>Notes to Substitute:</td>
+                <td>{{data.substituteNotes}}</td>
+            </tr>
+            <tr>
+                <td>PayRoll Notes:</td>
+                <td>{{data.payrollNotes}}</td>
+            </tr>
+            <tr *ngIf='data.anyAttachment' style="text-align: center">
+                <td>Attachment:</td>
+                <td>
+                    <button mat-button type="button" color="warn" (click)="DownloadFile()">
+                        Download Attachment
+                        <mat-icon>download</mat-icon>
+                        {{FileName}}
+                    </button>
+                </td>
+            </tr>
+        </table>
     </div>
-
 </div>
