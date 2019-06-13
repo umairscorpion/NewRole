@@ -26,7 +26,8 @@
       </div>
       <div class="absence-summary-title p-2 mt-2">Absence Summary</div>
       <br>
-      <table *ngIf="menuAction == 'view' || menuAction == 'delete'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
+      <table *ngIf="menuAction == 'view' || menuAction == 'delete'" class="report-details-table" cellpadding="3"
+        cellspacing="3" width="100%">
         <tr>
           <td>ID:</td>
           <td>{{reportDetail.absenceId}}</td>
@@ -70,13 +71,11 @@
         </tr>
         <tr>
           <td>Attachment:</td>
-          <td *ngIf="reportDetail.anyAttachment == true">
-            <div style="text-align: left">
-              <button mat-button type="button" color="warn" (click)="DownloadFile()" matTooltip="Download Attachment">
-                <mat-icon>save_alt</mat-icon>
-                {{reportDetail.originalFileName}}
-              </button>
-            </div>
+          <td *ngIf='reportDetail.anyAttachment == true'>
+            <button mat-button type="button" color="warn" (click)="DownloadFile()" matTooltip="Download Attachment">
+              <mat-icon>save_alt</mat-icon>
+              {{reportDetail.originalFileName}}
+            </button>
           </td>
           <td *ngIf="reportDetail.anyAttachment == false">No Attachment</td>
         </tr>

@@ -5,7 +5,8 @@
       <mat-card>
         <div class="row col-md-12 col-lg-12" style="text-align: right">
           <a routerLink="/manage/substitutes/addSubstitute">
-            <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
+            <button mat-raised-button style="background: #3CCCD1; color: white;"
+              [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
           </a>
         </div>
         <div class="row col-md-12 col-lg-12">
@@ -56,21 +57,30 @@
                   <!-- <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Send Welcome Letter" (click)="sendWelcomeLetter(row)" matTooltipPosition="below">
                     Send Welcome
                   </a> -->
-                  <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Substitute" matTooltipPosition="below">
-                    <i class="material-icons" (click)="DeleteSubstitute(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">delete_sweep</i>
+                  <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Substitute"
+                    matTooltipPosition="below">
+                    <i class="material-icons" (click)="DeleteSubstitute(row)"
+                      [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">delete_sweep</i>
                   </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute" matTooltipPosition="below">
-                    <i class="material-icons" (click)="EditSubstitute(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">edit</i>
+                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute"
+                    matTooltipPosition="below">
+                    <i class="material-icons" (click)="EditSubstitute(row)"
+                      [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">edit</i>
                   </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
+                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail"
+                    matTooltipPosition="below">
                     <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
                   </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Reset Password" (click)="resetPassword(row.userId)"
-                    matTooltipPosition="below">
-                    reset
+                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Reset Password"
+                    (click)="resetPassword(row.userId)" matTooltipPosition="below">
+                    <span class="fa-passwd-reset fa-stack">
+                      <i class="fa fa-undo fa-stack-2x"></i>
+                      <i class="fa fa-lock fa-stack-1x"></i>
+                    </span>
                   </a>
-                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'"
-                    matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)" color=""></mat-slide-toggle>
+                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
+                    [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'" matTooltipPosition="above"
+                    [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)" color=""></mat-slide-toggle>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -208,8 +208,6 @@ export class AvailableJobsComponent implements OnInit {
     AcceptAbsence(SelectedRow: any) {
         let currentTime = moment().format('h:mma');
         let currentDate = moment().format('YYYY MM DD');
-        // let starttimetemp = moment(SelectedRow.startTime, 'h:mma');
-        // let starttime = moment(starttimetemp).format('h:mma');
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
         let endtimetemp = moment(SelectedRow.endTime, 'h:mma');
         let endtime = moment(endtimetemp).format('h:mma');

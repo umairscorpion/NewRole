@@ -68,8 +68,8 @@
                     <td class="col-md-2">Zip Code</td>
                     <td>
                         <mat-form-field class="col-md-4">
-                            <input matInput #input maxlength="5" placeholder="Zip Code" formControlName="ZipCode">
-                            <mat-hint align="end">{{input.value?.length || 0}}/5</mat-hint>
+                            <input matInput #inputt maxlength="5" placeholder="Zip Code" formControlName="ZipCode">
+                            <mat-hint align="end">{{inputt.value?.length || 0}}/5</mat-hint>
                             <mat-error *ngIf="schoolForm.controls['ZipCode'].hasError('pattern')">Only numbers allowed
                             </mat-error>
                         </mat-form-field>
@@ -78,7 +78,7 @@
                 <tr>
                     <td class="col-md-2">Phone Number</td>
                     <td>
-                        <mat-form-field hintLabel="Max 10 characters" class="col-md-4">
+                        <mat-form-field hintLabel="Max 11 characters" class="col-md-4">
                             <input matInput #input maxlength="11" placeholder="Phone No" formControlName="PhoneNo">
                             <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
                             <mat-error *ngIf="schoolForm.controls['PhoneNo'].hasError('pattern')">Only numbers allowed
@@ -92,9 +92,9 @@
                         <mat-form-field class="col-md-4">
                             <mat-select placeholder="Select Time Zone" formControlName="TimeZone">
                                 <mat-option>-- Select Any --</mat-option>
-                                <mat-option value="9">(GMT+09:30) Adelaide</mat-option>
-                                <mat-option value="10">(GMT+10:00) Canberra, Melbourne, Sydney</mat-option>
-                                <mat-option value="11">(GMT+11:00) Magadan, Solomon Islands, New Caledonien</mat-option>
+                                <mat-option *ngFor="let timezone of timezones" [value]="timezone.id">
+                                    {{timezone.timeZone_Title}}
+                                </mat-option>
                             </mat-select>
                         </mat-form-field>
                         <!-- <td>

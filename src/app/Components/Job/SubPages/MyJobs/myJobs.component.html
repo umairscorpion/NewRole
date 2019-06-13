@@ -41,11 +41,6 @@
       <h4>{{FilterForm.value.FilterStartDate | date}} - {{FilterForm.value.FilterEndDate | date}}</h4>
     </div>
     <div class="example-container mat-elevation-z8">
-      <div class="example-header">
-        <!-- <mat-form-field>
-                <input matInput placeholder="Filter">
-              </mat-form-field> -->
-      </div>
       <mat-table *ngIf='this.UpcommingJobs.data.length > 0' #table [dataSource]="UpcommingJobs" matSort>
         <!-- Position Column -->
         <ng-container matColumnDef="AbsenceDate">
@@ -79,28 +74,17 @@
           <mat-cell *matCellDef="let Absence"> {{Absence.absenceStatusDescription}} </mat-cell>
         </ng-container>
 
-        <!-- <ng-container matColumnDef="Substitute">
-                <mat-header-cell *matHeaderCellDef> Substitute </mat-header-cell>
-                <mat-cell *matCellDef="let Absence"> {{Absence.substituteName ? Absence.substituteName: 'N/A'}} </mat-cell>
-              </ng-container> -->
-
         <ng-container matColumnDef="Action">
           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
           <mat-cell *matCellDef="let Absence">
-            <button mat-icon-button [matMenuTriggerFor]="menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button (click)="ReleaseJob(Absence, 1)" mat-menu-item>
-                <mat-icon>cancel</mat-icon>
-                <span>Release</span>
-              </button>
-              <button (click)="ShowJobDetail(Absence)" mat-menu-item>
-                <mat-icon>visibility</mat-icon>
-                <span>view</span>
-              </button>
-            </mat-menu>
-
+            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Release"
+              matTooltipPosition="below">
+              <i class="material-icons" (click)="ReleaseJob(Absence, 1)">cancel</i>
+            </a>
+            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View"
+              matTooltipPosition="below">
+              <i class="material-icons" (click)="ShowJobDetail(Absence)">visibility</i>
+            </a>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

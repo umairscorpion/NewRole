@@ -20,8 +20,7 @@ export class ActivityReportsComponent implements OnInit, AfterViewInit {
 
     constructor(
         private auditLogService: AuditLogService,
-        private _formBuilder: FormBuilder
-    ) {
+        private _formBuilder: FormBuilder) {
         const curr = new Date;
         const first = curr.getDate();
         const last = first;
@@ -40,9 +39,9 @@ export class ActivityReportsComponent implements OnInit, AfterViewInit {
 
     loadAudit(): void {
         const model = new AuditFilter();
-        model.startDate =  moment(this.activityReportFilter.get('date').value['begin']).format('dddd, MM/DD/YYYY');
+        model.startDate = moment(this.activityReportFilter.get('date').value['begin']).format('dddd, MM/DD/YYYY');
         model.endDate = moment(this.activityReportFilter.get('date').value['end']).format('dddd, MM/DD/YYYY');
-        model.entityId  = this.activityReportFilter.get('jobNumber').value;
+        model.entityId = this.activityReportFilter.get('jobNumber').value;
         this.auditLogService.getAbsencesAuditView(model).subscribe((result: any) => {
             this.auditLogsAbsences = result;
         });

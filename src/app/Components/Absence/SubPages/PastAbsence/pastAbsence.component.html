@@ -19,7 +19,7 @@
 
     .mat-table {
         overflow: auto;
-        max-height: 500px;
+        max-height: 550px;
     }
 </style>
 <mat-card>
@@ -69,19 +69,10 @@
                     <ng-container matColumnDef="Action">
                         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                         <mat-cell *matCellDef="let Absence">
-                            <button mat-icon-button [matMenuTriggerFor]="menu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                            <mat-menu #menu="matMenu">
-                                <button *ngIf="loginUserRole !== 3" (click)="UpdateStatus(Absence, 4)" mat-menu-item>
-                                    <mat-icon>cancel</mat-icon>
-                                    <span>Cancel</span>
-                                </button>
-                                <button (click)="ShowAbsenceDetail(Absence)" mat-menu-item>
-                                    <mat-icon>visibility</mat-icon>
-                                    <span>view</span>
-                                </button>
-                            </mat-menu>
+                            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail"
+                                matTooltipPosition="below">
+                                <i class="material-icons" (click)="ShowAbsenceDetail(Absence)">visibility</i>
+                            </a>
                         </mat-cell>
                     </ng-container>
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

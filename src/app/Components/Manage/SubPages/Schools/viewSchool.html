@@ -1,40 +1,54 @@
-<h1 mat-dialog-title style="text-align: center">School Detail</h1>
-<div mat-dialog-content>
-    <div class="row">
-        <div style="margin-top:20px">
-            <div class='row col-md-10 col-md-offset-1'>
-                <div class='col-md-3 heading'>Name:</div>
-                <div class='col-md-3'>{{data[0].schoolName}}</div>
-                <div class='col-md-3 heading'>Address:</div>
-                <div class='col-md-3'>{{data[0].schoolAddress}}</div>
-            </div>
-            <div class='row col-md-10 col-md-offset-1'>
-                <div class='col-md-3 heading'>City:</div>
-                <div class='col-md-3'>{{data[0].schoolCity}}</div>
-                <div class='col-md-3 heading'>Zip Code:</div>
-                <div class='col-md-3'>{{data[0].schoolZipCode}}</div>
-            </div>
-            <div class='row col-md-10 col-md-offset-1'>
-                <div class='col-md-3 heading'>Start Time:</div>
-                <div class='col-md-3'>{{data[0].schoolStartTime | convertFrom24HourTo12HourFormat}}</div>
-                <div class='col-md-3 heading'>First Half End:</div>
-                <div class='col-md-3'>{{data[0].school1stHalfEnd | convertFrom24HourTo12HourFormat}}</div>
-            </div>
-            <div class='row col-md-10 col-md-offset-1'>
-                <div class='col-md-3  heading'>Second Half Start: </div>
-                <div class='col-md-3'>{{data[0].school2ndHalfStart | convertFrom24HourTo12HourFormat}}</div>
-                <div class='col-md-3 heading'>End Time: </div>
-                <div class='col-md-3'>{{data[0].schoolEndTime | convertFrom24HourTo12HourFormat}}</div>
-            </div>
-            <div class='row col-md-10 col-md-offset-1'>
-                <div class='col-md-3 heading'>Time Zone:</div>
-                <div class='col-md-3'>(GMT+09:30) Adelaide</div>
-                <div class='col-md-3 heading'>Phone Number:</div>
-                <div class='col-md-3'>{{data[0].schoolPhone}}</div>
-            </div>
+<div style="margin: -4%;">
+    <mat-dialog-actions>
+        <div class="col-md-8 pr-0">
+            <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
         </div>
-        
-        
+    </mat-dialog-actions>
+    <hr>
+    <div>
+        <div class="absence-summary-title p-5 mt-5">School Detail</div>
+        <br>
+        <table class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
+            <tr>
+                <td>Name:</td>
+                <td>{{data[0].schoolName}}</td>
+            </tr>
+            <tr>
+                <td>Address:</td>
+                <td>{{data[0].schoolAddress}}</td>
+            </tr>
+            <tr>
+                <td>City:</td>
+                <td>{{data[0].schoolCity}}</td>
+            </tr>
+            <tr>
+                <td>Zip Code:</td>
+                <td>{{data[0].schoolZipCode}}</td>
+            </tr>
+            <tr>
+                <td>Start Time:</td>
+                <td>{{data[0].schoolStartTime | convertFrom24HourTo12HourFormat}}</td>
+            </tr>
+            <tr>
+                <td>First Half End Time:</td>
+                <td>{{data[0].school1stHalfEnd | convertFrom24HourTo12HourFormat}}</td>
+            </tr>
+            <tr>
+                <td>Second Half Start Time:</td>
+                <td>{{data[0].school2ndHalfStart | convertFrom24HourTo12HourFormat}}</td>
+            </tr>
+            <tr>
+                <td>End Time:</td>
+                <td>{{data[0].schoolEndTime | convertFrom24HourTo12HourFormat}}</td>
+            </tr>
+            <tr>
+                <td>Time Zone:</td>
+                <td>{{data[0].schoolTimeZoneTitle}}</td>
+            </tr>
+            <tr>
+                <td>Phone Number:</td>
+                <td>{{data[0].schoolPhone}}</td>
+            </tr>
+        </table>
     </div>
-    <div class="row col-md-10 col-md-offset-1"><hr></div>
 </div>
