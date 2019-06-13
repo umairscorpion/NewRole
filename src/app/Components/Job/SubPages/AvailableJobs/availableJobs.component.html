@@ -147,24 +147,18 @@
                             <ng-container matColumnDef="Action">
                                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                                 <mat-cell *matCellDef="let Absence">
-                                    <button mat-icon-button (click)="AcceptAbsence(Absence)">
-                                        <mat-icon
-                                            style="color: #448ac9;font-weight: bold; cursor: pointer; margin-left: 10px"
-                                            #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="above">check
-                                        </mat-icon>
-                                    </button>
-                                    <button mat-icon-button>
-                                        <mat-icon
-                                            style="color: #448ac9;font-weight: bold;cursor: pointer; margin-left: 10px"
-                                            #tooltip="matTooltip" matTooltip="Decline" matTooltipPosition="above">close
-                                        </mat-icon>
-                                    </button>
-                                    <button mat-icon-button (click)="ShowJobDetail(Absence)">
-                                        <mat-icon style="color: #448ac9; cursor: pointer;margin-left: 10px"
-                                            #tooltip="matTooltip" matTooltip="View" matTooltipPosition="above">
-                                            visibility
-                                        </mat-icon>
-                                    </button>
+                                    <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Accept"
+                                        matTooltipPosition="below">
+                                        <i class="material-icons" (click)="AcceptAbsence(Absence)">check</i>
+                                    </a>
+                                    <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                                        matTooltip="Decline" matTooltipPosition="below">
+                                        <i class="material-icons" (click)="ShowDetail(Absence)">close</i>
+                                    </a>
+                                    <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View"
+                                        matTooltipPosition="below">
+                                        <i class="material-icons" (click)="ShowJobDetail(Absence)">visibility</i>
+                                    </a>
                                 </mat-cell>
                             </ng-container>
                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

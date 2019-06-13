@@ -1,17 +1,16 @@
 import { Component, ViewChild, Inject } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { IDistrict } from '../../../../Model/Manage/district';
 import { DistrictService } from '../../../../Service/Manage/district.service';
 import { DataContext } from '../../../../Services/dataContext.service';
 import swal from 'sweetalert2';
-
 import { Router } from '@angular/router';
+
 @Component({
   templateUrl: 'district.component.html'
 })
 export class DistrictsComponent {
   displayedColumns = ['DistrictName', 'DistrictAddress', 'City', 'DistrictZipCode', 'action'];
-  // IDistrictModel = new DistrictDataSource(this._districtService);
   District: IDistrict;
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -59,12 +58,11 @@ export class DistrictsComponent {
   }
 
   ViewDistrictDetail(SelectedRow: any) {
-
     this._dataContext.getById('district/getDistrictById', SelectedRow.districtId).subscribe((data: any) => {
       this.dialog.open(PopupDialogForDistrictDetail, {
         data,
         height: '500px',
-        width: '750px',
+        width: '650px',
       });
     },
       error => <any>error);
@@ -108,19 +106,15 @@ export class DistrictsComponent {
 
 @Component({
   templateUrl: 'viewDistrict.html',
-  styleUrls: ['district.component.css']
+  styleUrls: ['district.component.scss']
 })
 export class PopupDialogForDistrictDetail {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log(data);
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<DistrictsComponent>) { }
+
+  onClose() {
+    this.dialogRef.close();
   }
 }
-// export class DistrictDataSource extends DataSource<any> {
-//   constructor(private _districtService: DistrictService) {
-//     super();
-//   }
-//   connect(): Observable<IDistrict[]> {
-//     return this._districtService.get('district/getDistricts');
-//   }
-//   disconnect() {}
-// }

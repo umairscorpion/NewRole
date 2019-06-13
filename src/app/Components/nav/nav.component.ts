@@ -1,15 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-
-import {
-  DomSanitizer,
-  SafeResourceUrl,
-  SafeUrl
-} from '@angular/platform-browser';
-
+import { Router } from '@angular/router';
+import { SafeUrl } from '@angular/platform-browser';
 
 declare const $: any;
-
 
 @Component({
   // moduleId: module.id,
@@ -23,8 +16,8 @@ export class NavbarComponent implements OnInit {
   trustedProfileImageUrl: SafeUrl;
 
   constructor(
-    private router: Router
-  ) { }
+    private router: Router) { }
+
   ngOnInit() {
     this.menuItems = this.router.config[1].children;
   }
@@ -47,6 +40,7 @@ export class NavbarComponent implements OnInit {
       // });
     }
   }
+
   isMac(): boolean {
     let bool = false;
     if (

@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataContext } from '../../../../Services/dataContext.service';
+import { DistrictService } from 'src/app/Service/Manage/district.service';
 
 @Component({
     templateUrl: 'addSchool.component.html'
@@ -13,6 +14,7 @@ export class AddSchoolComponent implements OnInit {
     private notifier: NotifierService;
     SchoolIdForUpdate: any = null;
     Districts: IDistrict[];
+    timezones: any;
     msg: string;
     schoolForm: FormGroup;
     indLoading: boolean = false;
@@ -24,12 +26,14 @@ export class AddSchoolComponent implements OnInit {
         private fb: FormBuilder,
         private route: ActivatedRoute,
         private _dataContext: DataContext,
-        notifier: NotifierService) {
+        notifier: NotifierService,
+        private _districtService: DistrictService) {
         this.notifier = notifier;
     }
 
     ngOnInit(): void {
         this.GetDistricts();
+        this.GetTimeZone();
         this.GenerateSchoolForm();
         this.GetSchoolInformationOnEditing();
     }
@@ -45,7 +49,7 @@ export class AddSchoolComponent implements OnInit {
             firstHalfEndTime: ['', Validators.required],
             SecondHalfStartTime: ['', Validators.required],
             EndTime: ['', Validators.required],
-            TimeZone: [null, Validators.required],
+            TimeZone: [''],
             PhoneNo: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             releaseJobTime: ['0'],
             notifyOthersTime: ['0'],
@@ -89,6 +93,13 @@ export class AddSchoolComponent implements OnInit {
     GetDistricts(): void {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
+        },
+            error => <any>error);
+    }
+
+    GetTimeZone(): void {
+        this._districtService.getCountries('districtLookup/getTimeZone').subscribe((data: any) => {
+            this.timezones = data;
         },
             error => <any>error);
     }
@@ -138,6 +149,32 @@ export class AddSchoolComponent implements OnInit {
     }
 
     CheckTime(school: any): boolean {
+        if (school.StartTime > school.EndTime) {
+            this.schoolForm.get('StartTime').setValue(null);
+            this.schoolForm.get('EndTime').setValue(null);
+        }
+        if (school.firstHalfEndTime > school.SecondHaifStartTime) {
+            this.schoolForm.get('firstHalfEndTime').setValue(null);
+            this.schoolForm.get('SecondHaifStartTime').setValue(null);
+        }
+        if (school.StartTime > school.SecondHaifStartTime) {
+            this.schoolForm.get('StartTime').setValue(null);
+            this.schoolForm.get('SecondHaifStartTime').setValue(null);
+        }
+        if (school.StartTime > school.firstHalfEndTime) {
+            this.schoolForm.get('StartTime').setValue(null);
+            this.schoolForm.get('firstHalfEndTime').setValue(null);
+        }
+        if (school.EndTime < school.StartTime) {
+            this.schoolForm.get('EndTime').setValue(null);
+            this.schoolForm.get('StartTime').setValue(null);
+        }
+        if (school.EndTime < school.SecondHaifStartTime) {
+            this.schoolForm.get('EndTime').setValue(null);
+        }
+        if (school.EndTime < school.firstHalfEndTime) {
+            this.schoolForm.get('EndTime').setValue(null);
+        }
         if (school.StartTime > school.EndTime || school.firstHalfEndTime > school.SecondHaifStartTime ||
             school.StartTime > school.SecondHaifStartTime || school.StartTime > school.firstHalfEndTime ||
             school.EndTime < school.StartTime || school.EndTime < school.SecondHaifStartTime ||

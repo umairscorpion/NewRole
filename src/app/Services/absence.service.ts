@@ -94,9 +94,9 @@ export class AbsenceService extends RestService<LeaveType> {
     return this.httpClient.post<User[]>(environment.apiUrl + url, model);
   }
 
-  CalendarView(startDate: Date, endDate: Date, userId: string) {
+  CalendarView(startDate: Date, endDate: Date, userId: string, campusId: string) {
     return this.httpClient
-      .get<Absence[]>(`${environment.apiUrl}Absence/views/calendar/${startDate.toISOString()}/${endDate.toISOString()}/${userId}`)
+      .get<Absence[]>(`${environment.apiUrl}Absence/views/calendar/${startDate.toISOString()}/${endDate.toISOString()}/${userId}/${campusId}`)
       .pipe(catchError(this.errorHandler.handleError),
         map((response: Absence[]) => {
           return response.map(item => this.getLeaveTypeRecords().deserialize(item));

@@ -2,10 +2,7 @@
     
 </block-ui>  -->
 <mat-card>
-    <mat-card-title>
-        Add District
-    </mat-card-title>
-
+    <mat-card-title>Add District</mat-card-title>
     <mat-card-content>
         <form (ngSubmit)="onSubmit(districtForm)" [formGroup]="districtForm">
             <table class="row col-md-offset-1 districtForm-table">
@@ -24,8 +21,8 @@
                             <mat-select placeholder="Country" formControlName="Country"
                                 (selectionChange)="onChange($event.value)" required>
                                 <mat-option>--</mat-option>
-                                <mat-option *ngFor="let country of countries" [value]="country.countryId">
-                                    {{country.countryName}}
+                                <mat-option *ngFor="let country of countries" (click)="setCountryCode(country.country_Code)" [value]="country.countryId">
+                                    {{country.countryName}} ({{country.country_Code}})
                                 </mat-option>
                             </mat-select>
                             <mat-error *ngIf="districtForm.controls['Country'].hasError('required')">Please choose any
@@ -54,7 +51,7 @@
                     <td class="col-md-2">State</td>
                     <td>
                         <mat-form-field class="col-md-4">
-                            <mat-select placeholder="state" formControlName="State">
+                            <mat-select placeholder="State" formControlName="State">
                                 <mat-option>--</mat-option>
                                 <mat-option *ngFor="let state of states  | async" [value]="state.stateId">
                                     {{state.stateName}}
@@ -67,9 +64,6 @@
                     <td class="col-md-2">Zip Code</td>
                     <td>
                         <mat-form-field class="col-md-4">
-                            <!--<input matInput [matDatepicker]="picker" placeholder="Date of birth">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker touchUi="true" #picker></mat-datepicker>-->
                             <input matInput #inputt maxlength="5" placeholder="Zip Code" formControlName="ZipCode">
                             <mat-hint align="end">{{inputt.value?.length || 0}}/5</mat-hint>
                             <mat-error *ngIf="districtForm.controls['ZipCode'].hasError('pattern')">Only numbers allowed
@@ -80,8 +74,9 @@
                 <tr>
                     <td class="col-md-2">Phone Number</td>
                     <td>
-                        <mat-form-field hintLabel="Max 10 characters" class="col-md-4">
+                        <mat-form-field hintLabel="Max 11 characters" class="col-md-4">
                             <input matInput #input maxlength="11" placeholder="Phone No" formControlName="PhoneNo">
+                            <span matPrefix>{{countryCode}}</span>
                             <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
                             <mat-error *ngIf="districtForm.controls['PhoneNo'].hasError('pattern')">Only numbers allowed
                             </mat-error>
@@ -93,10 +88,9 @@
                     <td>
                         <mat-form-field class="col-md-4">
                             <mat-select placeholder="Select Time Zone" formControlName="TimeZone">
-                                <mat-option>-- Select Any --</mat-option>
-                                <mat-option [value]="4">(GMT+09:30) Adelaide</mat-option>
-                                <mat-option [value]="5">(GMT+10:00) Canberra, Melbourne, Sydney</mat-option>
-                                <mat-option [value]="6">(GMT+11:00) Magadan, Solomon Islands, New Caledonien
+                                <mat-option>--</mat-option>
+                                <mat-option *ngFor="let timezone of timezones" [value]="timezone.id">
+                                    {{timezone.timeZone_Title}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>

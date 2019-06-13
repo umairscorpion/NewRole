@@ -63,7 +63,7 @@ export class OrganizationsComponent {
       this.dialog.open(PopupDialogForOrganizationDetail, {
         data,
         height: '500px',
-        width: '750px',
+        width: '650px',
 
       });
     },

@@ -180,7 +180,7 @@ const appRoutes: Routes = [
                     permission: 'DASHBOARD'
                 },
                 children: [{
-                    path: '', redirectTo: 'organizations', pathMatch: 'full',
+                    path: '', redirectTo: 'employees', pathMatch: 'full',
                     data: {
                         path: '/manage',
                         title: 'Organization',

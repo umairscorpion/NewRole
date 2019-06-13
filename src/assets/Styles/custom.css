@@ -24,16 +24,9 @@
   overflow: hidden;
 }
 
-.highlightDate { background: orange;
-  border-radius: 100%;}
-
-  .mat-horizontal-stepper-header{
+  /* .mat-horizontal-stepper-header{
     pointer-events: none !important;
-}
-
-.highlight-Jobs { background:#4cae4c;
-  border-radius: 100%;
-}
+} */
 
 /* Jobs */
 .mat-column-Employee {

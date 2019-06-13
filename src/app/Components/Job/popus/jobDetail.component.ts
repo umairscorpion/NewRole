@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { DataContext } from '../../../Services/dataContext.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { JobComponent } from '../job.component';
 import { SafeUrl } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -16,12 +16,14 @@ export class PopupDialogForJobDetail {
     
     constructor(
         private dialogRef: MatDialogRef<JobComponent>,
-        private dialog: MatDialog,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _dataContext: DataContext,
         private sanitizer: DomSanitizer) {
         if (data.isShowAttachment) {
             this.viewAttachmet();
+        }
+        if (data.originalFileName) {
+            data.originalFileName = data.originalFileName.substr(0, 15);
         }
     }
 

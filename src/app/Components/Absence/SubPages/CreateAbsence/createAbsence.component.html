@@ -12,7 +12,8 @@
                             <div class="row" style="height:56.56px;" *ngIf='loginedUserRole != 3'>
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6" style="margin-top:16px">
-                                        <mat-radio-group formControlName="selfEmployeeVacancy" (change)="onChangeAbsenceFor(absenceFirstFormGroup.value.selfEmployeeVacancy)" style="padding-left: 13px;">
+                                        <mat-radio-group formControlName="selfEmployeeVacancy" (change)="onChangeAbsenceFor(absenceFirstFormGroup.value.selfEmployeeVacancy)"
+                                            style="padding-left: 13px;">
                                             <mat-radio-button color="primary" value="1" checked>Self</mat-radio-button>
                                             <mat-radio-button style="padding-left: 10px;" color="primary" value="2">Employee</mat-radio-button>
                                             <mat-radio-button style="padding-left: 10px;" color="primary" value="3">Find a Sub</mat-radio-button>
@@ -23,8 +24,7 @@
                                             <input type="text" placeholder="Search Employee Name" aria-label="Number" (input)="SearchEmployees($event.target.value)"
                                                 matInput formControlName="EmployeeId" [matAutocomplete]="auto">
                                             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
-                                                <mat-option (onSelectionChange)="employeeSelection(employee)" *ngFor="let employee of Employees | async"
-                                                    [value]="employee">
+                                                <mat-option (onSelectionChange)="employeeSelection(employee)" *ngFor="let employee of Employees | async" [value]="employee">
                                                     {{employee.firstName}}
                                                 </mat-option>
                                             </mat-autocomplete>
@@ -73,7 +73,7 @@
                                                 <mat-option value="2">Half Day AM</mat-option>
                                                 <mat-option value="3">Half Day PM</mat-option>
                                                 <mat-option value="4">Enter Time Manually</mat-option>
-                                                <mat-option value="5">Choose Schedule</mat-option>
+                                                <!-- <mat-option value="5">Choose Schedule</mat-option> -->
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
@@ -215,7 +215,7 @@
                 </form>
             </mat-step>
             <mat-step [stepControl]="absenceSecondFormGroup">
-                <form [formGroup]="absenceSecondFormGroup" (ngSubmit)="createAbsenceSubmission(absenceFirstFormGroup,absenceSecondFormGroup,stepper)">
+                <form [formGroup]="absenceSecondFormGroup">
                     <ng-template matStepLabel>Additional Information</ng-template>
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
@@ -267,16 +267,15 @@
                     </div>
                     <div class="row" style="text-align: right">
                         <button mat-button type="button" style="background-color:#dfdede;margin-right: 10px" (click)="goBackToPreviousForm(stepper)">Back</button>
-                        <button style="padding-left: 10px; background-color: #04c0be;" mat-raised-button color="primary">{{ absenceFirstFormGroup.value.AbsenceType == '2' ? 'Create And Assign' : absenceSecondFormGroup.value.AbsenceType
-                            == '3' ? 'Post to Preferred' : 'Create Absence' }}</button>
+                        <button mat-raised-button type="button" color="primary" style="background-color:#04c0be" (click)="goToNextForm(stepper)">Next</button>
                     </div>
                 </form>
             </mat-step>
             <mat-step>
                 <ng-template matStepLabel>Done</ng-template>
-                <div class="row" *ngIf='response == 1'>
+                <div class="row" *ngIf='absenceFirstFormGroup.valid && absenceSecondFormGroup.valid'>
                     <div class="col-md-12" style="font-size: 15px;text-align: center;font-style: italic;">
-                        <b> Absence was Created Successfully with following details.</b>
+                        <b> Please verify details before submitting absence.</b>
                     </div>
                     <div class="row col-md-8 col-md-offset-4" style="padding-top:20px">
                         <div class="col-md-6">
@@ -309,6 +308,12 @@
                                 </div>
                                 <div class="col-md-6">{{absenceFirstFormGroup.value.Reason.leaveTypeName}}</div>
                             </div>
+                            <div class="row" *ngIf="absenceFirstFormGroup.value.AbsenceType === 2 && absenceFirstFormGroup.value.Substitutes.length > 0">
+                                <div class="col-md-6">
+                                    <b>Substitute:</b>
+                                </div>
+                                <div class="col-md-6">{{absenceFirstFormGroup.value.Substitutes[0].firstName}}</div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <b>Notes to Substitute:</b>
@@ -322,12 +327,23 @@
                                 </div>
                                 <div class="col-md-6">{{absenceSecondFormGroup.value.PayRollNotes}}</div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <b>Attachment:</b>
+                                </div>
+                                <div class="col-md-6" *ngIf="OriginalFileName">{{OriginalFileName}}
+                                    <a style="cursor: pointer;" (click)="downloadAttachment()"> Download</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div style="text-align: right">
                     <!-- <button mat-button matStepperPrevious>Back</button> -->
-                    <button type="button" style="padding-left: 10px; background-color: #04c0be;" mat-raised-button color="primary" (click)="resetForm(stepper)">Finish</button>
+                    <!-- <button type="button" style="padding-left: 10px; background-color: #04c0be;" mat-raised-button color="primary" (click)="resetForm(stepper)">Finish</button> -->
+                    <button mat-button type="button" style="background-color:#dfdede;margin-right: 10px" (click)="goBackToPreviousForm(stepper)">Back</button>
+                    <button type="button" style="padding-left: 10px; background-color: #04c0be;" mat-raised-button color="primary" (click)="createAbsenceSubmission(absenceFirstFormGroup,absenceSecondFormGroup,stepper)">{{ absenceFirstFormGroup.value.AbsenceType == '2' ? 'Create And Assign' : absenceSecondFormGroup.value.AbsenceType
+                        == '3' ? 'Post to Preferred' : 'Create Absence' }}</button>
                 </div>
             </mat-step>
         </mat-horizontal-stepper>

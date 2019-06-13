@@ -184,7 +184,7 @@ export class EmployeesComponent implements OnInit {
       this.dialog.open(PopupDialogForEmployeeDetail, {
         data,
         height: '500px',
-        width: '750px',
+        width: '650px',
 
       });
     },

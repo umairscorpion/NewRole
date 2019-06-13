@@ -1,0 +1,89 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate>
+  <div id="Event" class="p-10 mt-1">
+    <div class="row">
+      <div class="col-md-11">
+      </div>
+      <div class="col-md-1 text-right pull-right">
+        <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-11 p-0">
+        <mat-form-field>
+          <input matInput placeholder="Add title" formControlName="title">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-md-1">
+        <mat-icon>schedule</mat-icon>
+      </div>
+      <div class="col-md-11 p-0 dt-picker">
+        <div class="row">
+          <div class="col-md-3 pr-0 m-5">
+            {{form.get('startDate').value}}
+            <!-- <mat-form-field>
+              <input placeholder="Start Date" matInput [matDatepicker]="startDatePicker" formControlName="startDate" />
+              <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker></mat-datepicker>
+              <mat-hint class="form-error-content" *ngIf="form.get('startDate').errors?.required && submitted">Start Date is required</mat-hint>
+              <mat-hint class="form-error-content" *ngIf="form.hasError('notValid') && submitted">Enter a valid Date</mat-hint>
+            </mat-form-field> -->
+          </div>
+
+          <div class="col-md-2 pr-0 m-5">
+            {{form.get('startTime').value}}
+            <!-- <mat-form-field class="ht-30">
+              <input type="text" matInput formControlName="startTime" [matAutocomplete]="startTimePicker" (input)="timeChanged('startTime')" />
+              <mat-autocomplete #startTimePicker="matAutocomplete" (optionSelected)="timeChanged('startTime')">
+                <mat-option *ngFor="let option of times" [value]="option">
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-hint class="form-error-content" *ngIf="form.get('startTime').errors?.required && submitted">Start Time is required</mat-hint>
+            </mat-form-field> -->
+          </div>
+
+          <div class="col-md-2 pr-0 m-5">
+            {{form.get('endTime').value}}
+            <!-- <mat-form-field class="ht-30">
+              <input type="text" matInput formControlName="endTime" [matAutocomplete]="endTimePicker" (input)="timeChanged('endTime')" />
+              <mat-autocomplete #endTimePicker="matAutocomplete" (optionSelected)="timeChanged('endTime')">
+                <mat-option *ngFor="let option of endTimes" [value]="option">
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-hint class="form-error-content" *ngIf="form.get('endTime').errors?.required && submitted">End Time is required</mat-hint>
+            </mat-form-field> -->
+          </div>
+
+          <div class="col-md-3 pr-0 m-5">
+            {{form.get('endDate').value}}
+            <!-- <mat-form-field [ngClass]="{
+              'appointment-edit-has-error':
+                form.hasError('notValid') ||
+                form.get('endDate').errors?.required
+            }">
+              <input placeholder="End Date" matInput [matDatepicker]="endDatePicker" formControlName="endDate" />
+              <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #endDatePicker></mat-datepicker>
+              <mat-hint class="form-error-content" *ngIf="form.get('endDate').errors?.required && submitted">End Date is required</mat-hint>
+              <mat-hint class="form-error-content" *ngIf="form.hasError('notValid') && submitted">Enter a valid Date</mat-hint>
+            </mat-form-field> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row mt-5">
+      <div class="col-md-1">
+      </div>
+      <button class="btn btn-success">Save</button>&nbsp;
+    </div>
+  </div>
+</form>

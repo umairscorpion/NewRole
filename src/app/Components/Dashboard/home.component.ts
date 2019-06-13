@@ -1,10 +1,10 @@
-﻿import { Component, ChangeDetectorRef, HostBinding } from "@angular/core";
+﻿import { Component, ChangeDetectorRef, HostBinding, OnInit } from "@angular/core";
 import { MediaMatcher } from '@angular/cdk/layout';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { UserService } from '../../Service/user.service';
 import { SideNavService } from '../SideNav/sideNav.service';
-import { Chart } from 'chart.js'
+import { Chart } from 'chart.js';
 import * as ChartDataLabels from 'chartjs-plugin-datalabels';
 import { LeaveRequest } from "../../Model/leaveRequest";
 import { AbsenceService } from "../../Services/absence.service";
@@ -16,13 +16,15 @@ import { CommunicationService } from "../../Services/communication.service";
 import { environment } from "src/environments/environment";
 import { DomSanitizer } from "@angular/platform-browser";
 import { DashboardSummary } from "src/app/Model/DashboardSummary";
+import { SplashScreenComponent } from "./splash-screen/splash-screen.component";
+import { SettingsService } from "src/app/Services/settings.service";
 
 @Component({
     selector: 'Subzz-app-dashboard',
     templateUrl: `home.component.html`,
     styleUrls: ['home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
     userId: string = this.userSession.getUserId();
     submittedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
     absenceSummary: any;
@@ -78,7 +80,10 @@ export class HomeComponent {
         private absenceService: AbsenceService,
         private userSession: UserSession,
         private _communicationService: CommunicationService,
-        private sanitizer: DomSanitizer) {
+        private sanitizer: DomSanitizer,
+        private dialogRef: MatDialog,
+        private settingsService: SettingsService
+    ) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
@@ -94,6 +99,20 @@ export class HomeComponent {
              this.bindAbsenceBySubject(summary);
              this.bindTotalAbsenceByGradeLevel(summary);
              this.dashboardCounter = summary.absenceSummary[0];
+        if (!this.userSession.isViewedNewVersion()) {
+            this.settingsService.getVersionUpdate().subscribe(t => {
+                console.log(t);
+                // const dialogRef = this.dialogRef.open(SplashScreenComponent,
+                //     {
+                //         panelClass: 'splash-screen-dialog',
+                //         data: t
+                //     });
+                // dialogRef.afterClosed().subscribe(result => {
+                //     // update is viewed flag to true in user table.
+                // });
+            });
+
+        }
         });
         this.getTopTenTeachers();
         this.GetLeaveRequests();

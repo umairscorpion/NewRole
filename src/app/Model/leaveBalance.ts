@@ -7,4 +7,7 @@ export interface LeaveBalance {
     organizationId: string;
     districtId: number;
     year: number;
+    leaveTypeId: number;
+    balance: number;
+    isAllowNegativeAllowance: boolean;
 }
