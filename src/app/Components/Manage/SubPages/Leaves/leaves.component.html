@@ -129,9 +129,9 @@
                       <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
+                      <!-- <button mat-icon-button #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
-                      </button>
+                      </button> -->
                       <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)"
                         #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
@@ -166,9 +166,9 @@
                         #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
+                      <!-- <button mat-icon-button #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
-                      </button>
+                      </button> -->
                       <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId)"
                         #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below" #tooltip="matTooltip"
                         matTooltip="Archive" matTooltipPosition="below">
@@ -200,7 +200,7 @@
                       {{leave.createdDate | date}}
                       <br> {{leave.createdDate | date}}
                     </div>
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                       <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)"
                         #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
@@ -209,7 +209,7 @@
                         #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
                       </button>
-                    </div>
+                    </div> -->
                     <mat-divider></mat-divider>
                   </mat-list-item>
                   <mat-divider></mat-divider>
@@ -235,7 +235,7 @@
                       {{leave.createdDate | date}}
                       <br> {{leave.createdDate | date}}
                     </div>
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                       <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)"
                         #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
                         <mat-icon style="color:#00B945;font-weight: bold;">check</mat-icon>
@@ -244,7 +244,7 @@
                         #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
                       </button>
-                    </div>
+                    </div> -->
                     <mat-divider></mat-divider>
                   </mat-list-item>
                   <mat-divider></mat-divider>

@@ -31,7 +31,7 @@
           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
           <mat-cell *matCellDef="let row">
             <i class="material-icons" style="cursor: pointer; color: #448ac9" #tooltip="matTooltip" matTooltip="Delete Position" matTooltipPosition="below" (click)="deletePosition(row.id)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE_POSITIONS'">delete_sweep</i>
-            <i class="material-icons" style="cursor: pointer;margin-left: 10px; color: #f19f4d" #tooltip="matTooltip" matTooltip="Edit Position" matTooltipPosition="below" (click)="editPosition(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE_POSITIONS'">edit</i>
+            <i class="material-icons" style="cursor: pointer;margin-left: 10px; color: #448ac9" #tooltip="matTooltip" matTooltip="Edit Position" matTooltipPosition="below" (click)="editPosition(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE_POSITIONS'">edit</i>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

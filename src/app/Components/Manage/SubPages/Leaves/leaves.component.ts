@@ -13,6 +13,7 @@ import { AllowanceComponent } from './popups/add-allowance.popup.component';
 import { Allowance } from '../../../../Model/Manage/allowance.detail';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import swal from 'sweetalert2';
 
 @Component({
     templateUrl: 'leaves.component.html',
@@ -98,6 +99,34 @@ export class LeavesComponent implements OnInit {
             this.dataSourceForLeaveRequests.data.forEach((row: any) => this.selection.select(row));
     }
 
+    // onApproveClick(leaveRequestId: number, absenceId: string) {
+    //     let leaveStatusModel = {
+    //         LeaveRequestId: leaveRequestId,
+    //         IsApproved: 1,
+    //         IsDeniend: 0,
+    //         isArchived: 0,
+    //         AbsenceId: absenceId
+    //     }
+    //     this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+    //         this.selection.clear();
+    //         if (this.tabClicked == 0) {
+    //             this.GetLeaveRequests();
+    //         }
+
+    //         else if (this.tabClicked == 1) {
+    //             this.GetLeaveRequests();
+    //         }
+
+    //         else {
+    //             this.GetLeaveRequests();
+    //         }
+    //         // this.toastr.success('Status Updated Successfully!', 'Success!');
+    //     },
+    //         (err: HttpErrorResponse) => {
+    //             // this.toastr.error(err.error.error_description, 'Oops!');
+    //         });
+    // }
+
     onApproveClick(leaveRequestId: number, absenceId: string) {
         let leaveStatusModel = {
             LeaveRequestId: leaveRequestId,
@@ -106,24 +135,40 @@ export class LeavesComponent implements OnInit {
             isArchived: 0,
             AbsenceId: absenceId
         }
-        this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
-            this.selection.clear();
-            if (this.tabClicked == 0) {
-                this.GetLeaveRequests();
+        swal.fire({
+            title: 'Approve',
+            text:
+                'Are you sure, you want to Approve the selected Absence Request?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+        }).then(r => {
+            if (r.value) {
+                this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+                    this.selection.clear();
+                    this.notifier.notify('success', 'Approved Successfully');
+                    if (this.tabClicked == 0) {
+                        this.GetLeaveRequests();
+                    }
+        
+                    else if (this.tabClicked == 1) {
+                        this.GetLeaveRequests();
+                    }
+        
+                    else {
+                        this.GetLeaveRequests();
+                    }
+                    // this.toastr.success('Status Updated Successfully!', 'Success!');
+                },
+                    (err: HttpErrorResponse) => {
+                        // this.toastr.error(err.error.error_description, 'Oops!');
+                    });
             }
-
-            else if (this.tabClicked == 1) {
-                this.GetLeaveRequests();
-            }
-
-            else {
-                this.GetLeaveRequests();
-            }
-            // this.toastr.success('Status Updated Successfully!', 'Success!');
-        },
-            (err: HttpErrorResponse) => {
-                // this.toastr.error(err.error.error_description, 'Oops!');
-            });
+        });
     }
 
     onDenyClick(leaveRequestId: number, absenceId: string) {
@@ -134,50 +179,134 @@ export class LeavesComponent implements OnInit {
             isArchived: 0,
             AbsenceId: absenceId
         }
-
-        this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
-            this.selection.clear();
-            if (this.tabClicked == 0) {
-                this.GetLeaveRequests();
+        swal.fire({
+            title: 'Deny',
+            text:
+                'Are you sure, you want to Deny the selected Absence Request?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+        }).then(r => {
+            if (r.value) {
+                this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+                    this.selection.clear();
+                    this.notifier.notify('success', 'Denied Successfully');
+                    if (this.tabClicked == 0) {
+                        this.GetLeaveRequests();
+                    }
+                    else if (this.tabClicked == 1) {
+                        this.GetLeaveRequests();
+                    }
+                    else {
+                        this.GetLeaveRequests();
+                    }
+                    // this.toastr.success('Status Updated Successfully!', 'Success!');
+                },
+                    (err: HttpErrorResponse) => {
+                        // this.toastr.error(err.error.error_description, 'Oops!');
+                    });
             }
-            else if (this.tabClicked == 1) {
-                this.GetLeaveRequests();
-            }
-            else {
-                this.GetLeaveRequests();
-            }
-            // this.toastr.success('Status Updated Successfully!', 'Success!');
-        },
-            (err: HttpErrorResponse) => {
-                // this.toastr.error(err.error.error_description, 'Oops!');
-            });
+        });
     }
 
-    onArchiveRequest(leaveRequestId: number, absenceId: string) {
 
+    // onDenyClick(leaveRequestId: number, absenceId: string) {
+    //     let leaveStatusModel = {
+    //         leaveRequestId: leaveRequestId,
+    //         isApproved: 0,
+    //         isDeniend: 1,
+    //         isArchived: 0,
+    //         AbsenceId: absenceId
+    //     }
+
+    //     this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+    //         this.selection.clear();
+    //         if (this.tabClicked == 0) {
+    //             this.GetLeaveRequests();
+    //         }
+    //         else if (this.tabClicked == 1) {
+    //             this.GetLeaveRequests();
+    //         }
+    //         else {
+    //             this.GetLeaveRequests();
+    //         }
+    //         // this.toastr.success('Status Updated Successfully!', 'Success!');
+    //     },
+    //         (err: HttpErrorResponse) => {
+    //             // this.toastr.error(err.error.error_description, 'Oops!');
+    //         });
+    // }
+
+
+    onArchiveRequest(leaveRequestId: number, absenceId: string) {
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
             isArchived: 1,
             AbsenceId: absenceId
         }
-
-        this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
-            this.selection.clear();
-            if (this.tabClicked == 0) {
-                this.GetLeaveRequests();
+        swal.fire({
+            title: 'Archive',
+            text:
+                'Are you sure, you want to Archive the selected Request?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+        }).then(r => {
+            if (r.value) {
+                this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+                    this.selection.clear();
+                    this.notifier.notify('success', 'Archived Successfully');
+                    if (this.tabClicked == 0) {
+                        this.GetLeaveRequests();
+                    }
+                    else if (this.tabClicked == 1) {
+                        this.GetLeaveRequests();
+                    }
+                    else {
+                        this.GetLeaveRequests();
+                    }
+                    // this.toastr.success('Status Updated Successfully!', 'Success!');
+                },
+                    (err: HttpErrorResponse) => {
+                        // this.toastr.error(err.error.error_description, 'Oops!');
+                    });
             }
-            else if (this.tabClicked == 1) {
-                this.GetLeaveRequests();
-            }
-            else {
-                this.GetLeaveRequests();
-            }
-            // this.toastr.success('Status Updated Successfully!', 'Success!');
-        },
-            (err: HttpErrorResponse) => {
-                // this.toastr.error(err.error.error_description, 'Oops!');
-            });
+        });
     }
+
+    // onArchiveRequest(leaveRequestId: number, absenceId: string) {
+
+    //     let leaveStatusModel = {
+    //         leaveRequestId: leaveRequestId,
+    //         isArchived: 1,
+    //         AbsenceId: absenceId
+    //     }
+
+    //     this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+    //         this.selection.clear();
+    //         if (this.tabClicked == 0) {
+    //             this.GetLeaveRequests();
+    //         }
+    //         else if (this.tabClicked == 1) {
+    //             this.GetLeaveRequests();
+    //         }
+    //         else {
+    //             this.GetLeaveRequests();
+    //         }
+    //         // this.toastr.success('Status Updated Successfully!', 'Success!');
+    //     },
+    //         (err: HttpErrorResponse) => {
+    //             // this.toastr.error(err.error.error_description, 'Oops!');
+    //         });
+    // }
 
     tabClick(tab: any) {
         this.selection.clear();
@@ -198,16 +327,42 @@ export class LeavesComponent implements OnInit {
         }
     }
 
-    deleteLeaveType(leaveTypeId: number): void {
-        var confirmResult = confirm('Are you sure you want to delete Leave type?');
-        if (confirmResult) {
-            this.absenceService.delete('Leave/deleteLeaveType/', leaveTypeId).subscribe((response: any) => {
-                if (response === -1) {
-                    this.notifier.notify('success', 'Deleted Successfully');
-                    this.GetLeaveTypes();
-                }
-            });
-        }
+    // deleteLeaveType(leaveTypeId: number): void {
+    //     var confirmResult = confirm('Are you sure you want to delete Leave type?');
+    //     if (confirmResult) {
+    //         this.absenceService.delete('Leave/deleteLeaveType/', leaveTypeId).subscribe((response: any) => {
+    //             if (response === -1) {
+    //                 this.notifier.notify('success', 'Deleted Successfully');
+    //                 this.GetLeaveTypes();
+    //             }
+    //         });
+    //     }
+    // }
+
+    deleteLeaveType(leaveTypeId: number) {
+    
+        swal.fire({
+            title: 'Delete',
+            text:
+                'Are you sure, you want to delete the selected Leave Type?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+        }).then(r => {
+            if (r.value) {
+                this.absenceService.delete('Leave/deleteLeaveType/', leaveTypeId).subscribe((response: any) => {
+                    if (response === -1) {
+                        this.notifier.notify('success', 'Deleted Successfully');
+                        this.GetLeaveTypes();
+                    }
+              },
+                error => this.msg = <any>error);
+            }
+        });
     }
 
     editLeaveType(leaveTypeId: number): void {
@@ -254,14 +409,38 @@ export class LeavesComponent implements OnInit {
         });
     }
 
-    deleteAllowance(id: number): void {
-        var confirmResult = confirm('Are you sure you want to delete allowance?');
-        if (confirmResult) {
-            this.absenceService.delete('District/deleteAllowance/', id).subscribe((response: any) => {
-                this.notifier.notify('success', 'Deleted Successfully');
-                this.getAllowances();
-            });
-        }
+    // deleteAllowance(id: number): void {
+    //     var confirmResult = confirm('Are you sure you want to delete allowance?');
+    //     if (confirmResult) {
+    //         this.absenceService.delete('District/deleteAllowance/', id).subscribe((response: any) => {
+    //             this.notifier.notify('success', 'Deleted Successfully');
+    //             this.getAllowances();
+    //         });
+    //     }
+    // }
+
+    deleteAllowance(id: number) {
+    
+        swal.fire({
+            title: 'Delete',
+            text:
+                'Are you sure, you want to delete the selected allowance?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+        }).then(r => {
+            if (r.value) {
+                this.absenceService.delete('District/deleteAllowance/', id).subscribe((response: any) => {
+                    this.notifier.notify('success', 'Deleted Successfully');
+                    this.getAllowances();
+              },
+                error => this.msg = <any>error);
+            }
+        });
     }
 
     getImage(imageName: string) {

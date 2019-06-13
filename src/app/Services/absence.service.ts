@@ -11,6 +11,7 @@ import { LeaveType } from '../Model/leaveType';
 import { LeaveRequest } from '../Model/leaveRequest';
 import { AbsenceSummary } from 'src/app/Model/absence.summary';
 import { Absence } from '../Model/absence';
+import { DashboardSummary } from '../Model/DashboardSummary';
 
 @Injectable()
 export class AbsenceService extends RestService<LeaveType> {
@@ -23,15 +24,15 @@ export class AbsenceService extends RestService<LeaveType> {
 
   //For Dashboard Chart
   getSummaryInstance(): Entity {
-    return new AbsenceSummary();
+    return new DashboardSummary();
   }
 
   getSummary() {
     return this.httpClient
-      .get<AbsenceSummary[]>(environment.apiUrl + "/absence/summary")
+      .get<DashboardSummary[]>(environment.apiUrl + "/absence/summary")
       .pipe(catchError(this.errorHandler.handleError),
-        map((response: AbsenceSummary[]) => {
-          return response.map(item => this.getSummaryInstance().deserialize(item));
+        map((response: DashboardSummary[]) => {
+          return response;
         })
       );
   }

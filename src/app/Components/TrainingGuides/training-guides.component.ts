@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { FileManager } from '../../Model/FileSystem/fileManager.detail';
 import { NotifierService } from 'angular-notifier';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-training-guides',
@@ -26,6 +27,7 @@ export class TrainingGuidesComponent implements OnInit {
   FileExtention: string;
   SuccessMessage: boolean;
   Files: any;
+  msg : string;
   OriginalFileNameForDisplay: any;
   AdminGuide: FileManager[];
   StaffGuide: FileManager[];
@@ -112,6 +114,21 @@ export class TrainingGuidesComponent implements OnInit {
     });
   }
 
+  // DeleteFile(file: any) {
+  //   let model = {
+  //     fileName: file.fileName,
+  //     fileContentType: file.fileContentType,
+  //     fileExtention: file.fileExtention,
+  //     fileType: "Guides"
+  //   }
+  //   this._fileService.deleteFile('fileSystem/deleteFiles', model).subscribe((respose: any) => {
+  //     this.Files = respose;
+  //     this.AdminGuide = respose.filter(t => t.fileType == 2);
+  //     this.StaffGuide = respose.filter(t => t.fileType == 3);
+  //     this.SubstituteGuide = respose.filter(t => t.fileType == 4);
+  //   });
+  // }
+
   DeleteFile(file: any) {
     let model = {
       fileName: file.fileName,
@@ -119,13 +136,30 @@ export class TrainingGuidesComponent implements OnInit {
       fileExtention: file.fileExtention,
       fileType: "Guides"
     }
-    this._fileService.deleteFile('fileSystem/deleteFiles', model).subscribe((respose: any) => {
-      this.Files = respose;
-      this.AdminGuide = respose.filter(t => t.fileType == 2);
-      this.StaffGuide = respose.filter(t => t.fileType == 3);
-      this.SubstituteGuide = respose.filter(t => t.fileType == 4);
+    swal.fire({
+        title: 'Delete',
+        text:
+            'Are you sure, you want to delete the selected File?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-danger',
+        cancelButtonClass: 'btn btn-success',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        buttonsStyling: false
+    }).then(r => {
+        if (r.value) {
+              this._fileService.deleteFile('fileSystem/deleteFiles', model).subscribe((respose: any) => {
+              this.Files = respose;
+              this.AdminGuide = respose.filter(t => t.fileType == 2);
+              this.StaffGuide = respose.filter(t => t.fileType == 3);
+              this.SubstituteGuide = respose.filter(t => t.fileType == 4);
+              this.notifier.notify('success', 'Deleted Successfully.');
+          },
+            error => this.msg = <any>error);
+        }
     });
-  }
+}
 
   ViewFile(fileData: any) {
     this.dialogRef.open(
