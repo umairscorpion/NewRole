@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@angular/material';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatPaginator } from '@angular/material';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { DistrictService } from '../../../../../Service/Manage/district.service';
 import { UserSession } from '../../../../../Services/userSession.service';
@@ -21,6 +21,7 @@ export class LeaveBalanceComponent implements OnInit {
     year: number = new Date().getFullYear();
     employee: User;
     years: Years[] = Array<Years>();
+    @ViewChild(MatPaginator) paginator: MatPaginator;
     employees: Observable<IEmployee[]>;
     employeeLeaveBalance = new MatTableDataSource();
     displayedColumnsForLeaveRequests = ['Year', 'Name', 'Personal', 'Sick', 'Vacation'];
@@ -92,6 +93,10 @@ export class LeaveBalanceComponent implements OnInit {
         })
     }
 
+    ngAfterViewInit() {
+        this.employeeLeaveBalance.paginator = this.paginator;
+      }
+
     generateCSV() {
         var configuration = {
             fieldSeparator: ',',
@@ -99,7 +104,7 @@ export class LeaveBalanceComponent implements OnInit {
             decimalseparator: '.',
             showLabels: true,
             showTitle: true,
-            title: 'Payroll Report',
+            title: 'Leave Balance Report',
             useBom: false,
             noDownload: false,
             headers: ['Employee Name', 'Personal Leave', 'Sick Leave', 'Vacation Leave']
@@ -109,6 +114,9 @@ export class LeaveBalanceComponent implements OnInit {
             delete balance.districtId;
             delete balance.organizationId;
             delete balance.year;
+            delete balance.leaveTypeId;
+            delete balance.balance;
+            delete balance.isAllowNegativeAllowance;
             return true;
         });
         new ngxCsv(JSON.stringify(leaveReportTorint), new Date().toLocaleDateString(), configuration);

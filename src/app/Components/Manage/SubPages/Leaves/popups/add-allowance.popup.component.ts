@@ -24,7 +24,7 @@ export class AllowanceComponent implements OnInit {
         this.allowance = this.fb.group({
             id:[0],
             districtId: [this.userSession.getUserDistrictId()],
-            title: ['', Validators.required],
+            title: [{ value: '', disabled: true }, Validators.required],
             yearlyAllowance: ['', Validators.required],
             isDeductAllowance: [false],
             isResidualDays: [false],
@@ -43,6 +43,7 @@ export class AllowanceComponent implements OnInit {
         if(allowance.valid) {
             allowance.value.expirationStartDate = new Date(allowance.value.expirationStartDate).toLocaleDateString();
             allowance.value.expirationEndDate = new Date(allowance.value.expirationEndDate).toLocaleDateString();
+            allowance.value.title = allowance.getRawValue().title;
             if (allowance.value.id > 0) {
                 this.districtService.Patch('District/allowances/', allowance.value).subscribe((data: any) => {
                     this.dialogRef.close();

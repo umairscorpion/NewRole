@@ -18,6 +18,7 @@ import { User } from '../../../../Model/user';
 import { AbsenceScope } from '../../../../Model/absenceScope';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Absence } from '../../../../Model/absence';
+import { LeaveBalance } from '../../../../Model/leaveBalance';
 
 @Component({
     selector: 'create-absence',
@@ -45,7 +46,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                     return true;
                 }
             });
-            return toSelectDefaultOptionForReason ? 'highlightDate' : undefined;
+            return toSelectDefaultOptionForReason ? 'highlight-Jobs' : undefined;
         }
         else {
             return undefined;
@@ -101,7 +102,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         private _userSession: UserSession,
         private absenceService: AbsenceService,
         notifier: NotifierService,
-        private sanitizer: DomSanitizer ) {
+        private sanitizer: DomSanitizer) {
         this.notifier = notifier;
     }
 
@@ -165,7 +166,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         EndDate.setMonth(this.CurrentDate.getMonth() + 6)
         this._dataContext.get('Absence/getAbsencesScheduleEmployee/' + StartDate.toISOString() + "/" + EndDate.toISOString()
             + "/" + employeeId).subscribe((data: any) => {
-                this.EmployeeSchedule = data.filter((absence:Absence) => absence.status != 4);
+                this.EmployeeSchedule = data.filter((absence: Absence) => absence.status != 4);
             },
                 error => this.msg = <any>error);
     }
@@ -564,6 +565,39 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     //ON CREATING ABSENCE CLICK
     createAbsenceSubmission(FirstAbsenceForm: any, SecondAbsenceForm: any, stepper: MatStepper) {
+        if (this._userSession.getUserRoleId() === 3) {
+            let filter = {
+                organizationId: this._userSession.getUserOrganizationId(),
+                districtId: this._userSession.getUserDistrictId(),
+                year: new Date().getFullYear(),
+                userId: this._userSession.getUserId()
+              }
+              this._dataContext.post('Leave/getLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
+                    response = response.filter(leaveBalance => leaveBalance.leaveTypeId === FirstAbsenceForm.value.Reason.leaveTypeId)
+                    if (response.length > 0) {
+                        if (response[0].isAllowNegativeAllowance) {
+                            this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+                        }
+                        else {
+                            if (response[0].balance - 1 >= 0) {
+                                this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+                            }
+                            else {
+                                this.notifier.notify('error', 'You dont have balance to create absence with this reason.');
+                            }
+                        }
+                    }
+                    else {
+                        this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+                    }
+              });
+        }
+        else {
+            this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+        }
+    }
+
+    createAbsence(FirstAbsenceForm: any, SecondAbsenceForm: any, stepper: MatStepper) {
         if (this.absenceFirstFormGroup.valid && this.absenceSecondFormGroup.valid) {
             let Substitutes = "";
 
@@ -572,7 +606,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                     Substitutes += index === array.length - 1 ? Substitute.userId : Substitute.userId + ",";
                 });
             }
-            
+
             let AbsenceModel = {
                 EmployeeId: this.EmployeeIdForAbsence,
                 AbsenceCreatedByEmployeeId: this._userSession.getUserId(),
@@ -610,8 +644,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 FirstAbsenceForm.value.AbsenceEndDate as Date, AbsenceModel.StartTime as string, AbsenceModel.EndTime as string)) {
                 this._dataContext.post('Absence/CreateAbsence', AbsenceModel).subscribe((respose: any) => {
                     if (respose == "success") {
+                        this.notifier.notify('success', 'Absence Created Successfully.');
                         this.response = 1;
-                        stepper.next();
+                        this.resetForm(stepper);
                         if (this._userSession.getUserRoleId() === 3) this.refreshBalance.next();
                     }
                 },
@@ -706,6 +741,25 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         return this.positions.find((position: any) => position.id === PostionId);
     }
 
+    downloadAttachment() {
+        const model = { AttachedFileName: this.AttachedFileName, FileContentType: this.AttachedFileType };
+        this._dataContext.getFile('Absence/getfile', model).subscribe((blob: any) => {
+            const newBlob = new Blob([blob]);
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(newBlob);
+                return;
+            }
+            let data = window.URL.createObjectURL(newBlob);
+            let link = document.createElement('a');
+            link.href = data;
+            link.download = this.OriginalFileName;
+            link.click();
+            setTimeout(() => {
+                window.URL.revokeObjectURL(data);
+            }, 100);
+        });
+    }
+
     /**
    * @description
    * ABSENCE SECTION END
@@ -768,7 +822,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     getImage(imageName: string) {
         if (imageName && imageName.length > 0) {
-            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
     }
 }
