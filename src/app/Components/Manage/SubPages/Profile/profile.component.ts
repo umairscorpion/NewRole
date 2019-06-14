@@ -83,7 +83,8 @@ export class ProfileComponent implements OnInit {
                         LastName: form.value.LastName,
                         Email: form.value.Email,
                         PhoneNumber: form.value.PhoneNumber,
-                        ProfilePicture: this.profilePictureUrl
+                        ProfilePicture: this.profilePictureUrl,
+                        IsViewedNewVersion: this.UserClaim.isViewedNewVersion
                     }
                     this._datacontext.Patch('user/updateUserProfile', personalFormModel).subscribe((data: any) => {
                         this.notifier.notify('success', 'Updated Successfully');

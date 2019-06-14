@@ -331,8 +331,8 @@
                                 <div class="col-md-6">
                                     <b>Attachment:</b>
                                 </div>
-                                <div class="col-md-6" *ngIf="OriginalFileName">{{OriginalFileName}}
-                                    <a style="cursor: pointer;" (click)="downloadAttachment()"> Download</a>
+                                <div class="col-md-6" *ngIf="OriginalFileName">
+                                    <a style="cursor: pointer;" (click)="downloadAttachment()"> {{OriginalFileName}}</a>
                                 </div>
                             </div>
                         </div>
@@ -347,7 +347,6 @@
                 </div>
             </mat-step>
         </mat-horizontal-stepper>
-
         <!-- <mat-tab *ngIf='loginedUserRole == 8' label="Create Leave">
                 <form class="col-md-8 col-md-offset-2" [formGroup]="LeaveRequestForm" (ngSubmit)="onSubmitLeaveRequestForm(LeaveRequestForm)">
                     <h4 style="text-align:center">Add New Leave Request</h4>

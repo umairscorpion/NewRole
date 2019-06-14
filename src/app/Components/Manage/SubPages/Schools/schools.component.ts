@@ -83,25 +83,26 @@ export class SchoolsComponent implements OnInit {
 
   deleteSchool(SelectedRow: any) {
     swal.fire({
-        title: 'Delete',
-        text:
-            'Are you sure, you want to delete the selected School?',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonClass: 'btn btn-danger',
-        cancelButtonClass: 'btn btn-success',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        buttonsStyling: false
+      title: 'Delete',
+      text:
+        'Are you sure, you want to delete the selected School?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-danger',
+      cancelButtonClass: 'btn btn-success',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      buttonsStyling: false
     }).then(r => {
-        if (r.value) {
-          this._dataContext.delete('school/', SelectedRow.schoolId).subscribe((data: any) => {
-            this.notifier.notify('success', 'Deleted Successfully.');
-            this.GetSchools();
-          },
-            error => this.msg = <any>error);
-        }
+      if (r.value) {
+        this._dataContext.delete('school/', SelectedRow.schoolId).subscribe((data: any) => {
+          this.notifier.notify('success', 'Deleted Successfully.');
+          this.GetSchools();
+        },
+          error => this.msg = <any>error);
+      }
     });
+  }
 }
 
 @Component({

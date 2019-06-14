@@ -18,6 +18,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { DashboardSummary } from "src/app/Model/DashboardSummary";
 import { SplashScreenComponent } from "./splash-screen/splash-screen.component";
 import { SettingsService } from "src/app/Services/settings.service";
+import { DataContext } from "../../Services/dataContext.service";
 
 @Component({
     selector: 'Subzz-app-dashboard',
@@ -52,7 +53,7 @@ export class HomeComponent implements OnInit {
     previousDateMinusNine = moment().subtract(9, 'days').format('MM/DD');
     previousDateMinusTen = moment().subtract(10, 'days').format('MM/DD');
     absenceReason1 = [];
-    dashboardCounter: DashboardSummary = new DashboardSummary();
+    dashboardCounter: AbsenceSummary = new AbsenceSummary();
     absenceChartSummary: AbsenceSummary = new AbsenceSummary();
     topCounter: AbsenceSummary;
     absenceReason: any;
@@ -82,7 +83,8 @@ export class HomeComponent implements OnInit {
         private _communicationService: CommunicationService,
         private sanitizer: DomSanitizer,
         private dialogRef: MatDialog,
-        private settingsService: SettingsService
+        private settingsService: SettingsService,
+        private dataContext: DataContext
     ) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -91,28 +93,44 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {
         this.absenceService.getSummary().subscribe((summary: any) => {
-             this.bindAbsenceSummary(summary);
-             this.bindAbsenceReason(summary);
-             this.bindFilledUnfilled(summary);
-             this.bindTotalFilledUnfilled(summary);
-             this.bindAbsenceByDayWeek(summary);
-             this.bindAbsenceBySubject(summary);
-             this.bindTotalAbsenceByGradeLevel(summary);
-             this.dashboardCounter = summary.absenceSummary[0];
-        if (!this.userSession.isViewedNewVersion()) {
-            this.settingsService.getVersionUpdate().subscribe(t => {
-                console.log(t);
-                const dialogRef = this.dialogRef.open(SplashScreenComponent,
-                    {
-                        panelClass: 'splash-screen-dialog',
-                        data: t
+            this.bindAbsenceSummary(summary);
+            this.bindAbsenceReason(summary);
+            this.bindFilledUnfilled(summary);
+            this.bindTotalFilledUnfilled(summary);
+            this.bindAbsenceByDayWeek(summary);
+            this.bindAbsenceBySubject(summary);
+            this.bindTotalAbsenceByGradeLevel(summary);
+            this.dashboardCounter = summary.absenceSummary[0];
+            if (!this.userSession.isViewedNewVersion()) {
+                this.settingsService.getVersionUpdate().subscribe(t => {
+                    console.log(t);
+                    const dialogRef = this.dialogRef.open(SplashScreenComponent,
+                        {
+                            panelClass: 'splash-screen-dialog',
+                            data: t
+                        });
+                    dialogRef.afterClosed().subscribe(result => {
+                        this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
+                        let user = {
+                            UserId: this.userSession.getUserId(),
+                            FirstName: this.UserClaim.firstName,
+                            LastName: this.UserClaim.lastName,
+                            Email: this.UserClaim.email,
+                            PhoneNumber: this.UserClaim.phoneNumber,
+                            ProfilePicture: this.UserClaim.profilePicture,
+                            IsViewedNewVersion: true
+                        }
+                        this.dataContext.Patch('user/updateUserProfile', user).subscribe((data: any) => {
+                            this.UserClaim.isViewedNewVersion = true;
+                            localStorage.setItem('userClaims', JSON.stringify(this.UserClaim));
+                            this.userSession.SetUserSession();
+                        },
+                            (err: HttpErrorResponse) => {
+                            });
                     });
-                dialogRef.afterClosed().subscribe(result => {
-                    // update is viewed flag to true in user table.
                 });
-            });
 
-        }
+            }
         });
         this.getTopTenTeachers();
         this.GetLeaveRequests();
@@ -215,7 +233,7 @@ export class HomeComponent implements OnInit {
         this.absenceReason = new Chart('absenceReason', {
             type: 'horizontalBar',
             data: {
-                labels: ["Personal Leave","ilness Self","Other","PD"],
+                labels: ["Personal Leave", "ilness Self", "Other", "PD"],
                 datasets: [{
                     label: 'Absence Reason',
                     data: this.AbsenceReason,
