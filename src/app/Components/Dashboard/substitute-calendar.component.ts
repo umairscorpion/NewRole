@@ -46,14 +46,12 @@ export class SubstituteCalendarComponent implements OnInit {
   ngOnInit() {
     this.loginedUserRole = this._userSession.getUserRoleId();
     this.containerEl = $('#calendar');
+    var moment = $('#calendar').fullCalendar('getDate');
     this.loadUnavailability();
     this.getSubstituteAvailibiltySummary();
   }
 
   loadUnavailability() {
-    this.availabilityService.getAll().subscribe(
-      (data: any) => {
-        console.log({ Availability: data });
         this.containerEl.fullCalendar({
           editable: false,
           eventDurationEditable: true,
@@ -68,7 +66,16 @@ export class SubstituteCalendarComponent implements OnInit {
             right: 'agendaDay, month, basicWeek'
           },
           defaultView: 'month',
-          events: data,
+          events: (start, end, timezone, callback) => {
+            let model = {
+              StartDate: moment(start).format('YYYY-MM-DD'),
+              EndDate: moment(end).format('YYYY-MM-DD')
+            }
+            this.availabilityService.getAll(model).subscribe((data: any) => {
+              this.containerEl.fullCalendar('removeEvents');
+              callback(data);
+            });
+          },
           eventRender: (event, element) => {
           },
           select: (start, end, jsEvent, view, resource) => {
@@ -138,30 +145,24 @@ export class SubstituteCalendarComponent implements OnInit {
             }
           }
         });
-      },
-      error => {
-      }
-    );
   }
 
   getSubstituteAvailibiltySummary() {
-    const model = {
-      };
-    this.availabilityService.post('availability/substitutes/summary', model).subscribe((availabilities: any) => {
-      this.substituteAvailibiltySummary = availabilities;
-    });
-    const filters = ReportFilter.initial();
-    this.date = moment(filters.fromDate).format('dddd, MM/DD/YYYY');
-    this.reportService.getDetail(filters).subscribe((details: ReportDetail[]) => {
-      this.todayTotalAbsenceDetails = details;
-    });
+    // const model = {
+    //   };
+    // this.availabilityService.post('availability/substitutes/summary', model).subscribe((availabilities: any) => {
+    //   this.substituteAvailibiltySummary = availabilities;
+    // });
+    // const filters = ReportFilter.initial();
+    // this.date = moment(filters.fromDate).format('dddd, MM/DD/YYYY');
+    // this.reportService.getDetail(filters).subscribe((details: ReportDetail[]) => {
+    //   this.todayTotalAbsenceDetails = details;
+    // });
   }
 
   reloadCalendar() {
-    this.availabilityService.getAll().subscribe((data: any) => {
       this.containerEl.fullCalendar('removeEvents');
-      this.containerEl.fullCalendar('renderEvents', data, true);
-    });
+      this.containerEl.fullCalendar('refetchEvents');
   }
 
   jumpToReport() {

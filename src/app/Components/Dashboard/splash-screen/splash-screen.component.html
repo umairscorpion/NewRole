@@ -2,7 +2,9 @@
   <div class="modal-body">
     <p>
       <button class="close btnHelpfulHint btn-close-hint text-right" (click)="onClose()">
-        <span aria-hidden="true"><i class="fa fa-times-circle-o"></i></span>
+        <span aria-hidden="true">
+          <i class="fa fa-times-circle-o"></i>
+        </span>
       </button>
     </p>
     <div class="row">
@@ -11,40 +13,7 @@
       </div>
       <div class="col-sm-5">
         <h2>What’s new in this release</h2>
-        <p>
-          test test test test test test test test test test test test test test test test test test test test test test test test test test test test
-        </p>
-        <ul>
-          <li>
-            <p>
-              Feature 1
-            </p>
-          </li>
-          <li>
-            <p>
-              Feature 2
-            </p>
-          </li>
-          <li>
-            <p>
-              Feature 3
-            </p>
-          </li>
-          <li>
-            <p>
-              Feature 4
-            </p>
-          </li>
-          <li>
-            <p>
-              Feature 5
-            </p>
-          </li>
-        </ul>
-
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-
+        {{versionUpdates.features}}
       </div>
     </div>
   </div>
