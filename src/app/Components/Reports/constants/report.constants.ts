@@ -9,6 +9,12 @@ export const ReportConstant = {
         legend: {
           position: 'bottom'
         },
+        plugins:{
+          datalabels:{
+            display: false,
+            color: 'white'
+          },
+        },
         elements: {
           center: {
             text: '0',
