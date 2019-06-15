@@ -70,17 +70,6 @@ export class SchoolsComponent implements OnInit {
       error => <any>error);
   }
 
-  // deleteSchool(SelectedRow: any) {
-  //   var confirmResult = confirm('Are you sure you want to delete '+ SelectedRow.schoolName +' School?');
-  //   if (confirmResult) {
-  //     this._dataContext.delete('school/', SelectedRow.schoolId).subscribe((data: any) => {
-  //       this.notifier.notify('success', 'Deleted Successfully.');
-  //       this.GetSchools();
-  //     },
-  //       error => this.msg = <any>error);
-  //   }
-  // }
-
   deleteSchool(SelectedRow: any) {
     swal.fire({
       title: 'Delete',

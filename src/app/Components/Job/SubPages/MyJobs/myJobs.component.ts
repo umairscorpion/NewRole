@@ -7,6 +7,7 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
+import swal from 'sweetalert2';
 
 @Component({
     selector: 'my-jobs',
@@ -61,6 +62,58 @@ export class MyJobsComponent implements OnInit {
                 error => this.msg = <any>error);
     }
 
+    // ReleaseJob(SelectedRow: any, StatusId: number) {
+    //     let currentTime = moment().format('h:mma');
+    //     let currentDate = moment().format('YYYY MM DD');
+    //     let starttimetemp = moment(SelectedRow.startTime, 'h:mma');
+    //     let starttime = moment(starttimetemp).format('h:mma');
+    //     let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
+
+    //     if (currentDate == startdate) {
+    //         if (currentTime > starttime) {
+    //             this.notifier.notify('error', 'Unable to release, job has started');
+    //         }
+    //     else {
+    //             let confirmResult = confirm('Are you sure you want to release this job?');
+    //             if (confirmResult) {
+    //                 if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
+    //                 this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+    //                     if (response == "success") {
+    //                         this.notifier.notify('success', 'Released Successfully.');
+    //                         this.GetUpcommingJobs();
+    //                         // this.availableJobs.GetAvailableJobs();
+    //                     }
+    //                 },
+    //                     error => this.msg = <any>error);
+    //             }
+    //         }
+
+    //     }
+    //     else {
+    //         if (startdate > currentDate) {
+                
+    //             let confirmResult = confirm('Are you sure you want to release this job?');
+    //             if (confirmResult) {
+    //                 if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
+    //                 this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+    //                     if (response == "success") {
+    //                         this.notifier.notify('success', 'Released Successfully.');
+    //                         this.GetUpcommingJobs();
+    //                         // this.availableJobs.GetAvailableJobs();
+    //                     }
+    //                 },
+    //                     error => this.msg = <any>error);
+    //             }
+    //         }
+
+    //         else {
+    //             this.notifier.notify('error', 'Something Went Wrong.');
+    //         }
+
+    //     }
+    // }
+    
+    
     ReleaseJob(SelectedRow: any, StatusId: number) {
         let currentTime = moment().format('h:mma');
         let currentDate = moment().format('YYYY MM DD');
@@ -73,8 +126,19 @@ export class MyJobsComponent implements OnInit {
                 this.notifier.notify('error', 'Unable to release, job has started');
             }
         else {
-                let confirmResult = confirm('Are you sure you want to release this job?');
-                if (confirmResult) {
+            swal.fire({
+                title: 'Release',
+                text:
+                    'Are you sure you want to Release this Job?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonClass: 'btn btn-danger',
+                cancelButtonClass: 'btn btn-success',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                buttonsStyling: false
+            }).then(r => {
+                if (r.value) {
                     if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
                     this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                         if (response == "success") {
@@ -85,14 +149,25 @@ export class MyJobsComponent implements OnInit {
                     },
                         error => this.msg = <any>error);
                 }
+           });
             }
-
         }
         else {
             if (startdate > currentDate) {
-                let confirmResult = confirm('Are you sure you want to release this job?');
-                if (confirmResult) {
-                    if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
+                swal.fire({
+                    title: 'Release',
+                    text:
+                        'Are you sure you want to Accept this Job?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-danger',
+                    cancelButtonClass: 'btn btn-success',
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    buttonsStyling: false
+                }).then(r => {
+                    if (r.value) {
+                        if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
                     this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                         if (response == "success") {
                             this.notifier.notify('success', 'Released Successfully.');
@@ -101,7 +176,8 @@ export class MyJobsComponent implements OnInit {
                         }
                     },
                         error => this.msg = <any>error);
-                }
+                    }
+               });
             }
 
             else {
