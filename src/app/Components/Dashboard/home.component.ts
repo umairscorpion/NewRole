@@ -632,10 +632,6 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['/reports']);
     }
 
-    openLeaveRequestPagePage() {
-        this.router.navigate(['/manage/leave']);
-    }
-
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this._mobileQueryListener);
     }
@@ -644,5 +640,9 @@ export class HomeComponent implements OnInit {
         if (imageName && imageName.length > 0) {
             return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
+    }
+
+    jumpToLeaveRequests() {
+        this.router.navigate(['/manage/leave'], { queryParams: { Tab: 1 } })
     }
 }

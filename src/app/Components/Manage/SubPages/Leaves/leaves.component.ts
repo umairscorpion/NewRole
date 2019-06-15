@@ -8,7 +8,7 @@ import { AbsenceService } from '../../../../Services/absence.service';
 import { LeaveType } from '../../../../Model/leaveType';
 import { LeaveRequest } from '../../../../Model/leaveRequest';
 import { NotifierService } from 'angular-notifier';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AllowanceComponent } from './popups/add-allowance.popup.component';
 import { Allowance } from '../../../../Model/Manage/allowance.detail';
 import { environment } from 'src/environments/environment';
@@ -23,6 +23,7 @@ export class LeavesComponent implements OnInit {
     private notifier: NotifierService;
     msg: string;
     tabClicked: number;
+    selectedTab: number;
     allowances: Allowance[];
     displayedColumnsForLeaveTypes = ['LeaveTypeName', 'Allowance', 'Approval', 'Visible', 'CreatedDate', 'action'];
     displayedColumnsForLeaveRequests = ['select', 'CreatedDate', 'EmployeeName', 'Description', 'EndDate', 'EndTime', 'LeaveTypeName', 'Status'];
@@ -45,6 +46,7 @@ export class LeavesComponent implements OnInit {
         private absenceService: AbsenceService,
         notifier: NotifierService,
         public dialog: MatDialog,
+        private route: ActivatedRoute, 
         private sanitizer: DomSanitizer) {
         this.notifier = notifier;
     }
@@ -54,6 +56,11 @@ export class LeavesComponent implements OnInit {
         this.tabClicked = 0;
         this.GetLeaveRequests();
         this.getAllowances();
+        this.route.queryParams.subscribe((params: any) => {
+            if (params['Tab']) {
+                this.selectedTab = +params.Tab;
+            }
+        });
     }
 
     GetLeaveTypes(): void {
