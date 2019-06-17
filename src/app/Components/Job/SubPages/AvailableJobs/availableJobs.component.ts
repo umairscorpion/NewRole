@@ -10,6 +10,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { MyJobsComponent } from '../MyJobs/myJobs.component';
 import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
+import swal from 'sweetalert2';
 
 @Component({
     selector: 'available-jobs',
@@ -205,6 +206,24 @@ export class AvailableJobsComponent implements OnInit {
         }
     }
 
+    //  deleteDistrict(SelectedRow: any) {
+    //      swal.fire({
+    //          title: 'Accept',
+    //          text:
+    //              'Are you sure you want to Accept this Job?',
+    //          type: 'warning',
+    //          showCancelButton: true,
+    //          confirmButtonClass: 'btn btn-danger',
+    //          cancelButtonClass: 'btn btn-success',
+    //          confirmButtonText: 'Yes',
+    //          cancelButtonText: 'No',
+    //          buttonsStyling: false
+    //      }).then(r => {
+    //          if (r.value) {
+    //          }
+    //     });
+    //  }
+
     AcceptAbsence(SelectedRow: any) {
         let currentTime = moment().format('h:mma');
         let currentDate = moment().format('YYYY MM DD');
@@ -217,32 +236,98 @@ export class AvailableJobsComponent implements OnInit {
                 this.notifier.notify('error', 'Job has ended, you cannot accept it.');
             }
             else {
-                let confirmResult = confirm('Are you sure you want to Accept this Job?');
-                if (confirmResult) {
-                    this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
-                        this.NotifyResponse(response as string);
-                        this.GetAvailableJobs();
-                        this.upcomingJobs.GetUpcommingJobs();
-                    },
-                        error => this.msg = <any>error);
-                }
+                swal.fire({
+                    title: 'Accept',
+                    text:
+                        'Are you sure you want to Accept this Job?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-danger',
+                    cancelButtonClass: 'btn btn-success',
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    buttonsStyling: false
+                }).then(r => {
+                    if (r.value) {
+                        this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                            this.NotifyResponse(response as string);
+                            this.GetAvailableJobs();
+                            this.upcomingJobs.GetUpcommingJobs();
+                        },
+                            error => this.msg = <any>error);
+                    }
+                });
             }
         }
         else {
             if (startdate > currentDate) {
-                let confirmResult = confirm('Are you sure you want to Accept this Job?');
-                if (confirmResult) {
-                    this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
-                        this.NotifyResponse(response as string);
-                        this.GetAvailableJobs()
-                        this.upcomingJobs.GetUpcommingJobs();
-                    },
-                        error => this.msg = <any>error);
-                }
+                swal.fire({
+                    title: 'Accept',
+                    text:
+                        'Are you sure you want to Accept this Job?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-danger',
+                    cancelButtonClass: 'btn btn-success',
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    buttonsStyling: false
+                }).then(r => {
+                    if (r.value) {
+                        this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                            this.NotifyResponse(response as string);
+                            this.GetAvailableJobs()
+                            this.upcomingJobs.GetUpcommingJobs();
+                        },
+                            error => this.msg = <any>error);
+                    }
+                });
             }
             else {
                 this.notifier.notify('error', 'Something Went Wrong.');
             }
         }
     }
+
+
+    // AcceptAbsence(SelectedRow: any) {
+    //     let currentTime = moment().format('h:mma');
+    //     let currentDate = moment().format('YYYY MM DD');
+    //     let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
+    //     let endtimetemp = moment(SelectedRow.endTime, 'h:mma');
+    //     let endtime = moment(endtimetemp).format('h:mma');
+
+    //     if (currentDate == startdate) {
+    //         if (currentTime > endtime) {
+    //             this.notifier.notify('error', 'Job has ended, you cannot accept it.');
+    //         }
+    //         else {
+    //             let confirmResult = confirm('Are you sure you want to Accept this Job?');
+    //             if (confirmResult) {
+    //                 this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+    //                     this.NotifyResponse(response as string);
+    //                     this.GetAvailableJobs();
+    //                     this.upcomingJobs.GetUpcommingJobs();
+    //                 },
+    //                     error => this.msg = <any>error);
+    //             }
+    //         }
+    //     }
+    //     else {
+    //         if (startdate > currentDate) {
+    //             let confirmResult = confirm('Are you sure you want to Accept this Job?');
+    //             if (confirmResult) {
+    //                 this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+    //                     this.NotifyResponse(response as string);
+    //                     this.GetAvailableJobs()
+    //                     this.upcomingJobs.GetUpcommingJobs();
+    //                 },
+    //                     error => this.msg = <any>error);
+    //             }
+    //         }
+    //         else {
+    //             this.notifier.notify('error', 'Something Went Wrong.');
+    //         }
+    //     }
+    // }
 }

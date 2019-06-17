@@ -18,6 +18,9 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { DashboardSummary } from "src/app/Model/DashboardSummary";
 import { SplashScreenComponent } from "./splash-screen/splash-screen.component";
 import { SettingsService } from "src/app/Services/settings.service";
+import swal from 'sweetalert2';
+import { NotifierService } from "angular-notifier";
+import { DataContext } from "../../Services/dataContext.service";
 
 @Component({
     selector: 'Subzz-app-dashboard',
@@ -25,10 +28,11 @@ import { SettingsService } from "src/app/Services/settings.service";
     styleUrls: ['home.component.css']
 })
 export class HomeComponent implements OnInit {
+    private notifier: NotifierService;
     userId: string = this.userSession.getUserId();
     submittedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
     absenceSummary: any;
-    absenceSummary1 = [];
+    AbsenceSummary = [];
     FilledTenDay = [];
     AbsenceReason = [];
     AbsenceReasonTitle = [];
@@ -52,7 +56,7 @@ export class HomeComponent implements OnInit {
     previousDateMinusNine = moment().subtract(9, 'days').format('MM/DD');
     previousDateMinusTen = moment().subtract(10, 'days').format('MM/DD');
     absenceReason1 = [];
-    dashboardCounter: DashboardSummary = new DashboardSummary();
+    dashboardCounter: AbsenceSummary = new AbsenceSummary();
     absenceChartSummary: AbsenceSummary = new AbsenceSummary();
     topCounter: AbsenceSummary;
     absenceReason: any;
@@ -82,8 +86,11 @@ export class HomeComponent implements OnInit {
         private _communicationService: CommunicationService,
         private sanitizer: DomSanitizer,
         private dialogRef: MatDialog,
-        private settingsService: SettingsService
+        private settingsService: SettingsService,
+        notifier: NotifierService,
+        private dataContext: DataContext
     ) {
+        this.notifier = notifier;
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
@@ -91,28 +98,44 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {
         this.absenceService.getSummary().subscribe((summary: any) => {
-             this.bindAbsenceSummary(summary);
-             this.bindAbsenceReason(summary);
-             this.bindFilledUnfilled(summary);
-             this.bindTotalFilledUnfilled(summary);
-             this.bindAbsenceByDayWeek(summary);
-             this.bindAbsenceBySubject(summary);
-             this.bindTotalAbsenceByGradeLevel(summary);
-             this.dashboardCounter = summary.absenceSummary[0];
-        if (!this.userSession.isViewedNewVersion()) {
-            this.settingsService.getVersionUpdate().subscribe(t => {
-                console.log(t);
-                const dialogRef = this.dialogRef.open(SplashScreenComponent,
-                    {
-                        panelClass: 'splash-screen-dialog',
-                        data: t
+            this.bindAbsenceSummary(summary);
+            this.bindAbsenceReason(summary);
+            this.bindFilledUnfilled(summary);
+            this.bindTotalFilledUnfilled(summary);
+            this.bindAbsenceByDayWeek(summary);
+            this.bindAbsenceBySubject(summary);
+            this.bindTotalAbsenceByGradeLevel(summary);
+            this.dashboardCounter = summary.absenceSummary[0];
+            if (!this.userSession.isViewedNewVersion()) {
+                this.settingsService.getVersionUpdate().subscribe(t => {
+                    console.log(t);
+                    const dialogRef = this.dialogRef.open(SplashScreenComponent,
+                        {
+                            panelClass: 'splash-screen-dialog',
+                            data: t
+                        });
+                    dialogRef.afterClosed().subscribe(result => {
+                        this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
+                        let user = {
+                            UserId: this.userSession.getUserId(),
+                            FirstName: this.UserClaim.firstName,
+                            LastName: this.UserClaim.lastName,
+                            Email: this.UserClaim.email,
+                            PhoneNumber: this.UserClaim.phoneNumber,
+                            ProfilePicture: this.UserClaim.profilePicture,
+                            IsViewedNewVersion: true
+                        }
+                        this.dataContext.Patch('user/updateUserProfile', user).subscribe((data: any) => {
+                            this.UserClaim.isViewedNewVersion = true;
+                            localStorage.setItem('userClaims', JSON.stringify(this.UserClaim));
+                            this.userSession.SetUserSession();
+                        },
+                            (err: HttpErrorResponse) => {
+                            });
                     });
-                dialogRef.afterClosed().subscribe(result => {
-                    // update is viewed flag to true in user table.
                 });
-            });
 
-        }
+            }
         });
         this.getTopTenTeachers();
         this.GetLeaveRequests();
@@ -132,18 +155,18 @@ export class HomeComponent implements OnInit {
     }
 
     bindAbsenceSummary(chartSummary: DashboardSummary) {
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].january);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].february);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].march);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].april);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].may);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].june);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].july);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].august);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].september);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].october);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].november);
-        this.absenceSummary1.push(chartSummary.absenceSummary[0].december);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].january);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].february);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].march);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].april);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].may);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].june);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].july);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].august);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].september);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].october);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].november);
+        this.AbsenceSummary.push(chartSummary.absenceSummary[0].december);
 
         this.absenceSummary = new Chart('absenceSummary', {
             type: 'bar',
@@ -151,7 +174,7 @@ export class HomeComponent implements OnInit {
                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [{
                     label: 'Absence Summary',
-                    data: this.absenceSummary1,
+                    data: this.AbsenceSummary,
                     // data: [12, 19, 3, 5, 1, 1, 12, 19, 3, 5, 1, 1],
                     backgroundColor: [
                         "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#3e95cd", "#8e5ea2", "#3cba9f"
@@ -215,7 +238,7 @@ export class HomeComponent implements OnInit {
         this.absenceReason = new Chart('absenceReason', {
             type: 'horizontalBar',
             data: {
-                labels: ["Personal Leave","ilness Self","Other","PD"],
+                labels: ["Personal Leave", "ilness Self", "Other", "PD"],
                 datasets: [{
                     label: 'Absence Reason',
                     data: this.AbsenceReason,
@@ -578,6 +601,23 @@ export class HomeComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
+    // onApproveClick(leaveRequestId: number, absenceId: string) {
+    //     let leaveStatusModel = {
+    //         LeaveRequestId: leaveRequestId,
+    //         IsApproved: 1,
+    //         IsDeniend: 0,
+    //         isArchived: 0,
+    //         AbsenceId: absenceId
+    //     }
+    //     this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+    //         this.GetLeaveRequests();
+    //         // this.toastr.success('Status Updated Successfully!', 'Success!');
+    //     },
+    //         (err: HttpErrorResponse) => {
+    //             // this.toastr.error(err.error.error_description, 'Oops!');
+    //         });
+    // }
+
     onApproveClick(leaveRequestId: number, absenceId: string) {
         let leaveStatusModel = {
             LeaveRequestId: leaveRequestId,
@@ -586,13 +626,27 @@ export class HomeComponent implements OnInit {
             isArchived: 0,
             AbsenceId: absenceId
         }
-        this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
-            this.GetLeaveRequests();
-            // this.toastr.success('Status Updated Successfully!', 'Success!');
-        },
-            (err: HttpErrorResponse) => {
-                // this.toastr.error(err.error.error_description, 'Oops!');
-            });
+        swal.fire({
+            title: 'Approve',
+            text:
+              'Are you sure, you want to Approve the selected Request?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+          }).then(r => {
+            if (r.value) {
+                this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+                    this.GetLeaveRequests();
+                    this.notifier.notify('success', 'Approved Successfully.');
+                    // this.toastr.success('Status Updated Successfully!', 'Success!');
+                },
+                error => this.msg = <any>error);
+            }
+          });
     }
 
     onDenyClick(leaveRequestId: number, absenceId: string) {
@@ -603,19 +657,45 @@ export class HomeComponent implements OnInit {
             isArchived: 0,
             AbsenceId: absenceId
         }
-        this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
-            this.GetLeaveRequests();
-        },
-            (err: HttpErrorResponse) => {
-            });
+        swal.fire({
+            title: 'Deny',
+            text:
+              'Are you sure, you want to Deny the selected Request?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+          }).then(r => {
+            if (r.value) {
+                this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+                    this.GetLeaveRequests();
+                    this.notifier.notify('success', 'Denied Successfully.');
+              },
+                error => this.msg = <any>error);
+            }
+          });
     }
+
+    // onDenyClick(leaveRequestId: number, absenceId: string) {
+    //     let leaveStatusModel = {
+    //         leaveRequestId: leaveRequestId,
+    //         isApproved: 0,
+    //         isDeniend: 1,
+    //         isArchived: 0,
+    //         AbsenceId: absenceId
+    //     }
+    //     this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
+    //         this.GetLeaveRequests();
+    //     },
+    //         (err: HttpErrorResponse) => {
+    //         });
+    // }
 
     openDailyReportPage() {
         this.router.navigate(['/reports']);
-    }
-
-    openLeaveRequestPagePage() {
-        this.router.navigate(['/manage/leave']);
     }
 
     ngOnDestroy(): void {
@@ -626,5 +706,9 @@ export class HomeComponent implements OnInit {
         if (imageName && imageName.length > 0) {
             return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
+    }
+
+    jumpToLeaveRequests() {
+        this.router.navigate(['/manage/leave'], { queryParams: { Tab: 1 } })
     }
 }

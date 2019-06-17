@@ -53,7 +53,7 @@
           <ng-container matColumnDef="Status">
             <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
             <mat-cell *matCellDef="let Absence">
-              {{!Absence.isApprovalRequired && Absence.status !== 4 ? 'Pending Approval' : Absence.absenceStatusDescription}}
+              {{!Absence.isApprovalRequired && Absence.status !== 4 ? 'Pending Approval' : Absence.status === 2 && Absence.durationType === 2 ? 'Assigned' : Absence.absenceStatusDescription}}
             </mat-cell>
           </ng-container>
 

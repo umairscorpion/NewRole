@@ -20,9 +20,9 @@ export class AvailabilityService extends RestService<UserAvailability> {
     return new UserAvailability();
   }
 
-  getAll() {
+  getAll(model: any) {
     return this.httpClient
-      .get<UserAvailability[]>(environment.apiUrl + 'availability')
+      .post<UserAvailability[]>(environment.apiUrl + 'availability/events', model)
       .pipe(catchError(this.errorHandler.handleError),
         map((response: UserAvailability[]) => {
           return response.map(item => this.getInstance().deserialize(item));
