@@ -88,16 +88,6 @@ export class EmployeesComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  // GetEmployees(): void {
-  //     let RoleId = 3;
-  //     let OrgId = -1;
-  //     let DistrictId = -1;
-  //     this._EmployeeService.get('user/getEmployees' ,RoleId, OrgId, DistrictId).subscribe((data: any) => {
-  //       // this.dataSource.data = data;
-  //     },
-  //         error => this.msg = <any>error);
-  // }
-
   applyFilter(employeeName: any, Location: any) {
     const tableFilters = [];
     tableFilters.push({
@@ -133,40 +123,28 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
-  // DeleteEmployee(SelectedRow: any) {
-  //  var confirmResult = confirm('Are you sure you want to delete Employee?');
-  //  if (confirmResult) {
-  //      this._dataContext.delete('user/', SelectedRow.userId).subscribe((data: any) => {
-  //        this.notifier.notify('success', 'Deleted Successfully');
-  //        this.ngOnInit();
-  //      },
-  //        error => this.msg = <any>error);
-  //    }
-  //  }
-
   DeleteEmployee(SelectedRow: any) {
-    
-        swal.fire({
-            title: 'Delete',
-            text:
-                'Are you sure, you want to delete the selected Employee?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonClass: 'btn btn-danger',
-            cancelButtonClass: 'btn btn-success',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
-            buttonsStyling: false
-        }).then(r => {
-            if (r.value) {
-              this._dataContext.delete('user/', SelectedRow.userId).subscribe((data: any) => {
-                this.notifier.notify('success', 'Deleted Successfully');
-                this.ngOnInit();
-              },
-                error => this.msg = <any>error);
-            }
-        });
-}
+    swal.fire({
+      title: 'Delete',
+      text:
+        'Are you sure, you want to delete the selected Employee?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-danger',
+      cancelButtonClass: 'btn btn-success',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      buttonsStyling: false
+    }).then(r => {
+      if (r.value) {
+        this._dataContext.delete('user/', SelectedRow.userId).subscribe((data: any) => {
+          this.notifier.notify('success', 'Deleted Successfully');
+          this.ngOnInit();
+        },
+          error => this.msg = <any>error);
+      }
+    });
+  }
 
   EditEmployee(SelectedRow: any) {
     this.router.navigate(['/manage/employees/addemployee'], { queryParams: { Id: SelectedRow.userId } });
@@ -215,7 +193,10 @@ export class EmployeesComponent implements OnInit {
 }
 
 export class DataSourceEmployees {
-  constructor(private _dataContext: DataContext, private _UserSession: UserSession) { }
+  constructor(
+    private _dataContext: DataContext,
+    private _UserSession: UserSession) { }
+
   getRepoIssues(sort: string, order: string, page: number): Observable<IEmployee[]> {
     let RoleId = 3;
     let OrgId = this._UserSession.getUserOrganizationId();

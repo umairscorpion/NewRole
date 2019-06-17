@@ -29,7 +29,13 @@
        `<body>` to be our scrolling element for mobile layouts. */
     flex: 1 0 auto;
   }
+  
   .active{
     background: #fafafa;;
     border-left: 4px solid #309e21;
     }
+
+    
+    ::ng-deep .mat-tab-body-content {
+      overflow: hidden !important;
+  }

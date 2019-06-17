@@ -80,7 +80,6 @@ export class AddLeaveComponent implements OnInit {
                     this.notifier.notify('success', 'Updated Successfully');
                 else
                     this.notifier.notify('success', 'Added Successfully');
-                // this.toastr.success('Added Successfully!', 'Success!');
             },
                 (err: HttpErrorResponse) => {
                 });

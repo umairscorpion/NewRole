@@ -134,7 +134,9 @@ export class AddSubstituteComponent implements OnInit {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
             this.substituteForm.get('District').setValue(this._userSession.getUserDistrictId());
-            this.substituteForm.controls['District'].disable();
+            if (this._userSession.getUserLevelId() != 4) {
+                this.substituteForm.controls['District'].disable();
+            }            
         },
             error => <any>error);
     }

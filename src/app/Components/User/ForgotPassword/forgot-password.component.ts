@@ -1,5 +1,4 @@
-
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../Service/user.service';
 import { DataContext } from '../../../Services/dataContext.service';
 import { UserSession } from '../../../Services/userSession.service';
@@ -7,13 +6,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
-import { environment } from '../../../../environments/environment';
 
 @Component({
     templateUrl: 'forgot-password.component.html',
     styleUrls: ['forgot-password.component.scss']
 })
-
 export class ForgotPasswordComponent implements OnInit {
     private notifier: NotifierService;
     showForgotPassword: boolean = true;
@@ -21,10 +18,12 @@ export class ForgotPasswordComponent implements OnInit {
     msg: string;
     forgotPasswordform: FormGroup;
     private formSubmitAttempt: boolean;
-    constructor(private fb: FormBuilder, private _userService: UserService,
-        private router: Router, private activatedRoute: ActivatedRoute,
-        notifier: NotifierService, private _dataContext: DataContext,
-        private _userSession: UserSession) {
+
+    constructor(
+        private fb: FormBuilder,
+        private _userService: UserService,
+        private router: Router,
+        notifier: NotifierService) {
         this.notifier = notifier;
     }
 
@@ -49,9 +48,9 @@ export class ForgotPasswordComponent implements OnInit {
                     this.notifier.notify('error', 'Email not exist.')
                 }
             },
-            (err: HttpErrorResponse) => {
-                this.notifier.notify('error', err.statusText);
-            });
+                (err: HttpErrorResponse) => {
+                    this.notifier.notify('error', err.statusText);
+                });
         }
         this.formSubmitAttempt = true;
     }
@@ -66,6 +65,4 @@ export class ForgotPasswordComponent implements OnInit {
             (this.forgotPasswordform.get(field).untouched && this.formSubmitAttempt)
         );
     }
-
-
 }

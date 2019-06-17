@@ -21,8 +21,8 @@
       <div class="avatar-wrapper">
         <img class="profile-pic" [src]="getImage(reportDetail.employeeProfilePicUrl)" width="150" height="150" />
       </div>
-      <div class="text-center">
-        <h4>{{reportDetail.employeeName}}</h4>
+      <div>
+        <h4></h4>
       </div>
       <div class="absence-summary-title p-2 mt-2">Absence Summary</div>
       <br>
@@ -49,9 +49,11 @@
           <td>{{reportDetail.startTime | convertFrom24HourTo12HourFormat}} -
             {{reportDetail.endTime | convertFrom24HourTo12HourFormat}}</td>
         </tr>
-        <tr *ngIf="reportDetail.substituteRequired == false">
+        <tr>
           <td>Status:</td>
-          <td>{{reportDetail.statusTitle}}</td>
+          <td *ngIf="reportDetail.absenceType != 2 && reportDetail.substituteRequired">{{reportDetail.statusTitle}}</td>
+          <td *ngIf="reportDetail.absenceType == 2 && reportDetail.substituteRequired">Assigned</td>
+          <td *ngIf="!reportDetail.substituteRequired">N/A</td>
         </tr>
         <tr *ngIf='reportDetail.substituteId != -1'>
           <td>Substitute:</td>
@@ -139,9 +141,11 @@
             </mat-form-field>
           </td>
         </tr>
-        <tr *ngIf="reportDetail.substituteRequired == true">
+        <tr>
           <td>Status:</td>
-          <td>{{reportDetail.statusTitle}}</td>
+          <td *ngIf="reportDetail.absenceType != 2 && reportDetail.substituteRequired">{{reportDetail.statusTitle}}</td>
+          <td *ngIf="reportDetail.absenceType == 2 && reportDetail.substituteRequired">Assigned</td>
+          <td *ngIf="!reportDetail.substituteRequired">N/A</td>
         </tr>
         <tr>
           <td>Substitute:</td>

@@ -1,5 +1,10 @@
 .vertical-center {  
-    min-height: 10vh;
-    display: flex;
-    align-items: center;
-  }
+  min-height: 10vh;
+  display: flex;
+  align-items: center;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 400px;
+}

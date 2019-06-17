@@ -19,7 +19,7 @@
 
     .mat-table {
         overflow: auto;
-        max-height: 550px;
+        max-height: 500px;
     }
 </style>
 <mat-card>
@@ -27,11 +27,6 @@
     <div class="row">
         <div class="col-md-12 col-lg-12">
             <div class="example-container mat-elevation-z8">
-                <div class="example-header">
-                    <mat-form-field>
-                        <input matInput placeholder="Filter">
-                    </mat-form-field>
-                </div>
                 <mat-table #table [dataSource]="PastAbsences" matSort>
                     <!-- Position Column -->
                     <ng-container matColumnDef="AbsenceDate">
@@ -75,7 +70,7 @@
                             </a>
                         </mat-cell>
                     </ng-container>
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                 </mat-table>
                 <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
