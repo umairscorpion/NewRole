@@ -26,7 +26,7 @@
                 <div *ngIf="userRole != 4" style="margin-top:20px">
                     <a (click)="openAuditLog()">Audit Log</a>
                 </div>
-                <div style="margin-top:20px">
+                <div style="margin-top:20px" *ngIf="userRole === 4 || userRole === 3">
                     <a (click)="openCalendar()">Calendar</a>
                 </div>
                 <div *ngIf="userRole != 4" style="margin-top:20px">
@@ -35,7 +35,7 @@
                 <div style="margin-top: 20px">
                     <a (click)="openTimeClockPage()">Time Clock</a>
                 </div>
-                <div style="margin-top: 20px">
+                <div style="margin-top: 20px" *ngIf="userRole === 5">
                     <a (click)="openSharedCalendar()">Shared Calendar</a>
                 </div>
                 <div style="margin-top: 20px" *ngIf="userRole != 5">

@@ -583,7 +583,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                                 this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
                             }
                             else {
-                                this.notifier.notify('error', 'You dont have balance to create absence with this reason.');
+                                this.notifier.notify('error', 'Exceeded Limit.');
                             }
                         }
                     }

@@ -14,6 +14,7 @@ import { AbsenceService } from 'src/app/Services/absence.service';
 import { MatDialog } from '@angular/material';
 import { EventAddComponent } from './event-add/event-add.component';
 import { CalendarEvent } from 'src/app/Model/calendarEvent';
+import { DataContext } from '../../Services/dataContext.service';
 
 @Component({
   selector: 'app-shared-calendar',
@@ -26,12 +27,14 @@ export class SharedCalendarComponent implements OnInit {
   date: string = moment().format('dddd, MM/DD/YYYY');
   todayTotalAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
   loginedUserRole = 0;
+  Organizations: any;
 
   constructor(
     private availabilityService: AvailabilityService,
     private absenceService: AbsenceService,
     private reportService: ReportService,
     private _userSession: UserSession,
+    private _dataContext: DataContext,
     private dialogRef: MatDialog,
     private router: Router) {
   }
@@ -40,6 +43,7 @@ export class SharedCalendarComponent implements OnInit {
     this.loginedUserRole = this._userSession.getUserRoleId();
     this.containerEl = $('#calendar');
     this.loadAbsences();
+    this.GetOrganizations(this._userSession.getUserDistrictId());
   }
 
   loadAbsences() {
@@ -49,7 +53,7 @@ export class SharedCalendarComponent implements OnInit {
     const endDate = new Date();
     endDate.setMonth(currentDate.getMonth() + 6);
     const userId = this._userSession.getUserId();
-    const campusId = '-1';
+    const campusId = this._userSession.getUserLevelId() === 1 ? '-1': this._userSession.getUserOrganizationId();
     this.absenceService.CalendarView(startDate, endDate, userId, campusId).subscribe(
       (data: any) => {
         console.log({ absences: data });
@@ -106,10 +110,15 @@ export class SharedCalendarComponent implements OnInit {
       }
     );
   }
+  GetOrganizations(DistrictId: number): void {
+    this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
+      this.Organizations = data;
+    },
+      error => <any>error);
+  }
+
   reloadCalendar() {
-    this.availabilityService.getAll().subscribe((data: any) => {
       this.containerEl.fullCalendar('removeEvents');
-      this.containerEl.fullCalendar('renderEvents', data, true);
-    });
+      this.containerEl.fullCalendar('refetchEvents');
   }
 }

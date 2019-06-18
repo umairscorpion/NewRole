@@ -4,9 +4,10 @@
     <div>
       <mat-form-field class="col-md-3">
         <mat-select placeholder="Campus">
-          <mat-option value="0">Campus 1</mat-option>
-          <mat-option value="1">Campus 1</mat-option>
-          <mat-option value="2">Campus 1</mat-option>
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let organization of Organizations" [value]="organization.schoolId">
+            {{organization.schoolName}}
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>

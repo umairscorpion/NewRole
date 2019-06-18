@@ -20,6 +20,7 @@ import { SplashScreenComponent } from "./splash-screen/splash-screen.component";
 import { SettingsService } from "src/app/Services/settings.service";
 import swal from 'sweetalert2';
 import { NotifierService } from "angular-notifier";
+import { DataContext } from "../../Services/dataContext.service";
 
 @Component({
     selector: 'Subzz-app-dashboard',
@@ -86,7 +87,8 @@ export class HomeComponent implements OnInit {
         private sanitizer: DomSanitizer,
         private dialogRef: MatDialog,
         private settingsService: SettingsService,
-        notifier: NotifierService
+        notifier: NotifierService,
+        private dataContext: DataContext
     ) {
         this.notifier = notifier;
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -96,28 +98,44 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {
         this.absenceService.getSummary().subscribe((summary: any) => {
-             this.bindAbsenceSummary(summary);
-             this.bindAbsenceReason(summary);
-             this.bindFilledUnfilled(summary);
-             this.bindTotalFilledUnfilled(summary);
-             this.bindAbsenceByDayWeek(summary);
-             this.bindAbsenceBySubject(summary);
-             this.bindTotalAbsenceByGradeLevel(summary);
-             this.dashboardCounter = summary.absenceSummary[0];
-        if (!this.userSession.isViewedNewVersion()) {
-            this.settingsService.getVersionUpdate().subscribe(t => {
-                console.log(t);
-                const dialogRef = this.dialogRef.open(SplashScreenComponent,
-                    {
-                        panelClass: 'splash-screen-dialog',
-                        data: t
+            this.bindAbsenceSummary(summary);
+            this.bindAbsenceReason(summary);
+            this.bindFilledUnfilled(summary);
+            this.bindTotalFilledUnfilled(summary);
+            this.bindAbsenceByDayWeek(summary);
+            this.bindAbsenceBySubject(summary);
+            this.bindTotalAbsenceByGradeLevel(summary);
+            this.dashboardCounter = summary.absenceSummary[0];
+            if (!this.userSession.isViewedNewVersion()) {
+                this.settingsService.getVersionUpdate().subscribe(t => {
+                    console.log(t);
+                    const dialogRef = this.dialogRef.open(SplashScreenComponent,
+                        {
+                            panelClass: 'splash-screen-dialog',
+                            data: t
+                        });
+                    dialogRef.afterClosed().subscribe(result => {
+                        this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
+                        let user = {
+                            UserId: this.userSession.getUserId(),
+                            FirstName: this.UserClaim.firstName,
+                            LastName: this.UserClaim.lastName,
+                            Email: this.UserClaim.email,
+                            PhoneNumber: this.UserClaim.phoneNumber,
+                            ProfilePicture: this.UserClaim.profilePicture,
+                            IsViewedNewVersion: true
+                        }
+                        this.dataContext.Patch('user/updateUserProfile', user).subscribe((data: any) => {
+                            this.UserClaim.isViewedNewVersion = true;
+                            localStorage.setItem('userClaims', JSON.stringify(this.UserClaim));
+                            this.userSession.SetUserSession();
+                        },
+                            (err: HttpErrorResponse) => {
+                            });
                     });
-                dialogRef.afterClosed().subscribe(result => {
-                    // update is viewed flag to true in user table.
                 });
-            });
 
-        }
+            }
         });
         this.getTopTenTeachers();
         this.GetLeaveRequests();
@@ -220,7 +238,7 @@ export class HomeComponent implements OnInit {
         this.absenceReason = new Chart('absenceReason', {
             type: 'horizontalBar',
             data: {
-                labels: ["Personal Leave","ilness Self","Other","PD"],
+                labels: ["Personal Leave", "ilness Self", "Other", "PD"],
                 datasets: [{
                     label: 'Absence Reason',
                     data: this.AbsenceReason,
@@ -680,10 +698,6 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['/reports']);
     }
 
-    openLeaveRequestPagePage() {
-        this.router.navigate(['/manage/leave']);
-    }
-
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this._mobileQueryListener);
     }
@@ -692,5 +706,9 @@ export class HomeComponent implements OnInit {
         if (imageName && imageName.length > 0) {
             return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
+    }
+
+    jumpToLeaveRequests() {
+        this.router.navigate(['/manage/leave'], { queryParams: { Tab: 1 } })
     }
 }

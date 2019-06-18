@@ -31,7 +31,7 @@ export class SubstituteCalendarComponent implements OnInit {
   doOpen = true;
   date: string = moment().format('dddd, MM/DD/YYYY');
   todayTotalAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
-  loginedUserRole: number = 0;
+  loginedUserRole = 0;
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
@@ -46,122 +46,124 @@ export class SubstituteCalendarComponent implements OnInit {
   ngOnInit() {
     this.loginedUserRole = this._userSession.getUserRoleId();
     this.containerEl = $('#calendar');
+    const moment = $('#calendar').fullCalendar('getDate');
     this.loadUnavailability();
     this.getSubstituteAvailibiltySummary();
   }
 
   loadUnavailability() {
-    this.availabilityService.getAll().subscribe(
-      (data: any) => {
-        console.log({ Availability: data });
-        this.containerEl.fullCalendar({
-          editable: false,
-          eventDurationEditable: true,
-          aspectRatio: 2,
-          scrollTime: '00:00',
-          selectable: true,
-          slotDuration: '00:30:00',
-          allDaySlot: false,
-          header: {
-            left: 'today',
-            center: 'prev, title, next',
-            right: 'agendaDay, month, basicWeek'
-          },
-          defaultView: 'month',
-          events: data,
-          eventRender: (event, element) => {
-          },
-          select: (start, end, jsEvent, view, resource) => {
-            if (end.isBefore(moment().add(1, 'hour').format())) {
-              $('#calendar').fullCalendar('unselect');
-              alert('You can not set unavailability in past dates !');
-              return false;
-            }
-            const availability = new UserAvailability();
-            availability.startDate = moment(start).format('YYYY-MM-DD');
-            availability.startTime = moment(start).format('hh:mm A');
-            availability.endDate = moment(end).format('YYYY-MM-DD');
-            availability.endTime = moment(end).format('hh:mm A');
-            const dialogRef = this.dialogRef.open(UnAvailabilityComponent,
-              {
-                panelClass: 'availability-edit-dialog',
-                data: availability
-              });
+    this.containerEl.fullCalendar({
+      editable: false,
+      eventDurationEditable: true,
+      aspectRatio: 2,
+      scrollTime: '00:00',
+      selectable: true,
+      slotDuration: '00:30:00',
+      allDaySlot: false,
+      header: {
+        left: 'today',
+        center: 'prev, title, next',
+        right: 'agendaDay, month, basicWeek'
+      },
+      defaultView: 'month',
+      events: (start, end, timezone, callback) => {
+        const model = {
+          StartDate: moment(start).format('YYYY-MM-DD'),
+          EndDate: moment(end).format('YYYY-MM-DD')
+        };
+        this.availabilityService.getAll(model).subscribe((data: any) => {
+          this.containerEl.fullCalendar('removeEvents');
+          callback(data);
+        });
+      },
+      eventRender: (event, element) => {
 
-            dialogRef.afterClosed().subscribe(result => {
-              if (result) {
-                const model = result.availability;
-                console.log({ save: model });
-                this.availabilityService.create(model).subscribe(t => {
-                  this.reloadCalendar();
-                  this.getSubstituteAvailibiltySummary();
-                });
-              }
+      },
+      select: (start, end, jsEvent, view, resource) => {
+        if (end.isBefore(moment().add(1, 'hour').format())) {
+          $('#calendar').fullCalendar('unselect');
+          alert('You can not set unavailability in past dates !');
+          return false;
+        }
+        const availability = new UserAvailability();
+        availability.startDate = moment(start).format('YYYY-MM-DD');
+        availability.startTime = moment(start).format('hh:mm A');
+        availability.endDate = moment(end).format('YYYY-MM-DD');
+        availability.endTime = moment(end).format('hh:mm A');
+        const dialogRef = this.dialogRef.open(UnAvailabilityComponent,
+          {
+            panelClass: 'availability-edit-dialog',
+            data: availability
+          });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            const model = result.availability;
+            console.log({ save: model });
+            this.availabilityService.create(model).subscribe(t => {
+              this.reloadCalendar();
+              this.getSubstituteAvailibiltySummary();
             });
-          },
-          eventDrop: event => {
-          },
-          eventResize: event => {
-          },
-          eventClick: event => {
-            if (this.doOpen) {
-              this.dialogRef.openDialogs.pop();
-              this.availabilityService
-                .get(`availability/${event.id}`)
-                .subscribe((availability: any) => {
-                  const dialogRef = this.dialogRef.open(
-                    UnAvailabilityComponent,
-                    {
-                      panelClass: 'availability-edit-dialog',
-                      data: availability
-                    }
-                  );
-                  this.doOpen = false;
-                  dialogRef.afterClosed().subscribe(result => {
-                    if (result) {
-                      console.log({ result });
-                      if (result.action === 'Submit') {
-                        this.availabilityService.put('availability/', result.id, result.availability).subscribe(t => {
-                          this.reloadCalendar();
-                          this.getSubstituteAvailibiltySummary();
-                        });
-                      } else if (result.action === 'Delete') {
-                        this.availabilityService.delete('availability/', result.id).subscribe(t => {
-                          this.reloadCalendar();
-                          this.getSubstituteAvailibiltySummary();
-                        });
-                      }
-                      this.doOpen = true;
-                    }
-                  });
-                });
-            }
           }
         });
       },
-      error => {
+      eventDrop: event => {
+      },
+      eventResize: event => {
+      },
+      eventClick: event => {
+        if (this.doOpen) {
+          this.dialogRef.openDialogs.pop();
+          this.availabilityService
+            .get(`availability/${event.id}`)
+            .subscribe((availability: any) => {
+              const dialogRef = this.dialogRef.open(
+                UnAvailabilityComponent,
+                {
+                  panelClass: 'availability-edit-dialog',
+                  data: availability
+                }
+              );
+              this.doOpen = false;
+              dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                  console.log({ result });
+                  if (result.action === 'Submit') {
+                    this.availabilityService.put('availability/', result.id, result.availability).subscribe(t => {
+                      this.reloadCalendar();
+                      this.getSubstituteAvailibiltySummary();
+                    });
+                  } else if (result.action === 'Delete') {
+                    this.availabilityService.delete('availability/', result.id).subscribe(t => {
+                      this.reloadCalendar();
+                      this.getSubstituteAvailibiltySummary();
+                    });
+                  }
+                  this.doOpen = true;
+                }
+              });
+            });
+        }
       }
-    );
+    });
   }
 
   getSubstituteAvailibiltySummary() {
-    const model = {
-      };
-    this.availabilityService.post('availability/substitutes/summary', model).subscribe((availabilities: any) => {
-      this.substituteAvailibiltySummary = availabilities;
-    });
-    const filters = ReportFilter.initial();
-    this.date = moment(filters.fromDate).format('dddd, MM/DD/YYYY');
-    this.reportService.getDetail(filters).subscribe((details: ReportDetail[]) => {
-      this.todayTotalAbsenceDetails = details;
-    });
+    // const model = {
+    //   };
+    // this.availabilityService.post('availability/substitutes/summary', model).subscribe((availabilities: any) => {
+    //   this.substituteAvailibiltySummary = availabilities;
+    // });
+    // const filters = ReportFilter.initial();
+    // this.date = moment(filters.fromDate).format('dddd, MM/DD/YYYY');
+    // this.reportService.getDetail(filters).subscribe((details: ReportDetail[]) => {
+    //   this.todayTotalAbsenceDetails = details;
+    // });
   }
 
   reloadCalendar() {
-    this.availabilityService.getAll().subscribe((data: any) => {
-      this.containerEl.fullCalendar('removeEvents');
-      this.containerEl.fullCalendar('renderEvents', data, true);
-    });
+    this.containerEl.fullCalendar('removeEvents');
+    this.containerEl.fullCalendar('refetchEvents');
   }
 
   jumpToReport() {
