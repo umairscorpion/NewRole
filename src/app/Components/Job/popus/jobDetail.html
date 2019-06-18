@@ -44,11 +44,11 @@
             </tr>
             <tr>
                 <td>Start Time:</td>
-                <td>{{data.startTime}}</td>
+                <td>{{data.startTime | convertFrom24HourTo12HourFormat}}</td>
             </tr>
             <tr>
                 <td>End Time:</td>
-                <td>{{data.endTime}}</td>
+                <td>{{data.endTime | convertFrom24HourTo12HourFormat}}</td>
             </tr>
             <tr>
                 <td>Attachment:</td>
