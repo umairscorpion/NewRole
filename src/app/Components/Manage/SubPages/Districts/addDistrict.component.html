@@ -1,6 +1,3 @@
-<!-- <block-ui>
-    
-</block-ui>  -->
 <mat-card>
     <mat-card-title>Add District</mat-card-title>
     <mat-card-content>
@@ -11,6 +8,9 @@
                     <td>
                         <mat-form-field class="col-md-4">
                             <input matInput placeholder="Name" formControlName="Name">
+                            <mat-error *ngIf="districtForm.controls['Name'].hasError('required')">
+                                First Name is required.
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
@@ -19,54 +19,74 @@
                     <td>
                         <mat-form-field class="col-md-4">
                             <mat-select placeholder="Country" formControlName="Country"
-                                (selectionChange)="onChange($event.value)" required>
+                                (selectionChange)="onChange($event.value)">
                                 <mat-option>--</mat-option>
-                                <mat-option *ngFor="let country of countries" (click)="setCountryCode(country.country_Code)" [value]="country.countryId">
+                                <mat-option *ngFor="let country of countries"
+                                    (click)="setCountryCode(country.country_Code)" [value]="country.countryId">
                                     {{country.countryName}} ({{country.country_Code}})
                                 </mat-option>
                             </mat-select>
-                            <mat-error *ngIf="districtForm.controls['Country'].hasError('required')">Please choose any
-                                country</mat-error>
+                            <mat-error *ngIf="districtForm.controls['Country'].hasError('required')">
+                                Please select any country.
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-2">Address</td>
                     <td>
-                        <mat-form-field class="col-md-4">
-                            <textarea matInput placeholder="Address" formControlName="Address" matTextareaAutosize
-                                matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>
+                        <mat-form-field hintLabel="Min 20 and Max 50 characters" class="col-md-4">
+                            <textarea matInput #address minlength="20" maxlength="50" placeholder="Address"
+                                formControlName="Address" matTextareaAutosize matAutosizeMinRows="2"
+                                matAutosizeMaxRows="5"></textarea>
+                            <mat-hint align="end">{{address.value?.length || 0}}/50</mat-hint>
+                            <mat-error *ngIf="districtForm.controls['Address'].hasError('required')">
+                                Address is required.
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-2">City</td>
                     <td>
-                        <mat-form-field class="col-md-4">
-                            <input matInput placeholder="City" formControlName="City">
+                        <mat-form-field hintLabel="Min 2 and Max 30 characters" class="col-md-4">
+                            <input matInput #city minlength="2" maxlength="30" placeholder="City"
+                                formControlName="City">
+                            <mat-hint align="end">{{city.value?.length || 0}}/30</mat-hint>
+                            <mat-error *ngIf="districtForm.controls['City'].hasError('required')">
+                                City is required.
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
                 <tr>
-                    <td class="col-md-2">State</td>
+                    <td class="col-md-2">State/Province</td>
                     <td>
                         <mat-form-field class="col-md-4">
-                            <mat-select placeholder="State" formControlName="State">
+                            <mat-select placeholder="State/Province" formControlName="State">
                                 <mat-option>--</mat-option>
-                                <mat-option *ngFor="let state of states  | async" [value]="state.stateId">
+                                <mat-option *ngFor="let state of states | async" [value]="state.stateId">
                                     {{state.stateName}}
                                 </mat-option>
                             </mat-select>
+                            <mat-error *ngIf="districtForm.controls['State'].hasError('required')">
+                                Please select any state.
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-2">Zip Code</td>
                     <td>
-                        <mat-form-field class="col-md-4">
-                            <input matInput #inputt maxlength="5" placeholder="Zip Code" formControlName="ZipCode">
-                            <mat-hint align="end">{{inputt.value?.length || 0}}/5</mat-hint>
-                            <mat-error *ngIf="districtForm.controls['ZipCode'].hasError('pattern')">Only numbers allowed
+                        <mat-form-field hintLabel="Min 3 and Max 6 characters" class="col-md-4">
+                            <input matInput #zipCode minlength="3" maxlength="6" placeholder="Zip Code"
+                                formControlName="ZipCode">
+                            <mat-hint align="end">{{zipCode.value?.length || 0}}/6</mat-hint>
+                            <mat-error *ngIf="districtForm.controls['ZipCode'].hasError('pattern')">
+                                Only numbers allowed
+                            </mat-error>
+                            <mat-error *ngIf="districtForm.controls['ZipCode'].hasError('required')">
+                                Zip Code is required.
                             </mat-error>
                         </mat-form-field>
                     </td>
@@ -74,11 +94,16 @@
                 <tr>
                     <td class="col-md-2">Phone Number</td>
                     <td>
-                        <mat-form-field hintLabel="Max 11 characters" class="col-md-4">
-                            <input matInput #input maxlength="11" placeholder="Phone No" formControlName="PhoneNo">
-                            <span matPrefix>{{countryCode}}</span>
+                        <mat-form-field hintLabel="Min 7 and Max 11 characters" class="col-md-4">
+                            <input matInput #input minlength="7" maxlength="11" placeholder="Phone No"
+                                formControlName="PhoneNo">
+                            <!-- <span matPrefix>{{countryCode}}</span> -->
                             <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
-                            <mat-error *ngIf="districtForm.controls['PhoneNo'].hasError('pattern')">Only numbers allowed
+                            <mat-error *ngIf="districtForm.controls['PhoneNo'].hasError('pattern')">
+                                Only numbers allowed
+                            </mat-error>
+                            <mat-error *ngIf="districtForm.controls['PhoneNo'].hasError('required')">
+                                Phone Number is required.
                             </mat-error>
                         </mat-form-field>
                     </td>
@@ -93,6 +118,9 @@
                                     {{timezone.timeZone_Title}}
                                 </mat-option>
                             </mat-select>
+                            <mat-error *ngIf="districtForm.controls['TimeZone'].hasError('required')">
+                                Time Zone is required.
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
@@ -115,18 +143,6 @@
                         </mat-form-field>
                     </td>
                 </tr>
-                <!-- <tr>
-                    <td>
-                        <mat-form-field class="demo-full-width">
-                            <input matInput type="number" placeholder="No Of Employees" formControlName="NoOfEmployees">
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-form-field class="demo-full-width">
-                            <input matInput type="number" placeholder="No Of Substitutes" formControlName="NoOfSubstitutes">
-                        </mat-form-field>
-                    </td>
-                </tr> -->
                 <tr>
                     <td colspan="2" class="content-center" style="padding-top: 20px">
                         <button mat-raised-button type="submit"

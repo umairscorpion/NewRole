@@ -16,11 +16,6 @@
             </div>
             <div class="row col-md-12 col-lg-12">
               <div class="example-container mat-elevation-z8">
-                <!-- <div class="example-header">
-      <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-      </mat-form-field>
-      </div> -->
                 <mat-table #table [dataSource]="dataSourceForLeaveTypes" matSort>
                   <!-- Position Column -->
                   <ng-container matColumnDef="LeaveTypeName">
@@ -67,7 +62,7 @@
                         (click)="editLeaveType(row.leaveTypeId)" [hideIfUnauthorized]="'ADD_EDIT_LEAVE_TYPE'">edit</i>
                     </mat-cell>
                   </ng-container>
-                  <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveTypes"></mat-header-row>
+                  <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveTypes; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedColumnsForLeaveTypes;"></mat-row>
                 </mat-table>
                 <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
@@ -101,7 +96,7 @@
                     </div>
                     <div class="col-md-3">
                       <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)"
-                        #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
+                        #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a;font-weight: bold;">check</mat-icon>
                       </button>
                       <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)"
@@ -129,9 +124,6 @@
                       <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <!-- <button mat-icon-button #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
-                        <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
-                      </button> -->
                       <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)"
                         #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
@@ -163,12 +155,9 @@
                     </div>
                     <div class="col-md-3">
                       <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)"
-                        #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
+                        #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
                       </button>
-                      <!-- <button mat-icon-button #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
-                        <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
-                      </button> -->
                       <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId)"
                         #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below" #tooltip="matTooltip"
                         matTooltip="Archive" matTooltipPosition="below">
@@ -200,16 +189,6 @@
                       {{leave.createdDate | date}}
                       <br> {{leave.createdDate | date}}
                     </div>
-                    <!-- <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)"
-                        #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
-                        <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
-                      </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)"
-                        #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
-                        <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
-                      </button>
-                    </div> -->
                     <mat-divider></mat-divider>
                   </mat-list-item>
                   <mat-divider></mat-divider>
@@ -235,16 +214,6 @@
                       {{leave.createdDate | date}}
                       <br> {{leave.createdDate | date}}
                     </div>
-                    <!-- <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)"
-                        #tooltip="matTooltip" matTooltip="Accept" matTooltipPosition="below">
-                        <mat-icon style="color:#00B945;font-weight: bold;">check</mat-icon>
-                      </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)"
-                        #tooltip="matTooltip" matTooltip="Reject" matTooltipPosition="below">
-                        <mat-icon style="color:#D70812;font-weight: bold;">close</mat-icon>
-                      </button>
-                    </div> -->
                     <mat-divider></mat-divider>
                   </mat-list-item>
                   <mat-divider></mat-divider>
@@ -260,12 +229,6 @@
             <div class="col-lg-10 vertical-center">
               <span> Allowances </span>
             </div>
-            <!-- <div class="col-lg-2 vertical-center" style="text-align: right">
-              <a>
-                <button mat-raised-button (click)="onOpenAllowancePopup()" style="background-color:#04C0Be;color: white"
-                  [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">Create Allowance</button>
-              </a>
-            </div> -->
           </div>
           <div class="col-md-12 col-lg-12">
             <mat-divider></mat-divider>

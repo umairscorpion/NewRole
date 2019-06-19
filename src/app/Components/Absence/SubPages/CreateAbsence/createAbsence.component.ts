@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
 import { EmployeeService } from '../../../../Service/Manage/employees.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -7,7 +7,7 @@ import { DataContext } from '../../../../Services/dataContext.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { MatStepper } from '@angular/material/stepper';
 import { IEmployee } from '../../../../Model/Manage/employee';
-import { MatRadioChange, MatExpansionPanel, MatSelect, MatRadioGroup, MatRadioButton } from '@angular/material';
+import { MatRadioChange, MatExpansionPanel } from '@angular/material';
 import { HttpClient, HttpResponse, HttpEventType } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { NotifierService } from 'angular-notifier';
@@ -82,6 +82,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     OriginalFileName: string;
     AttachedFileType: string;
     AttachedFileExtention: string;
+    OriginalFileNameForDisplay: string;
     SubstituteList: Observable<IEmployee[]>;
     loginedUserLevel: number = 0;
     AbsenceForUserLevel: number = 0;
@@ -147,7 +148,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             OrganizationId: [{ value: null, disabled: true }, Validators.required],
             AbsenceStartDate: ['', Validators.required],
             AbsenceEndDate: ['', Validators.required],
-            // SubRequired: ['1'],
             PositionId: [''],
             AbsenceType: [Validators.required],
             Substitutes: [[]]
@@ -176,9 +176,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         let organizationId = this._userSession.getUserOrganizationId() ? this._userSession.getUserOrganizationId() : '-1';
         this.absenceService.getLeaveType(districtId, organizationId).subscribe((data: LeaveType[]) => {
             this.Leaves = data;
-            // FOR DEFAULT SELECTING REASON
-            // this.absenceFirstFormGroup.get('Reason').setValue(data[0]);
-            // this.LeaveRequestForm.get('LeaveType').setValue(data[0]);
         },
             error => this.msg = <any>error);
     }
@@ -267,7 +264,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         let IsSearchSubstitute = 0;
         let OrgId = this._userSession.getUserOrganizationId();
         let DistrictId = this._userSession.getUserDistrictId();
-        //this.Employees.map(employee => employee.filter(employees => employees.FirstName === SearchEmployees));
         this.Employees = this._EmployeeService.searchUser('user/getEmployeeSuggestions', SearchedText, IsSearchSubstitute, OrgId, DistrictId);
         this.Employees = this.Employees.map((users: any) => users.filter(user => user.userId != this._userSession.getUserId()));
     }
@@ -285,7 +281,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         let IsSearchSubstitute = 1;
         let OrgId = this._userSession.getUserOrganizationId();
         let DistrictId = this._userSession.getUserDistrictId();
-        //this.Employees.map(employee => employee.filter(employees => employees.FirstName === SearchEmployees));
         this.SubstituteList = this._EmployeeService.searchUser('user/getEmployeeSuggestions', SearchedText, IsSearchSubstitute, OrgId, DistrictId);
         this.SubstituteList = this.SubstituteList.map((users: any) => users.filter(user => user.userId != this._userSession.getUserId()));
     }
@@ -304,7 +299,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.availableSubstitutes = this.http.post<User[]>(environment.apiUrl + 'user/getAvailableSubstitutes', filter);
             this.availableSubstitutes = this.availableSubstitutes.map((users: any) => users.filter((val: User) => val.firstName.toLowerCase().includes(SearchedText.toLowerCase())));
         }
-
         else {
             this.notifier.notify('error', 'Select Date First to search substitutes');
         }
@@ -313,19 +307,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     handleSelection(userId, categorySelected) {
         for (let user of categorySelected.options._results) {
             user._selected = false;
-            // if (!user._selected && user.value === userId) {
-            //     user._selected = false;
-            // } else if (user._selected && user.value === userId) {
-            //     user._selected = true;
-            // } else {
-            //     user._selected = false;
-            // }
         }
-        // categorySelected.options._results.toArray().forEach(element => {
-        //     if (element.value.name != categorySelected.name) {
-        //         element.selected = false;
-        //     }
-        // });
     }
 
     //Select Substitute For Direct Assign And Preferred Substitutes
@@ -388,7 +370,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     // ON CHANGING ABSENCE FOR SELF OR EMPLOYEE
     onChangeAbsenceFor(event: any) {
-
         if (+event == 2) {
             this.NeedASub = false;
             this.absenceFirstFormGroup.controls['PositionId'].clearValidators();
@@ -400,7 +381,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls['OrganizationId'].disable();
         }
         else if (+event == 3) {
-            // this.absenceFirstFormGroup.get('SubRequired').setValue('1');
+            this.absenceFirstFormGroup.get('AbsenceType').setValue(4);
             this.absenceFirstFormGroup.controls["PositionId"].setValidators([Validators.required]);
             this.absenceFirstFormGroup.controls['PositionId'].updateValueAndValidity();
             this.EmployeeIdForAbsence = "U000000000";
@@ -408,7 +389,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.EmployeeSchedule = null
             if (this.loginedUserLevel == 1) {
                 this.absenceFirstFormGroup.controls['OrganizationId'].enable();
-                // this.absenceFirstFormGroup.get['OrganizationId'].setValue(this.Organizations[0].schoolId);
             }
             this.absenceFirstFormGroup.controls['EmployeeId'].clearValidators();
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
@@ -434,16 +414,12 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             else {
                 this.notifier.notify('error', 'Select Date First to search substitutes');
             }
-            // this.absenceFirstFormGroup.controls["Substitutes"].setValidators([Validators.required]);
-            // this.absenceFirstFormGroup.controls['Substitutes'].updateValueAndValidity();
         }
-
         else if (+AbsenceScopetype === 3) {
             this.GetPreferredSubstitutes();
             this.absenceFirstFormGroup.controls['Substitutes'].clearValidators();
             this.absenceFirstFormGroup.controls['Substitutes'].updateValueAndValidity();
         }
-
         else {
             this.absenceFirstFormGroup.controls['Substitutes'].clearValidators();
             this.absenceFirstFormGroup.controls['Substitutes'].updateValueAndValidity();
@@ -511,7 +487,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     uploadClick() {
         const fileUpload = document.getElementById('UploadButton') as HTMLInputElement;
         fileUpload.click();
-
     }
 
     upload(files: File[]) {
@@ -521,12 +496,15 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     removeAttachedFile() {
         this.AllAttachedFiles = null;
         this.OriginalFileName = null;
+        this.OriginalFileNameForDisplay = null;
     }
 
     uploadAndProgress(files: File[]) {
         this.AllAttachedFiles = files;
         this.AttachedFileType = files[0].type;
+        if (!this.AttachedFileType) this.AttachedFileType = "text/plain";
         this.OriginalFileName = this.AllAttachedFiles[0].name;
+        this.OriginalFileNameForDisplay = this.OriginalFileName.substr(0, 15);
         this.AttachedFileExtention = files[0].name.split('.')[1];
         let formData = new FormData();
         Array.from(files).forEach(file => formData.append('file', file))
@@ -558,7 +536,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         }
         this._dataContext.post('School/getAbsenceScopes', model).subscribe((scopes: AbsenceScope[]) => {
             this.absenceTypes = scopes.filter(type => type.visibility === true);
-            this.absenceFirstFormGroup.get('AbsenceType').setValue(this.absenceTypes[0].absenceType);
+            this.absenceFirstFormGroup.get('AbsenceType').setValue(4);
         },
             error => <any>error);
     }

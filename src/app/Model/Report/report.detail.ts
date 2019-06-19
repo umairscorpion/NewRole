@@ -37,4 +37,5 @@ export class ReportDetail extends Entity {
   isApproved: boolean;
   originalFileName: string;
   employeeProfilePicUrl: string;
+  absenceType: number;
 }

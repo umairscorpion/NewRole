@@ -23,7 +23,7 @@
                 </i>
                 <input type="file" id="UploadButton" (change)="upload($event.target.files)" style="display: none" />
                 <mat-form-field style="margin-left: 10px">
-                  <mat-select placeholder="Add File For" #fileType required>
+                  <mat-select placeholder="Select User Role" #fileType required>
                     <mat-option>-- Select Any --</mat-option>
                     <mat-option value="2">Admin</mat-option>
                     <mat-option value="3">Staff</mat-option>
@@ -65,7 +65,7 @@
                       </a>
                       <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Download File"
                         matTooltipPosition="below">
-                        <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
+                        <i class="material-icons" (click)="DownloadFile(file)">get_app</i>
                       </a>
                       <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Delete File"
                         matTooltipPosition="below" *ngIf="UserLevelId == 4">

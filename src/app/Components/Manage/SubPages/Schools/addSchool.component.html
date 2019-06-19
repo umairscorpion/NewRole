@@ -15,20 +15,14 @@
     <mat-card-content>
         <form (ngSubmit)="onSubmit(schoolForm)" [formGroup]="schoolForm">
             <table class="row col-md-offset-1 schoolForm-table">
-                <!-- <tr>
-                            <td>
-                                    <mat-radio-group>
-                                            <mat-radio-button value="1">Add Independently</mat-radio-button>
-                                            <mat-radio-button value="2">Add Under District</mat-radio-button>
-                                    </mat-radio-group>
-                            </td>
-                            
-                    </tr> -->
                 <tr>
                     <td class="col-md-2">School’s Name</td>
                     <td>
                         <mat-form-field class="col-md-4">
                             <input matInput placeholder="Name" formControlName="Name" required>
+                            <mat-error *ngIf="schoolForm.controls['Name'].hasError('required')">
+                                School’s Name is required.
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
@@ -42,35 +36,51 @@
                                     {{district.districtName}}
                                 </mat-option>
                             </mat-select>
-                            <mat-error *ngIf="schoolForm.controls['district'].hasError('required')">Please choose any
-                                district</mat-error>
+                            <mat-error *ngIf="schoolForm.controls['district'].hasError('required')">
+                                Please select any district.
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-2">Address</td>
                     <td>
-                        <mat-form-field class="col-md-4">
-                            <textarea matInput placeholder="Address" formControlName="Address" matTextareaAutosize
-                                matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>
+                        <mat-form-field hintLabel="Min 20 and Max 50 characters" class="col-md-4">
+                            <textarea matInput #address minlength="20" maxlength="50" placeholder="Address"
+                                formControlName="Address" matTextareaAutosize matAutosizeMinRows="2"
+                                matAutosizeMaxRows="5"></textarea>
+                            <mat-hint align="end">{{address.value?.length || 0}}/50</mat-hint>
+                            <mat-error *ngIf="schoolForm.controls['Address'].hasError('required')">
+                                Address is required.
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-2">City</td>
                     <td>
-                        <mat-form-field class="col-md-4">
-                            <input matInput placeholder="City" formControlName="City">
+                        <mat-form-field hintLabel="Min 2 and Max 30 characters" class="col-md-4">
+                            <input matInput #city minlength="2" maxlength="30" placeholder="City"
+                                formControlName="City">
+                            <mat-hint align="end">{{city.value?.length || 0}}/30</mat-hint>
+                            <mat-error *ngIf="schoolForm.controls['City'].hasError('required')">
+                                City is required.
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-2">Zip Code</td>
                     <td>
-                        <mat-form-field class="col-md-4">
-                            <input matInput #inputt maxlength="5" placeholder="Zip Code" formControlName="ZipCode">
-                            <mat-hint align="end">{{inputt.value?.length || 0}}/5</mat-hint>
-                            <mat-error *ngIf="schoolForm.controls['ZipCode'].hasError('pattern')">Only numbers allowed
+                        <mat-form-field hintLabel="Min 3 and Max 6 characters" class="col-md-4">
+                            <input matInput #zipCode minlength="3" maxlength="6" placeholder="Zip Code"
+                                formControlName="ZipCode">
+                            <mat-hint align="end">{{zipCode.value?.length || 0}}/6</mat-hint>
+                            <mat-error *ngIf="schoolForm.controls['ZipCode'].hasError('pattern')">
+                                Only numbers allowed
+                            </mat-error>
+                            <mat-error *ngIf="schoolForm.controls['ZipCode'].hasError('required')">
+                                Zip Code is required.
                             </mat-error>
                         </mat-form-field>
                     </td>
@@ -78,10 +88,15 @@
                 <tr>
                     <td class="col-md-2">Phone Number</td>
                     <td>
-                        <mat-form-field hintLabel="Max 11 characters" class="col-md-4">
-                            <input matInput #input maxlength="11" placeholder="Phone No" formControlName="PhoneNo">
-                            <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
-                            <mat-error *ngIf="schoolForm.controls['PhoneNo'].hasError('pattern')">Only numbers allowed
+                        <mat-form-field hintLabel="Min 7 and Max 11 characters" class="col-md-4">
+                            <input matInput #phone minlength="7" maxlength="11" placeholder="Phone No"
+                                formControlName="PhoneNo">
+                            <mat-hint align="end">{{phone.value?.length || 0}}/11</mat-hint>
+                            <mat-error *ngIf="schoolForm.controls['PhoneNo'].hasError('pattern')">
+                                Only numbers allowed
+                            </mat-error>
+                            <mat-error *ngIf="schoolForm.controls['PhoneNo'].hasError('required')">
+                                Phone Number is required.
                             </mat-error>
                         </mat-form-field>
                     </td>
@@ -96,12 +111,10 @@
                                     {{timezone.timeZone_Title}}
                                 </mat-option>
                             </mat-select>
+                            <mat-error *ngIf="schoolForm.controls['TimeZone'].hasError('required')">
+                                Time Zone is required.
+                            </mat-error>
                         </mat-form-field>
-                        <!-- <td>
-                                    <mat-form-field class="demo-full-width">
-                                        <input matInput type="number" placeholder="No Of Employees" formControlName="NoOfEmployees">
-                                    </mat-form-field>
-                                </td> -->
                     </td>
                 </tr>
                 <tr>

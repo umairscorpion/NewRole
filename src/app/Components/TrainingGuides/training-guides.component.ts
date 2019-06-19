@@ -27,7 +27,7 @@ export class TrainingGuidesComponent implements OnInit {
   FileExtention: string;
   SuccessMessage: boolean;
   Files: any;
-  msg : string;
+  msg: string;
   OriginalFileNameForDisplay: any;
   AdminGuide: FileManager[];
   StaffGuide: FileManager[];
@@ -39,9 +39,7 @@ export class TrainingGuidesComponent implements OnInit {
     private _fileService: FileService,
     private http: HttpClient,
     private dialogRef: MatDialog,
-    private notifier: NotifierService
-  ) {
-  }
+    private notifier: NotifierService) { }
 
   ngOnInit() {
     this.getSubstututeFiles();
@@ -68,7 +66,7 @@ export class TrainingGuidesComponent implements OnInit {
     this.FileContentType = files[0].type;
     if (!this.FileContentType) this.FileContentType = "text/plain";
     this.OriginalFileName = this.AllAttachedFiles[0].name;
-    this.OriginalFileNameForDisplay = this.OriginalFileName.substr(0, 15);  
+    this.OriginalFileNameForDisplay = this.OriginalFileName.substr(0, 15);
     this.FileExtention = files[0].name.split('.')[1];
     let formData = new FormData();
     Array.from(files).forEach(file => formData.append('file', file))
@@ -82,7 +80,7 @@ export class TrainingGuidesComponent implements OnInit {
     let model = {
       fileType: "Guides"
     }
-    this._fileService.getFile( model).subscribe((respose: FileManager[]) => {
+    this._fileService.getFile(model).subscribe((respose: FileManager[]) => {
       this.Files = respose;
       this.AdminGuide = respose.filter(t => t.fileType == 2);
       this.StaffGuide = respose.filter(t => t.fileType == 3);
@@ -91,12 +89,12 @@ export class TrainingGuidesComponent implements OnInit {
   }
 
   AddFile(fileType: any) {
-    if(this.OriginalFileName == null) {
-      this.notifier.notify('error', 'Please upload file');
+    if (this.OriginalFileName == null) {
+      this.notifier.notify('error', 'Please upload file.');
       return;
     }
-    if(fileType.value == null) {
-      this.notifier.notify('error', 'Please select option');
+    if (fileType.value == null) {
+      this.notifier.notify('error', 'Please select user role.');
       return;
     }
     let model = {
@@ -111,23 +109,10 @@ export class TrainingGuidesComponent implements OnInit {
       this.AdminGuide = respose.filter(t => t.fileType == 2);
       this.StaffGuide = respose.filter(t => t.fileType == 3);
       this.SubstituteGuide = respose.filter(t => t.fileType == 4);
+      this.removeAttachedFile(); 
+      fileType.value = null;
     });
   }
-
-  // DeleteFile(file: any) {
-  //   let model = {
-  //     fileName: file.fileName,
-  //     fileContentType: file.fileContentType,
-  //     fileExtention: file.fileExtention,
-  //     fileType: "Guides"
-  //   }
-  //   this._fileService.deleteFile('fileSystem/deleteFiles', model).subscribe((respose: any) => {
-  //     this.Files = respose;
-  //     this.AdminGuide = respose.filter(t => t.fileType == 2);
-  //     this.StaffGuide = respose.filter(t => t.fileType == 3);
-  //     this.SubstituteGuide = respose.filter(t => t.fileType == 4);
-  //   });
-  // }
 
   DeleteFile(file: any) {
     let model = {
@@ -137,29 +122,29 @@ export class TrainingGuidesComponent implements OnInit {
       fileType: "Guides"
     }
     swal.fire({
-        title: 'Delete',
-        text:
-            'Are you sure, you want to delete the selected File?',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonClass: 'btn btn-danger',
-        cancelButtonClass: 'btn btn-success',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        buttonsStyling: false
+      title: 'Delete',
+      text:
+        'Are you sure, you want to delete the selected File?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-danger',
+      cancelButtonClass: 'btn btn-success',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      buttonsStyling: false
     }).then(r => {
-        if (r.value) {
-              this._fileService.deleteFile('fileSystem/deleteFiles', model).subscribe((respose: any) => {
-              this.Files = respose;
-              this.AdminGuide = respose.filter(t => t.fileType == 2);
-              this.StaffGuide = respose.filter(t => t.fileType == 3);
-              this.SubstituteGuide = respose.filter(t => t.fileType == 4);
-              this.notifier.notify('success', 'Deleted Successfully.');
-          },
-            error => this.msg = <any>error);
-        }
+      if (r.value) {
+        this._fileService.deleteFile('fileSystem/deleteFiles', model).subscribe((respose: any) => {
+          this.Files = respose;
+          this.AdminGuide = respose.filter(t => t.fileType == 2);
+          this.StaffGuide = respose.filter(t => t.fileType == 3);
+          this.SubstituteGuide = respose.filter(t => t.fileType == 4);
+          this.notifier.notify('success', 'Deleted Successfully.');
+        },
+          error => this.msg = <any>error);
+      }
     });
-}
+  }
 
   ViewFile(fileData: any) {
     this.dialogRef.open(

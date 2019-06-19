@@ -63,9 +63,9 @@ export class ReportDetailsComponent implements OnInit {
 
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.reportDetail = data;
-    if(this.reportDetail.originalFileName) {
+    if (this.reportDetail.originalFileName) {
       this.reportDetail.originalFileName = this.reportDetail.originalFileName.substr(0, 15);
-    }   
+    }
     this.notifier = notifier;
   }
 
@@ -126,53 +126,6 @@ export class ReportDetailsComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  // performAction(action: string) {
-  //   this.absenceForm.reset();
-  //   this.menuAction = action;
-  //   if (action === 'edit') {
-  //     this.absenceService.getById('Absence', this.reportDetail.absenceId).subscribe((data: any) => {
-  //       console.log({ absence: data });
-  //       this.absenceForm.patchValue({ ...data });
-  //     });
-  //   }
-  //   else if (action === 'delete') {
-  //     let confirmResult = confirm('Are you sure you want to cancel this absence?');
-  //     let StatusId = 4;
-  //     let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
-  //     let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
-  //     if (confirmResult) {
-  //       if (absenceStartDate <= currentDate) {
-  //         this.dialogRef.close();
-  //         this.notifier.notify('error', 'Not able to cancel now');
-  //         return;
-  //       }
-  //       this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-  //         this.dialogRef.close('Reload');
-  //         this.notifier.notify('success', 'Cancelled Successfully.');
-  //       });
-  //     }
-  //   }
-  //   else if (action === 'release') {
-  //     let confirmResult = confirm('Are you sure you want to release this job?');
-  //     let StatusId = 1;
-  //     let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
-  //     let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
-  //     if (confirmResult) {
-  //       if (absenceStartDate <= currentDate) {
-  //         this.dialogRef.close();
-  //         this.notifier.notify('error', 'Not able to release now');
-  //         return;
-  //       }
-  //       this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-  //         if (response == "success") {
-  //           this.dialogRef.close('Reload');
-  //           this.notifier.notify('success', 'Released Successfully.');
-  //         }
-  //       });
-  //     }
-  //   }
-  // }
-
   performAction(action: string) {
     this.absenceForm.reset();
     this.menuAction = action;
@@ -189,7 +142,7 @@ export class ReportDetailsComponent implements OnInit {
       swal.fire({
         title: 'Cancel',
         text:
-            'Are you sure you want to cancel this absence?',
+          'Are you sure you want to cancel this absence?',
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-danger',
@@ -197,7 +150,7 @@ export class ReportDetailsComponent implements OnInit {
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
         buttonsStyling: false
-    }).then(r => {
+      }).then(r => {
         if (r.value) {
           if (absenceStartDate <= currentDate) {
             this.dialogRef.close();
@@ -208,9 +161,9 @@ export class ReportDetailsComponent implements OnInit {
             this.dialogRef.close('Reload');
             this.notifier.notify('success', 'Cancelled Successfully.');
           });
-          
+
         }
-    });
+      });
     }
     else if (action === 'release') {
       let StatusId = 1;
@@ -220,7 +173,7 @@ export class ReportDetailsComponent implements OnInit {
       swal.fire({
         title: 'Release',
         text:
-            'Are you sure you want to release this job?',
+          'Are you sure you want to release this job?',
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-danger',
@@ -228,7 +181,7 @@ export class ReportDetailsComponent implements OnInit {
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
         buttonsStyling: false
-    }).then(r => {
+      }).then(r => {
         if (r.value) {
           if (absenceStartDate <= currentDate) {
             this.dialogRef.close();
@@ -242,48 +195,35 @@ export class ReportDetailsComponent implements OnInit {
             }
           });
         }
-    });
+      });
     }
   }
-
-  // onAssign(formGroup: FormGroup) {
-  //   let confirmResult = confirm('Are you sure you want to assign this job?');
-  //   let StatusId = 2;
-  //   if (confirmResult) {
-  //     this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
-  //       if (response == "success") {
-  //         this.dialogRef.close('Reload');
-  //         this.notifier.notify('success', 'Assign Successfully.');
-  //       }
-  //     });
-  //   }
-  // }
 
   onAssign(formGroup: FormGroup) {
     let StatusId = 2;
     swal.fire({
-        title: 'Assign',
-        text:
-            'Are you sure you want to assign this job?',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonClass: 'btn btn-danger',
-        cancelButtonClass: 'btn btn-success',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        buttonsStyling: false
+      title: 'Assign',
+      text:
+        'Are you sure you want to assign this job?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-danger',
+      cancelButtonClass: 'btn btn-success',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      buttonsStyling: false
     }).then(r => {
-        if (r.value) {
-          this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
-            if (response == "success") {
-              this.dialogRef.close('Reload');
-              this.notifier.notify('success', 'Assign Successfully.');
-            }
-          },
-            error => this.msg = <any>error);
-        }
+      if (r.value) {
+        this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
+          if (response == "success") {
+            this.dialogRef.close('Reload');
+            this.notifier.notify('success', 'Assign Successfully.');
+          }
+        },
+          error => this.msg = <any>error);
+      }
     });
-}
+  }
 
   GetLeaveTypes(): void {
     let districtId = this._userSession.getUserDistrictId();
@@ -339,7 +279,7 @@ export class ReportDetailsComponent implements OnInit {
         formGroup.get('fileContentType').setValue(this.AttachedFileType);
         formGroup.get('originalFileName').setValue(this.FileName);
       }
-      if (formGroup.value.substituteId != -1) {
+      if (formGroup.value.substituteId && formGroup.value.substituteId.length >= 10) {
         if (formGroup.value.status == 2) {
           formGroup.get('substituteId').setValue(formGroup.value.substituteId);
         }
@@ -530,5 +470,4 @@ export class ReportDetailsComponent implements OnInit {
   displayName(user?: any): string | undefined {
     return user ? user.firstName : undefined;
   }
-
 }

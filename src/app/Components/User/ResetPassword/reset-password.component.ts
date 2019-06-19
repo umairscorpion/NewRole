@@ -1,19 +1,13 @@
-
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../Service/user.service';
-import { DataContext } from '../../../Services/dataContext.service';
-import { UserSession } from '../../../Services/userSession.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
-import { environment } from '../../../../environments/environment';
 
 @Component({
     templateUrl: 'reset-password.component.html',
     styleUrls: ['reset-password.component.scss']
 })
-
 export class ResetPasswordComponent implements OnInit {
     private notifier: NotifierService;
     hide = true;
@@ -22,10 +16,13 @@ export class ResetPasswordComponent implements OnInit {
     email: string;
     activationKey: string;
     public resetPassAttempt: boolean;
-    constructor(private fb: FormBuilder, private _userService: UserService,
-        private router: Router, private activatedRoute: ActivatedRoute,
-        notifier: NotifierService, private _dataContext: DataContext,
-        private _userSession: UserSession) {
+
+    constructor(
+        private fb: FormBuilder,
+        private _userService: UserService,
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+        notifier: NotifierService) {
         this.notifier = notifier;
     }
 

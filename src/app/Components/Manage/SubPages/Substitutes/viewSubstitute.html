@@ -9,8 +9,8 @@
         <div class="avatar-wrapper">
             <img class="profile-pic" [src]="getImage(data[0].profilePicture)" />
         </div>
-        <div class="text-center">
-            <h4>{{data[0].firstName}} {{data[0].lastName}}</h4>
+        <div>
+            <h4></h4>
         </div>
         <div class="absence-summary-title p-5 mt-5">Substitute Detail</div>
         <br>
@@ -37,7 +37,7 @@
             </tr>
             <tr>
                 <td>District:</td>
-                <td>Subzz</td>
+                <td>{{data[0].districtName}}</td>
             </tr>
             <tr>
                 <td>Email:</td>

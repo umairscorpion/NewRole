@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoleService } from '../../../Services/role.service';
@@ -16,13 +16,14 @@ export class UserEditComponent implements OnInit {
   roles: any;
   userTypes: any;
   msg: any;
+
   constructor(
     private dialogRef: MatDialogRef<UserEditComponent>,
     private _formBuilder: FormBuilder,
     private roleService: RoleService,
     private userService: UsersService,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.user = data;
     this.form = this._formBuilder.group({
       id: [''],
@@ -78,5 +79,4 @@ export class UserEditComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
-
 }

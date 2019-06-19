@@ -65,7 +65,7 @@
                             {{LeaveType.vacation ? LeaveType.vacation: 'Not Created any Leave'}}
                     </mat-cell>
                 </ng-container>
-                <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveRequests"></mat-header-row>
+                <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveRequests; sticky: true"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumnsForLeaveRequests;"></mat-row>
             </mat-table>
             <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
