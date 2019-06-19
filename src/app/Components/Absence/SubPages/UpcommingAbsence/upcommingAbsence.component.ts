@@ -63,25 +63,6 @@ export class UpcommingAbsenceComponent implements OnInit {
         });
     }
 
-    // UpdateStatus(SelectedRow: any, StatusId: number) {
-    //     let confirmResult = confirm('Are you sure you want to cancel this absence?');
-    //     let absenceStartDate = moment(SelectedRow.startDate).format('MM/DD/YYYY');
-    //     let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
-    //     if (confirmResult) {
-    //         if (absenceStartDate <= currentDate) {
-    //             this.notifier.notify('error', 'Not able to cancel now');
-    //             return;
-    //         }
-    //         this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-    //             if (response == "success") {
-    //                 this.notifier.notify('success', 'Cancelled Successfully.');
-    //                 this.GetAbsences();
-    //             }
-    //         },
-    //             error => this.msg = <any>error);
-    //     }
-    // }
-
     UpdateStatus(SelectedRow: any, StatusId: number) {
         let absenceStartDate = moment(SelectedRow.startDate).format('MM/DD/YYYY');
         let currentDate = moment(this.currentDate).format('MM/DD/YYYY');

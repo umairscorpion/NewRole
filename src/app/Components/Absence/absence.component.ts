@@ -89,7 +89,11 @@ export class PopupDialogForAbsenceDetail {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _dataContext: DataContext,
-        private dialogRef: MatDialogRef<absenceComponent>) { }
+        private dialogRef: MatDialogRef<absenceComponent>) {
+        if (data.originalFileName) {
+            data.originalFileName = data.originalFileName.substr(0, 15);
+        }
+    }
 
     DownloadFile(): void {
         let model = { AttachedFileName: this.data.attachedFileName, FileContentType: this.data.fileContentType }
@@ -99,7 +103,7 @@ export class PopupDialogForAbsenceDetail {
                 window.navigator.msSaveOrOpenBlob(newBlob);
                 return;
             }
-            // To open in browser
+            //To open in browser
             var file = new Blob([blob], { type: this.data.fileContentType });
             window.open(URL.createObjectURL(file));
             //To Download
@@ -117,5 +121,5 @@ export class PopupDialogForAbsenceDetail {
 
     onClose() {
         this.dialogRef.close();
-      }
+    }
 }

@@ -13,6 +13,10 @@
                                         <td>
                                             <mat-form-field>
                                                 <input matInput placeholder="First Name" formControlName="FirstName">
+                                                <mat-error
+                                                    *ngIf="personalFormGroup.controls['FirstName'].hasError('required')">
+                                                    First Name is required.
+                                                </mat-error>
                                             </mat-form-field>
                                         </td>
                                     </tr>
@@ -21,19 +25,27 @@
                                         <td>
                                             <mat-form-field>
                                                 <input matInput placeholder="Last Name" formControlName="LastName">
+                                                <mat-error
+                                                    *ngIf="personalFormGroup.controls['LastName'].hasError('required')">
+                                                    Last Name is required.
+                                                </mat-error>
                                             </mat-form-field>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Mobile Number</td>
                                         <td>
-                                            <mat-form-field hintLabel="Max 11 characters">
-                                                <input matInput #input maxlength="11" formControlName="PhoneNumber"
-                                                    placeholder="Mobile Number">
-                                                <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
+                                            <mat-form-field hintLabel="Min 7 and Max 11 characters">
+                                                <input matInput #mobile minlength="7" maxlength="11"
+                                                    formControlName="PhoneNumber" placeholder="Mobile Number">
+                                                <mat-hint align="end">{{mobile.value?.length || 0}}/11</mat-hint>
                                                 <mat-error
                                                     *ngIf="personalFormGroup.controls['PhoneNumber'].hasError('pattern')">
-                                                    Only numbers allowed
+                                                    Only numbers allowed.
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="personalFormGroup.controls['PhoneNumber'].hasError('required')">
+                                                    Mobile Number is required.
                                                 </mat-error>
                                             </mat-form-field>
                                         </td>
@@ -45,8 +57,12 @@
                                                 <input matInput type="email" placeholder="Work Email"
                                                     formControlName="Email">
                                                 <mat-error
-                                                    *ngIf="personalFormGroup.controls['Email'].hasError('email')">Not a
-                                                    valid email
+                                                    *ngIf="personalFormGroup.controls['Email'].hasError('email')">
+                                                    Not a valid email.
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="personalFormGroup.controls['Email'].hasError('required')">
+                                                    Email is required.
                                                 </mat-error>
                                             </mat-form-field>
                                         </td>
@@ -141,7 +157,7 @@
                             </div>
                             <div class="row col-md-offset-1" style="padding-top: 30px">
                                 <button mat-raised-button
-                                    style="background-color: #04c0be; color: white; margin-left: 5px"
+                                    style="background-color: #04c0be; color: white; margin-left: 25px"
                                     type="submit">Change Password</button>
                             </div>
                         </form>
@@ -196,7 +212,7 @@
                                             </a>
                                             <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
                                                 matTooltip="Download File" matTooltipPosition="below">
-                                                <i class="material-icons" (click)="DownloadFile(file)">save_alt</i>
+                                                <i class="material-icons" (click)="DownloadFile(file)">get_app</i>
                                             </a>
                                             <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
                                                 matTooltip="Delete File" matTooltipPosition="below">

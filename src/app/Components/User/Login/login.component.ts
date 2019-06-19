@@ -1,5 +1,4 @@
-﻿
-import { Component, OnInit, ViewChild, ViewContainerRef, NgZone } from '@angular/core';
+﻿import { Component, OnInit, NgZone } from '@angular/core';
 import { UserService } from '../../../Service/user.service';
 import { DataContext } from '../../../Services/dataContext.service';
 import { UserSession } from '../../../Services/userSession.service';
@@ -8,16 +7,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotifierService } from 'angular-notifier';
 import { environment } from '../../../../environments/environment';
-import {
-    AuthService,
-    GoogleLoginProvider
-} from 'angular-6-social-login';
+import { AuthService, GoogleLoginProvider } from 'angular-6-social-login';
 
 @Component({
     templateUrl: 'login.component.html',
     styleUrls: ['login.component.css']
 })
-
 export class LoginComponent implements OnInit {
     JobId = 0;
     Date = new Date();
@@ -26,9 +21,16 @@ export class LoginComponent implements OnInit {
     msg: string;
     loginFrm: FormGroup;
     private formSubmitAttempt: boolean;
-    constructor(private socialAuthService: AuthService, private ngZone: NgZone,
-        private fb: FormBuilder, private _userService: UserService, private router: Router, private activatedRoute: ActivatedRoute,
-        notifier: NotifierService, private _dataContext: DataContext, private _userSession: UserSession) {
+
+    constructor(
+        private socialAuthService: AuthService,
+        private ngZone: NgZone,
+        private fb: FormBuilder,
+        private _userService: UserService,
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+        notifier: NotifierService,
+        private _userSession: UserSession) {
         this.notifier = notifier;
     }
 
@@ -53,7 +55,6 @@ export class LoginComponent implements OnInit {
     }
 
     changeLang(lang: string) {
-
         if (lang === 'es') {
             localStorage.setItem('locale', 'es');
             location.reload();
@@ -83,6 +84,7 @@ export class LoginComponent implements OnInit {
         }
         this.formSubmitAttempt = true;
     }
+
     // Login with Google
     public loginWithGoogle() {
         let socialPlatformProvider;
@@ -157,6 +159,7 @@ export class LoginComponent implements OnInit {
     private signInErrorWithGoogle(err) {
         this.notifier.notify('error', err);
     }
+
     //SetControlsState(isEnable: boolean) {
     //    isEnable ? this.loginFrm.enable() : this.loginFrm.disable();
     //}

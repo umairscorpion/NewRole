@@ -92,3 +92,12 @@
     font-size: 14px;
     width: 100%;
   }
+
+  .mat-table {
+    overflow: auto;
+    max-height: 400px;
+  }
+
+  ::ng-deep .mat-tab-body-content {
+    overflow: hidden !important;
+}

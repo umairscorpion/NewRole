@@ -55,7 +55,7 @@ export class AvailableJobsComponent implements OnInit {
         notifier: NotifierService, ) {
         this.notifier = notifier;
     }
-    
+
     ngAfterViewInit() {
         this.AvailableJobs.sort = this.sort;
         this.AvailableJobs.paginator = this.paginator;
@@ -71,7 +71,7 @@ export class AvailableJobsComponent implements OnInit {
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/"+ false + "/" + Status).subscribe((data: Absence[]) => {
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + false + "/" + Status).subscribe((data: Absence[]) => {
                 this.AvailableJobs.data = data;
                 this.AvailableJobCount = data.length;
                 this.AvailableCountEvent.emit(this.AvailableJobCount);
@@ -96,15 +96,6 @@ export class AvailableJobsComponent implements OnInit {
     GetOrganizations(DistrictId: number): void {
         this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
             this.Organizations = data;
-            // if (typeof this._userSession.getUserOrganizationId() != "undefined" && this._userSession.getUserOrganizationId() != "-1" && this._userSession.getUserOrganizationId())
-            //     // this.absenceFirstFormGroup.get('OrganizationId').setValue(this._userSession.getUserOrganizationId());
-            // this.absenceFirstFormGroup.controls['OrganizationId'].enable();
-            // if (this._userSession.getUserRoleId() == 5) {
-            //     this.absenceFirstFormGroup.get['OrganizationId'].setValue(this.Organizations[0].schoolId);
-            // }
-            // else {
-            //     this.absenceFirstFormGroup.controls['OrganizationId'].disable();
-            // }
         },
             error => <any>error);
     }
@@ -150,6 +141,10 @@ export class AvailableJobsComponent implements OnInit {
         }
         else if (Message == "Conflict") {
             this.notifier.notify('error', 'Already Accepted Job on This Date.');
+            this.GetAvailableJobs();
+        }
+        else if (Message == "Declined") {
+            this.notifier.notify('error', 'Declined Successfully.');
             this.GetAvailableJobs();
         }
         else {
@@ -202,27 +197,9 @@ export class AvailableJobsComponent implements OnInit {
 
     getImage(imageName: string) {
         if (imageName && imageName.length > 0) {
-            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
     }
-
-    //  deleteDistrict(SelectedRow: any) {
-    //      swal.fire({
-    //          title: 'Accept',
-    //          text:
-    //              'Are you sure you want to Accept this Job?',
-    //          type: 'warning',
-    //          showCancelButton: true,
-    //          confirmButtonClass: 'btn btn-danger',
-    //          cancelButtonClass: 'btn btn-success',
-    //          confirmButtonText: 'Yes',
-    //          cancelButtonText: 'No',
-    //          buttonsStyling: false
-    //      }).then(r => {
-    //          if (r.value) {
-    //          }
-    //     });
-    //  }
 
     AcceptAbsence(SelectedRow: any) {
         let currentTime = moment().format('h:mma');
@@ -289,45 +266,27 @@ export class AvailableJobsComponent implements OnInit {
         }
     }
 
-
-    // AcceptAbsence(SelectedRow: any) {
-    //     let currentTime = moment().format('h:mma');
-    //     let currentDate = moment().format('YYYY MM DD');
-    //     let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
-    //     let endtimetemp = moment(SelectedRow.endTime, 'h:mma');
-    //     let endtime = moment(endtimetemp).format('h:mma');
-
-    //     if (currentDate == startdate) {
-    //         if (currentTime > endtime) {
-    //             this.notifier.notify('error', 'Job has ended, you cannot accept it.');
-    //         }
-    //         else {
-    //             let confirmResult = confirm('Are you sure you want to Accept this Job?');
-    //             if (confirmResult) {
-    //                 this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
-    //                     this.NotifyResponse(response as string);
-    //                     this.GetAvailableJobs();
-    //                     this.upcomingJobs.GetUpcommingJobs();
-    //                 },
-    //                     error => this.msg = <any>error);
-    //             }
-    //         }
-    //     }
-    //     else {
-    //         if (startdate > currentDate) {
-    //             let confirmResult = confirm('Are you sure you want to Accept this Job?');
-    //             if (confirmResult) {
-    //                 this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
-    //                     this.NotifyResponse(response as string);
-    //                     this.GetAvailableJobs()
-    //                     this.upcomingJobs.GetUpcommingJobs();
-    //                 },
-    //                     error => this.msg = <any>error);
-    //             }
-    //         }
-    //         else {
-    //             this.notifier.notify('error', 'Something Went Wrong.');
-    //         }
-    //     }
-    // }
+    DeclineAbsence(SelectedRow: any) {
+        swal.fire({
+            title: 'Decline',
+            text:
+                'Are you sure you want to Decline this Job?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+        }).then(r => {
+            if (r.value) {
+                this._dataContext.get('Job/DeclineJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                    this.NotifyResponse(response as string);
+                    this.GetAvailableJobs();
+                    this.upcomingJobs.GetUpcommingJobs();
+                },
+                    error => this.msg = <any>error);
+            }
+        });
+    }
 }

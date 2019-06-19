@@ -58,15 +58,16 @@
                 <td>PayRoll Notes:</td>
                 <td>{{data.payrollNotes}}</td>
             </tr>
-            <tr *ngIf='data.anyAttachment' style="text-align: center">
+            <tr>
                 <td>Attachment:</td>
-                <td>
-                    <button mat-button type="button" color="warn" (click)="DownloadFile()">
-                        Download Attachment
-                        <mat-icon>download</mat-icon>
-                        {{FileName}}
+                <td *ngIf='data.anyAttachment'>
+                    <button mat-button type="button" color="warn" (click)="DownloadFile()"
+                        matTooltip="View Attachment">
+                        <i class="material-icons">visibility</i>
+                        {{data.originalFileName}}
                     </button>
                 </td>
+                <td *ngIf="!data.anyAttachment">No Attachment</td>
             </tr>
         </table>
     </div>

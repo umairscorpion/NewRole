@@ -38,10 +38,10 @@ export class AddDistrictComponent implements OnInit {
         this.districtForm = this.fb.group({
             Name: ['', Validators.required],
             City: ['', Validators.required],
-            Address: [''],
+            Address: ['', Validators.required],
             ZipCode: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
-            Country: [''],
-            State: [''],
+            Country: ['', Validators.required],
+            State: ['', Validators.required],
             StartTime: ['', Validators.required],
             firstHalfEndTime: ['', Validators.required],
             SecondHaifStartTime: ['', Validators.required],
@@ -76,6 +76,7 @@ export class AddDistrictComponent implements OnInit {
                     this.states = this._districtService.getStatesByCountryId('districtLookup/getStateByCountryId', data[0].countryId);
                     this.districtForm.get('State').setValue(data[0].districtStateId);
                     this.districtIdForUpdate = DistrictId;
+                    this.countryCode = data.countryCode;
                 },
                     error => <any>error);
             }
@@ -96,8 +97,7 @@ export class AddDistrictComponent implements OnInit {
             error => <any>error);
     }
 
-    onChange(countryId: any) {
-        
+    onChange(countryId: any) {      
         this.states = this._districtService.getStatesByCountryId('districtLookup/getStateByCountryId', countryId);
     }
 

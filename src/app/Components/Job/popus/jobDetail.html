@@ -5,12 +5,12 @@
         </div>
     </mat-dialog-actions>
     <hr>
-    <div *ngIf='data.isShowAttachment == false'>
+    <div *ngIf='!data.isShowAttachment'>
         <div class="avatar-wrapper">
             <img class="profile-pic" [src]="getImage(data.profilePicture)" />
         </div>
-        <div class="text-center">
-            <h4>{{data.employeeName}}</h4>
+        <div>
+            <h4></h4>
         </div>
         <div class="absence-summary-title p-5 mt-5">Absence Summary</div>
         <br>
@@ -55,7 +55,7 @@
                 <td *ngIf='data.anyAttachment'>
                     <button mat-button type="button" color="warn" (click)="DownloadFile()"
                         matTooltip="Download Attachment">
-                        <mat-icon>save_alt</mat-icon>
+                        <i class="material-icons">get_app</i>
                         {{data.originalFileName}}
                     </button>
                 </td>
@@ -63,13 +63,16 @@
             </tr>
         </table>
     </div>
-    <div class="row" *ngIf='data.isShowAttachment == true'>
-        <div class="col-md-12" style="text-align:right;padding-right: 28px; padding-bottom: 5px;"><button mat-button
-                type="button" color="warn" (click)="DownloadFile()">
-                <i class="material-icons">
-                    get_app
-                </i>Download</button></div>
-        <div class="col-md-12"><iframe [src]='attachFileUrl'
-                style="height: 560px; width:730px;margin-left: 15px;"></iframe></div>
+    <div class="row" *ngIf='data.isShowAttachment'>
+        <div class="col-md-12" style="text-align: right; padding-right: 28px; padding-bottom: 5px;">
+            <button mat-button type="button" color="warn" (click)="DownloadFile()">
+                <i class="material-icons">get_app</i>
+                Download
+            </button>
+        </div>
+        <div class="col-md-12">
+            <iframe [src]='attachFileUrl' style="height: 430px; width: 630px; margin-left: 15px;">
+            </iframe>
+        </div>
     </div>
 </div>

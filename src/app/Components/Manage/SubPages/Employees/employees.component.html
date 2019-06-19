@@ -19,7 +19,7 @@
 
   .mat-table {
     overflow: auto;
-    max-height: 550px;
+    max-height: 400px;
   }
 </style>
 <mat-card>
@@ -110,7 +110,7 @@
                 matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateEmployeeStatus(row)" color=""></mat-slide-toggle>
             </mat-cell>
           </ng-container>
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
         <mat-paginator [length]="resultsLength" [pageSize]="30">

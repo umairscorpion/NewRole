@@ -53,7 +53,7 @@ export class ProfileComponent implements OnInit {
         private _employeeService: EmployeeService,
         private http: HttpClient,
         private _fileService: FileService,
-        private dialogRef: MatDialog, ) {
+        private dialogRef: MatDialog) {
         this.notifier = notifier
     }
 
@@ -88,19 +88,17 @@ export class ProfileComponent implements OnInit {
                     }
                     this._datacontext.Patch('user/updateUserProfile', personalFormModel).subscribe((data: any) => {
                         this.notifier.notify('success', 'Updated Successfully');
-                        let personalFormModel = {
-                            FirstName: data.firstName,
-                            LastName: data.lastName,
-                            Email: data.email,
-                            PhoneNumber: data.phoneNumber
-                        }
-                
-                        this.LoginedUserId = this.UserClaim.id;
-                        this.getProfileImage(data.profilePicture);
-                        this.personalFormGroup.setValue(personalFormModel);
+
+                        this.UserClaim.firstName = data.firstName;
+                        this.UserClaim.lastName = data.lastName;
+                        this.UserClaim.phoneNumber = data.phoneNumber;
+                        this.UserClaim.email = data.email;
+                        this.UserClaim.profilePicture = data.profilePicture;
+
+                        localStorage.setItem('userClaims', JSON.stringify(this.UserClaim));
+                        this._userSession.SetUserSession();
                     },
                         (err: HttpErrorResponse) => {
-                            // this.toastr.error(err.error.error_description, 'Oops!');
                         });
                 }
             });
@@ -108,7 +106,6 @@ export class ProfileComponent implements OnInit {
     }
 
     generateForms(): void {
-
         this.resetPasswordForm = this._formBuilder.group({
             currentPassword: ['', Validators.required],
             password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+)$/)]],
@@ -156,7 +153,6 @@ export class ProfileComponent implements OnInit {
     }
 
     onFromSubmit(form: any) {
-
     }
 
     submitResetPassForm(form: FormGroup) {
@@ -322,7 +318,7 @@ export class ProfileComponent implements OnInit {
 
     AddFile() {
         if (this.OriginalFileName == null) {
-            this.notifier.notify('error', 'Please upload file');
+            this.notifier.notify('error', 'Please upload file.');
             return;
         }
         let model = {
@@ -334,6 +330,7 @@ export class ProfileComponent implements OnInit {
         }
         this._fileService.addFile('fileSystem/addFiles', model).subscribe((respose: any) => {
             this.SubstituteFiles = respose;
+            this.removeAttachedFile();
         });
     }
 
