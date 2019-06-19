@@ -62,8 +62,8 @@
                 <td>Attachment:</td>
                 <td *ngIf='data.anyAttachment'>
                     <button mat-button type="button" color="warn" (click)="DownloadFile()"
-                        matTooltip="Download Attachment">
-                        <mat-icon>save_alt</mat-icon>
+                        matTooltip="View Attachment">
+                        <i class="material-icons">visibility</i>
                         {{data.originalFileName}}
                     </button>
                 </td>

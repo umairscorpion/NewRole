@@ -73,13 +73,13 @@
         </tr>
         <tr>
           <td>Attachment:</td>
-          <td *ngIf='reportDetail.anyAttachment == true'>
+          <td *ngIf='reportDetail.anyAttachment'>
             <button mat-button type="button" color="warn" (click)="DownloadFile()" matTooltip="Download Attachment">
-              <mat-icon>save_alt</mat-icon>
+              <i class="material-icons">get_app</i>
               {{reportDetail.originalFileName}}
             </button>
           </td>
-          <td *ngIf="reportDetail.anyAttachment == false">No Attachment</td>
+          <td *ngIf="!reportDetail.anyAttachment">No Attachment</td>
         </tr>
       </table>
       <table *ngIf="menuAction == 'edit'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
@@ -182,15 +182,14 @@
           </td>
         </tr>
         <tr>
-          <td></td>
-          <td>
-            <div *ngIf="reportDetail.anyAttachment == 1">
-              <button mat-button type="button" color="warn" (click)="DownloadFile()" matTooltip="Download Attachment">
-                <mat-icon>save_alt</mat-icon>
-                {{reportDetail.originalFileName}}
-              </button>
-            </div>
+          <td>Attachment:</td>
+          <td *ngIf="reportDetail.anyAttachment">
+            <button mat-button type="button" color="warn" (click)="DownloadFile()" matTooltip="Download Attachment">
+              <i class="material-icons">get_app</i>
+              {{reportDetail.originalFileName}}
+            </button>
           </td>
+          <td *ngIf="!reportDetail.anyAttachment">No Attachment</td>
         </tr>
         <tr>
           <td>Add Attachment</td>

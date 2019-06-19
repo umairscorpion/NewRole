@@ -30,11 +30,11 @@ export class MyJobsComponent implements OnInit {
     FileStream: any;
 
     constructor(
-        private _dataContext: DataContext, 
+        private _dataContext: DataContext,
         private _userSession: UserSession,
         private _formBuilder: FormBuilder,
-        notifier: NotifierService, 
-        private _communicationService: CommunicationService, 
+        notifier: NotifierService,
+        private _communicationService: CommunicationService,
         private activatedRoute: ActivatedRoute) {
         this.notifier = notifier;
     }
@@ -54,7 +54,7 @@ export class MyJobsComponent implements OnInit {
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/"+ false + "/" + Status).subscribe((data: any) => {
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + false + "/" + Status).subscribe((data: any) => {
                 this.UpcommingJobs.data = data;
                 this.UpcomingJobCount = data.length
                 this.UpcomingCountEvent.emit(this.UpcomingJobCount)
@@ -62,58 +62,6 @@ export class MyJobsComponent implements OnInit {
                 error => this.msg = <any>error);
     }
 
-    // ReleaseJob(SelectedRow: any, StatusId: number) {
-    //     let currentTime = moment().format('h:mma');
-    //     let currentDate = moment().format('YYYY MM DD');
-    //     let starttimetemp = moment(SelectedRow.startTime, 'h:mma');
-    //     let starttime = moment(starttimetemp).format('h:mma');
-    //     let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
-
-    //     if (currentDate == startdate) {
-    //         if (currentTime > starttime) {
-    //             this.notifier.notify('error', 'Unable to release, job has started');
-    //         }
-    //     else {
-    //             let confirmResult = confirm('Are you sure you want to release this job?');
-    //             if (confirmResult) {
-    //                 if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
-    //                 this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-    //                     if (response == "success") {
-    //                         this.notifier.notify('success', 'Released Successfully.');
-    //                         this.GetUpcommingJobs();
-    //                         // this.availableJobs.GetAvailableJobs();
-    //                     }
-    //                 },
-    //                     error => this.msg = <any>error);
-    //             }
-    //         }
-
-    //     }
-    //     else {
-    //         if (startdate > currentDate) {
-                
-    //             let confirmResult = confirm('Are you sure you want to release this job?');
-    //             if (confirmResult) {
-    //                 if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
-    //                 this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-    //                     if (response == "success") {
-    //                         this.notifier.notify('success', 'Released Successfully.');
-    //                         this.GetUpcommingJobs();
-    //                         // this.availableJobs.GetAvailableJobs();
-    //                     }
-    //                 },
-    //                     error => this.msg = <any>error);
-    //             }
-    //         }
-
-    //         else {
-    //             this.notifier.notify('error', 'Something Went Wrong.');
-    //         }
-
-    //     }
-    // }
-    
-    
     ReleaseJob(SelectedRow: any, StatusId: number) {
         let currentTime = moment().format('h:mma');
         let currentDate = moment().format('YYYY MM DD');
@@ -125,31 +73,31 @@ export class MyJobsComponent implements OnInit {
             if (currentTime > starttime) {
                 this.notifier.notify('error', 'Unable to release, job has started');
             }
-        else {
-            swal.fire({
-                title: 'Release',
-                text:
-                    'Are you sure you want to Release this Job?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonClass: 'btn btn-danger',
-                cancelButtonClass: 'btn btn-success',
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                buttonsStyling: false
-            }).then(r => {
-                if (r.value) {
-                    if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
-                    this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-                        if (response == "success") {
-                            this.notifier.notify('success', 'Released Successfully.');
-                            this.GetUpcommingJobs();
-                            // this.availableJobs.GetAvailableJobs();
-                        }
-                    },
-                        error => this.msg = <any>error);
-                }
-           });
+            else {
+                swal.fire({
+                    title: 'Release',
+                    text:
+                        'Are you sure you want to Release this Job?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-danger',
+                    cancelButtonClass: 'btn btn-success',
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    buttonsStyling: false
+                }).then(r => {
+                    if (r.value) {
+                        if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
+                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                            if (response == "success") {
+                                this.notifier.notify('success', 'Released Successfully.');
+                                this.GetUpcommingJobs();
+                                // this.availableJobs.GetAvailableJobs();
+                            }
+                        },
+                            error => this.msg = <any>error);
+                    }
+                });
             }
         }
         else {
@@ -168,16 +116,16 @@ export class MyJobsComponent implements OnInit {
                 }).then(r => {
                     if (r.value) {
                         if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
-                    this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
-                        if (response == "success") {
-                            this.notifier.notify('success', 'Released Successfully.');
-                            this.GetUpcommingJobs();
-                            // this.availableJobs.GetAvailableJobs();
-                        }
-                    },
-                        error => this.msg = <any>error);
+                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                            if (response == "success") {
+                                this.notifier.notify('success', 'Released Successfully.');
+                                this.GetUpcommingJobs();
+                                // this.availableJobs.GetAvailableJobs();
+                            }
+                        },
+                            error => this.msg = <any>error);
                     }
-               });
+                });
             }
 
             else {
@@ -212,15 +160,6 @@ export class MyJobsComponent implements OnInit {
     GetOrganizations(DistrictId: number): void {
         this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
             this.Organizations = data;
-            // if (typeof this._userSession.getUserOrganizationId() != "undefined" && this._userSession.getUserOrganizationId() != "-1" && this._userSession.getUserOrganizationId())
-            //     // this.absenceFirstFormGroup.get('OrganizationId').setValue(this._userSession.getUserOrganizationId());
-            // this.absenceFirstFormGroup.controls['OrganizationId'].enable();
-            // if (this._userSession.getUserRoleId() == 5) {
-            //     this.absenceFirstFormGroup.get['OrganizationId'].setValue(this.Organizations[0].schoolId);
-            // }
-            // else {
-            //     this.absenceFirstFormGroup.controls['OrganizationId'].disable();
-            // }
         },
             error => <any>error);
     }
@@ -238,7 +177,7 @@ export class MyJobsComponent implements OnInit {
         if (this.FilterForm.valid) {
             this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"
                 + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +
-                "/" + SearchFilter.getRawValue().DistrictId +  "/" + false + "/" + 2).subscribe((data: any) => {
+                "/" + SearchFilter.getRawValue().DistrictId + "/" + false + "/" + 2).subscribe((data: any) => {
                     this.UpcommingJobs.data = data;
                     this.UpcomingJobCount = data.length
                     this.UpcomingCountEvent.emit(this.UpcomingJobCount)
@@ -289,5 +228,4 @@ export class MyJobsComponent implements OnInit {
             this.notifier.notify('error', 'Problem Occured While Process you Request.Please Try Again Later.');
         }
     }
-
 }

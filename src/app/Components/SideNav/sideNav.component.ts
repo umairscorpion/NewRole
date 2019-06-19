@@ -6,10 +6,8 @@ import { UserService } from '../../Service/user.service';
 import { UserSession } from '../../Services/userSession.service';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-// import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { SideNavService } from './sideNav.service';
 import { MatSidenav } from '@angular/material/sidenav';
-import { FileService } from '../../Services/file.service';
 import { AuditFilter } from '../../Model/auditLog';
 import { AuditLogService } from '../../Services/audit_logs/audit-log.service';
 import { DataContext } from '../../Services/dataContext.service';
@@ -22,7 +20,6 @@ import { environment } from 'src/environments/environment';
     templateUrl: 'sideNav.component.html',
     styleUrls: ['sideNav.component.css']
 })
-
 export class SideNavComponent implements OnInit {
     private dialogRefSearch: any;
     private dialogRefSetting: any;
@@ -38,7 +35,6 @@ export class SideNavComponent implements OnInit {
     UserRole: number = this._userSession.getUserRoleId();
     @HostListener('window:resize', ['$event'])
     getScreenSize(event?) {
-        //   this.screenHeight = window.innerHeight;
         this.screenWidth = window.innerWidth;
         if (this.dialogRefSearch && typeof this.dialogRefSearch != 'undefined')
             this.dialogRefSearch.updatePosition({ top: '65px', left: this.screenWidth - 928 + 'px' as string });
@@ -51,11 +47,18 @@ export class SideNavComponent implements OnInit {
                 this.dialogRefSetting.updatePosition({ top: '65px' });
         }
     }
-    constructor(private _sideNavService: SideNavService, private sanitizer: DomSanitizer, private _userSession: UserSession,
-        private _userService: UserService, private router: Router, public dialog: MatDialog,
+
+    constructor(
+        private _sideNavService: SideNavService,
+        private sanitizer: DomSanitizer,
+        private _userSession: UserSession,
+        private _userService: UserService,
+        private router: Router,
+        public dialog: MatDialog,
         public matDialogRef: MatDialogRef<any>) {
         this.getScreenSize();
     }
+
     ngOnInit(): void {
         this.isLoggedIn$ = this._userService.isLoggedIn;
         this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
@@ -69,7 +72,6 @@ export class SideNavComponent implements OnInit {
 
     showSearchPopup() {
         this.dialogRefSearch = this.dialog.open(PopupDialogForSearch, {
-            // height: '300px',
             width: '750px',
             panelClass: 'search-popup',
             position: { top: '65px', left: this.screenWidth - 928 + 'px' as string }
@@ -79,7 +81,6 @@ export class SideNavComponent implements OnInit {
 
     showSettingsPopup() {
         this.dialogRefSetting = this.dialog.open(PopupDialogForSettings, {
-            // height: '300px',
             width: '750px',
             panelClass: 'setting-popup',
             position: { top: '65px', left: this.screenWidth - 890 + 'px' as string }
@@ -94,7 +95,7 @@ export class SideNavComponent implements OnInit {
     Logout() {
         this._userService.logout();
         localStorage.removeItem('userToken');
-        localStorage.removeItem('userClaims');      
+        localStorage.removeItem('userClaims');
         this.router.navigate(['/']);
     }
 
@@ -133,99 +134,82 @@ export class PopupDialogForSearch {
     @ViewChild(MatSort) sort: MatSort;
     displayedColumns = ['firstName', 'LastName', 'Email', 'Type'];
     displayedColumnsForReports = ['employee', 'jobNumber', 'date', 'link'];
-    constructor(private router: Router,public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public sanitizer: DomSanitizer, private _dataContext: DataContext,
-    private _userSession:UserSession,  private _employeeService:EmployeeService) {
+
+    constructor(
+        private router: Router,
+        public dialog: MatDialog,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public sanitizer: DomSanitizer,
+        private _userSession: UserSession,
+        private _employeeService: EmployeeService) {
     }
+
     ngOnInit(): void {
-    // this.GetSustitutes();
-      }
-    
-      GetSustitutes(): void {
+        // this.GetSustitutes();
+    }
+
+    GetSustitutes(): void {
         let OrgId = -1;
         let DistrictId = this._userSession.getUserDistrictId();
-        this._employeeService.getSearchContent('user/searchContent',OrgId, DistrictId).subscribe((data: any) => {
-          this.dataSource.data = data;
+        this._employeeService.getSearchContent('user/searchContent', OrgId, DistrictId).subscribe((data: any) => {
+            this.dataSource.data = data;
         },
-          error => this.msg = <any>error);
-      }
-      ngAfterViewInit() {
+            error => this.msg = <any>error);
+    }
+
+    ngAfterViewInit() {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-      }
+    }
+
     Search(searchQuery: string) {
         this.showSearchDiv = false;
         this.resultNotFindDiv = false;
         this.showSearchReportDiv = false;
         let OrgId = this._userSession.getUserOrganizationId();
         let DistrictId = this._userSession.getUserDistrictId();
-        this._employeeService.getSearchContentByFilter('user/searchContent',OrgId, DistrictId, searchQuery).subscribe((data: any) => {
-        this.dataSourceForUsers.data = data.filter(t => t.searchType === 1);
-        this.dataSourceForReport.data = data.filter(t => t.searchType === 2);
-        if(this.dataSourceForUsers.data.length > 0 && this.dataSourceForReport.data.length > 0)
-        {
-        this.showSearchDiv = true;
-        this.resultNotFindDiv = false;
-        this.showSearchReportDiv = true;
-        }
-        else if(this.dataSourceForUsers.data.length > 0 || this.dataSourceForReport.data.length < 0)
-        {
-        this.showSearchDiv = true;
-        this.resultNotFindDiv = false;
-        this.showSearchReportDiv = false;
-        }
-        else if(this.dataSourceForUsers.data.length < 0 || this.dataSourceForReport.data.length > 0)
-        {
-        this.showSearchDiv = false;
-        this.resultNotFindDiv = false;
-        this.showSearchReportDiv = true;
-        }
-        else
-        {
-            this.resultNotFindDiv = true;
-        }
-
-
-
-
-
-
-        // if(this.dataSourceForUsers.data.length > 0 || this.dataSourceForReport.data.length > 0)
-        //  {
-        //      if(this.dataSourceForUsers.data.length > 0)
-        //      {
-        //         this.showSearchDiv = true;
-        //         this.resultNotFindDiv = false; 
-        //      }
-        //       this.showSearchReportDiv = true;
-        //       this.showSearchDiv = true;
-        //       this.resultNotFindDiv = false;
-        //   }
-        //    else {
-        //     this.showSearchReportDiv = false;
-        //     this.showSearchDiv = false;
-        //      this.resultNotFindDiv = true;
-        //    }
+        this._employeeService.getSearchContentByFilter('user/searchContent', OrgId, DistrictId, searchQuery).subscribe((data: any) => {
+            this.dataSourceForUsers.data = data.filter(t => t.searchType === 1);
+            this.dataSourceForReport.data = data.filter(t => t.searchType === 2);
+            if (this.dataSourceForUsers.data.length > 0 && this.dataSourceForReport.data.length > 0) {
+                this.showSearchDiv = true;
+                this.resultNotFindDiv = false;
+                this.showSearchReportDiv = true;
+            }
+            else if (this.dataSourceForUsers.data.length > 0 || this.dataSourceForReport.data.length < 0) {
+                this.showSearchDiv = true;
+                this.resultNotFindDiv = false;
+                this.showSearchReportDiv = false;
+            }
+            else if (this.dataSourceForUsers.data.length < 0 || this.dataSourceForReport.data.length > 0) {
+                this.showSearchDiv = false;
+                this.resultNotFindDiv = false;
+                this.showSearchReportDiv = true;
+            }
+            else {
+                this.resultNotFindDiv = true;
+            }
         },
+            error => this.msg = <any>error);
+    }
 
-          error => this.msg = <any>error);
-        
-      }
-      openDailyReportPage() {
+    openDailyReportPage() {
         this.dialog.closeAll();
         this.router.navigate(['/reports']);
     }
-    
 }
+
 export class DataSourceEmployees {
     constructor(private _dataContext: DataContext, private _UserSession: UserSession) { }
     getRepoIssues(sort: string, order: string, page: number): Observable<IEmployee[]> {
-  
-      let RoleId = 3;
-      let OrgId = this._UserSession.getUserOrganizationId();
-      let DistrictId = this._UserSession.getUserDistrictId();
-      return this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId);
+
+        let RoleId = 3;
+        let OrgId = this._UserSession.getUserOrganizationId();
+        let DistrictId = this._UserSession.getUserDistrictId();
+        return this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId);
     }
-  }
+}
+
 @Component({
     templateUrl: 'popups/settingPopup.html',
     styleUrls: ['sideNav.component.css']
@@ -238,22 +222,23 @@ export class PopupDialogForSettings {
     userRole: number = this._userSession.getUserRoleId();
     insertAuditLogout: any;
     profilePicName: any;
+    
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: any, 
-        private fileService: FileService,
-        public dialog: MatDialog, 
-        private sanitizer: DomSanitizer, 
-        private router: Router, 
-        private _userSession: UserSession, 
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialog: MatDialog,
+        private sanitizer: DomSanitizer,
+        private router: Router,
+        private _userSession: UserSession,
         private auditLogService: AuditLogService) {
+        this.profilePicName = null;
         this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
         this.UserName = this.UserClaim.firstName;
         this.profilePicName = this.UserClaim.profilePicture;
     }
-    
+
     getImage(imageName: string) {
         if (imageName && imageName.length > 0) {
-            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
     }
 

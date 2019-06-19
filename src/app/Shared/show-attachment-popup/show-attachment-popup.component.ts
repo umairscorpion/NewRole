@@ -14,7 +14,8 @@ export class ShowAttachmentPopupComponent implements OnInit {
   attachFileUrl: SafeUrl = "";
   msg: string;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<ProfileComponent>,
     private _dataContext: DataContext,
     private sanitizer: DomSanitizer) {
@@ -42,5 +43,4 @@ export class ShowAttachmentPopupComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
-
 }

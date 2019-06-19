@@ -10,7 +10,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Observable } from 'rxjs/Observable';
 import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { UsersService } from 'src/app/Services/users.service';
 
 @Component({
@@ -60,7 +60,8 @@ export class AddSubstituteComponent implements OnInit {
             PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             PayRate: ['0'],
             HourLimit: ['0'],
-            IsActive: [1]
+            IsActive: [1],
+            Password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+)$/)]]
         });
         this.getpositions()
         // this.GetUserTypes();
@@ -87,7 +88,8 @@ export class AddSubstituteComponent implements OnInit {
                         PhoneNumber: data[0].phoneNumber,
                         PayRate: data[0].payRate as string,
                         HourLimit: data[0].hourLimit,
-                        IsActive: data[0].isActive
+                        IsActive: data[0].isActive,
+                        Password: data[0].password
                     }
                     this.getProfileImage(data[0].profilePicture);
                     this.substituteForm.setValue(SubstituteModel);
@@ -133,7 +135,6 @@ export class AddSubstituteComponent implements OnInit {
     GetDistricts(): void {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
-            this.substituteForm.get('District').setValue(this._userSession.getUserDistrictId());
             if (this._userSession.getUserLevelId() != 4) {
                 this.substituteForm.controls['District'].disable();
             }            
@@ -223,7 +224,8 @@ export class AddSubstituteComponent implements OnInit {
                         ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
                         PayRate: form.value.PayRate,
                         HourLimit: form.value.HourLimit,
-                        IsActive: form.value.IsActive
+                        IsActive: form.value.IsActive,
+                        Password: form.value.Password
                     }
                     if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
                         this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {

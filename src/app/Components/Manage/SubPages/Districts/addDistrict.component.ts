@@ -38,10 +38,10 @@ export class AddDistrictComponent implements OnInit {
         this.districtForm = this.fb.group({
             Name: ['', Validators.required],
             City: ['', Validators.required],
-            Address: [''],
+            Address: ['', Validators.required],
             ZipCode: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
-            Country: [''],
-            State: [''],
+            Country: ['', Validators.required],
+            State: ['', Validators.required],
             StartTime: ['', Validators.required],
             firstHalfEndTime: ['', Validators.required],
             SecondHaifStartTime: ['', Validators.required],

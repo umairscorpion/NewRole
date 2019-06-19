@@ -23,7 +23,7 @@
                 <div style="margin-top: 20px">
                     <b>Tools</b>
                 </div>
-                <div *ngIf="userRole != 4" style="margin-top:20px">
+                <div *ngIf="userRole != 4 && userRole != 3" style="margin-top:20px">
                     <a (click)="openAuditLog()">Audit Log</a>
                 </div>
                 <div style="margin-top:20px" *ngIf="userRole === 4 || userRole === 3">

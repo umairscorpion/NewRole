@@ -103,7 +103,7 @@ export class PopupDialogForAbsenceDetail {
                 window.navigator.msSaveOrOpenBlob(newBlob);
                 return;
             }
-            // To open in browser
+            //To open in browser
             var file = new Blob([blob], { type: this.data.fileContentType });
             window.open(URL.createObjectURL(file));
             //To Download

@@ -8,6 +8,8 @@ import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from 'src/app/Service/user.service';
+import { User } from 'src/app/Model/user';
+import { Organization } from 'src/app/Model/organization';
 
 @Component({
     templateUrl: 'addEmployees.component.html',
@@ -60,7 +62,8 @@ export class AddEmployeesComponent implements OnInit {
             SecondarySchools: [],
             EmailId: ['', [Validators.required, Validators.email]],
             PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
-            IsActive: [1]
+            IsActive: [1],
+            Password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+)$/)]]
         });
         if (this._userSession.getUserRoleId() == 2) {
             this.employeeForm.get('WorkLocaion').setValue('2');
@@ -98,7 +101,8 @@ export class AddEmployeesComponent implements OnInit {
                         OrganizationId: data[0].organizationId ? data[0].organizationId : '',
                         SecondarySchools: data[0].secondarySchools,
                         PhoneNumber: data[0].phoneNumber,
-                        IsActive: data[0].isActive
+                        IsActive: data[0].isActive,
+                        Password: data[0].password
                     }
                     this.getProfileImage(data[0].profilePicture);
                     this.employeeForm.setValue(EmployeeModel);
@@ -136,11 +140,11 @@ export class AddEmployeesComponent implements OnInit {
     GetDistricts(): void {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
-            this.employeeForm.get('District').setValue(this._userSession.getUserDistrictId());
             if (this._userSession.getUserRoleId() == 5) {
                 this.employeeForm.controls['District'].enable();
             }
             else {
+                this.employeeForm.get('District').setValue(this._userSession.getUserDistrictId());
                 this.employeeForm.controls['District'].disable();
             }
         },
@@ -154,6 +158,14 @@ export class AddEmployeesComponent implements OnInit {
                 this.employeeForm.get('OrganizationId').setValue(this._userSession.getUserOrganizationId());
                 this.employeeForm.controls['OrganizationId'].disable();
             }
+        },
+            error => this.msg = <any>error);
+    }
+
+    onChangeDistrict(districtId: any) {      
+        this._dataContext.get('school/getSchools').subscribe((data: any) => {
+            this.Organizations = data;
+            this.Organizations = data.filter(t => t.schoolDistrictId == districtId);
         },
             error => this.msg = <any>error);
     }
@@ -177,12 +189,9 @@ export class AddEmployeesComponent implements OnInit {
     }
 
     OnchangeWorkLocation(event: any) {
-
         if (+event === 2) {
             this.employeeForm.controls["OrganizationId"].setValidators([Validators.required]);
             this.employeeForm.controls['OrganizationId'].updateValueAndValidity();
-            this.employeeForm.controls['District'].clearValidators();
-            this.employeeForm.controls['District'].updateValueAndValidity();
             this.showOrganization = true;
             this.showDistrict = false;
         }
@@ -287,7 +296,8 @@ export class AddEmployeesComponent implements OnInit {
                         Email: form.value.EmailId,
                         PhoneNumber: form.value.PhoneNumber,
                         ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
-                        IsActive: form.value.IsActive
+                        IsActive: form.value.IsActive,
+                        Password: form.value.Password
                     }
 
                     if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
