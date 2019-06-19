@@ -600,13 +600,11 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     createAbsence(FirstAbsenceForm: any, SecondAbsenceForm: any, stepper: MatStepper) {
         if (this.absenceFirstFormGroup.valid && this.absenceSecondFormGroup.valid) {
             let Substitutes = "";
-
             if ((+FirstAbsenceForm.value.AbsenceType == 1 || +FirstAbsenceForm.value.AbsenceType == 2) && (FirstAbsenceForm.value.Substitutes)) {
                 FirstAbsenceForm.value.Substitutes.forEach((Substitute, index, array) => {
                     Substitutes += index === array.length - 1 ? Substitute.userId : Substitute.userId + ",";
                 });
             }
-
             let AbsenceModel = {
                 EmployeeId: this.EmployeeIdForAbsence,
                 AbsenceCreatedByEmployeeId: this._userSession.getUserId(),
