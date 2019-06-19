@@ -29,7 +29,7 @@ export class SubstituteAvailabilityComponent implements OnInit {
 
     this.userForm = fb.group({
       date: [{ begin: new Date(curr.setDate(first)), end: new Date(curr.setDate(last)) }],
-      availabilityStatusId: [-1],
+      availabilityStatusId: [0],
       userId: [null]
     });
   }
@@ -50,10 +50,16 @@ export class SubstituteAvailabilityComponent implements OnInit {
     this.containerEl.fullCalendar('gotoDate', model.startDate);
     this.availabilityService.post('availability/substitutes', model).subscribe(
       (availabilities: any) => {
-        this.resources = this.getResources(availabilities[0].resources);
-        this.containerEl.fullCalendar('refetchResources');
-        this.containerEl.fullCalendar('removeEvents');
-        this.containerEl.fullCalendar('renderEvents', availabilities, true);
+        if (availabilities && availabilities.length > 0) {
+          this.resources = this.getResources(availabilities[0].resources);
+          this.containerEl.fullCalendar('refetchResources');
+          this.containerEl.fullCalendar('removeEvents');
+          this.containerEl.fullCalendar('renderEvents', availabilities, true);
+        } else {
+          this.resources = null;
+          this.containerEl.fullCalendar('refetchResources');
+          this.containerEl.fullCalendar('removeEvents');
+        }
       });
   }
 
@@ -68,7 +74,7 @@ export class SubstituteAvailabilityComponent implements OnInit {
     this.availabilityService.post('availability/substitutes', model).subscribe(
       (result: any) => {
         this.data = result;
-        this.resources = this.getResources(result[0].resources);
+        this.resources = result && result[0] && result[0].resources ? this.getResources(result[0].resources) : null;
         this.containerEl.fullCalendar({
           resourceAreaWidth: 230,
           slotDuration: '24:00:00',
@@ -88,7 +94,7 @@ export class SubstituteAvailabilityComponent implements OnInit {
                 const subsAvailable = {
                   'startDate': weekStart,
                   'endDate': weekEnd,
-                  'availabilityStatusId': -1,
+                  'availabilityStatusId': 0,
                   'userId': ''
                 };
                 this.availabilityService.post('availability/substitutes', subsAvailable).subscribe(
