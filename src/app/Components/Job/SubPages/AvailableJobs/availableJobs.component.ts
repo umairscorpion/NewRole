@@ -11,6 +11,7 @@ import { MyJobsComponent } from '../MyJobs/myJobs.component';
 import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
 import swal from 'sweetalert2';
+import { ActivatedRoute } from '../../../../../../node_modules/@angular/router';
 
 @Component({
     selector: 'available-jobs',
@@ -52,7 +53,8 @@ export class AvailableJobsComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _communicationService: CommunicationService,
         private sanitizer: DomSanitizer,
-        notifier: NotifierService, ) {
+        notifier: NotifierService,
+        private activatedRoute: ActivatedRoute ) {
         this.notifier = notifier;
     }
 
@@ -80,6 +82,11 @@ export class AvailableJobsComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params.jobId && params.ac === 1) {
+                this.DeclineAbsence(params.jobId)
+            }
+        })
         this.FilterForm = this._formBuilder.group({
             FilterStartDate: ['', Validators.required],
             FilterEndDate: ['', Validators.required],
@@ -266,7 +273,7 @@ export class AvailableJobsComponent implements OnInit {
         }
     }
 
-    DeclineAbsence(SelectedRow: any) {
+    DeclineAbsence(absenceId: any) {
         swal.fire({
             title: 'Decline',
             text:
@@ -280,7 +287,7 @@ export class AvailableJobsComponent implements OnInit {
             buttonsStyling: false
         }).then(r => {
             if (r.value) {
-                this._dataContext.get('Job/DeclineJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                this._dataContext.get('Job/DeclineJob/' + absenceId).subscribe((response: any) => {
                     this.NotifyResponse(response as string);
                     this.GetAvailableJobs();
                     this.upcomingJobs.GetUpcommingJobs();

@@ -15,6 +15,7 @@ import { AuthService, GoogleLoginProvider } from 'angular-6-social-login';
 })
 export class LoginComponent implements OnInit {
     JobId = 0;
+    action = 0; //For Accept i.e 1 And Reject i.e 2
     Date = new Date();
     private notifier: NotifierService;
     hide = true;
@@ -44,6 +45,7 @@ export class LoginComponent implements OnInit {
                 localStorage.removeItem('userToken');
                 localStorage.removeItem('userClaims');
                 this.JobId = params.job;
+                this.action = params.ac;
                 let model = {
                     userName: params.email,
                     password: params.pa
@@ -107,7 +109,13 @@ export class LoginComponent implements OnInit {
 
             if (data.roleId == 4) { // For Substitute
                 if (this.activatedRoute.queryParams && this.JobId > 0) {
-                    this.AcceptJob(this.JobId)
+                    if (this.action === 1) {
+                        this.AcceptJob(this.JobId)
+                    } else {
+                        this.declineJob(this.JobId)
+                    }
+                        
+                        
                 }
                 else {
                     this.router.navigate(['/viewjobs']
@@ -152,7 +160,11 @@ export class LoginComponent implements OnInit {
     }
 
     AcceptJob(jobId: number) {
-        this.router.navigate(['/viewjobs/myJobs'], { queryParams: { jobId: jobId } });
+        this.router.navigate(['/viewjobs/myJobs'], { queryParams: { jobId: jobId, ac: this.action } });
+    }
+
+    declineJob(jobId: number) {
+        this.router.navigate(['/viewjobs/availableJobs'], { queryParams: { jobId: jobId, ac: this.action } });
     }
 
     // If Error occurred on login with Google
