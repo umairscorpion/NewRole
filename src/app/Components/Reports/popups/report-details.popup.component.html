@@ -5,10 +5,10 @@
         <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
         <button [disabled]="reportDetail.statusId == 1 || !reportDetail.substituteRequired" type="button"
           mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
-        <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default"
-          (click)="performAction('assign')">Assign</button>
-        <button [disabled]="reportDetail.statusId == 2" type="button" mat-raised-button class="btn btn-default"
-          (click)="performAction('resend')">Resend</button>
+        <button [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired" type="button" 
+        mat-raised-button class="btn btn-default" (click)="performAction('assign')">Assign</button>
+        <button [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired" type="button" 
+        mat-raised-button class="btn btn-default" (click)="performAction('resend')">Resend</button>
       </div>
       <div class="col-md-4 pl-0">
         <button type="button" mat-raised-button class="btn btn-warning"
@@ -147,7 +147,7 @@
           <td *ngIf="reportDetail.absenceType == 2 && reportDetail.substituteRequired">Assigned</td>
           <td *ngIf="!reportDetail.substituteRequired">N/A</td>
         </tr>
-        <tr>
+        <tr *ngIf='reportDetail.substituteRequired'>
           <td>Substitute:</td>
           <td *ngIf='reportDetail.statusId == 2'>{{reportDetail.substituteName}}</td>
           <td *ngIf='reportDetail.statusId != 2'>

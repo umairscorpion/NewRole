@@ -144,7 +144,7 @@ export class AvailableJobsComponent implements OnInit {
             this.GetAvailableJobs();
         }
         else if (Message == "Declined") {
-            this.notifier.notify('error', 'Declined Successfully.');
+            this.notifier.notify('success', 'Declined Successfully.');
             this.GetAvailableJobs();
         }
         else {
@@ -280,7 +280,7 @@ export class AvailableJobsComponent implements OnInit {
             buttonsStyling: false
         }).then(r => {
             if (r.value) {
-                this._dataContext.get('Job/DeclineJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                this._dataContext.get('Job/DeclineJob/' + SelectedRow.absenceId).subscribe((response: any) => {
                     this.NotifyResponse(response as string);
                     this.GetAvailableJobs();
                     this.upcomingJobs.GetUpcommingJobs();

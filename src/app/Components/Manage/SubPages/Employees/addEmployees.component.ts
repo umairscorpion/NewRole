@@ -8,8 +8,6 @@ import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from 'src/app/Service/user.service';
-import { User } from 'src/app/Model/user';
-import { Organization } from 'src/app/Model/organization';
 
 @Component({
     templateUrl: 'addEmployees.component.html',
