@@ -9,9 +9,8 @@
 </style>
 <mat-card>
     <mat-card-title>
-        Add School
+        {{SchoolIdForUpdate ? 'Edit School': 'Add School'}}
     </mat-card-title>
-
     <mat-card-content>
         <form (ngSubmit)="onSubmit(schoolForm)" [formGroup]="schoolForm">
             <table class="row col-md-offset-1 schoolForm-table">
@@ -45,8 +44,8 @@
                 <tr>
                     <td class="col-md-2">Address</td>
                     <td>
-                        <mat-form-field hintLabel="Min 20 and Max 50 characters" class="col-md-4">
-                            <textarea matInput #address minlength="20" maxlength="50" placeholder="Address"
+                        <mat-form-field hintLabel="Min 7 and Max 50 characters." class="col-md-4">
+                            <textarea matInput #address minlength="7" maxlength="50" placeholder="Address"
                                 formControlName="Address" matTextareaAutosize matAutosizeMinRows="2"
                                 matAutosizeMaxRows="5"></textarea>
                             <mat-hint align="end">{{address.value?.length || 0}}/50</mat-hint>
@@ -59,7 +58,7 @@
                 <tr>
                     <td class="col-md-2">City</td>
                     <td>
-                        <mat-form-field hintLabel="Min 2 and Max 30 characters" class="col-md-4">
+                        <mat-form-field hintLabel="Min 2 and Max 30 characters." class="col-md-4">
                             <input matInput #city minlength="2" maxlength="30" placeholder="City"
                                 formControlName="City">
                             <mat-hint align="end">{{city.value?.length || 0}}/30</mat-hint>
@@ -72,7 +71,7 @@
                 <tr>
                     <td class="col-md-2">Zip Code</td>
                     <td>
-                        <mat-form-field hintLabel="Min 3 and Max 6 characters" class="col-md-4">
+                        <mat-form-field hintLabel="Min 3 and Max 6 characters." class="col-md-4">
                             <input matInput #zipCode minlength="3" maxlength="6" placeholder="Zip Code"
                                 formControlName="ZipCode">
                             <mat-hint align="end">{{zipCode.value?.length || 0}}/6</mat-hint>
@@ -88,7 +87,7 @@
                 <tr>
                     <td class="col-md-2">Phone Number</td>
                     <td>
-                        <mat-form-field hintLabel="Min 7 and Max 11 characters" class="col-md-4">
+                        <mat-form-field hintLabel="Min 7 and Max 11 characters." class="col-md-4">
                             <input matInput #phone minlength="7" maxlength="11" placeholder="Phone No"
                                 formControlName="PhoneNo">
                             <mat-hint align="end">{{phone.value?.length || 0}}/11</mat-hint>
@@ -137,17 +136,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <!-- <td>
-                        <mat-form-field class="demo-full-width">
-                            <input matInput type="email" placeholder="Email" formControlName="EmailId">
-                            <mat-error *ngIf="schoolForm.controls['EmailId'].hasError('email')">Not a valid email</mat-error>
-                        </mat-form-field>
-                    </td> -->
-                </tr>
-                <tr>
                     <td colspan="2" class="content-center" style="padding-top: 20px">
-                        <button mat-raised-button style="background-color: #04c0be; color: white;"
-                            type="submit">{{SchoolIdForUpdate ? 'Update': 'Save School to Database'}}</button>
+                        <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 10px;"
+                            type="submit">{{SchoolIdForUpdate ? 'Update': 'Add School to Database'}}</button>
                         <a routerLink="../../schools">
                             <button mat-raised-button type="button"
                                 style="background-color: #74a4a7; color: white; margin-left: 5px">Back</button>

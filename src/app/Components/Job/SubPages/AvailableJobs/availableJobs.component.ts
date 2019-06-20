@@ -151,7 +151,7 @@ export class AvailableJobsComponent implements OnInit {
             this.GetAvailableJobs();
         }
         else if (Message == "Declined") {
-            this.notifier.notify('error', 'Declined Successfully.');
+            this.notifier.notify('success', 'Declined Successfully.');
             this.GetAvailableJobs();
         }
         else {

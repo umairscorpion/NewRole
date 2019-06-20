@@ -1,15 +1,12 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-import { MatExpansionPanel, MatDatepickerInputEvent, MatDialogRef } from '@angular/material';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { MatExpansionPanel, MatDialogRef } from '@angular/material';
 import { DataContext } from '../../../Services/dataContext.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReportFilter } from '../../../Model/Report/report.filter';
-import * as moment from 'moment';
 import { UserSession } from '../../../Services/userSession.service';
 import { AbsenceService } from '../../../Services/absence.service';
 import { LeaveType } from '../../../Model/leaveType';
-import { MatDialog } from '@angular/material';
 import { ReportDetailsComponent } from './report-details.popup.component';
-
 
 @Component({
   selector: 'app-popup-for-cancel-absences',
@@ -32,16 +29,15 @@ export class PopupForCancelAbsencesComponent implements OnInit {
   schoolInformation: any;
   Districts: any;
   Organizations: any;
-
   submitted = false;
+  
   constructor(
     private fb: FormBuilder,
     private dataContext: DataContext,
     private _userSession: UserSession,
     private absenceService: AbsenceService,
     private _dialogRef: MatDialogRef<ReportDetailsComponent>,
-    private _formBuilder: FormBuilder
-  ) {
+    private _formBuilder: FormBuilder) {
     this.reportFilterForm = this.initReportFilters();
   }
 

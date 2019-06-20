@@ -117,7 +117,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     bindDetails(details: ReportDetail[]) {
         this.filledAbsenceDetails = details.filter(t => (t.statusId === 2 || t.statusId === 3) && t.substituteRequired === true && t.isApproved === true);
         this.unFilledAbsenceDetails = details.filter(t => t.statusId === 1 && t.substituteRequired === true && t.isApproved === true);
-        this.noSubReqAbsenceDetails = details.filter(t => t.substituteRequired === false);
+        this.noSubReqAbsenceDetails = details.filter(t => t.substituteRequired === false && t.statusId === 1 && t.isApproved === true);
     }
 
     bindChart(chartSummary: ReportSummary) {

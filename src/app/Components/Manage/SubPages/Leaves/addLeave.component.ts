@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbsenceService } from '../../../../Services/absence.service';
 import { UserSession } from '../../../../Services/userSession.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LeaveType } from '../../../../Model/leaveType';
 import { NotifierService } from 'angular-notifier';
 import { Allowance } from '../../../../Model/Manage/allowance.detail';
@@ -20,6 +20,7 @@ export class AddLeaveComponent implements OnInit {
     LeaveForm: FormGroup;
 
     constructor(
+        private router: Router,
         private _FormBuilder: FormBuilder,
         private userSession: UserSession,
         private districtService: DistrictService,
@@ -76,10 +77,14 @@ export class AddLeaveComponent implements OnInit {
                 allowanceType: form.value.allowanceType
             }
             this.absenceService.insertLeaveType(leaveFormModel).subscribe((data: any) => {
-                if (this.leaveIdForEdit > 0)
+                if (this.leaveIdForEdit > 0) {
                     this.notifier.notify('success', 'Updated Successfully');
-                else
+                    this.router.navigate(['/manage/leave']);
+                }
+                else {
                     this.notifier.notify('success', 'Added Successfully');
+                    this.router.navigate(['/manage/leave']);
+                }
             },
                 (err: HttpErrorResponse) => {
                 });
