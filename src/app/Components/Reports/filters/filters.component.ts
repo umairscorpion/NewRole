@@ -140,7 +140,7 @@ export class ReportFiltersComponent implements OnInit {
         this.reportService.cancelAbsences(this.reportFilterForm.value).subscribe((response: any) => {
           if (response == "success") {
             this.onSubmit(this.reportFilterForm);
-            this.notifier.notify('success', 'Cancel Successfully');
+            this.notifier.notify('success', 'Cancelled Successfully');
           }
           else{
             this.notifier.notify('error', 'No Absence found');

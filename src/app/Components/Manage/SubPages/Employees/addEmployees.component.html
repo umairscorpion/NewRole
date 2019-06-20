@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-title>
-        Add Staff
+        {{userIdForUpdate ? 'Edit Staff': 'Add Staff'}}
     </mat-card-title>
     <mat-card-content>
         <form (ngSubmit)="onSubmitEmployeeForm(employeeForm)" [formGroup]="employeeForm">
@@ -153,10 +153,10 @@
                     <tr>
                         <td class="col-md-3">Password</td>
                         <td>
-                            <mat-form-field hintLabel="Min 8 and Max 20 characters" class="col-md-7">
-                                <input matInput #password [type]="password" autocomplete="off" #password minlength="8"
-                                    maxlength="20" formControlName="Password" placeholder="Password">
-                                <mat-hint align="end">{{password.value?.length || 0}}/20</mat-hint>
+                            <mat-form-field hintLabel="Min 8 and Max 20 characters." class="col-md-7">
+                                <input matInput #pass type="password" autocomplete="off" minlength="8" maxlength="20" 
+                                formControlName="Password" placeholder="Password">
+                                <mat-hint align="end">{{pass.value?.length || 0}}/20</mat-hint>
                                 <mat-error *ngIf="employeeForm.controls['Password'].hasError('required')">
                                     Password is required.
                                 </mat-error>
@@ -171,7 +171,7 @@
                         <td class="col-md-3">Work Email Address</td>
                         <td>
                             <mat-form-field class="col-md-7">
-                                <input matInput type="email" placeholder="Email" formControlName="EmailId">
+                                <input matInput type="email" autocomplete="off" placeholder="Email" formControlName="EmailId">
                                 <mat-error *ngIf="employeeForm.controls['EmailId'].hasError('email')">
                                     Not a valid email.
                                 </mat-error>

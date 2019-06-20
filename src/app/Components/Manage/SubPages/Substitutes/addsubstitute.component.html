@@ -6,7 +6,7 @@
 </style>
 <mat-card>
     <mat-card-title>
-        Add Substitute
+        {{userIdForUpdate ? 'Edit Substitute': 'Add Substitute'}}
     </mat-card-title>
     <mat-card-content>
         <form (ngSubmit)="onSubmitSubstituteForm(substituteForm)" [formGroup]="substituteForm">
@@ -91,7 +91,7 @@
                     <tr>
                         <td class="col-md-3">Mobile Number</td>
                         <td>
-                            <mat-form-field hintLabel="Min 7 and Max 11 characters" class="col-md-7">
+                            <mat-form-field hintLabel="Min 7 and Max 11 characters." class="col-md-7">
                                 <input matInput #mobile minlength="7" maxlength="11" formControlName="PhoneNumber"
                                     placeholder="Mobile Number">
                                 <mat-hint align="end">{{mobile.value?.length || 0}}/11</mat-hint>
@@ -107,10 +107,10 @@
                     <tr>
                         <td class="col-md-3">Password</td>
                         <td>
-                            <mat-form-field hintLabel="Min 8 and Max 20 characters" class="col-md-7">
-                                <input matInput #password [type]="password" autocomplete="off" #password minlength="8"
-                                    maxlength="20" formControlName="Password" placeholder="Password">
-                                <mat-hint align="end">{{password.value?.length || 0}}/20</mat-hint>
+                            <mat-form-field hintLabel="Min 8 and Max 20 characters." class="col-md-7">
+                                <input matInput #pass type="password" autocomplete="off" minlength="8" maxlength="20" 
+                                formControlName="Password" placeholder="Password">
+                                <mat-hint align="end">{{pass.value?.length || 0}}/20</mat-hint>
                                 <mat-error *ngIf="substituteForm.controls['Password'].hasError('required')">
                                     Password is required.
                                 </mat-error>
@@ -124,7 +124,7 @@
                         <td class="col-md-3">Work Email Address</td>
                         <td>
                             <mat-form-field class="col-md-7">
-                                <input matInput placeholder="Email" type="email" formControlName="Email">
+                                <input matInput placeholder="Email" type="email" autocomplete="off" formControlName="Email">
                                 <mat-error *ngIf="substituteForm.controls['Email'].hasError('email')">
                                     Not a valid email
                                 </mat-error>
@@ -199,8 +199,9 @@
             </div>
             <div class="row col-md-offset-1" style="padding-top: 30px">
                 <a routerLink="./../../substitutes">
-                    <button mat-raised-button type="button"
-                        style="background-color: #74a4a7; color: white;">Back</button>
+                    <button mat-raised-button type="button" style="background-color: #74a4a7; color: white;">
+                        Back
+                    </button>
                 </a>
                 <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px"
                     type="submit">{{userIdForUpdate ? 'Update': 'Add Substitute to Database'}}</button>
