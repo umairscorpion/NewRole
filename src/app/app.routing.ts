@@ -105,7 +105,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee] }
                 },
                 children: [{
                     path: '', redirectTo: 'createAbsence', pathMatch: 'full',
@@ -116,7 +116,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee] }
                     },
                 },
                 {
@@ -128,7 +128,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee] }
                     },
                 },
                 {
@@ -140,7 +140,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee] }
                     }
                 },
                 {
@@ -152,7 +152,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee] }
                     }
                 },
                 {
@@ -164,7 +164,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee] }
                     }
                 }
                 ]
@@ -178,7 +178,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
                 },
                 children: [{
                     path: '', redirectTo: 'employees', pathMatch: 'full',
@@ -189,7 +189,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -201,7 +201,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -213,7 +213,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -225,7 +225,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -237,7 +237,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -249,7 +249,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -261,7 +261,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -273,7 +273,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -285,7 +285,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -297,7 +297,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -309,7 +309,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -321,7 +321,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -333,7 +333,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -345,7 +345,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -357,7 +357,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 ]
@@ -371,7 +371,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.SuperAdmin, UserRoleType.Substitute] }
                 },
                 children: [{
                     path: '', redirectTo: 'availableJobs', pathMatch: 'full',
@@ -382,7 +382,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.Substitute, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -394,7 +394,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.Substitute, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -406,7 +406,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.Substitute, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -418,7 +418,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: 'DASHBOARD'
+                        permission: { roles: [UserRoleType.Substitute, UserRoleType.SuperAdmin] }
                     }
                 }
 
@@ -433,7 +433,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
                 }
                 // children: [{ path: '', redirectTo: 'dailyReports', pathMatch: 'full', },
                 // { path: 'dailyReports', component: DailyReportsComponent },
@@ -450,7 +450,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
                 }
             },
             {
@@ -462,7 +462,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee, UserRoleType.Substitute] }
                 }
             },
             {
@@ -474,7 +474,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Substitute, UserRoleType.Employee] }
                 }
             },
             {
@@ -486,7 +486,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee, UserRoleType.Substitute] }
                 }
             },
             {
@@ -498,7 +498,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Substitute, UserRoleType.Employee] }
                 }
             },
             {
@@ -510,7 +510,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.SuperAdmin] }
                 }
             },
             {
@@ -522,7 +522,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee, UserRoleType.Substitute] }
                 }
             },
             {
@@ -534,7 +534,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.SuperAdmin] }
                 }
             },
             {
@@ -546,7 +546,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee, UserRoleType.Substitute] }
                 }
             },
             {
@@ -558,7 +558,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee, UserRoleType.Substitute] }
                 }
             },
             {
@@ -570,7 +570,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Substitute, UserRoleType.Employee] }
                 }
             },
             {
@@ -582,7 +582,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
                 }
             },
             {
@@ -594,7 +594,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
                 }
             },
             {
@@ -606,7 +606,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee, UserRoleType.Substitute] }
                 }
             }
         ]
