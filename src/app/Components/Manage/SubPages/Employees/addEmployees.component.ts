@@ -66,6 +66,7 @@ export class AddEmployeesComponent implements OnInit {
         if (this._userSession.getUserRoleId() == 2) {
             this.employeeForm.get('WorkLocaion').setValue('2');
             this.employeeForm.controls['WorkLocaion'].disable();
+            this.employeeForm.controls['WorkLocaion'].updateValueAndValidity();
             this.showOrganization = true;
             this.showDistrict = false;
         }
