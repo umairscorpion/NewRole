@@ -67,6 +67,7 @@ import { SiteLayoutComponent } from './Components/_layout/site-layout/site-layou
 import { AppLayoutComponent } from './Components/_layout/app-layout/app-layout.component';
 import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-password.component';
 import { SharedCalendarComponent } from './Components/Calendar/shared-calendar.component';
+import { UserRoleType } from './Shared/enum';
 
 
 const appRoutes: Routes = [
@@ -92,7 +93,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: 'DASHBOARD'
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
                 }
             },
             {

@@ -21,3 +21,11 @@ export enum UserLevel {
     Organization = 3
 }
 
+export enum UserRoleType {
+    DistrictAdmin = 1,
+    SchoolAdmin = 2,
+    Employee = 3,
+    Substitute = 4,
+    SuperAdmin = 5
+}
+
