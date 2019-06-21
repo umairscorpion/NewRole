@@ -309,6 +309,7 @@ export class ReportDetailsComponent implements OnInit {
         fileContentType: formGroup.value.fileContentType,
         fileExtention: formGroup.value.fileExtention,
         substituteId: formGroup.value.substituteId,
+        absenceType: formGroup.value.absenceType
       }
       this.absenceService.Patch('/Absence/updateAbsence/', AbsenceModel).subscribe((respose: any) => {
         if (respose == "success") {
