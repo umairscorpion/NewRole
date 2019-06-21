@@ -54,4 +54,8 @@ export class UserSession {
     isViewedNewVersion(): boolean {
         return this.UserClaim.isViewedNewVersion as boolean;
     }
+
+    getUserRoleDesciption(): string {
+        return this.UserClaim.userRoleDesciption as string;
+    }
 }
