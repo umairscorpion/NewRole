@@ -17,8 +17,7 @@ export class AuditLogComponent implements OnInit {
 
     constructor(
         private auditLogService: AuditLogService,
-        private _formBuilder: FormBuilder
-    ) {
+        private _formBuilder: FormBuilder) {
         const curr = new Date;
         const first = curr.getDate();
         const last = first;
@@ -44,5 +43,4 @@ export class AuditLogComponent implements OnInit {
             this.auditLog = availabilities;
         });
     }
-
 }

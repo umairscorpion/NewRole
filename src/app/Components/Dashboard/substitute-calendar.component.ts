@@ -1,12 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
-
+import { FormBuilder } from '@angular/forms';
 import * as $ from 'jquery';
 import * as moment from 'moment';
 import 'fullcalendar';
@@ -15,7 +8,6 @@ import { AvailabilityService } from '../../Services/availability.service';
 import { MatDialog } from '@angular/material';
 import { UnAvailabilityComponent } from './unavailability/unavailability.component';
 import { UserAvailability } from '../../Model/userAvailability';
-import { ReportFilter } from '../../Model/Report/report.filter';
 import { ReportDetail } from '../../Model/Report/report.detail';
 import { ReportService } from '../../Services/report.service';
 import { UserSession } from '../../Services/userSession.service';
@@ -32,16 +24,12 @@ export class SubstituteCalendarComponent implements OnInit {
   date: string = moment().format('dddd, MM/DD/YYYY');
   todayTotalAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
   loginedUserRole = 0;
+
   constructor(
-    private fb: FormBuilder,
     private dialogRef: MatDialog,
     private availabilityService: AvailabilityService,
-    private reportService: ReportService,
     private _userSession: UserSession,
-    private router: Router,
-  ) {
-
-  }
+    private router: Router) { }
 
   ngOnInit() {
     this.loginedUserRole = this._userSession.getUserRoleId();

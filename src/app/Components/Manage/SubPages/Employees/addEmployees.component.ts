@@ -8,6 +8,7 @@ import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from 'src/app/Service/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     templateUrl: 'addEmployees.component.html',
@@ -102,7 +103,7 @@ export class AddEmployeesComponent implements OnInit {
                         IsActive: data[0].isActive,
                         Password: data[0].password
                     }
-                    this.getProfileImage(data[0].profilePicture);
+                    this.getImage(data[0].profilePicture);
                     this.employeeForm.setValue(EmployeeModel);
                     this.userIdForUpdate = EmployeeId;
                 },
@@ -114,18 +115,10 @@ export class AddEmployeesComponent implements OnInit {
         });
     }
 
-    getProfileImage(ImageName: string) {
-        let model = {
-            AttachedFileName: ImageName,
-            FileContentType: ImageName.split('.')[1],
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            this.profilePicture = this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
-        this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
-            var file = new Blob([blob], { type: blob.type });
-            let Url = URL.createObjectURL(file);
-            this.profilePicture = this.sanitizer.bypassSecurityTrustUrl(Url);
-            this.profilePictureUrl = ImageName;
-        },
-            error => this.msg = <any>error);
     }
 
     GetUserTypes(): void {
@@ -152,6 +145,7 @@ export class AddEmployeesComponent implements OnInit {
     GetOrganiations(): void {
         this._dataContext.get('school/getSchools').subscribe((data: any) => {
             this.Organizations = data;
+            this.Organizations = data.filter(t => t.schoolDistrictId == this._userSession.getUserDistrictId());
             if (this._userSession.getUserRoleId() == 2) {
                 this.employeeForm.get('OrganizationId').setValue(this._userSession.getUserOrganizationId());
                 this.employeeForm.controls['OrganizationId'].disable();
@@ -160,7 +154,7 @@ export class AddEmployeesComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
-    onChangeDistrict(districtId: any) {      
+    onChangeDistrict(districtId: any) {
         this._dataContext.get('school/getSchools').subscribe((data: any) => {
             this.Organizations = data;
             this.Organizations = data.filter(t => t.schoolDistrictId == districtId);

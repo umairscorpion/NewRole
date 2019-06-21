@@ -160,7 +160,8 @@
                                                 (selectionChange)="OnchangeAbsenceScope(absenceFirstFormGroup.value.AbsenceType)"
                                                 formControlName="AbsenceType">
                                                 <mat-option *ngFor="let type of absenceTypes" [value]="type.absenceType"
-                                                    [disabled]="type.absenceType == 5 && NeedASub">
+                                                    [disabled]="(type.absenceType == 5 || type.absenceType == 1 
+                                                    || type.absenceType == 2 || type.absenceType == 3) && NeedASub">
                                                     {{type.title}}
                                                 </mat-option>
                                             </mat-select>
@@ -330,7 +331,8 @@
                                     <b>Date:</b>
                                 </div>
                                 <div class="col-md-6">
-                                    {{absenceFirstFormGroup.value.AbsenceStartDate | date}}-{{absenceFirstFormGroup.value.AbsenceEndDate | date}}
+                                    {{absenceFirstFormGroup.value.AbsenceStartDate | date:'fullDate'}} - <br> 
+                                    {{absenceFirstFormGroup.value.AbsenceEndDate | date:'fullDate'}}
                                 </div>
                             </div>
                             <div class="row">
@@ -338,8 +340,8 @@
                                     <b>Time:</b>
                                 </div>
                                 <div class="col-md-6">
-                                    {{absenceFirstFormGroup.getRawValue().StartTime | convertFrom24HourTo12HourFormat}}-{{absenceFirstFormGroup.getRawValue().EndTime
-                                    | convertFrom24HourTo12HourFormat}}
+                                    {{absenceFirstFormGroup.getRawValue().StartTime | convertFrom24HourTo12HourFormat}} - 
+                                    {{absenceFirstFormGroup.getRawValue().EndTime | convertFrom24HourTo12HourFormat}}
                                 </div>
                             </div>
                             <div class="row">

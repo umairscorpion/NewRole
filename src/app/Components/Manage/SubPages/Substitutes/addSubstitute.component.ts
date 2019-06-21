@@ -12,6 +12,7 @@ import { NotifierService } from 'angular-notifier';
 import { FileService } from '../../../../Services/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UsersService } from 'src/app/Services/users.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     templateUrl: 'addSubstitute.component.html'
@@ -91,7 +92,7 @@ export class AddSubstituteComponent implements OnInit {
                         IsActive: data[0].isActive,
                         Password: data[0].password
                     }
-                    this.getProfileImage(data[0].profilePicture);
+                    this.getImage(data[0].profilePicture);
                     this.substituteForm.setValue(SubstituteModel);
                     this.userIdForUpdate = SubstituteId;
                 },
@@ -111,18 +112,10 @@ export class AddSubstituteComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
-    getProfileImage(ImageName: string) {
-        let model = {
-            AttachedFileName: ImageName,
-            FileContentType: ImageName.split('.')[1],
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            this.profilePicture = this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
-        this.fileService.getProfilePic(model).subscribe((blob: Blob) => {
-            var file = new Blob([blob], { type: blob.type });
-            let Url = URL.createObjectURL(file);
-            this.profilePicture = this.sanitizer.bypassSecurityTrustUrl(Url);
-            this.profilePictureUrl = ImageName;
-        },
-            error => this.msg = <any>error);
     }
 
     GetUserTypes(): void {
@@ -138,7 +131,7 @@ export class AddSubstituteComponent implements OnInit {
             if (this._userSession.getUserLevelId() != 4) {
                 this.substituteForm.get('District').setValue(this._userSession.getUserDistrictId());
                 this.substituteForm.controls['District'].disable();
-            }            
+            }
         },
             error => <any>error);
     }

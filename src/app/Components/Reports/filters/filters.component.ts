@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-import { MatExpansionPanel, MatDatepickerInputEvent } from '@angular/material';
+import { MatExpansionPanel } from '@angular/material';
 import { DataContext } from '../../../Services/dataContext.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ReportFilter } from '../../../Model/Report/report.filter';
@@ -40,8 +40,7 @@ export class ReportFiltersComponent implements OnInit {
     private absenceService: AbsenceService,
     private dialogRef: MatDialog,
     private notifier: NotifierService,
-    private reportService: ReportService
-  ) {
+    private reportService: ReportService) {
     this.reportFilterForm = this.initReportFilters();
   }
 
@@ -74,7 +73,7 @@ export class ReportFiltersComponent implements OnInit {
     },
       error => <any>error);
   }
-  
+
   GetOrganiations(): void {
     this.dataContext.get('school/getSchools').subscribe((data: any) => {
       this.Organizations = data;
@@ -109,12 +108,12 @@ export class ReportFiltersComponent implements OnInit {
       if (formGroup.value.reasonId != 0) {
         formGroup.get('reasonId').setValue(formGroup.value.reasonId);
       }
-      if(this.componentName == "daily") {
+      if (this.componentName == "daily") {
         formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
         formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
         formGroup.get('reportTitle').setValue('D');
       }
-      else{
+      else {
         formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
         formGroup.get('toDate').setValue(moment(formGroup.get('toDate').value).format('YYYY-MM-DD'));
         formGroup.get('reportTitle').setValue('M');
@@ -142,7 +141,7 @@ export class ReportFiltersComponent implements OnInit {
             this.onSubmit(this.reportFilterForm);
             this.notifier.notify('success', 'Cancelled Successfully');
           }
-          else{
+          else {
             this.notifier.notify('error', 'No Absence found');
           }
         });
