@@ -65,7 +65,6 @@ export class TimeClockComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.GetTimeClockData();
         this.GetTimeClockDataWithFilter();
         this.LoadSideNavMenu();
         this.GenerateForms();
@@ -228,6 +227,5 @@ export class TimeClockComponent implements OnInit {
             },
                 error => this.msg = <any>error);
         }
-
     }
 }

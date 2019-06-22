@@ -5,5 +5,4 @@ import { Component } from '@angular/core';
     styleUrls: ['contactUs.component.css']
 })
 export class ContactUsComponent {
-
 }

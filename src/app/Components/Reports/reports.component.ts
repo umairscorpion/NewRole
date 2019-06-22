@@ -22,8 +22,8 @@ export class ReportsComponent implements OnInit {
     constructor(
         private router: Router,
         changeDetectorRef: ChangeDetectorRef,
-        media: MediaMatcher, 
-        private route: ActivatedRoute, 
+        media: MediaMatcher,
+        private route: ActivatedRoute,
         private _communicationService: CommunicationService) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -38,7 +38,7 @@ export class ReportsComponent implements OnInit {
         });
         this.LoadSideNavMenu();
     }
-    
+
     LoadSideNavMenu(): void {
         const config = {
             resourceTypeId: 2,
@@ -53,12 +53,10 @@ export class ReportsComponent implements OnInit {
             this.router.navigateByUrl('/absence', { skipLocationChange: true }).then(() =>
                 this.router.navigate(["reports"], { queryParams: { Tab: "1" } }));
         }
-
         if (tab.index == 0) {
             this.router.navigateByUrl('/absence', { skipLocationChange: true }).then(() =>
                 this.router.navigate(["reports"], { queryParams: { Tab: "0" } }));
         }
-
         if (tab.index == 2) {
             this.router.navigateByUrl('/absence', { skipLocationChange: true }).then(() =>
                 this.router.navigate(["reports"], { queryParams: { Tab: "2" } }));

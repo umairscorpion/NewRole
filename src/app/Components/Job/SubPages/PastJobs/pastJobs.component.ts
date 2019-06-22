@@ -11,26 +11,26 @@ import { NotifierService } from 'angular-notifier';
     templateUrl: 'pastJobs.component.html'
 })
 export class PastJobsComponent implements OnInit {
-    PastJobCount:any;
+    PastJobCount: any;
     @Output() PastCountEvent = new EventEmitter<string>();
     Organizations: any;
-    Districts : any;
+    Districts: any;
     CurrentDate: Date = new Date;
     private notifier: NotifierService;
     FilterForm: FormGroup;
     PastJobs = new MatTableDataSource();
     msg: string;
     currentDate: Date = new Date();
-    displayedColumns = ['AbsenceDate', 'Posted', 'Location','Employee', 'Status', 'Action'];
+    displayedColumns = ['AbsenceDate', 'Posted', 'Location', 'Employee', 'Status', 'Action'];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
 
     constructor(
-        private _dataContext: DataContext, 
-        private _userSession: UserSession, 
+        private _dataContext: DataContext,
+        private _userSession: UserSession,
         private _formBuilder: FormBuilder,
-        notifier: NotifierService, 
+        notifier: NotifierService,
         private _communicationService: CommunicationService) {
         this.notifier = notifier;
     }
@@ -42,28 +42,28 @@ export class PastJobsComponent implements OnInit {
 
     GetPastJobs() {
         let StartDate = new Date();
-        let EndDate = this.CurrentDate.toISOString(); 
+        let EndDate = this.CurrentDate.toISOString();
         StartDate.setDate(this.currentDate.getDate() - 30);
         let UserId = this._userSession.getUserId();
         let DistrictId = this._userSession.getUserDistrictId();
-        let Status = 2 ;
+        let Status = 2;
         this.FilterForm.get('FilterStartDate').setValue(StartDate);
         this.FilterForm.get('FilterEndDate').setValue(this.CurrentDate);
         this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate.toISOString() + "/" + EndDate +
-         "/" + UserId + "/"+ "-1" + "/" + DistrictId + "/"+ false + "/" + Status ).subscribe((data: any) => {
-            this.PastJobs.data = data;
-            this.PastJobCount = data.length
+            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + false + "/" + Status).subscribe((data: any) => {
+                this.PastJobs.data = data;
+                this.PastJobCount = data.length
                 this.PastCountEvent.emit(this.PastJobCount)
-            
-        },
-            error => this.msg = <any>error);
+
+            },
+                error => this.msg = <any>error);
     }
 
-    ngOnInit(): void {  
+    ngOnInit(): void {
         this.FilterForm = this._formBuilder.group({
             FilterStartDate: ['', Validators.required],
             FilterEndDate: ['', Validators.required],
-            DistrictId: [{ disabled: true}, Validators.required],
+            DistrictId: [{ disabled: true }, Validators.required],
             OrganizationId: ['-1', Validators.required]
         });
         this.GetPastJobs();
@@ -81,28 +81,27 @@ export class PastJobsComponent implements OnInit {
     GetDistricts(): void {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
-                this.FilterForm.get('DistrictId').setValue(this._userSession.getUserDistrictId());
-                this.FilterForm.controls['DistrictId'].disable();
+            this.FilterForm.get('DistrictId').setValue(this._userSession.getUserDistrictId());
+            this.FilterForm.controls['DistrictId'].disable();
         },
             error => <any>error);
     }
 
     SearchPastJobs(SearchFilter: any): void {
         if (this.FilterForm.valid) {
-            this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/" 
-            + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/"+ SearchFilter.value.OrganizationId + 
-            "/" + SearchFilter.getRawValue().DistrictId + "/"+ false + "/" + 2 ).subscribe((data: any) => {
-            this.PastJobs.data = data;
-            this.PastJobCount = data.length
-                this.PastCountEvent.emit(this.PastJobCount)
-        },
-            error => this.msg = <any>error);
+            this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"
+                + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +
+                "/" + SearchFilter.getRawValue().DistrictId + "/" + false + "/" + 2).subscribe((data: any) => {
+                    this.PastJobs.data = data;
+                    this.PastJobCount = data.length
+                    this.PastCountEvent.emit(this.PastJobCount)
+                },
+                    error => this.msg = <any>error);
         }
     }
 
     ShowJobDetail(AbsenceDetail: any) {
         AbsenceDetail.isShowAttachment = false;
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
-    
     }
 }

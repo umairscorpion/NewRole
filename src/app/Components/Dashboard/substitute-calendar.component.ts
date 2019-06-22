@@ -1,5 +1,4 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import * as $ from 'jquery';
 import * as moment from 'moment';
 import 'fullcalendar';
@@ -9,7 +8,6 @@ import { MatDialog } from '@angular/material';
 import { UnAvailabilityComponent } from './unavailability/unavailability.component';
 import { UserAvailability } from '../../Model/userAvailability';
 import { ReportDetail } from '../../Model/Report/report.detail';
-import { ReportService } from '../../Services/report.service';
 import { UserSession } from '../../Services/userSession.service';
 import { Router } from '@angular/router';
 

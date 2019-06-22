@@ -88,8 +88,8 @@ export class UpcommingAbsenceComponent implements OnInit {
                         this.notifier.notify('success', 'Cancelled Successfully.');
                         this.GetAbsences();
                     }
-              },
-                error => this.msg = <any>error);
+                },
+                    error => this.msg = <any>error);
             }
         });
     }

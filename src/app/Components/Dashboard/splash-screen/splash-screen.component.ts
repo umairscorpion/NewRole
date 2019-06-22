@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-splash-screen',
@@ -8,11 +8,10 @@ import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class SplashScreenComponent implements OnInit {
   versionUpdates: any;
+
   constructor(
     private dialogRef: MatDialogRef<SplashScreenComponent>,
-    private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.versionUpdates = data;
   }
 
@@ -22,5 +21,4 @@ export class SplashScreenComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
-
 }

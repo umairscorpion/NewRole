@@ -131,7 +131,7 @@ export class ReportDetailsComponent implements OnInit {
     this.menuAction = action;
     if (action === 'edit') {
       this.absenceService.getById('Absence', this.reportDetail.absenceId).subscribe((data: any) => {
-        console.log({ absence: data });
+        this.onChangeDurationForAbsence(data.durationType);
         this.absenceForm.patchValue({ ...data });
       });
     }
@@ -352,6 +352,7 @@ export class ReportDetailsComponent implements OnInit {
     this.absenceForm.controls['endTime'].clearValidators();
     this.absenceForm.controls['startTime'].updateValueAndValidity();
     this.absenceForm.controls['endTime'].updateValueAndValidity();
+
     this.absenceForm.controls['startTime'].disable();
     this.absenceForm.controls['endTime'].disable();
 
@@ -378,7 +379,6 @@ export class ReportDetailsComponent implements OnInit {
       this.absenceForm.controls['startTime'].enable();
       this.absenceForm.controls['endTime'].enable();
     }
-
   }
 
   GetSustitutes(): void {
@@ -387,7 +387,6 @@ export class ReportDetailsComponent implements OnInit {
     let DistrictId = this._userSession.getUserDistrictId();
     this._employeeService.get('user/getUsers', RoleId, OrgId, DistrictId).subscribe((data: any) => {
       this.SubstituteList = data;
-
     });
   }
 
