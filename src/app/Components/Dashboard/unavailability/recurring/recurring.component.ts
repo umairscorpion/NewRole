@@ -1,11 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-recurring-component',
@@ -19,10 +14,8 @@ export class RecurringComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<RecurringComponent>,
-    private dialog: MatDialog,
     private _formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.availability = data;
   }
 

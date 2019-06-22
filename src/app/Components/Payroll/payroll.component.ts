@@ -1,16 +1,13 @@
-import { Component, ViewChild, OnInit, Inject, ChangeDetectorRef, HostBinding } from '@angular/core';
+import { Component, ViewChild, OnInit, ChangeDetectorRef, HostBinding } from '@angular/core';
 import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { IDistrict } from '../../Model/Manage/district';
 import { DistrictService } from '../../Service/Manage/district.service';
-import { EmployeeService } from '../../Service/Manage/employees.service';
 import { DataContext } from '../../Services/dataContext.service';
 import { UserSession } from '../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
-import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { UserService } from '../../Service/user.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CommunicationService } from '../../Services/communication.service';
 
@@ -18,7 +15,6 @@ import { CommunicationService } from '../../Services/communication.service';
     templateUrl: 'payroll.component.html',
     styleUrls: ['payroll.component.scss']
 })
-
 export class PayRollComponent implements OnInit {
     SubstituteDetail: any;
     private notifier: NotifierService;
@@ -36,10 +32,17 @@ export class PayRollComponent implements OnInit {
     @HostBinding('class.is-open')
     private _mobileQueryListener: () => void;
 
-    constructor(private router: Router, private _districtService: DistrictService, public dialog: MatDialog,
-        private _employeeService: EmployeeService, notifier: NotifierService, private _dataContext: DataContext,
-        changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _communicationService: CommunicationService,
-        public sanitizer: DomSanitizer, private _userSession: UserSession, private fb: FormBuilder, private userService: UserService) {
+    constructor(
+        private _districtService: DistrictService,
+        public dialog: MatDialog,
+        notifier: NotifierService,
+        private _dataContext: DataContext,
+        changeDetectorRef: ChangeDetectorRef,
+        media: MediaMatcher,
+        private _communicationService: CommunicationService,
+        public sanitizer: DomSanitizer,
+        private _userSession: UserSession,
+        private fb: FormBuilder) {
         this.notifier = notifier;
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();

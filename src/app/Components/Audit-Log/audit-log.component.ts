@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder} from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuditLogService } from '../../Services/audit_logs/audit-log.service';
 import { AuditFilter } from '../../Model/auditLog';
 
@@ -9,7 +9,6 @@ import { AuditFilter } from '../../Model/auditLog';
     styleUrls: ['./audit-log.component.css']
 })
 export class AuditLogComponent implements OnInit {
-
     noAbsenceMessage = true;
     auditLog: any;
     auditLogFilter: FormGroup;

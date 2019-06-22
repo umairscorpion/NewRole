@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { FormGroup } from '@angular/forms';
 import { DistrictService } from '../../../Service/Manage/district.service';
-import { UserSession } from '../../../Services/userSession.service';
 import { ReportDetail } from '../../../Model/Report/report.detail';
 import { NotifierService } from 'angular-notifier';
 import { AbsenceService } from '../../../Services/absence.service';
@@ -15,9 +14,13 @@ import { AbsenceService } from '../../../Services/absence.service';
 export class EditPayrollComponent implements OnInit {
     private notifier: NotifierService;
     msg: string;
-    constructor(private dialogRef: MatDialogRef<EditPayrollComponent>, private fb: FormBuilder, private absenceService: AbsenceService,
-        @Inject(MAT_DIALOG_DATA) public reportDetail: ReportDetail, notifier: NotifierService,
-        private districtService: DistrictService, private userSession: UserSession) {
+
+    constructor(
+        private dialogRef: MatDialogRef<EditPayrollComponent>,
+        private absenceService: AbsenceService,
+        @Inject(MAT_DIALOG_DATA) public reportDetail: ReportDetail,
+        notifier: NotifierService,
+        private districtService: DistrictService) {
         this.notifier = notifier;
     }
 

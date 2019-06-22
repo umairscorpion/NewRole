@@ -140,9 +140,17 @@ export class ProfileComponent implements OnInit {
             PhoneNumber: this.UserClaim.phoneNumber
         }
 
+        let OfficialFormModel = {
+            EmployeeID: this.UserClaim.userId,
+            EmployeeType: this.UserClaim.userRoleDesciption,
+            Certified: 'Yes',
+            Organization: '-',
+        }
+
         this.LoginedUserId = this.UserClaim.id;
         this.getProfileImage(this.UserClaim.profilePicture);
         this.personalFormGroup.setValue(personalFormModel);
+        this.officialFormGroup.setValue(OfficialFormModel);
     }
 
     passwordMatchValidator(frm: FormGroup) {

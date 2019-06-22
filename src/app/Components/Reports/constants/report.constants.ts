@@ -1,4 +1,3 @@
-
 export const ReportConstant = {
   DailyReport: {
     Chart: {
@@ -9,8 +8,8 @@ export const ReportConstant = {
         legend: {
           position: 'bottom'
         },
-        plugins:{
-          datalabels:{
+        plugins: {
+          datalabels: {
             display: false,
             color: 'white'
           },

@@ -1,15 +1,9 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { IDistrict } from '../../../Model/Manage/district';
-import { DistrictService } from '../../../Service/Manage/district.service';
-import { EmployeeService } from '../../../Service/Manage/employees.service';
-import { DataContext } from '../../../Services/dataContext.service';
-import { UserSession } from '../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
-import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { UserService } from '../../../Service/user.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ngxCsv } from 'ngx-csv';
 import { Absence } from '../../../Model/absence';
@@ -23,7 +17,6 @@ import { EditPayrollComponent } from '../Popups/edit-payroll.popup.component';
     templateUrl: 'run-payroll.component.html',
     styleUrls: ['run-payroll.component.scss']
 })
-
 export class RunPayroll implements OnInit {
     allAbsencesInCurrentState: ReportDetail[] = Array<ReportDetail>();
     report: Absence[] = Array<Absence>();
@@ -41,9 +34,13 @@ export class RunPayroll implements OnInit {
     curr: Date = new Date;
     displayedColumns: string[] = ['Date', 'Employee', 'Location', 'Reason', 'Time', 'Hours', 'Notes', 'Substitute', 'Rate', 'Additional', 'Gross', 'action'];
     selection = new SelectionModel<ReportDetail>(true, []);
-    constructor(private router: Router, private _districtService: DistrictService, public dialog: MatDialog,
-        private reportService: ReportService, notifier: NotifierService, private _dataContext: DataContext,
-        public sanitizer: DomSanitizer, private _userSession: UserSession, private fb: FormBuilder, private userService: UserService) {
+
+    constructor(
+        public dialog: MatDialog,
+        private reportService: ReportService,
+        notifier: NotifierService,
+        public sanitizer: DomSanitizer,
+        private fb: FormBuilder) {
         this.notifier = notifier;
         const first = this.curr.getDate() - (this.curr.getDay() - 1);
         const last = first + 4;
@@ -79,13 +76,11 @@ export class RunPayroll implements OnInit {
                     details = details.filter((reportdetail: ReportDetail) => reportdetail.employeeName.toLowerCase().includes(form.value.searchByName.toLowerCase()));
                 }
             }
-
             else if (+form.value.searchBy === 2) {
                 if (form.value.searchByName) {
                     details = details.filter((reportdetail: ReportDetail) => reportdetail.schoolName.toLowerCase().includes(form.value.searchByName.toLowerCase()));
                 }
             }
-
             else {
                 if (form.value.searchByName) {
                     details = details.filter((reportdetail: ReportDetail) => reportdetail.substituteName.toLowerCase().includes(form.value.searchByName.toLowerCase()));
@@ -140,7 +135,6 @@ export class RunPayroll implements OnInit {
     }
 
     ngAfterViewInit() {
-
     }
 
     checkboxLabel(row?: any): string {

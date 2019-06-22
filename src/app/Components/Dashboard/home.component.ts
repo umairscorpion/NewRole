@@ -2,7 +2,6 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
-import { UserService } from '../../Service/user.service';
 import { SideNavService } from '../SideNav/sideNav.service';
 import { Chart } from 'chart.js';
 import * as ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -88,8 +87,7 @@ export class HomeComponent implements OnInit {
         private dialogRef: MatDialog,
         private settingsService: SettingsService,
         notifier: NotifierService,
-        private dataContext: DataContext
-    ) {
+        private dataContext: DataContext) {
         this.notifier = notifier;
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -475,19 +473,11 @@ export class HomeComponent implements OnInit {
                         // 'rgba(75, 192, 192, 1)',
                         // 'rgba(153, 102, 255, 1)',
                         // '#72b8b7'
-
                     ],
                     borderWidth: 1
                 }]
             },
             options: {
-                // scales: {
-                //     yAxes: [{
-                //         ticks: {
-                //             beginAtZero: true
-                //         }
-                //     }]
-                // }
             }
         });
     }
@@ -503,7 +493,6 @@ export class HomeComponent implements OnInit {
             data: {
                 labels: ["M", "T", "W", "TH", "F"],
                 datasets: [{
-                    // label: 'Absence By Day Of Week',
                     data: this.AbsencesByWeekDay,
                     backgroundColor: [
                         "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"
@@ -542,10 +531,8 @@ export class HomeComponent implements OnInit {
         this.absenceBySubject = new Chart('absenceBySubject', {
             type: 'horizontalBar',
             data: {
-                // labels: ["Math", "Science", "Reading", "Social Studies", "English", "Special Education", "Physical Education", "Career Tech", "Art"],
                 labels: this.AbsenceBySubjectTitle,
                 datasets: [{
-                    // label: 'Absence By Subject',
                     data: this.AbsenceBySubject,
                     backgroundColor: [
                         "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f"
@@ -601,23 +588,6 @@ export class HomeComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
-    // onApproveClick(leaveRequestId: number, absenceId: string) {
-    //     let leaveStatusModel = {
-    //         LeaveRequestId: leaveRequestId,
-    //         IsApproved: 1,
-    //         IsDeniend: 0,
-    //         isArchived: 0,
-    //         AbsenceId: absenceId
-    //     }
-    //     this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
-    //         this.GetLeaveRequests();
-    //         // this.toastr.success('Status Updated Successfully!', 'Success!');
-    //     },
-    //         (err: HttpErrorResponse) => {
-    //             // this.toastr.error(err.error.error_description, 'Oops!');
-    //         });
-    // }
-
     onApproveClick(leaveRequestId: number, absenceId: string) {
         let leaveStatusModel = {
             LeaveRequestId: leaveRequestId,
@@ -642,7 +612,6 @@ export class HomeComponent implements OnInit {
                 this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
                     this.GetLeaveRequests();
                     this.notifier.notify('success', 'Approved Successfully.');
-                    // this.toastr.success('Status Updated Successfully!', 'Success!');
                 },
                 error => this.msg = <any>error);
             }
@@ -678,21 +647,6 @@ export class HomeComponent implements OnInit {
             }
           });
     }
-
-    // onDenyClick(leaveRequestId: number, absenceId: string) {
-    //     let leaveStatusModel = {
-    //         leaveRequestId: leaveRequestId,
-    //         isApproved: 0,
-    //         isDeniend: 1,
-    //         isArchived: 0,
-    //         AbsenceId: absenceId
-    //     }
-    //     this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
-    //         this.GetLeaveRequests();
-    //     },
-    //         (err: HttpErrorResponse) => {
-    //         });
-    // }
 
     openDailyReportPage() {
         this.router.navigate(['/reports']);

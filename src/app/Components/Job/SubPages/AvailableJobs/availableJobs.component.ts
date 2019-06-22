@@ -54,7 +54,7 @@ export class AvailableJobsComponent implements OnInit {
         private _communicationService: CommunicationService,
         private sanitizer: DomSanitizer,
         notifier: NotifierService,
-        private activatedRoute: ActivatedRoute ) {
+        private activatedRoute: ActivatedRoute) {
         this.notifier = notifier;
     }
 
