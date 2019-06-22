@@ -619,8 +619,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             if (!this.CheckDataAndTimeOverlape(FirstAbsenceForm.value.AbsenceStartDate as Date,
                 FirstAbsenceForm.value.AbsenceEndDate as Date, AbsenceModel.StartTime as string, AbsenceModel.EndTime as string)) {
                 this._dataContext.post('Absence/CreateAbsence', AbsenceModel).subscribe((respose: any) => {
-                    if (respose == "success") {
-                        this.notifier.notify('success', 'Absence Created Successfully.');
+                    if (respose != "error") {
+                        this.notifier.notify('success', 'Absence Created Successfully. Confirmation Number: ' + respose  +'');
                         this.response = 1;
                         this.resetForm(stepper);
                         if (this._userSession.getUserRoleId() === 3) this.refreshBalance.next();

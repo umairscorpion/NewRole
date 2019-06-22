@@ -141,7 +141,7 @@ export class MyJobsComponent implements OnInit {
 
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe((params: any) => {
-            if (params.jobId && params.ac === 1) {
+            if (params.jobId && params.ac == 1) {
                 this.AcceptJob(params.jobId)
             }
         })
