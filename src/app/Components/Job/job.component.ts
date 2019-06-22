@@ -33,8 +33,8 @@ export class JobComponent implements OnInit {
 
     constructor(
         changeDetectorRef: ChangeDetectorRef,
-        media: MediaMatcher, 
-        public matDialog: MatDialog, 
+        media: MediaMatcher,
+        public matDialog: MatDialog,
         private _communicationService: CommunicationService,
         private _userSession: UserSession,
         private sideNavService: SideNavService,
@@ -47,7 +47,6 @@ export class JobComponent implements OnInit {
     AvailableJobCounter($event) {
         this.available = $event
         this.upcomingJobs.GetUpcommingJobs();
-        // this.getavailable.GetAvailableJobs();
     }
 
     UpcomingJobCounter($event) {
@@ -101,5 +100,4 @@ export class JobComponent implements OnInit {
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this._mobileQueryListener);
     }
-
 }

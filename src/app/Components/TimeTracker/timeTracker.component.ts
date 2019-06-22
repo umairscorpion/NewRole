@@ -14,10 +14,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { TimeClockFilter } from '../../Model/timeclock.filter';
 import { ngxCsv } from 'ngx-csv';
 import { SelectionModel } from '@angular/cdk/collections';
-import {EditTimeTracker} from '../TimeClock/popups/edit-timetracker.popup.component';
+import { EditTimeTracker } from '../TimeClock/popups/edit-timetracker.popup.component';
 
 @Component({
-    selector:'time-tracker',
+    selector: 'time-tracker',
     templateUrl: 'timeTracker.component.html',
     styleUrls: ['timeTracker.component.scss']
 })
@@ -112,20 +112,6 @@ export class TimeTrackerComponent implements OnInit {
         },
             error => this.msg = <any>error);
     }
-
-    // GetTimeTrackerData() {
-    //     const filters = TimeClockFilter.initial();
-    //          filters.isDaysSelected = 0;
-    //          filters.startDate = moment().subtract(7, 'days').toISOString();
-    //          filters.endDate = moment(new Date()).toISOString();
-    //          this.timeClockService.getTimeTrackerSummary(filters).subscribe((data: TimeClock[]) => {
-    //              this.timeTrackerDetail.data = data;
-    //              this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
-    //              this.allTimeTrackerDataInCurrentState = data;
-    //          },
-    //             error => this.msg = <any>error);
-    // }
-
 
     //Time Tracker Code
     intializeFilter(startDateNumber: number, endDateNumber: number) {

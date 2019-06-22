@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PermissionCategory } from '../../../Model/permissionCategory';
 import { RolePermissionService } from '../../../Services/rolePermission.service';
@@ -22,6 +22,7 @@ export class RolePermissionsComponent implements OnInit {
   userTemplate: any;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -29,8 +30,7 @@ export class RolePermissionsComponent implements OnInit {
     private userService: UserService,
     private _formBuilder: FormBuilder,
     media: MediaMatcher,
-    changeDetectorRef: ChangeDetectorRef
-  ) {
+    changeDetectorRef: ChangeDetectorRef) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);

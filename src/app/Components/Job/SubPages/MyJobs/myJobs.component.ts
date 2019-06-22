@@ -189,7 +189,6 @@ export class MyJobsComponent implements OnInit {
     ShowJobDetail(AbsenceDetail: any) {
         AbsenceDetail.isShowAttachment = false;
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
-
     }
 
     AcceptJob(jobNo: number) {

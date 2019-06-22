@@ -13,7 +13,7 @@ import { environment } from '../../../../environments/environment';
 export class PopupDialogForJobDetail {
     msg: string;
     attachFileUrl: SafeUrl = "";
-    
+
     constructor(
         private dialogRef: MatDialogRef<JobComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -73,7 +73,7 @@ export class PopupDialogForJobDetail {
 
     getImage(imageName: string) {
         if (imageName && imageName.length > 0) {
-            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
     }
 }

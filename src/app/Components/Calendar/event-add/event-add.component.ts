@@ -17,12 +17,11 @@ export class EventAddComponent implements OnInit {
   startTimeMinutes = 0;
   endTimeMinutes = 0;
   doOpen = true;
+
   constructor(
     private dialogRef: MatDialogRef<EventAddComponent>,
-    private dialog: MatDialog,
     private _formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.event = data;
   }
 

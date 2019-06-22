@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { UsersService } from '../../Services/users.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { RoleService } from '../../Services/role.service';
-import { UserSummary, User } from '../../Model/user';
+import { UserSummary } from '../../Model/user';
 import { RoleSummary } from '../../Model/userRoles';
 import { UserService } from '../../Service/user.service';
 import { UserEditComponent } from '../User/userEdit/userEdit.component';

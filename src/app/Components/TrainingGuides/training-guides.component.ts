@@ -16,7 +16,6 @@ import swal from 'sweetalert2';
   styleUrls: ['./training-guides.component.css']
 })
 export class TrainingGuidesComponent implements OnInit {
-
   LoginedUserId: any = 0;
   UserRoleId: number = this._userSession.getUserRoleId();
   UserLevelId: number = this._userSession.getUserLevelId();
@@ -109,7 +108,7 @@ export class TrainingGuidesComponent implements OnInit {
       this.AdminGuide = respose.filter(t => t.fileType == 2);
       this.StaffGuide = respose.filter(t => t.fileType == 3);
       this.SubstituteGuide = respose.filter(t => t.fileType == 4);
-      this.removeAttachedFile(); 
+      this.removeAttachedFile();
       fileType.value = null;
     });
   }

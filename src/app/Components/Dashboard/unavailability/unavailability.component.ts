@@ -1,9 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { RecurringComponent } from './recurring/recurring.component';
@@ -23,12 +19,12 @@ export class UnAvailabilityComponent implements OnInit {
   startTimeMinutes = 0;
   endTimeMinutes = 0;
   doOpen = true;
+
   constructor(
     private dialogRef: MatDialogRef<UnAvailabilityComponent>,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.availability = data;
   }
 
