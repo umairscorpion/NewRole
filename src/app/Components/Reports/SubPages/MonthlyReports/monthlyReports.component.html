@@ -1,10 +1,26 @@
+<style>
+   ::ng-deep .ngx-datatable .datatable-footer {
+    position: absolute;
+    top: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  ::ng-deep .ngx-datatable .datatable-header {
+    position: absolute;
+    top: 50px;
+  }
+
+  ::ng-deep .ngx-datatable .datatable-body {
+    margin-top: 100px;
+  }
+</style>
 <div class="row text-center m-20">
   <h3 class="text-muted">{{date | date:'MMMM'}}</h3>
   <h4>Absence Summary</h4>
 </div>
 <app-report-filters componentName="monthly" (formAction)="onSubmit($event)"></app-report-filters>
 <div class="row mt-30" *ngIf="noAbsenceMessage">
-  <div class="alert-warning m-20 p-20">No Absences have been found.</div>
+  <div class="alert-warning m-20 p-20">No data to display.</div>
 </div>
 <div *ngIf="!noAbsenceMessage">
   <div class="row mt-30">
@@ -136,6 +152,7 @@
             [rowHeight]="'auto'" [limit]="8">
             <ngx-datatable-column [width]="260" name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle"
               [draggable]="false">
+              
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <strong>{{row['employeeName']}}</strong>

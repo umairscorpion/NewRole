@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { CommunicationService } from '../../../../Services/communication.service';
 import { UserSession } from '../../../../Services/userSession.service';
@@ -8,6 +8,8 @@ import { AuditFilter } from '../../../../Model/auditLog';
 import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
 import * as moment from 'moment';
 import swal from 'sweetalert2';
+import { ReportDetail } from 'src/app/Model/Report/report.detail';
+import { ReportDetailsComponent } from 'src/app/Components/Reports/popups/report-details.popup.component';
 
 @Component({
     selector: 'upcoming-absences',
@@ -30,7 +32,8 @@ export class UpcommingAbsenceComponent implements OnInit {
         private _userSession: UserSession,
         notifier: NotifierService,
         private _communicationService: CommunicationService,
-        private auditLogService: AuditLogService) {
+        private auditLogService: AuditLogService,
+        private dialogRef: MatDialog) {
         this.notifier = notifier;
     }
 
@@ -80,7 +83,7 @@ export class UpcommingAbsenceComponent implements OnInit {
         }).then(r => {
             if (r.value) {
                 if (absenceStartDate <= currentDate) {
-                    this.notifier.notify('error', 'Not able to cancel now');
+                    this.notifier.notify('error', 'Job has ended, you cannot cancel it.');
                     return;
                 }
                 this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
@@ -90,6 +93,51 @@ export class UpcommingAbsenceComponent implements OnInit {
                     }
                 },
                     error => this.msg = <any>error);
+            }
+        });
+    }
+
+    EditAbsence(absenceDetail: any) {
+        console.log(absenceDetail);
+        let modeldata = new ReportDetail();
+        modeldata.reason = absenceDetail.absenceReasonDescription;
+        modeldata.absenceId = absenceDetail.absenceId;
+        modeldata.startDate = absenceDetail.startDate;
+        modeldata.endDate = absenceDetail.endDate;
+        modeldata.startTime = absenceDetail.startTime;
+        modeldata.endTime = absenceDetail.endTime;
+        modeldata.endTime = absenceDetail.endTime;
+        modeldata.absenceType = absenceDetail.absenceType;
+        modeldata.substituteRequired = absenceDetail.substituteRequired;
+        modeldata.statusId = absenceDetail.status;
+        modeldata.statusTitle = absenceDetail.absenceStatusDescription;
+        modeldata.substituteId = absenceDetail.substituteId;
+        modeldata.substituteName = absenceDetail.substituteName;
+        modeldata.substituteId = absenceDetail.substituteId;
+        modeldata.postedOn = absenceDetail.createdDate;
+        modeldata.notes = absenceDetail.substituteNotes;
+        modeldata.anyAttachment = absenceDetail.anyAttachment;
+        modeldata.attachedFileName = absenceDetail.attachedFileName;
+        modeldata.fileContentType = absenceDetail.fileContentType;
+        modeldata.originalFileName = absenceDetail.originalFileName;
+        modeldata.employeeProfilePicUrl = absenceDetail.employeeProfilePicUrl;
+        modeldata.callingPage = 'Absence' ;
+
+        const model = new AuditFilter();
+        model.entityId = absenceDetail.absenceId;
+        this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
+            this.insertAbsencesLogView = result;
+        });
+        
+        const dialogEdit = this.dialogRef.open(
+            ReportDetailsComponent,{
+                panelClass: 'report-details-dialog',
+                data: modeldata
+            }
+        );
+        dialogEdit.afterClosed().subscribe(result => {
+            if (result == 'Reload') {
+                this.GetAbsences();
             }
         });
     }

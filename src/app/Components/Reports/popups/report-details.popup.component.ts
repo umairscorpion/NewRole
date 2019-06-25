@@ -142,7 +142,7 @@ export class ReportDetailsComponent implements OnInit {
       swal.fire({
         title: 'Cancel',
         text:
-          'Are you sure you want to cancel this absence?',
+          'Are you sure you want to Cancel this absence?',
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-danger',
@@ -152,11 +152,11 @@ export class ReportDetailsComponent implements OnInit {
         buttonsStyling: false
       }).then(r => {
         if (r.value) {
-          if (absenceStartDate <= currentDate) {
-            this.dialogRef.close();
-            this.notifier.notify('error', 'Not able to cancel now.');
-            return;
-          }
+          // if (absenceStartDate <= currentDate) {
+          //   this.dialogRef.close();
+          //   this.notifier.notify('error', 'Not able to cancel now.');
+          //   return;
+          // }
           this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
             this.dialogRef.close('Reload');
             this.notifier.notify('success', 'Cancelled Successfully.');
@@ -173,7 +173,7 @@ export class ReportDetailsComponent implements OnInit {
       swal.fire({
         title: 'Release',
         text:
-          'Are you sure you want to release this job?',
+          'Are you sure you want to Release this job?',
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-danger',
@@ -185,7 +185,7 @@ export class ReportDetailsComponent implements OnInit {
         if (r.value) {
           if (absenceStartDate <= currentDate) {
             this.dialogRef.close();
-            this.notifier.notify('error', 'Not able to release now');
+            this.notifier.notify('error', 'Not able to Release now.');
             return;
           }
           this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {

@@ -67,12 +67,18 @@ export class MyJobsComponent implements OnInit {
         let currentDate = moment().format('YYYY MM DD');
         let starttimetemp = moment(SelectedRow.startTime, 'h:mma');
         let starttime = moment(starttimetemp).format('h:mma');
+        let endtimetemp = moment(SelectedRow.endTime, 'h:mma');
+        let endtime = moment(endtimetemp).format('h:mma');
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
 
         if (currentDate == startdate) {
-            if (currentTime > starttime) {
-                this.notifier.notify('error', 'Unable to release, job has started');
+            if (currentTime > endtime) {
+                this.notifier.notify('error', 'Job has ended, unable to release.');
             }
+            else if (currentTime > starttime) {
+                this.notifier.notify('error', 'Job has started, unable to release.');
+            }
+            
             else {
                 swal.fire({
                     title: 'Release',
@@ -92,7 +98,6 @@ export class MyJobsComponent implements OnInit {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
                                 this.GetUpcommingJobs();
-                                // this.availableJobs.GetAvailableJobs();
                             }
                         },
                             error => this.msg = <any>error);
@@ -105,7 +110,7 @@ export class MyJobsComponent implements OnInit {
                 swal.fire({
                     title: 'Release',
                     text:
-                        'Are you sure you want to Accept this Job?',
+                        'Are you sure you want to Release this Job?',
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonClass: 'btn btn-danger',
@@ -115,12 +120,14 @@ export class MyJobsComponent implements OnInit {
                     buttonsStyling: false
                 }).then(r => {
                     if (r.value) {
-                        if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
+                        if ((SelectedRow.startDate as Date) <= this.currentDate) { 
+                            this.notifier.notify('error', 'Not able to Release now.'); 
+                            return; 
+                        }
                         this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
                                 this.GetUpcommingJobs();
-                                // this.availableJobs.GetAvailableJobs();
                             }
                         },
                             error => this.msg = <any>error);

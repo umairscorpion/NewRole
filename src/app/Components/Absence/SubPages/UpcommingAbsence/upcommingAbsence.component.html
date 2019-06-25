@@ -67,10 +67,15 @@
               <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Cancel Absence" matTooltipPosition="below">
                 <i class="material-icons" (click)="UpdateStatus(Absence, 4)">cancel</i>
               </a>
-              <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail"
-                matTooltipPosition="below">
+              <a style="cursor: pointer;  margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Absence" matTooltipPosition="below">
+                <i class="material-icons" (click)="EditAbsence(Absence)">edit</i>
+              </a>
+              <a style="cursor: pointer;  margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
                 <i class="material-icons" (click)="ShowDetail(Absence)">visibility</i>
               </a>
+              <!-- <a style="cursor: pointer;  margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
+                <i class="material-icons" (click)="absenceDetails(Absence)">format_list_bulleted</i>
+              </a> -->
             </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
