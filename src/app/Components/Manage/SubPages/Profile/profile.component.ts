@@ -42,6 +42,7 @@ export class ProfileComponent implements OnInit {
     SubstituteFiles: any;
     public resetPassAttempt: boolean;
     OriginalFileNameForDisplay: any;
+    OrganizationName: string;
 
     constructor(
         private sanitizer: DomSanitizer,
@@ -139,12 +140,24 @@ export class ProfileComponent implements OnInit {
             Email: this.UserClaim.email,
             PhoneNumber: this.UserClaim.phoneNumber
         }
+        if(this.UserClaim.organizationName == null && this.UserClaim.districtName == null){
+            this.OrganizationName = 'No Organization';
+        }
+        else if(this.UserClaim.organizationName == null)
+        {
+            this.OrganizationName = this.UserClaim.districtName;
+        }
+        
+        else{
+           
+            this.OrganizationName = this.UserClaim.organizationName;
+        }
 
         let OfficialFormModel = {
             EmployeeID: this.UserClaim.userId,
             EmployeeType: this.UserClaim.userRoleDesciption,
             Certified: 'Yes',
-            Organization: '-',
+            Organization: this.OrganizationName,
         }
 
         this.LoginedUserId = this.UserClaim.id;

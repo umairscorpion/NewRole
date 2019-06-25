@@ -196,6 +196,7 @@ import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-pa
 import { EventAddComponent } from './Components/Calendar/event-add/event-add.component';
 import { SplashScreenComponent } from './Components/Dashboard/splash-screen/splash-screen.component';
 import { SettingsService } from './Services/settings.service';
+import { RoundPipe } from './Shared/pipe/round.pipe';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -353,6 +354,7 @@ const customNotifierOptions: NotifierOptions = {
         ReportFiltersComponent,
         ReportDetailsComponent,
         TimeFormatPipe,
+        RoundPipe,
         SubstituteCalendarComponent,
         UnAvailabilityComponent,
         AllowanceComponent,

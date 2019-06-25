@@ -450,13 +450,18 @@ export class HomeComponent implements OnInit {
     }
 
     bindTotalAbsenceByGradeLevel(chartSummary: DashboardSummary) {
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].total)
-        this.TotalAbsenceByGradeLevelTitle.push(chartSummary.absenceByGradeLevel[0].title)
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].sixthGrade)
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].seventhGrade)
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].eighthGrade)
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].ninthGrade)
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].tenthGrade)
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].eleventhGrade)
         this.totalAbsenceByGradeLevel = new Chart('absencesByGradeLevel', {
             type: 'pie',
             data: {
-                labels: this.TotalAbsenceByGradeLevelTitle,
+                labels: ['6th','7th','8th','9th','10th','11th'],
                 datasets: [{
+
                     data: this.TotalAbsenceByGradeLevel,
                     backgroundColor: [
                         '#3e95cd',
@@ -477,7 +482,18 @@ export class HomeComponent implements OnInit {
                     borderWidth: 1
                 }]
             },
+            plugins: [ChartDataLabels],
             options: {
+                plugins: {
+                    datalabels: {
+                        display: true,
+                        color: 'white',
+                        formatter: function (value, context) {
+                            return value + '%';
+                        }
+                    },
+                }
+            },
             }
         });
     }
@@ -526,16 +542,27 @@ export class HomeComponent implements OnInit {
     }
 
     bindAbsenceBySubject(chartSummary: DashboardSummary) {
-        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].total);
-        this.AbsenceBySubjectTitle.push(chartSummary.absenceBySubject[0].title)
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectEnglish);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[1].subjectHistory);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectMath);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectScience);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectPE);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectMusic);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectArt);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectTechnology);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectWorld);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectCareer);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectSpecial);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectAdult);
         this.absenceBySubject = new Chart('absenceBySubject', {
             type: 'horizontalBar',
             data: {
-                labels: this.AbsenceBySubjectTitle,
+                labels: ["English/LA", "History/SS", "Math", "Science", "P.E.", "Music", "Art", "Technology", "World Languages", "Career Tech", "Special Ed","Adult Ed"],
+                // labels: this.AbsenceBySubjectTitle,
                 datasets: [{
                     data: this.AbsenceBySubject,
                     backgroundColor: [
-                        "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f"
+                        "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f","#3e95cd", "#8e5ea2","#3cba9f"
                     ],
                     borderColor: [
 
