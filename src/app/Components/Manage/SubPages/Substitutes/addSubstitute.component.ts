@@ -115,6 +115,7 @@ export class AddSubstituteComponent implements OnInit {
     getImage(imageName: string) {
         if (imageName && imageName.length > 0) {
             this.profilePicture = this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
+            this.profilePictureUrl = imageName;
         }
     }
 

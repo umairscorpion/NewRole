@@ -106,34 +106,6 @@ export class LeavesComponent implements OnInit {
             this.dataSourceForLeaveRequests.data.forEach((row: any) => this.selection.select(row));
     }
 
-    // onApproveClick(leaveRequestId: number, absenceId: string) {
-    //     let leaveStatusModel = {
-    //         LeaveRequestId: leaveRequestId,
-    //         IsApproved: 1,
-    //         IsDeniend: 0,
-    //         isArchived: 0,
-    //         AbsenceId: absenceId
-    //     }
-    //     this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
-    //         this.selection.clear();
-    //         if (this.tabClicked == 0) {
-    //             this.GetLeaveRequests();
-    //         }
-
-    //         else if (this.tabClicked == 1) {
-    //             this.GetLeaveRequests();
-    //         }
-
-    //         else {
-    //             this.GetLeaveRequests();
-    //         }
-    //         // this.toastr.success('Status Updated Successfully!', 'Success!');
-    //     },
-    //         (err: HttpErrorResponse) => {
-    //             // this.toastr.error(err.error.error_description, 'Oops!');
-    //         });
-    // }
-
     onApproveClick(leaveRequestId: number, absenceId: string) {
         let leaveStatusModel = {
             LeaveRequestId: leaveRequestId,
@@ -160,19 +132,15 @@ export class LeavesComponent implements OnInit {
                     this.notifier.notify('success', 'Approved Successfully');
                     if (this.tabClicked == 0) {
                         this.GetLeaveRequests();
-                    }
-        
+                    }      
                     else if (this.tabClicked == 1) {
                         this.GetLeaveRequests();
-                    }
-        
+                    }       
                     else {
                         this.GetLeaveRequests();
                     }
-                    // this.toastr.success('Status Updated Successfully!', 'Success!');
                 },
                     (err: HttpErrorResponse) => {
-                        // this.toastr.error(err.error.error_description, 'Oops!');
                     });
             }
         });
@@ -211,43 +179,12 @@ export class LeavesComponent implements OnInit {
                     else {
                         this.GetLeaveRequests();
                     }
-                    // this.toastr.success('Status Updated Successfully!', 'Success!');
                 },
                     (err: HttpErrorResponse) => {
-                        // this.toastr.error(err.error.error_description, 'Oops!');
                     });
             }
         });
     }
-
-
-    // onDenyClick(leaveRequestId: number, absenceId: string) {
-    //     let leaveStatusModel = {
-    //         leaveRequestId: leaveRequestId,
-    //         isApproved: 0,
-    //         isDeniend: 1,
-    //         isArchived: 0,
-    //         AbsenceId: absenceId
-    //     }
-
-    //     this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
-    //         this.selection.clear();
-    //         if (this.tabClicked == 0) {
-    //             this.GetLeaveRequests();
-    //         }
-    //         else if (this.tabClicked == 1) {
-    //             this.GetLeaveRequests();
-    //         }
-    //         else {
-    //             this.GetLeaveRequests();
-    //         }
-    //         // this.toastr.success('Status Updated Successfully!', 'Success!');
-    //     },
-    //         (err: HttpErrorResponse) => {
-    //             // this.toastr.error(err.error.error_description, 'Oops!');
-    //         });
-    // }
-
 
     onArchiveRequest(leaveRequestId: number, absenceId: string) {
         let leaveStatusModel = {
@@ -280,40 +217,12 @@ export class LeavesComponent implements OnInit {
                     else {
                         this.GetLeaveRequests();
                     }
-                    // this.toastr.success('Status Updated Successfully!', 'Success!');
                 },
                     (err: HttpErrorResponse) => {
-                        // this.toastr.error(err.error.error_description, 'Oops!');
                     });
             }
         });
     }
-
-    // onArchiveRequest(leaveRequestId: number, absenceId: string) {
-
-    //     let leaveStatusModel = {
-    //         leaveRequestId: leaveRequestId,
-    //         isArchived: 1,
-    //         AbsenceId: absenceId
-    //     }
-
-    //     this._districtService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
-    //         this.selection.clear();
-    //         if (this.tabClicked == 0) {
-    //             this.GetLeaveRequests();
-    //         }
-    //         else if (this.tabClicked == 1) {
-    //             this.GetLeaveRequests();
-    //         }
-    //         else {
-    //             this.GetLeaveRequests();
-    //         }
-    //         // this.toastr.success('Status Updated Successfully!', 'Success!');
-    //     },
-    //         (err: HttpErrorResponse) => {
-    //             // this.toastr.error(err.error.error_description, 'Oops!');
-    //         });
-    // }
 
     tabClick(tab: any) {
         this.selection.clear();
@@ -334,20 +243,7 @@ export class LeavesComponent implements OnInit {
         }
     }
 
-    // deleteLeaveType(leaveTypeId: number): void {
-    //     var confirmResult = confirm('Are you sure you want to delete Leave type?');
-    //     if (confirmResult) {
-    //         this.absenceService.delete('Leave/deleteLeaveType/', leaveTypeId).subscribe((response: any) => {
-    //             if (response === -1) {
-    //                 this.notifier.notify('success', 'Deleted Successfully');
-    //                 this.GetLeaveTypes();
-    //             }
-    //         });
-    //     }
-    // }
-
-    deleteLeaveType(leaveTypeId: number) {
-    
+    deleteLeaveType(leaveTypeId: number) {   
         swal.fire({
             title: 'Delete',
             text:
@@ -416,18 +312,7 @@ export class LeavesComponent implements OnInit {
         });
     }
 
-    // deleteAllowance(id: number): void {
-    //     var confirmResult = confirm('Are you sure you want to delete allowance?');
-    //     if (confirmResult) {
-    //         this.absenceService.delete('District/deleteAllowance/', id).subscribe((response: any) => {
-    //             this.notifier.notify('success', 'Deleted Successfully');
-    //             this.getAllowances();
-    //         });
-    //     }
-    // }
-
-    deleteAllowance(id: number) {
-    
+    deleteAllowance(id: number) {   
         swal.fire({
             title: 'Delete',
             text:

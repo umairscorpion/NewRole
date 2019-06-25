@@ -38,4 +38,6 @@ export class ReportDetail extends Entity {
   originalFileName: string;
   employeeProfilePicUrl: string;
   absenceType: number;
+  callingPage: string;
+  editMode: boolean;
 }
