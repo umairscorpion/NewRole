@@ -57,11 +57,9 @@ export class ActivityReportsComponent implements OnInit, AfterViewInit {
             title: 'Activity Report',
             useBom: false,
             noDownload: false,
-            headers: ['Absence ID', 'Posted By', 'Approved By', 'Accepted By', 'Released By', 'Declined By', 'Cancelled By']
+            headers: ['Absence ID', 'Posted By', 'Updated By', 'Approved By', 'Accepted By', 'Assigned By', 'Released By', 'Denied By', 'Declined By', 'Cancelled By']
         };
         this.auditLogsAbsences = this.auditLogsAbsences.filter(function (result) {
-            delete result.assigned;
-            delete result.updated;
             delete result.substituteName;
             delete result.entityType;
             return true;
