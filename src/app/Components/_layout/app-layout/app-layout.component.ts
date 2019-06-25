@@ -1,5 +1,5 @@
 import { Component, OnInit, HostBinding, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 import { UserService } from '../../../Service/user.service';
 import { SideNavService } from '../../SideNav/sideNav.service';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -25,13 +25,24 @@ export class AppLayoutComponent implements OnInit {
   msg: string;
   UserName: string;
   isOpen = true;
+  componentname: any;
   userRole: number = this.userSession.getUserRoleId();
   constructor(private router: Router, private _userService: UserService, private sideNavService: SideNavService,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _communicationService: CommunicationService,
-    private userSession: UserSession, private dataContext: DataContext) {
+    private userSession: UserSession, private dataContext: DataContext, activatedroute: ActivatedRoute) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        if ( event.url.indexOf('absence') >= 0) {
+          this.componentname = 'absence';
+        }
+        else {
+          this.componentname = '';
+        }
+      }
+    });
   }
 
   ngOnInit() {

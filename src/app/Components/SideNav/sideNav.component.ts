@@ -220,6 +220,7 @@ export class PopupDialogForSettings {
     UserName: string;
     ProfilePicture: any;
     userRole: number = this._userSession.getUserRoleId();
+    userRoleDesc: string = this._userSession.getUserRoleDesciption();
     insertAuditLogout: any;
     profilePicName: any;
 

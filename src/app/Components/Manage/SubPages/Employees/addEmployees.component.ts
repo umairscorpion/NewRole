@@ -107,6 +107,7 @@ export class AddEmployeesComponent implements OnInit {
                     this.getImage(data[0].profilePicture);
                     this.employeeForm.setValue(EmployeeModel);
                     this.userIdForUpdate = EmployeeId;
+                    this.onChangeDistrict(data[0].districtId);
                 },
                     error => <any>error);
             }

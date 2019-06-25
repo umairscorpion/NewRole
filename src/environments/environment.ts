@@ -4,6 +4,9 @@
 
 export const environment = {
   production: false,
+  // apiUrl: 'http://162.241.138.178/plesk-site-preview/sapi.loginsubzz.com/api/',
+  // profileImageUrl: 'http://162.241.138.178/plesk-site-preview/sapi.loginsubzz.com/Profile/'
+
   apiUrl: 'http://localhost:61137/api/',
   profileImageUrl: 'http://localhost:61137/Profile/'
 };

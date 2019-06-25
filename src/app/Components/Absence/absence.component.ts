@@ -6,6 +6,7 @@ import { SideNavService } from '../SideNav/sideNav.service';
 import { CommunicationService } from '../../Services/communication.service';
 import { UserSession } from '../../Services/userSession.service';
 import { UpcommingAbsenceComponent } from './SubPages/UpcommingAbsence/upcommingAbsence.component';
+import { CreateAbsenceComponent } from './SubPages/CreateAbsence/createAbsence.component';
 
 @Component({
     templateUrl: 'absence.component.html',
@@ -13,6 +14,7 @@ import { UpcommingAbsenceComponent } from './SubPages/UpcommingAbsence/upcomming
 })
 export class absenceComponent {
     @ViewChild(UpcommingAbsenceComponent) private getUpcomingAbsences: UpcommingAbsenceComponent;
+    @ViewChild(CreateAbsenceComponent) private createAbsenceComponent: CreateAbsenceComponent;
     @Output() refreshEmployeeBalance: EventEmitter<any> = new EventEmitter();
     employeeLeaveBalance: any;
     sideNavMenu: any;
@@ -48,6 +50,9 @@ export class absenceComponent {
     onTabChange(tabIndex: any) {
         if (tabIndex.index == 1) {
             this.getUpcomingAbsences.GetAbsences();
+        }
+         else if (tabIndex.index == 0) {
+            this.createAbsenceComponent.GetCreatedAbsencesOfEmployee(this._userSession.getUserId());
         }
     }
 
