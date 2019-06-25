@@ -72,8 +72,7 @@ export class MyJobsComponent implements OnInit {
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
 
         if (currentDate == startdate) {
-            if (currentTime > endtime)
-            {
+            if (currentTime > endtime) {
                 this.notifier.notify('error', 'Job has ended, unable to release.');
             }
             else if (currentTime > starttime) {
@@ -99,7 +98,6 @@ export class MyJobsComponent implements OnInit {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
                                 this.GetUpcommingJobs();
-                                // this.availableJobs.GetAvailableJobs();
                             }
                         },
                             error => this.msg = <any>error);
@@ -122,12 +120,14 @@ export class MyJobsComponent implements OnInit {
                     buttonsStyling: false
                 }).then(r => {
                     if (r.value) {
-                        if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
+                        if ((SelectedRow.startDate as Date) <= this.currentDate) { 
+                            this.notifier.notify('error', 'Not able to Release now.'); 
+                            return; 
+                        }
                         this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
                                 this.GetUpcommingJobs();
-                                // this.availableJobs.GetAvailableJobs();
                             }
                         },
                             error => this.msg = <any>error);

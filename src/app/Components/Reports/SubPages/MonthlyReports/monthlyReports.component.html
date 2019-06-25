@@ -20,7 +20,7 @@
 </div>
 <app-report-filters componentName="monthly" (formAction)="onSubmit($event)"></app-report-filters>
 <div class="row mt-30" *ngIf="noAbsenceMessage">
-  <div class="alert-warning m-20 p-20">No Absences have been found.</div>
+  <div class="alert-warning m-20 p-20">No data to display.</div>
 </div>
 <div *ngIf="!noAbsenceMessage">
   <div class="row mt-30">
