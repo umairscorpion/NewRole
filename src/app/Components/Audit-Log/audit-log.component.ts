@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder} from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuditLogService } from '../../Services/audit_logs/audit-log.service';
 import { AuditFilter } from '../../Model/auditLog';
 
@@ -9,7 +9,6 @@ import { AuditFilter } from '../../Model/auditLog';
     styleUrls: ['./audit-log.component.css']
 })
 export class AuditLogComponent implements OnInit {
-
     noAbsenceMessage = true;
     auditLog: any;
     auditLogFilter: FormGroup;
@@ -17,8 +16,7 @@ export class AuditLogComponent implements OnInit {
 
     constructor(
         private auditLogService: AuditLogService,
-        private _formBuilder: FormBuilder
-    ) {
+        private _formBuilder: FormBuilder) {
         const curr = new Date;
         const first = curr.getDate();
         const last = first;
@@ -44,5 +42,4 @@ export class AuditLogComponent implements OnInit {
             this.auditLog = availabilities;
         });
     }
-
 }

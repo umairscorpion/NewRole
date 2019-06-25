@@ -54,7 +54,7 @@ export class AvailableJobsComponent implements OnInit {
         private _communicationService: CommunicationService,
         private sanitizer: DomSanitizer,
         notifier: NotifierService,
-        private activatedRoute: ActivatedRoute ) {
+        private activatedRoute: ActivatedRoute) {
         this.notifier = notifier;
     }
 
@@ -83,7 +83,7 @@ export class AvailableJobsComponent implements OnInit {
 
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe((params: any) => {
-            if (params.jobId && params.ac === 1) {
+            if (params.jobId && params.ac == 2) {
                 this.DeclineAbsence(params.jobId)
             }
         })

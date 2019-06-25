@@ -1,6 +1,5 @@
 ﻿import { Component, OnInit, NgZone } from '@angular/core';
 import { UserService } from '../../../Service/user.service';
-import { DataContext } from '../../../Services/dataContext.service';
 import { UserSession } from '../../../Services/userSession.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -109,13 +108,11 @@ export class LoginComponent implements OnInit {
 
             if (data.roleId == 4) { // For Substitute
                 if (this.activatedRoute.queryParams && this.JobId > 0) {
-                    if (this.action === 1) {
+                    if (this.action == 1) {
                         this.AcceptJob(this.JobId)
                     } else {
                         this.declineJob(this.JobId)
-                    }
-                        
-                        
+                    }  
                 }
                 else {
                     this.router.navigate(['/viewjobs']

@@ -222,7 +222,7 @@ export class PopupDialogForSettings {
     userRole: number = this._userSession.getUserRoleId();
     insertAuditLogout: any;
     profilePicName: any;
-    
+
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialog: MatDialog,

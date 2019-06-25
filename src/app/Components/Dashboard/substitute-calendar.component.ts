@@ -1,12 +1,4 @@
 ﻿import { Component, OnInit } from '@angular/core';
-
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
-
 import * as $ from 'jquery';
 import * as moment from 'moment';
 import 'fullcalendar';
@@ -15,9 +7,7 @@ import { AvailabilityService } from '../../Services/availability.service';
 import { MatDialog } from '@angular/material';
 import { UnAvailabilityComponent } from './unavailability/unavailability.component';
 import { UserAvailability } from '../../Model/userAvailability';
-import { ReportFilter } from '../../Model/Report/report.filter';
 import { ReportDetail } from '../../Model/Report/report.detail';
-import { ReportService } from '../../Services/report.service';
 import { UserSession } from '../../Services/userSession.service';
 import { Router } from '@angular/router';
 
@@ -32,16 +22,12 @@ export class SubstituteCalendarComponent implements OnInit {
   date: string = moment().format('dddd, MM/DD/YYYY');
   todayTotalAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
   loginedUserRole = 0;
+  availabilityData = [];
   constructor(
-    private fb: FormBuilder,
     private dialogRef: MatDialog,
     private availabilityService: AvailabilityService,
-    private reportService: ReportService,
     private _userSession: UserSession,
-    private router: Router,
-  ) {
-
-  }
+    private router: Router) { }
 
   ngOnInit() {
     this.loginedUserRole = this._userSession.getUserRoleId();
@@ -73,6 +59,7 @@ export class SubstituteCalendarComponent implements OnInit {
         };
         this.availabilityService.getAll(model).subscribe((data: any) => {
           this.containerEl.fullCalendar('removeEvents');
+          this.availabilityData = data;
           callback(data);
         });
       },
@@ -90,6 +77,14 @@ export class SubstituteCalendarComponent implements OnInit {
         availability.startTime = moment(start).format('hh:mm A');
         availability.endDate = moment(end).format('YYYY-MM-DD');
         availability.endTime = moment(end).format('hh:mm A');
+
+        if(this.availabilityData && this.availabilityData.length > 0) {
+          const booked = this.availabilityData.filter(t=> moment(t['start']).format('YYYY-MM-DD') == availability.startDate);
+          if(booked && booked.length > 0) {
+            alert('You can not set unavailability for the date you are booked !');
+            return false;
+          }
+        }
         const dialogRef = this.dialogRef.open(UnAvailabilityComponent,
           {
             panelClass: 'availability-edit-dialog',

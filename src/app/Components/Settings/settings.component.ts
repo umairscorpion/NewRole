@@ -102,7 +102,6 @@ export class SettingComponent implements OnInit {
     }
 
     onChangeTab(tab: any) {
-
     }
 
     ChangeNotificationPreference(row: any, type: string): void {
