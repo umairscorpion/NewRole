@@ -29,6 +29,7 @@ export class AuditLogAbsenceView extends Entity {
     updated: string; 
     cancelled: string; 
     approved: string; 
+    denied: string; 
     declined: string; 
     accepted: string; 
     substituteName: string; 

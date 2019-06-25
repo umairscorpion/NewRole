@@ -17,6 +17,11 @@
         width: 100%;
     }
 
+    .ngx-datatable {
+        overflow-x: hidden;
+        max-height: 850px;
+    }
+
     .mat-table {
         overflow: auto;
         max-height: 500px;
@@ -24,6 +29,7 @@
 
     th,td {
         border: 1px solid #e9e3e3;
+        width: 160px;
     }
 </style>
 <h4>Activity Report</h4>
@@ -61,43 +67,50 @@
 <div class="row">
     <div class="m-30">
         <ngx-datatable class="material" [rows]="auditLogsAbsences" [columnMode]="'standard'" [headerHeight]="50"
-            [footerHeight]="50" [rowHeight]="'auto'" [limit]="8">
-            <ngx-datatable-column [width]="'auto'" name="Job #" prop="entityId" [flexGrow]="2" cellClass="middle"
-                [draggable]="false">
+            [footerHeight]="50" [rowHeight]="'auto'" [limit]="7" [scrollbarH]="true">
+            <ngx-datatable-column [width]="'100'" name="Job #" prop="entityId" [flexGrow]="2" cellClass="middle"
+                [draggable]="false" [frozenLeft]="true">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis" [title]="value">
                         <strong>{{value}}</strong>
                     </div>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="'auto'" name="Notified" [flexGrow]="2" cellClass="middle"
-                [draggable]="false">
+            <ngx-datatable-column [width]="'100'" name="Notified" [flexGrow]="2" cellClass="middle"
+                [draggable]="false" [frozenLeft]="true">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis">11</div>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="'auto'" name="Events" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="'1520'" name="Events" [flexGrow]="2" cellClass="middle" 
+            [draggable]="false" [frozenLeft]="false">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis" style="margin-left:25px">
-                        <div class="col-md-12">
+                        <div class="row">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th *ngIf="row['created'] != null">Posted</th>
-                                        <th *ngIf="row['approved'] != null">Approved</th>
-                                        <th *ngIf="row['accepted'] != null">Accepted</th>
-                                        <th *ngIf="row['released'] != null">Released</th>
-                                        <th *ngIf="row['declined'] != null">Declined</th>
+                                        <th *ngIf="row['created']   != null">Posted</th>
+                                        <th *ngIf="row['updated']   != null">Updated</th>
+                                        <th *ngIf="row['approved']  != null">Approved</th>
+                                        <th *ngIf="row['accepted']  != null">Accepted</th>
+                                        <th *ngIf="row['assigned']  != null">Assigned</th>
+                                        <th *ngIf="row['released']  != null">Released</th>
+                                        <th *ngIf="row['denied']    != null">Denied</th>  
+                                        <th *ngIf="row['declined']  != null">Declined</th>                                     
                                         <th *ngIf="row['cancelled'] != null">Cancelled</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td *ngIf="row['created'] != null">{{ row['created']}}</td>
-                                        <td *ngIf="row['approved'] != null">{{ row['approved']}}</td>
-                                        <td *ngIf="row['accepted'] != null">{{ row['accepted']}}</td>
-                                        <td *ngIf="row['released'] != null">{{ row['released']}}</td>
-                                        <td *ngIf="row['declined'] != null">{{ row['declined']}}</td>
+                                        <td *ngIf="row['created']   != null">{{ row['created']}}</td>
+                                        <td *ngIf="row['updated']   != null">{{ row['updated']}}</td>
+                                        <td *ngIf="row['approved']  != null">{{ row['approved']}}</td>
+                                        <td *ngIf="row['accepted']  != null">{{ row['accepted']}}</td>
+                                        <td *ngIf="row['assigned']  != null">{{ row['assigned']}}</td>
+                                        <td *ngIf="row['released']  != null">{{ row['released']}}</td>
+                                        <td *ngIf="row['denied']    != null">{{ row['denied']}}</td>  
+                                        <td *ngIf="row['declined']  != null">{{ row['declined']}}</td>  
                                         <td *ngIf="row['cancelled'] != null">{{ row['cancelled']}}</td>
                                     </tr>
                                 </tbody>

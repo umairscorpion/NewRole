@@ -147,8 +147,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
         model.entityId = absenceDetail.absenceId;
         this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
             this.insertAbsencesLogView = result;
-        });
-        
+        });       
         const dialogEdit = this.dialogRef.open(
             ReportDetailsComponent,{
                 panelClass: 'report-details-dialog',

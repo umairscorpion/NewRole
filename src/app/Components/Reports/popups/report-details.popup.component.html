@@ -3,16 +3,15 @@
     <mat-dialog-actions>
       <div class="col-md-8 pr-0">
         <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
-        <button [disabled]="reportDetail.statusId == 1 || !reportDetail.substituteRequired" type="button"
-          mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
-        <button [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired" type="button" 
-        mat-raised-button class="btn btn-default" (click)="performAction('assign')">Assign</button>
-        <button [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired" type="button" 
-        mat-raised-button class="btn btn-default" (click)="performAction('resend')">Resend</button>
+        <button *ngIf="reportDetail.callingPage != 'Absence'" [disabled]="reportDetail.statusId == 1 || !reportDetail.substituteRequired" 
+        type="button" mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
+        <button *ngIf="reportDetail.callingPage != 'Absence'" [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired" 
+        type="button" mat-raised-button class="btn btn-default" (click)="performAction('assign')">Assign</button>
+        <button *ngIf="reportDetail.callingPage != 'Absence'" [disabled]="reportDetail.statusId == 12 || !reportDetail.substituteRequireds" 
+        type="button" mat-raised-button class="btn btn-default" (click)="performAction('resend')">Resend</button>
       </div>
-      <div class="col-md-4 pl-0">
-        <button type="button" mat-raised-button class="btn btn-warning"
-          (click)="performAction('delete')">Delete</button>
+      <div class="col-md-4 pl-0" style="text-align: right">
+        <button *ngIf="reportDetail.callingPage != 'Absence'" type="button" mat-raised-button class="btn btn-warning" (click)="performAction('delete')">Delete</button>
         <button type="button" mat-raised-button class="btn btn-info" (click)="performAction('edit')">Edit</button>
       </div>
     </mat-dialog-actions>
@@ -87,7 +86,7 @@
           <td>ID:</td>
           <td>{{reportDetail.absenceId}}</td>
         </tr>
-        <tr>
+        <tr *ngIf="reportDetail.callingPage != 'Absence'">
           <td>Reason:</td>
           <td>
             <mat-form-field>
@@ -98,6 +97,10 @@
               </mat-select>
             </mat-form-field>
           </td>
+        </tr>
+        <tr *ngIf="reportDetail.callingPage == 'Absence'">
+          <td>Reason:</td>
+          <td>{{reportDetail.reason}}</td>
         </tr>
         <tr>
           <td>From:</td>
@@ -147,10 +150,11 @@
           <td *ngIf="reportDetail.absenceType == 2 && reportDetail.substituteRequired">Assigned</td>
           <td *ngIf="!reportDetail.substituteRequired">N/A</td>
         </tr>
-        <tr *ngIf='reportDetail.substituteRequired'>
+        <tr *ngIf="reportDetail.substituteRequired">
           <td>Substitute:</td>
           <td *ngIf='reportDetail.statusId == 2'>{{reportDetail.substituteName}}</td>
-          <td *ngIf='reportDetail.statusId != 2'>
+          <td *ngIf="reportDetail.statusId != 2 && reportDetail.callingPage == 'Absence'">No Substitute</td>
+          <td *ngIf="reportDetail.statusId != 2 && reportDetail.callingPage != 'Absence'">
             <mat-form-field class="row col-md-9">
               <input type="text" placeholder="Search Substitute Name"
                 (input)="SearchAvailableSubstitutes($event.target.value)" matInput formControlName="substituteId"
