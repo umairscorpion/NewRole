@@ -71,6 +71,10 @@
                 matTooltipPosition="below">
                 <i class="material-icons" (click)="ShowDetail(Absence)">visibility</i>
               </a>
+              <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Absence"
+                    matTooltipPosition="below">
+                    <i class="material-icons" (click)="EditAbsence(row)">edit</i>
+                  </a>
             </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>

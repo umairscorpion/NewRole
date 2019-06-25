@@ -15,8 +15,8 @@
             </div>
             <div class="ibox-content" style="background-color: #0ea2b3;">
                 <div class="stat-percent font-bold text-success" style="color: white">
-                    {{dashboardCounter.totalPrevious !==0 ? (dashboardCounter.totalCount - dashboardCounter.totalPrevious) /dashboardCounter.totalPrevious
-                    * 100 : dashboardCounter.totalCount === dashboardCounter.totalPrevious ? 0 : 100}}%
+                    {{dashboardCounter.totalPrevious !==0 ? ((dashboardCounter.totalCount - dashboardCounter.totalPrevious) /dashboardCounter.totalPrevious
+                    * 100 | round) : dashboardCounter.totalCount === dashboardCounter.totalPrevious ? 0 : 100 }}%
                     <i class="fa fa-level-up"></i>
                 </div>
                 <small style="color: white">Previous Day</small>
@@ -34,8 +34,8 @@
             </div>
             <div class="ibox-content" style="background-color:#75c598;">
                 <div class="stat-percent font-bold text-info" style="color: white">
-                    {{dashboardCounter.filledPrevious !==0 ? (dashboardCounter.filled - dashboardCounter.filledPrevious) /dashboardCounter.filledPrevious
-                    * 100 : dashboardCounter.filled === dashboardCounter.filledPrevious ? 0 : 100}}%
+                    {{dashboardCounter.filledPrevious !==0 ? ((dashboardCounter.filled - dashboardCounter.filledPrevious) /dashboardCounter.filledPrevious
+                    * 100 | round) : dashboardCounter.filled === dashboardCounter.filledPrevious ? 0 : 100}}%
                     <i class="fa fa-level-up"></i>
                 </div>
                 <small style="color: white">Previous Day</small>
@@ -52,8 +52,8 @@
             </div>
             <div class="ibox-content" style="background-color:#57d3d9;">
                 <div class="stat-percent font-bold text-navy" style="color: white">
-                    {{dashboardCounter.unfilledPrevious !==0 ? (dashboardCounter.unfilled - dashboardCounter.unfilledPrevious) /dashboardCounter.unfilledPrevious
-                    * 100 : dashboardCounter.unfilled === dashboardCounter.unfilledPrevious ? 0 : 100}}%
+                    {{dashboardCounter.unfilledPrevious !==0 ? ((dashboardCounter.unfilled - dashboardCounter.unfilledPrevious) /dashboardCounter.unfilledPrevious
+                    * 100 | round) : dashboardCounter.unfilled === dashboardCounter.unfilledPrevious ? 0 : 100}}%
                     <i class="fa fa-level-up" style="color: white"></i>
                 </div>
                 <small style="color: white">Previous Day</small>
@@ -70,8 +70,8 @@
             </div>
             <div class="ibox-content" style="background-color:#74A4A7;">
                 <div class="stat-percent font-bold text-danger" style="color: white">
-                    {{dashboardCounter.noSubRequiredPrevious !==0 ? (dashboardCounter.noSubRequired - dashboardCounter.noSubRequiredPrevious)
-                    /dashboardCounter.noSubRequiredPrevious * 100 : dashboardCounter.noSubRequired === dashboardCounter.noSubRequiredPrevious
+                    {{dashboardCounter.noSubRequiredPrevious !==0 ? ((dashboardCounter.noSubRequired - dashboardCounter.noSubRequiredPrevious)
+                    /dashboardCounter.noSubRequiredPrevious * 100 | round) : dashboardCounter.noSubRequired === dashboardCounter.noSubRequiredPrevious
                     ? 0 : 100}}%
                     <i class="fa fa-level-up"></i>
                 </div>

@@ -80,7 +80,7 @@ export class UpcommingAbsenceComponent implements OnInit {
         }).then(r => {
             if (r.value) {
                 if (absenceStartDate <= currentDate) {
-                    this.notifier.notify('error', 'Not able to cancel now');
+                    this.notifier.notify('error', 'Job has ended, you cannot cancel it.');
                     return;
                 }
                 this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {

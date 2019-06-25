@@ -152,11 +152,11 @@ export class ReportDetailsComponent implements OnInit {
         buttonsStyling: false
       }).then(r => {
         if (r.value) {
-          if (absenceStartDate <= currentDate) {
-            this.dialogRef.close();
-            this.notifier.notify('error', 'Not able to cancel now.');
-            return;
-          }
+          // if (absenceStartDate <= currentDate) {
+          //   this.dialogRef.close();
+          //   this.notifier.notify('error', 'Not able to cancel now.');
+          //   return;
+          // }
           this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
             this.dialogRef.close('Reload');
             this.notifier.notify('success', 'Cancelled Successfully.');

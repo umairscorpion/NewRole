@@ -7,4 +7,5 @@ export class UserClaims extends Entity {
     firstName: string
     lastName: string
     email: string
+    organizationName:string
 }
