@@ -67,7 +67,7 @@ export class SubstituteCalendarComponent implements OnInit {
 
       },
       select: (start, end, jsEvent, view, resource) => {
-        if (this.loginedUserRole !== 4) {
+        if (this.loginedUserRole !== 4) { // Substitute = 4
           return;
         }
         if (end.isBefore(moment().add(1, 'hour').format())) {
