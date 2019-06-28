@@ -67,6 +67,9 @@ export class SubstituteCalendarComponent implements OnInit {
 
       },
       select: (start, end, jsEvent, view, resource) => {
+        if (this.loginedUserRole !== 4) { // Substitute = 4
+          return;
+        }
         if (end.isBefore(moment().add(1, 'hour').format())) {
           $('#calendar').fullCalendar('unselect');
           alert('You can not set unavailability in past dates !');
@@ -78,9 +81,9 @@ export class SubstituteCalendarComponent implements OnInit {
         availability.endDate = moment(end).format('YYYY-MM-DD');
         availability.endTime = moment(end).format('hh:mm A');
 
-        if(this.availabilityData && this.availabilityData.length > 0) {
-          const booked = this.availabilityData.filter(t=> moment(t['start']).format('YYYY-MM-DD') == availability.startDate);
-          if(booked && booked.length > 0) {
+        if (this.availabilityData && this.availabilityData.length > 0) {
+          const booked = this.availabilityData.filter(t => moment(t['start']).format('YYYY-MM-DD') === availability.startDate);
+          if (booked && booked.length > 0) {
             alert('You can not set unavailability for the date you are booked !');
             return false;
           }
