@@ -46,7 +46,7 @@ export class LeavesComponent implements OnInit {
         private absenceService: AbsenceService,
         notifier: NotifierService,
         public dialog: MatDialog,
-        private route: ActivatedRoute, 
+        private route: ActivatedRoute,
         private sanitizer: DomSanitizer) {
         this.notifier = notifier;
     }
@@ -132,10 +132,10 @@ export class LeavesComponent implements OnInit {
                     this.notifier.notify('success', 'Approved Successfully');
                     if (this.tabClicked == 0) {
                         this.GetLeaveRequests();
-                    }      
+                    }
                     else if (this.tabClicked == 1) {
                         this.GetLeaveRequests();
-                    }       
+                    }
                     else {
                         this.GetLeaveRequests();
                     }
@@ -243,7 +243,7 @@ export class LeavesComponent implements OnInit {
         }
     }
 
-    deleteLeaveType(leaveTypeId: number) {   
+    deleteLeaveType(leaveTypeId: number) {
         swal.fire({
             title: 'Delete',
             text:
@@ -262,8 +262,8 @@ export class LeavesComponent implements OnInit {
                         this.notifier.notify('success', 'Deleted Successfully');
                         this.GetLeaveTypes();
                     }
-              },
-                error => this.msg = <any>error);
+                },
+                    error => this.msg = <any>error);
             }
         });
     }
@@ -312,7 +312,7 @@ export class LeavesComponent implements OnInit {
         });
     }
 
-    deleteAllowance(id: number) {   
+    deleteAllowance(id: number) {
         swal.fire({
             title: 'Delete',
             text:
@@ -329,8 +329,8 @@ export class LeavesComponent implements OnInit {
                 this.absenceService.delete('District/deleteAllowance/', id).subscribe((response: any) => {
                     this.notifier.notify('success', 'Deleted Successfully');
                     this.getAllowances();
-              },
-                error => this.msg = <any>error);
+                },
+                    error => this.msg = <any>error);
             }
         });
     }

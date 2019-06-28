@@ -106,7 +106,7 @@
                   <i class="fa fa-lock fa-stack-1x"></i>
                 </span>
               </a>
-              <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'click to Inactivate' : 'click to Activate'"
+              <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'"
                 matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateEmployeeStatus(row)" color=""></mat-slide-toggle>
             </mat-cell>
           </ng-container>

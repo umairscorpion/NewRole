@@ -414,6 +414,12 @@ export class ProfileComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
+        }
+    }
+
     // On Selecting Profile Image
     onSelectProfileImage(event: any) {
         if (event.target.files && event.target.files[0]) {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { DistrictService } from '../../../../../Service/Manage/district.service';
 import { UserSession } from '../../../../../Services/userSession.service';
@@ -12,17 +12,22 @@ import { UserSession } from '../../../../../Services/userSession.service';
 export class AllowanceComponent implements OnInit {
     allowance: FormGroup;
     msg: string;
-    constructor(private dialogRef: MatDialogRef<AllowanceComponent>, private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any,
-        private districtService: DistrictService, private userSession: UserSession) {
+
+    constructor(
+        private dialogRef: MatDialogRef<AllowanceComponent>,
+        private fb: FormBuilder,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        private districtService: DistrictService,
+        private userSession: UserSession) {
     }
-    
+
     onCloseDialog() {
         this.dialogRef.close();
     }
 
     ngOnInit() {
         this.allowance = this.fb.group({
-            id:[0],
+            id: [0],
             districtId: [this.userSession.getUserDistrictId()],
             title: [{ value: '', disabled: true }, Validators.required],
             yearlyAllowance: ['', Validators.required],
@@ -35,12 +40,12 @@ export class AllowanceComponent implements OnInit {
             isExpiredAtEndOfYear: [false]
         });
         if (this.data) {
-            this.allowance.patchValue({...this.data});
+            this.allowance.patchValue({ ...this.data });
         }
     }
 
     submitAllowance(allowance: FormGroup) {
-        if(allowance.valid) {
+        if (allowance.valid) {
             allowance.value.expirationStartDate = new Date(allowance.value.expirationStartDate).toLocaleDateString();
             allowance.value.expirationEndDate = new Date(allowance.value.expirationEndDate).toLocaleDateString();
             allowance.value.title = allowance.getRawValue().title;
