@@ -28,7 +28,7 @@ export class TimeClockComponent implements OnInit {
     withoutBreaks: any;
     date: string = moment().format('dddd, MM/DD/YYYY');
     time: string = moment().format('h:mma');
-    displayedColumns = ['Date', 'Clockin', 'Clockout', 'Length', 'Break'];
+    displayedColumns = ['Date', 'Clockin', 'Clockout','activity', 'Length', 'Break'];
     msg: string;
     indLoading: boolean = false;
     modalTitle: string;
@@ -46,6 +46,8 @@ export class TimeClockComponent implements OnInit {
     timeClockDetail = new MatTableDataSource();
     private timeClockFormGroup: FormGroup;
     CurrentDate: Date = new Date;
+    totalBreaksForTimeSheet: any;
+    withoutBreakTime: any;
 
     constructor(
         private _userService: UserService,
@@ -190,7 +192,8 @@ export class TimeClockComponent implements OnInit {
     GetTimeClockData() {
         this.timeClockService.TimeClockData('Time/timeclockdata').subscribe((data: TimeClock[]) => {
             this.timeClockDetail.data = data;
-            this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
+            this.totalMinutes =  data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
+            this.totalBreaksForTimeSheet = data.map((t: TimeClock) => t.totalBreakTime).reduce((acc, value) => acc + value, 0);
         },
             error => this.msg = <any>error);
     }
@@ -203,6 +206,8 @@ export class TimeClockComponent implements OnInit {
         this.timeClockService.getTimeClockSummary(filters).subscribe((data: TimeClock[]) => {
             this.timeClockDetail.data = data;
             this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
+            this.totalBreaksForTimeSheet = data.map((t: TimeClock) => t.totalBreakTime).reduce((acc, value) => acc + value, 0);
+            this.withoutBreakTime = this.totalMinutes - this.totalBreaksForTimeSheet;
             this.totalBreaks = data.filter((t: TimeClock) => t.status === 1).length;
             this.withoutBreaks = data.filter((t: TimeClock) => t.status === 0).length;
         },

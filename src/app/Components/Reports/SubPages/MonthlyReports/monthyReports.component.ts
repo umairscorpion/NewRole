@@ -12,6 +12,8 @@ import { environment } from '../../../../../environments/environment';
 import { ExcelService } from '../../../../Services/excel.service';
 import { AuditFilter } from '../../../../Model/auditLog';
 import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
+import { DatePipe } from '../../../../../../node_modules/@angular/common';
+import { Workbook } from 'exceljs';
 
 @Component({
     selector:'monthly-reports',
@@ -23,7 +25,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     @ViewChild('chartUnFilled') chartUnFilled: ElementRef;
     @ViewChild('chartNoSubReq') chartNoSubReq: ElementRef;
     context: CanvasRenderingContext2D;
-
+    selectedTabIndex: any = 0;
     currentDate: Date = new Date();
     msg: string;
     indLoading = false;
@@ -56,7 +58,8 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         private dialogRef: MatDialog,
         private sanitizer: DomSanitizer,
         private excelService: ExcelService,
-        private auditLogService: AuditLogService
+        private auditLogService: AuditLogService,
+        private datePipe: DatePipe
     ) {
     }
 
@@ -65,6 +68,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.loadReportSummary();
+        this.selectedTabIndex = 1;
     }
 
     loadReportSummary() {
@@ -93,23 +97,37 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
             this.bindDetails(details);
         });
         if ($event.actionName == "print") {
-            this.allAbsencesInCurrentState = this.allAbsencesInCurrentState.filter(function (absence) {
-                delete absence.substituteId;
-                delete absence.absencePosition;
-                delete absence.employeeTypeTitle;
-                delete absence.grade;
-                delete absence.subject;
-                delete absence.postedById;
-                delete absence.statusId;
-                delete absence.anyAttachment;
-                delete absence.fileContentType;
-                delete absence.substituteRequired;
-                delete absence.durationType;
-                delete absence.statusDate;
-                delete absence.substituteProfilePicUrl;
-                return true;
+            const title = 'Report';
+            const header = ["Employee Name", "Absence Id", "Reason", "Date", "Time", "District", "Status", "Substitute", "Notes", "School"]
+            let workbook = new Workbook();
+            let worksheet = workbook.addWorksheet('Report');
+            let titleRow = worksheet.addRow([title]);
+            // Set font, size and style in title row.
+            titleRow.font = { name: 'Comic Sans MS', family: 4, size: 13, underline: 'none', bold: false };
+            // Blank Row
+            worksheet.addRow([]);
+            //Add row with current date
+            let subTitleRow = worksheet.addRow(['Date : ' + this.datePipe.transform(new Date(), 'medium')]);
+            worksheet.mergeCells('A1:D2');
+            //Add Header Row
+            let headerRow = worksheet.addRow(header);
+            // Cell Style : Fill and Border
+            headerRow.eachCell((cell, number) => {
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'A1A1A3' },
+                    bgColor: { argb: 'A1A1A3' }
+                }
+                cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
             });
-            this.excelService.exportAsExcelFile(this.allAbsencesInCurrentState, 'Report');
+            this.allAbsencesInCurrentState.forEach(obj => {
+                let result = this.objToArray(obj);
+                worksheet.addRow(result);
+            });
+            workbook.xlsx.writeBuffer().then((data) => {
+                this.excelService.saveAsExcelFile(data, 'Report.xlsx');
+            });
             this.loadReportSummary();
         }      
     }
@@ -172,5 +190,13 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         if (imageName && imageName.length > 0) {
             return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
         }
+    }
+    
+    objToArray(report: ReportDetail) {
+        var result = [];
+        result.push(report.employeeName, report.absenceId, report.reason, report.startDate + " - " + report.endDate,
+            report.startTime + "-" + report.endTime,
+            report.districtName, report.statusTitle, report.substituteName, report.notes, report.schoolName)
+        return result;
     }
 }

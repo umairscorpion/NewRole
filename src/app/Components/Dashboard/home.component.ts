@@ -450,18 +450,17 @@ export class HomeComponent implements OnInit {
     }
 
     bindTotalAbsenceByGradeLevel(chartSummary: DashboardSummary) {
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].sixthGrade)
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].seventhGrade)
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].eighthGrade)
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].ninthGrade)
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].tenthGrade)
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].eleventhGrade)
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].sixthGrade);
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].seventhGrade);
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].eighthGrade);
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].ninthGrade);
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].tenthGrade);
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].eleventhGrade);
         this.totalAbsenceByGradeLevel = new Chart('absencesByGradeLevel', {
             type: 'pie',
             data: {
                 labels: ['6th','7th','8th','9th','10th','11th'],
                 datasets: [{
-
                     data: this.TotalAbsenceByGradeLevel,
                     backgroundColor: [
                         '#3e95cd',
@@ -542,7 +541,7 @@ export class HomeComponent implements OnInit {
 
     bindAbsenceBySubject(chartSummary: DashboardSummary) {
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectEnglish);
-        this.AbsenceBySubject.push(chartSummary.absenceBySubject[1].subjectHistory);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectHistory);
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectMath);
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectScience);
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectPE);

@@ -11,6 +11,9 @@ import { ReportService } from '../../../Services/report.service';
 import { ReportDetail } from '../../../Model/Report/report.detail';
 import { ReportFilter } from '../../../Model/Report/report.filter';
 import { EditPayrollComponent } from '../Popups/edit-payroll.popup.component';
+import { DatePipe } from '../../../../../node_modules/@angular/common';
+import { Workbook } from 'exceljs';
+import { ExcelService } from '../../../Services/excel.service';
 
 @Component({
     selector: 'run-payroll',
@@ -40,7 +43,9 @@ export class RunPayroll implements OnInit {
         private reportService: ReportService,
         notifier: NotifierService,
         public sanitizer: DomSanitizer,
-        private fb: FormBuilder) {
+        private fb: FormBuilder,
+        private excelService: ExcelService,
+        private datePipe: DatePipe) {
         this.notifier = notifier;
         const first = this.curr.getDate() - (this.curr.getDay() - 1);
         const last = first + 4;
@@ -92,40 +97,37 @@ export class RunPayroll implements OnInit {
     }
 
     onExportingToCSV() {
-        var configuration = {
-            fieldSeparator: ',',
-            quoteStrings: '"',
-            decimalseparator: '.',
-            showLabels: true,
-            showTitle: true,
-            title: 'Payroll Report',
-            useBom: false,
-            noDownload: false,
-            headers: ['Employee', 'Reason', 'start Date', 'End Date', 'Location', 'Accepted Date', 'Status']
-        };
-        let absencesForPrint = this.allAbsencesInCurrentState.filter(function (absence: any) {
-            delete absence.substituteId;
-            delete absence.absencePosition;
-            delete absence.employeeTypeTitle;
-            delete absence.grade;
-            delete absence.subject;
-            delete absence.postedById;
-            delete absence.postedByName;
-            delete absence.statusId;
-            delete absence.substituteName;
-            delete absence.anyAttachment;
-            delete absence.fileContentType;
-            delete absence.substituteRequired;
-            delete absence.durationType;
-            delete absence.attachedFileName;
-            delete absence.statusDate;
-            delete absence.substituteProfilePicUrl;
-            delete absence.absenceId;
-            delete absence.startTime;
-            delete absence.endTime;
-            return true;
-        });
-        new ngxCsv(JSON.stringify(absencesForPrint), new Date().toLocaleDateString(), configuration);
+        const title = 'Payroll Report';
+            const header = ["Employee Name", "Absence Id", "Reason", "Date", "Time", "District", "Status", "Substitute", "Notes", "Pay Rate", "Hours", "School"]
+            let workbook = new Workbook();
+            let worksheet = workbook.addWorksheet('Report');
+            let titleRow = worksheet.addRow([title]);
+            // Set font, size and style in title row.
+            titleRow.font = { name: 'Comic Sans MS', family: 4, size: 13, underline: 'none', bold: false };
+            // Blank Row
+            worksheet.addRow([]);
+            //Add row with current date
+            let subTitleRow = worksheet.addRow(['Date : ' + this.datePipe.transform(new Date(), 'medium')]);
+            worksheet.mergeCells('A1:D2');
+            //Add Header Row
+            let headerRow = worksheet.addRow(header);
+            // Cell Style : Fill and Border
+            headerRow.eachCell((cell, number) => {
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'A1A1A3' },
+                    bgColor: { argb: 'A1A1A3' }
+                }
+                cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
+            });
+            this.allAbsencesInCurrentState.forEach(obj => {
+                let result = this.objToArray(obj);
+                worksheet.addRow(result);
+            });
+            workbook.xlsx.writeBuffer().then((data) => {
+                this.excelService.saveAsExcelFile(data, 'PayRollReport');
+            });
     }
 
     masterToggle() {
@@ -157,6 +159,14 @@ export class RunPayroll implements OnInit {
         else {
             this.notifier.notify('error', 'select absence first then click edit.');
         }
+    }
+    objToArray(report: ReportDetail) {
+        var result = [];
+        result.push(report.employeeName, report.absenceId, report.reason, report.startDate + " - " + report.endDate,
+            report.startTime + "-" + report.endTime,
+            report.districtName, report.statusTitle, report.substituteName, report.notes,
+             report.payRate, report.dailyHours, report.schoolName)
+        return result;
     }
 }
 

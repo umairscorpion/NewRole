@@ -29,7 +29,7 @@
         <tr>
           <td class="text-center">
             <h4>Total</h4>
-            <canvas id="myChart" #chartTotal baseChart [legend]="false" width="150" height="100" [data]="totalAbsence"
+            <canvas id="myChart" #chartTotal baseChart [legend]="false" class="styledoughnut" [data]="totalAbsence"
               [colors]="totalChartColors" [labels]="['Total']" [chartType]="'doughnut'"
               [options]="chartOptions"></canvas>
             <div class="donut-inner">
@@ -38,7 +38,7 @@
           </td>
           <td class="text-center">
             <h4>Filled</h4>
-            <canvas #chartFilled baseChart [legend]="false" width="150" height="100" [data]="filledAbsence"
+            <canvas #chartFilled baseChart [legend]="false" [data]="filledAbsence" class="styledoughnut"
               [colors]="filledChartColors" [labels]="['Total', 'Filled']" [chartType]="'doughnut'"
               [options]="chartOptions"></canvas>
             <div class="donut-inner">
@@ -49,7 +49,7 @@
         <tr>
           <td class="text-center">
             <h4>Unfilled</h4>
-            <canvas #chartUnFilled baseChart [legend]="false" width="150" height="100" [colors]="unFilledChartColors"
+            <canvas #chartUnFilled baseChart [legend]="false" [colors]="unFilledChartColors" class="styledoughnut"
               [data]="unFilledAbsence" [labels]="['Unfilled', '']" [chartType]="'doughnut'"
               [options]="chartOptions"></canvas>
             <div class="donut-inner">
@@ -58,7 +58,7 @@
           </td>
           <td class="text-center">
             <h4>No Sub Req</h4>
-            <canvas #chartNoSubReq baseChart [legend]="false" width="150" height="100" [colors]="noSubReqChartColors"
+            <canvas #chartNoSubReq baseChart [legend]="false"  [colors]="noSubReqChartColors" class="styledoughnut"
               [data]="noSubReqAbsence" [labels]="['No Sub Req', '']" [chartType]="'doughnut'"
               [options]="chartOptions"></canvas>
             <div class="donut-inner">
@@ -75,7 +75,7 @@
     <div class="col-md-4">
       <table>
         <td class="text-center">
-          <canvas baseChart [chartType]="'doughnut'" [legend]="false" width="250" height="200" [data]="absenceSummary"
+          <canvas baseChart [chartType]="'doughnut'" [legend]="false" class="right-styledoughnut" [data]="absenceSummary"
             [colors]="absenceSummaryColors" [labels]="['Filled', 'UnFilled', 'No Sub Required']"
             [options]="chartOptions"></canvas>
           <div class="donut-inner-for-fill-rate">
@@ -87,7 +87,7 @@
     </div>
   </div>
   <div class="row">
-    <mat-tab-group>
+    <mat-tab-group [(selectedIndex)]="selectedTabIndex">
       <mat-tab label="Filled">
         <div class="m-30">
           <ngx-datatable class="material" [rows]="filledAbsenceDetails" [headerHeight]="50" [footerHeight]="50"
