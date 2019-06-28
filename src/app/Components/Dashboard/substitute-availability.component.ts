@@ -7,7 +7,6 @@ import 'fullcalendar-scheduler';
 import { AvailabilityService } from '../../Services/availability.service';
 import { MatDialog } from '@angular/material';
 
-
 @Component({
   selector: 'app-substitute-availability',
   templateUrl: 'substitute-availability.html',

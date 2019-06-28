@@ -9,5 +9,4 @@ export class SideNavService {
         this.isOpen = !this.isOpen;
         this.change.emit(this.isOpen);
     }
-
 }

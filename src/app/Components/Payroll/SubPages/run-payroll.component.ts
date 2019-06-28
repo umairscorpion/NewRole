@@ -98,36 +98,36 @@ export class RunPayroll implements OnInit {
 
     onExportingToCSV() {
         const title = 'Payroll Report';
-            const header = ["Employee Name", "Absence Id", "Reason", "Date", "Time", "District", "Status", "Substitute", "Notes", "Pay Rate", "Hours", "School"]
-            let workbook = new Workbook();
-            let worksheet = workbook.addWorksheet('Report');
-            let titleRow = worksheet.addRow([title]);
-            // Set font, size and style in title row.
-            titleRow.font = { name: 'Comic Sans MS', family: 4, size: 13, underline: 'none', bold: false };
-            // Blank Row
-            worksheet.addRow([]);
-            //Add row with current date
-            let subTitleRow = worksheet.addRow(['Date : ' + this.datePipe.transform(new Date(), 'medium')]);
-            worksheet.mergeCells('A1:D2');
-            //Add Header Row
-            let headerRow = worksheet.addRow(header);
-            // Cell Style : Fill and Border
-            headerRow.eachCell((cell, number) => {
-                cell.fill = {
-                    type: 'pattern',
-                    pattern: 'solid',
-                    fgColor: { argb: 'A1A1A3' },
-                    bgColor: { argb: 'A1A1A3' }
-                }
-                cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
-            });
-            this.allAbsencesInCurrentState.forEach(obj => {
-                let result = this.objToArray(obj);
-                worksheet.addRow(result);
-            });
-            workbook.xlsx.writeBuffer().then((data) => {
-                this.excelService.saveAsExcelFile(data, 'PayRollReport');
-            });
+        const header = ["Employee Name", "Absence Id", "Reason", "Date", "Time", "District", "Status", "Substitute", "Notes", "Pay Rate", "Hours", "School"]
+        let workbook = new Workbook();
+        let worksheet = workbook.addWorksheet('Report');
+        let titleRow = worksheet.addRow([title]);
+        // Set font, size and style in title row.
+        titleRow.font = { name: 'Comic Sans MS', family: 4, size: 13, underline: 'none', bold: false };
+        // Blank Row
+        worksheet.addRow([]);
+        //Add row with current date
+        let subTitleRow = worksheet.addRow(['Date : ' + this.datePipe.transform(new Date(), 'medium')]);
+        worksheet.mergeCells('A1:D2');
+        //Add Header Row
+        let headerRow = worksheet.addRow(header);
+        // Cell Style : Fill and Border
+        headerRow.eachCell((cell, number) => {
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'A1A1A3' },
+                bgColor: { argb: 'A1A1A3' }
+            }
+            cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
+        });
+        this.allAbsencesInCurrentState.forEach(obj => {
+            let result = this.objToArray(obj);
+            worksheet.addRow(result);
+        });
+        workbook.xlsx.writeBuffer().then((data) => {
+            this.excelService.saveAsExcelFile(data, 'PayRollReport');
+        });
     }
 
     masterToggle() {
@@ -165,7 +165,7 @@ export class RunPayroll implements OnInit {
         result.push(report.employeeName, report.absenceId, report.reason, report.startDate + " - " + report.endDate,
             report.startTime + "-" + report.endTime,
             report.districtName, report.statusTitle, report.substituteName, report.notes,
-             report.payRate, report.dailyHours, report.schoolName)
+            report.payRate, report.dailyHours, report.schoolName)
         return result;
     }
 }

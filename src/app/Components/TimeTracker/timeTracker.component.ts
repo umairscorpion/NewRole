@@ -133,13 +133,11 @@ export class TimeTrackerComponent implements OnInit {
                     details = details.filter((reportdetail: TimeClock) => reportdetail.employeeName.toLowerCase().includes(form.value.searchByName.toLowerCase()));
                 }
             }
-
             else if (+form.value.searchBy === 2) {
                 if (form.value.searchByName) {
                     details = details.filter((reportdetail: TimeClock) => reportdetail.schoolName.toLowerCase().includes(form.value.searchByName.toLowerCase()));
                 }
             }
-
             else {
                 if (form.value.searchByName) {
                     details = details.filter((reportdetail: TimeClock) => reportdetail.substituteName.toLowerCase().includes(form.value.searchByName.toLowerCase()));

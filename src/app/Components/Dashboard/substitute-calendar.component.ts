@@ -23,6 +23,7 @@ export class SubstituteCalendarComponent implements OnInit {
   todayTotalAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
   loginedUserRole = 0;
   availabilityData = [];
+
   constructor(
     private dialogRef: MatDialog,
     private availabilityService: AvailabilityService,
