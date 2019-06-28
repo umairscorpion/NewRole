@@ -507,6 +507,7 @@ export class HomeComponent implements OnInit {
             data: {
                 labels: ["M", "T", "W", "TH", "F"],
                 datasets: [{
+                    label: 'Absences By Week',
                     data: this.AbsencesByWeekDay,
                     backgroundColor: [
                         "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"
@@ -558,6 +559,7 @@ export class HomeComponent implements OnInit {
                 labels: ["English/LA", "History/SS", "Math", "Science", "P.E.", "Music", "Art", "Technology", "World Languages", "Career Tech", "Special Ed","Adult Ed"],
                 // labels: this.AbsenceBySubjectTitle,
                 datasets: [{
+                    label: 'Absences By Subject',
                     data: this.AbsenceBySubject,
                     backgroundColor: [
                         "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f","#3e95cd", "#8e5ea2","#3cba9f"
