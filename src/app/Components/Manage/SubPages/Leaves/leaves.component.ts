@@ -56,11 +56,6 @@ export class LeavesComponent implements OnInit {
         this.tabClicked = 0;
         this.GetLeaveRequests();
         this.getAllowances();
-        this.route.queryParams.subscribe((params: any) => {
-            if (params['Tab']) {
-                this.selectedTab = +params.Tab;
-            }
-        });
     }
 
     GetLeaveTypes(): void {

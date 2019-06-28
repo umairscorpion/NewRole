@@ -197,6 +197,7 @@ import { EventAddComponent } from './Components/Calendar/event-add/event-add.com
 import { SplashScreenComponent } from './Components/Dashboard/splash-screen/splash-screen.component';
 import { SettingsService } from './Services/settings.service';
 import { RoundPipe } from './Shared/pipe/round.pipe';
+import { DatePipe } from '../../node_modules/@angular/common';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -411,6 +412,7 @@ const customNotifierOptions: NotifierOptions = {
         SplashScreenComponent
     ],
     providers: [
+        DatePipe,
         UserService,
         SideNavService,
         DistrictService,
