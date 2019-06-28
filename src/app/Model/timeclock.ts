@@ -24,4 +24,6 @@ export class TimeClock extends Entity {
     timeClockId: number
     startTime: string;
     endTime: string;
+    totalBreakMinutes: number;
+    totalBreakTime:number;
 }

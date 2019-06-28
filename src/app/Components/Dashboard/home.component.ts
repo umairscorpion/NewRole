@@ -450,12 +450,12 @@ export class HomeComponent implements OnInit {
     }
 
     bindTotalAbsenceByGradeLevel(chartSummary: DashboardSummary) {
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].sixthGrade)
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].seventhGrade)
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].eighthGrade)
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].ninthGrade)
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].tenthGrade)
-        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].eleventhGrade)
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].sixthGrade);
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].seventhGrade);
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].eighthGrade);
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].ninthGrade);
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].tenthGrade);
+        this.TotalAbsenceByGradeLevel.push(chartSummary.absenceByGradeLevel[0].eleventhGrade);
         this.totalAbsenceByGradeLevel = new Chart('absencesByGradeLevel', {
             type: 'pie',
             data: {
@@ -494,7 +494,6 @@ export class HomeComponent implements OnInit {
                     },
                 }
             },
-            }
         });
     }
 
@@ -543,7 +542,7 @@ export class HomeComponent implements OnInit {
 
     bindAbsenceBySubject(chartSummary: DashboardSummary) {
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectEnglish);
-        this.AbsenceBySubject.push(chartSummary.absenceBySubject[1].subjectHistory);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectHistory);
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectMath);
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectScience);
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectPE);
