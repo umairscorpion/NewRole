@@ -83,40 +83,28 @@ export class SubstitutesComponent implements OnInit {
     this.substituteDataSource.filter = filterValue;
   }
 
-  // DeleteSubstitute(SelectedRow: any) {
-  //   var confirmResult = confirm('Are you sure you want to delete Substitute?');
-  //   if (confirmResult) {
-  //     this._districtService.delete('user/', SelectedRow.userId).subscribe((data: any) => {
-  //       this.notifier.notify('success', 'Deleted Successfully');
-  //       this.GetSustitutes();
-  //     },
-  //       error => this.msg = <any>error);
-  //   }
-  // }
-
   DeleteSubstitute(SelectedRow: any) {
-    
     swal.fire({
-        title: 'Delete',
-        text:
-            'Are you sure, you want to delete the selected Substitute?',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonClass: 'btn btn-danger',
-        cancelButtonClass: 'btn btn-success',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        buttonsStyling: false
+      title: 'Delete',
+      text:
+        'Are you sure, you want to delete the selected Substitute?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-danger',
+      cancelButtonClass: 'btn btn-success',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      buttonsStyling: false
     }).then(r => {
-        if (r.value) {
-          this._districtService.delete('user/', SelectedRow.userId).subscribe((data: any) => {
-            this.notifier.notify('success', 'Deleted Successfully');
-            this.GetSustitutes();
-          },
-            error => this.msg = <any>error);
-        }
+      if (r.value) {
+        this._districtService.delete('user/', SelectedRow.userId).subscribe((data: any) => {
+          this.notifier.notify('success', 'Deleted Successfully');
+          this.GetSustitutes();
+        },
+          error => this.msg = <any>error);
+      }
     });
-}
+  }
 
   EditSubstitute(SelectedRow: any) {
     this.router.navigate(['/manage/substitutes/addSubstitute'], { queryParams: { Id: SelectedRow.userId } });

@@ -61,16 +61,19 @@ export class AbsenceSummary extends Entity {
   weekDayWednesday: number;
   weekDayThursday: number;
   weekDayFriday: number;
-  subjectMath: number;
-  subjectScience: number;
-  subjectReading: number;
-  subjectSocial: number;
-  subjectEnglish: number;
-  subjectSpecial: number;
-  subjectPhysical: number;
-  subjectCareer: number;
-  subjectArt: number;
   totalAbsence: number;
   firstName: string;
   lastName: string;
+  subjectEnglish: number;
+  subjectHistory: number;
+  subjectMath: number;
+  subjectScience: number;
+  subjectPE: number;
+  subjectMusic: number;
+  subjectArt: number;
+  subjectTechnology: number;
+  subjectWorld: number;
+  subjectCareer: number;
+  subjectSpecial: number;
+  subjectAdult: number;
 }

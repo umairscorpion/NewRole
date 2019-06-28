@@ -28,8 +28,13 @@ export class LeaveBalanceComponent implements OnInit {
     private notifier: NotifierService;
     position: FormGroup;
     msg: string;
-    constructor(private fb: FormBuilder, notifier: NotifierService, private dataContext: DataContext,
-        private userSession: UserSession, private employeeService: EmployeeService) {
+
+    constructor(
+        private fb: FormBuilder,
+        notifier: NotifierService,
+        private dataContext: DataContext,
+        private userSession: UserSession,
+        private employeeService: EmployeeService) {
         this.notifier = notifier;
     }
 
@@ -95,7 +100,7 @@ export class LeaveBalanceComponent implements OnInit {
 
     ngAfterViewInit() {
         this.employeeLeaveBalance.paginator = this.paginator;
-      }
+    }
 
     generateCSV() {
         var configuration = {

@@ -56,7 +56,12 @@
 
                             <ng-container matColumnDef="Clockout">
                                 <mat-header-cell *matHeaderCellDef> Clock Out </mat-header-cell>
-                                <mat-cell *matCellDef="let timeClock"> {{timeClock.clockOutTime | convertFrom24HourTo12HourFormat}} </mat-cell>
+                                <mat-cell *matCellDef="let timeClock"> {{timeClock.clockOutTime == "00:00:00" ? "----" : (timeClock.clockOutTime | convertFrom24HourTo12HourFormat)}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="activity">
+                                <mat-header-cell *matHeaderCellDef> Activity </mat-header-cell>
+                                <mat-cell *matCellDef="let timeClock"> {{timeClock.activity}} </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="Length">
@@ -67,7 +72,8 @@
                             <ng-container matColumnDef="Break">
                                 <mat-header-cell *matHeaderCellDef> Break </mat-header-cell>
                                 <mat-cell *matCellDef="let timeClock">
-                                    {{ timeClock.status == 0 ? 'No Break' : 'Break' }}
+                                    <!-- {{ timeClock.status == 0 ? 'No Break' : 'Break' }} -->
+                                    {{ timeClock.totalBreakTime == 0 ? 'No Break' : timeClock.totalBreakTime + ' min' }}
                                 </mat-cell>
                             </ng-container>
                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -87,13 +93,13 @@
                                     <td>
                                         <b>Without Breaks:</b>
                                     </td>
-                                    <td>{{withoutBreaks}}</td>
+                                    <td>{{withoutBreakTime + ' min'}}</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <b>Breaks:</b>
                                     </td>
-                                    <td>{{totalBreaks}}</td>
+                                    <td>{{totalBreaksForTimeSheet + ' min'}}</td>
                                 </tr>
                             </table>
                         </div>

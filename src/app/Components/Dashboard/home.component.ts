@@ -541,7 +541,7 @@ export class HomeComponent implements OnInit {
 
     bindAbsenceBySubject(chartSummary: DashboardSummary) {
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectEnglish);
-        this.AbsenceBySubject.push(chartSummary.absenceBySubject[1].subjectHistory);
+        this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectHistory);
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectMath);
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectScience);
         this.AbsenceBySubject.push(chartSummary.absenceBySubject[0].subjectPE);

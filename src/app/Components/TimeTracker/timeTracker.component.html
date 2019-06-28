@@ -101,7 +101,7 @@
 
                     <ng-container matColumnDef="Break">
                         <mat-header-cell *matHeaderCellDef> Break </mat-header-cell>
-                        <mat-cell *matCellDef="let timeTracker"> {{ timeTracker.status == 0 ? 'No Break' : 'Break' }}
+                        <mat-cell *matCellDef="let timeTracker"> {{timeTracker.totalBreakTime == 0 ? 'No Break' : timeTracker.totalBreakTime + ' min' }}
                         </mat-cell>
                     </ng-container>
 
