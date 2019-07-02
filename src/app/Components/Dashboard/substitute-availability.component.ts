@@ -6,7 +6,8 @@ import 'fullcalendar';
 import 'fullcalendar-scheduler';
 import { AvailabilityService } from '../../Services/availability.service';
 import { MatDialog } from '@angular/material';
-
+import { environment } from 'src/environments/environment';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-substitute-availability',
@@ -22,7 +23,8 @@ export class SubstituteAvailabilityComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
-    private availabilityService: AvailabilityService) {
+    private availabilityService: AvailabilityService,
+    private sanitizer: DomSanitizer) {
     const curr = new Date;
     const first = curr.getDate() - (curr.getDay() - 1);
     const last = first + 4;
@@ -126,8 +128,7 @@ export class SubstituteAvailabilityComponent implements OnInit {
           resources: this.resources,
           events: result,
           resourceRender: function (resourceObj, labelTds, bodyTds) {
-            // tslint:disable-next-line:max-line-length
-            labelTds.prepend(`<img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" width="30" height="30" class="substitute-availability-profile-image">`);
+            labelTds.prepend('<img [src]="pp" width="30" height="30" class="substitute-availability-profile-image">');
           },
           eventRender: (event, element) => {
             element.find('.fc-content').html('<div class="substitute-is-' + event.title.toLowerCase() + '"></div>');
@@ -149,5 +150,12 @@ export class SubstituteAvailabilityComponent implements OnInit {
       return null;
     });
     return resArr;
+  }
+
+  getImage(imageName: string) {
+    if (imageName && imageName.length > 0) {
+      let pp = this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
+      return pp;
+    }
   }
 }

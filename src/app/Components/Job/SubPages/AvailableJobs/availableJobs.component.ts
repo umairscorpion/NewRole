@@ -12,6 +12,7 @@ import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
 import swal from 'sweetalert2';
 import { ActivatedRoute } from '../../../../../../node_modules/@angular/router';
+import { AvailabilityService } from 'src/app/Services/availability.service';
 
 @Component({
     selector: 'available-jobs',
@@ -54,7 +55,8 @@ export class AvailableJobsComponent implements OnInit {
         private _communicationService: CommunicationService,
         private sanitizer: DomSanitizer,
         notifier: NotifierService,
-        private activatedRoute: ActivatedRoute) {
+        private activatedRoute: ActivatedRoute,
+        private availabilityService: AvailabilityService,) {
         this.notifier = notifier;
     }
 
@@ -214,7 +216,7 @@ export class AvailableJobsComponent implements OnInit {
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
         let endtimetemp = moment(SelectedRow.endTime, 'h:mma');
         let endtime = moment(endtimetemp).format('h:mma');
-
+        
         if (currentDate == startdate) {
             if (currentTime > endtime) {
                 this.notifier.notify('error', 'Job has ended, you cannot accept it.');

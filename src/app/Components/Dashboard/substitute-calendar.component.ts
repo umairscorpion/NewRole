@@ -23,6 +23,7 @@ export class SubstituteCalendarComponent implements OnInit {
   todayTotalAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
   loginedUserRole = 0;
   availabilityData = [];
+
   constructor(
     private dialogRef: MatDialog,
     private availabilityService: AvailabilityService,
@@ -70,16 +71,18 @@ export class SubstituteCalendarComponent implements OnInit {
         if (this.loginedUserRole !== 4) { // Substitute = 4
           return;
         }
+        
         if (end.isBefore(moment().add(1, 'hour').format())) {
           $('#calendar').fullCalendar('unselect');
           alert('You can not set unavailability in past dates !');
           return false;
         }
+        let forEndDate = moment(end).subtract(1, 'day').format();
         const availability = new UserAvailability();
         availability.startDate = moment(start).format('YYYY-MM-DD');
         availability.startTime = moment(start).format('hh:mm A');
-        availability.endDate = moment(end).format('YYYY-MM-DD');
-        availability.endTime = moment(end).format('hh:mm A');
+        availability.endDate = moment(forEndDate).format('YYYY-MM-DD');
+        availability.endTime = moment(forEndDate).format('hh:mm A');
 
         if (this.availabilityData && this.availabilityData.length > 0) {
           const booked = this.availabilityData.filter(t => moment(t['start']).format('YYYY-MM-DD') === availability.startDate);
@@ -122,7 +125,6 @@ export class SubstituteCalendarComponent implements OnInit {
                   data: availability
                 }
               );
-              this.doOpen = false;
               dialogRef.afterClosed().subscribe(result => {
                 if (result) {
                   console.log({ result });

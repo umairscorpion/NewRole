@@ -101,7 +101,9 @@
 
                     <ng-container matColumnDef="Break">
                         <mat-header-cell *matHeaderCellDef> Break </mat-header-cell>
-                        <mat-cell *matCellDef="let timeTracker"> {{timeTracker.totalBreakTime == 0 ? 'No Break' : timeTracker.totalBreakTime + ' min' }}
+                        <!-- <mat-cell *matCellDef="let timeTracker"> {{timeTracker.totalBreakTime == 0 ? 'No Break' : timeTracker.totalBreakTime + ' min' }}
+                        </mat-cell> -->
+                        <mat-cell *matCellDef="let timeTracker"> {{timeTracker.hoursAndMinutes == null ? 'No Break' : timeTracker.hoursAndMinutes}}
                         </mat-cell>
                     </ng-container>
 
@@ -126,6 +128,9 @@
                     <mat-header-row *matHeaderRowDef="displayedColumnsForTimeTracker"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumnsForTimeTracker;"></mat-row>
                 </mat-table>
+                <div class="row mt-30" *ngIf="noDataMessage">
+                    <div class="alert-warning m-20 p-20">No data to display.</div>
+                  </div>
                 <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
                 </mat-paginator>
             </div>

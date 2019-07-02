@@ -98,6 +98,15 @@ export class PositionsComponent implements OnInit {
     // }
 
     deletePosition(id: number): void {
+<<<<<<< HEAD
+        var confirmResult = confirm('Are you sure you want to delete position?');
+        if (confirmResult) {
+            this._districtService.delete('user/deletePosition/', id).subscribe((response: any) => {
+                this.notifier.notify('success', 'Deleted Successfully');
+                this.getpositions();
+            });
+        }
+=======
     
         swal.fire({
             title: 'Delete',
@@ -113,12 +122,13 @@ export class PositionsComponent implements OnInit {
         }).then(r => {
             if (r.value) {
                 this._districtService.delete('user/deletePosition/', id).subscribe((response: any) => {
-                this.notifier.notify('success', 'Deleted Successfully');
-                this.getpositions();
+                    this.notifier.notify('success', 'Deleted Successfully');
+                    this.getpositions();
               },
                 error => this.msg = <any>error);
             }
         });
+>>>>>>> 2eee0d094c4dcd3f7945c5f86ed345b916a13b84
     }
 
 }

@@ -27,6 +27,7 @@ export class TimeTrackerComponent implements OnInit {
     totalMinutes: any;
     totalBreaks: any;
     withoutBreaks: any;
+    noDataMessage = true;
     date: string = moment().format('dddd, MM/DD/YYYY');
     time: string = moment().format('h:mma');
     displayedColumnsForTimeTracker: string[] = ['Date', 'Employee', 'Location', 'Clockin', 'Clockout', 'Duration', 'Break', 'Action'];
@@ -133,13 +134,11 @@ export class TimeTrackerComponent implements OnInit {
                     details = details.filter((reportdetail: TimeClock) => reportdetail.employeeName.toLowerCase().includes(form.value.searchByName.toLowerCase()));
                 }
             }
-
             else if (+form.value.searchBy === 2) {
                 if (form.value.searchByName) {
                     details = details.filter((reportdetail: TimeClock) => reportdetail.schoolName.toLowerCase().includes(form.value.searchByName.toLowerCase()));
                 }
             }
-
             else {
                 if (form.value.searchByName) {
                     details = details.filter((reportdetail: TimeClock) => reportdetail.substituteName.toLowerCase().includes(form.value.searchByName.toLowerCase()));
@@ -147,6 +146,14 @@ export class TimeTrackerComponent implements OnInit {
             }
             this.timeTrackerDetail.data = details;
             this.allTimeTrackerDataInCurrentState = details;
+            if(this.timeTrackerDetail.data.length == 0)
+            {
+                this.noDataMessage = true;
+            }
+            else
+            {
+                this.noDataMessage = false;
+            }
         });
     }
 
