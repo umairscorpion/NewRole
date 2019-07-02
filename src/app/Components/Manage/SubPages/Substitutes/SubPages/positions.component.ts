@@ -7,6 +7,7 @@ import { NotifierService } from 'angular-notifier';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PositionComponent } from './popups/position-detail.popup.component';
+import swal from 'sweetalert2';
 
 @Component({
     selector: 'position-table',
@@ -86,14 +87,38 @@ export class PositionsComponent implements OnInit {
         });
     }
 
+    // deletePosition(id: number): void {
+    //     var confirmResult = confirm('Are you sure you want to delete position?');
+    //     if (confirmResult) {
+    //         this._districtService.delete('user/deletePosition/', id).subscribe((response: any) => {
+    //                 this.notifier.notify('success', 'Deleted Successfully');
+    //                 this.getpositions();
+    //         });
+    //     }
+    // }
+
     deletePosition(id: number): void {
-        var confirmResult = confirm('Are you sure you want to delete position?');
-        if (confirmResult) {
-            this._districtService.delete('user/deletePosition/', id).subscribe((response: any) => {
+    
+        swal.fire({
+            title: 'Delete',
+            text:
+                'Are you sure you want to delete position?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+        }).then(r => {
+            if (r.value) {
+                this._districtService.delete('user/deletePosition/', id).subscribe((response: any) => {
                 this.notifier.notify('success', 'Deleted Successfully');
                 this.getpositions();
-            });
-        }
+              },
+                error => this.msg = <any>error);
+            }
+        });
     }
 
 }

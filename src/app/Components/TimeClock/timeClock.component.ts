@@ -26,9 +26,20 @@ export class TimeClockComponent implements OnInit {
     totalMinutes: any;
     totalBreaks: any;
     withoutBreaks: any;
+    noDataMessage = true;
+    totalTimeInHours: any;
+    totalTimeInMinutes: any;
+    totalBreakTimeInHours: any;
+    totalBreakTimeInMinutes: any;
+
+    totalWithoutBreakTimeInHours: any;
+    totalWithoutBreakTimeInMinutes: any;
+
+    totalLength:any;
+
     date: string = moment().format('dddd, MM/DD/YYYY');
     time: string = moment().format('h:mma');
-    displayedColumns = ['Date', 'Clockin', 'Clockout', 'activity', 'Length', 'Break'];
+    displayedColumns = ['Date', 'Clockin', 'Clockout','activity', 'Length', 'Break','Status'];
     msg: string;
     indLoading: boolean = false;
     modalTitle: string;
@@ -110,6 +121,7 @@ export class TimeClockComponent implements OnInit {
                 this.timeClockService.return('Time/Return', this.userId).subscribe((respose: any) => {
                     if (respose == 1) {
                         this.notifier.notify('success', 'Return Successfully.');
+                        this.GetTimeClockDataWithFilter();
                     }
                 },
                     (err: HttpErrorResponse) => {
@@ -173,6 +185,16 @@ export class TimeClockComponent implements OnInit {
                 this.notifier.notify('error', 'Please Clock In First.');
                 this.GetTimeClockDataWithFilter();
             }
+            else if (respose == null)
+            {
+                this.notifier.notify('error', 'Please Clock In First.');
+                this.GetTimeClockDataWithFilter();
+            }
+            else if (respose == 'Break')
+            {
+                this.notifier.notify('error', 'Already On Break.');
+                this.GetTimeClockDataWithFilter();
+            }
             else {
                 this.timeClockService.clockout('Time/Clockout', this.userId).subscribe((respose: any) => {
                     if (respose == 1) {
@@ -205,11 +227,28 @@ export class TimeClockComponent implements OnInit {
         filters.endDate = moment(new Date()).toISOString();
         this.timeClockService.getTimeClockSummary(filters).subscribe((data: TimeClock[]) => {
             this.timeClockDetail.data = data;
+            if(this.timeClockDetail.data.length == 0)
+            {
+                this.noDataMessage = true;
+            }
+            else
+            {
+                this.noDataMessage = false;
+            }
             this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
             this.totalBreaksForTimeSheet = data.map((t: TimeClock) => t.totalBreakTime).reduce((acc, value) => acc + value, 0);
             this.withoutBreakTime = this.totalMinutes - this.totalBreaksForTimeSheet;
-            this.totalBreaks = data.filter((t: TimeClock) => t.status === 1).length;
-            this.withoutBreaks = data.filter((t: TimeClock) => t.status === 0).length;
+            
+            this.totalTimeInHours = (this.totalMinutes/60);
+            this.totalTimeInMinutes = (this.totalMinutes%60);
+
+            this.totalBreakTimeInHours = (this.totalBreaksForTimeSheet/60);
+            this.totalBreakTimeInMinutes = (this.totalBreaksForTimeSheet%60);
+
+            this.totalWithoutBreakTimeInHours = (this.withoutBreakTime/60);
+            this.totalWithoutBreakTimeInMinutes = (this.withoutBreakTime%60);
+            // this.totalBreaks = data.filter((t: TimeClock) => t.status === 1).length;
+            // this.withoutBreaks = data.filter((t: TimeClock) => t.status === 0).length;
         },
             error => this.msg = <any>error);
     }
@@ -226,8 +265,8 @@ export class TimeClockComponent implements OnInit {
             this.timeClockService.getTimeClockSummary(filters).subscribe((data: TimeClock[]) => {
                 this.timeClockDetail.data = data;
                 this.totalMinutes = data.map((t: TimeClock) => t.totalMinutes).reduce((acc, value) => acc + value, 0);
-                this.totalBreaks = data.filter((t: TimeClock) => t.status === 1).length;
-                this.withoutBreaks = data.filter((t: TimeClock) => t.status === 0).length;
+                // this.totalBreaks = data.filter((t: TimeClock) => t.status === 1).length;
+                // this.withoutBreaks = data.filter((t: TimeClock) => t.status === 0).length;
 
             },
                 error => this.msg = <any>error);
