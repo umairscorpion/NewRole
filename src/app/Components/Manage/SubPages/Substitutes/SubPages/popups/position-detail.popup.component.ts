@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { DistrictService } from '../../../../../../Service/Manage/district.service';
 import { UserSession } from '../../../../../../Services/userSession.service';
@@ -12,8 +12,13 @@ import { UserSession } from '../../../../../../Services/userSession.service';
 export class PositionComponent implements OnInit {
     position: FormGroup;
     msg: string;
-    constructor(private dialogRef: MatDialogRef<PositionComponent>, private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any,
-        private districtService: DistrictService, private userSession: UserSession) {
+
+    constructor(
+        private dialogRef: MatDialogRef<PositionComponent>, 
+        private fb: FormBuilder, 
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        private districtService: DistrictService, 
+        private userSession: UserSession) {
     }
     
     onCloseDialog() {
@@ -49,5 +54,4 @@ export class PositionComponent implements OnInit {
             }
         }
     }
-
 }

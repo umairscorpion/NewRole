@@ -39,7 +39,11 @@ export class TimeClockComponent implements OnInit {
 
     date: string = moment().format('dddd, MM/DD/YYYY');
     time: string = moment().format('h:mma');
+<<<<<<< HEAD
+    displayedColumns = ['Date', 'Clockin', 'Clockout', 'activity', 'Length', 'Break'];
+=======
     displayedColumns = ['Date', 'Clockin', 'Clockout','activity', 'Length', 'Break','Status'];
+>>>>>>> 2eee0d094c4dcd3f7945c5f86ed345b916a13b84
     msg: string;
     indLoading: boolean = false;
     modalTitle: string;

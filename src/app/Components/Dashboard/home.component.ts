@@ -315,7 +315,6 @@ export class HomeComponent implements OnInit {
         this.previousDates.push(this.previousDateMinusTwo);
         this.previousDates.push(this.previousDateMinusOne);
 
-
         this.filledunfilledAbsence = new Chart('filledunfilledAbsence', {
             type: 'bar',
             data: {
@@ -459,7 +458,7 @@ export class HomeComponent implements OnInit {
         this.totalAbsenceByGradeLevel = new Chart('absencesByGradeLevel', {
             type: 'pie',
             data: {
-                labels: ['6th','7th','8th','9th','10th','11th'],
+                labels: ['6th', '7th', '8th', '9th', '10th', '11th'],
                 datasets: [{
                     data: this.TotalAbsenceByGradeLevel,
                     backgroundColor: [
@@ -556,13 +555,13 @@ export class HomeComponent implements OnInit {
         this.absenceBySubject = new Chart('absenceBySubject', {
             type: 'horizontalBar',
             data: {
-                labels: ["English/LA", "History/SS", "Math", "Science", "P.E.", "Music", "Art", "Technology", "World Languages", "Career Tech", "Special Ed","Adult Ed"],
+                labels: ["English/LA", "History/SS", "Math", "Science", "P.E.", "Music", "Art", "Technology", "World Languages", "Career Tech", "Special Ed", "Adult Ed"],
                 // labels: this.AbsenceBySubjectTitle,
                 datasets: [{
                     label: 'Absences By Subject',
                     data: this.AbsenceBySubject,
                     backgroundColor: [
-                        "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f","#3e95cd", "#8e5ea2","#3cba9f"
+                        "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f", "#3e95cd", "#8e5ea2", "#3cba9f"
                     ],
                     borderColor: [
 
@@ -626,7 +625,7 @@ export class HomeComponent implements OnInit {
         swal.fire({
             title: 'Approve',
             text:
-              'Are you sure, you want to Approve the selected Request?',
+                'Are you sure, you want to Approve the selected Request?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonClass: 'btn btn-danger',
@@ -634,15 +633,15 @@ export class HomeComponent implements OnInit {
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
             buttonsStyling: false
-          }).then(r => {
+        }).then(r => {
             if (r.value) {
                 this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
                     this.GetLeaveRequests();
                     this.notifier.notify('success', 'Approved Successfully.');
                 },
-                error => this.msg = <any>error);
+                    error => this.msg = <any>error);
             }
-          });
+        });
     }
 
     onDenyClick(leaveRequestId: number, absenceId: string) {
@@ -656,7 +655,7 @@ export class HomeComponent implements OnInit {
         swal.fire({
             title: 'Deny',
             text:
-              'Are you sure, you want to Deny the selected Request?',
+                'Are you sure, you want to Deny the selected Request?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonClass: 'btn btn-danger',
@@ -664,15 +663,15 @@ export class HomeComponent implements OnInit {
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
             buttonsStyling: false
-          }).then(r => {
+        }).then(r => {
             if (r.value) {
                 this.absenceService.post('Leave/updateLeaveRequestStatus', leaveStatusModel).subscribe((data: any) => {
                     this.GetLeaveRequests();
                     this.notifier.notify('success', 'Denied Successfully.');
-              },
-                error => this.msg = <any>error);
+                },
+                    error => this.msg = <any>error);
             }
-          });
+        });
     }
 
     openDailyReportPage() {

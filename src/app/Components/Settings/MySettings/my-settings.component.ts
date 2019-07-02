@@ -112,22 +112,6 @@ export class MySettingComponent implements OnInit {
                 this.notifier.notify('error', err.error.error_description);
             });
     }
-    // SaveCategories(Categories: any): void {
-    //     for (let category of Categories.options._results) {
-    //         let model = {
-    //             OrganizationId: category.value,
-    //             IsEnabled: category.selected
-    //         }
-
-    //         this._dataContext.Patch('user/updateUserCategories', model).subscribe((data: any) => {
-    //         },
-    //             (err: HttpErrorResponse) => {
-    //                 this.notifier.notify('error', err.error.error_description);
-    //             });
-    //     }
-    //     this.notifier.notify('success', 'Updated Successfully');
-
-    // }
 
     SaveCategories(Categories: any): void {
         
@@ -167,22 +151,6 @@ export class MySettingComponent implements OnInit {
     onChangeText(event) {
         event.textAlert = !event.textAlert;
     }
-
-    // SavePreferredSchoolSettings(AllSchools: any): void {
-    //     for (let School of AllSchools.options._results) {
-    //         let model = {
-    //             OrganizationId: School.value,
-    //             IsEnabled: School.selected,
-    //             UserId: this._userSession.getUserId()
-    //         }
-    //         this._dataContext.Patch('user/UpdateEnabledSchools', model).subscribe((data: any) => {
-    //         },
-    //             (err: HttpErrorResponse) => {
-    //                 this.notifier.notify('error', err.error.error_description);
-    //             });
-    //     }
-    //     this.notifier.notify('success', 'Updated Successfully');
-    // }
 
     SavePreferredSchoolSettings(AllSchools: any): void {
         let data = this.schoolsForNotification.data;
