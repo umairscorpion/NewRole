@@ -38,6 +38,7 @@ export class AbsenceService extends RestService<LeaveType> {
   }
 
   getTopTenTeachers() {
+    
     return this.httpClient
       .get<AbsenceSummary[]>(environment.apiUrl + "/absence/getTopTenTeachers")
       .pipe(catchError(this.errorHandler.handleError),
