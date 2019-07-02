@@ -9,7 +9,6 @@ import { NotifierService } from 'angular-notifier';
     templateUrl: 'schoolSubList.component.html',
     styleUrls: ['schoolSubList.component.scss']
 })
-
 export class SchoolSubListComponent implements OnInit {
     @ViewChild('subzz') selectionlist: MatSelectionList;
     @ViewChild('blockedsubzz') blockedselectionlist: MatSelectionList;
@@ -21,11 +20,12 @@ export class SchoolSubListComponent implements OnInit {
     selectedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
     blockedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
     selectedBlockedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
+
     constructor(
-        private dataContext: DataContext, 
-        notifier: NotifierService) { 
-            this.notifier = notifier; 
-        }
+        private dataContext: DataContext,
+        notifier: NotifierService) {
+        this.notifier = notifier;
+    }
 
     ngOnInit(): void {
         this.getSustitutes();

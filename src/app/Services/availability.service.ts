@@ -37,4 +37,8 @@ export class AvailabilityService extends RestService<UserAvailability> {
   createEvent(model: any): any {
     return this.httpClient.post(`${environment.apiUrl}event`, model);
   }
+
+  CheckSubstituteAvailability(model: any): any {
+    return this.httpClient.post(`${environment.apiUrl}availability/checkSubstituteAvailability`, model);
+  }
 }

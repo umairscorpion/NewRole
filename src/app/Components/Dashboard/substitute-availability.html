@@ -31,7 +31,7 @@
                 <div class="media">
                   <div class="media-body">
                     <h5 class="subtitle">
-                      <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" width="30"
+                      <img [src]="getImage(item.profilePicUrl)" width="30"
                         height="30">&nbsp;&nbsp;{{ item.title }}
                     </h5>
                   </div>

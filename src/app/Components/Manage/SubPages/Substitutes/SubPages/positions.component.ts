@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { IDistrict } from '../../../../../Model/Manage/district';
 import { DistrictService } from '../../../../../Service/Manage/district.service';
@@ -27,14 +27,14 @@ export class PositionsComponent implements OnInit {
     msg: string;
 
     constructor(
-        private _districtService: DistrictService, 
+        private _districtService: DistrictService,
         public dialog: MatDialog,
         notifier: NotifierService,
-        public sanitizer: DomSanitizer, 
-        private _userSession: UserSession, 
+        public sanitizer: DomSanitizer,
+        private _userSession: UserSession,
         private fb: FormBuilder) {
-            this.notifier = notifier;
-        }
+        this.notifier = notifier;
+    }
 
     ngOnInit(): void {
         this.intializeForms();
@@ -56,7 +56,7 @@ export class PositionsComponent implements OnInit {
     getpositions(): void {
         let DistrictId = this._userSession.getUserDistrictId();
         this._districtService.getById('user/positions', DistrictId).subscribe((data: any) => {
-            this.positionsDataSource.data = data; 
+            this.positionsDataSource.data = data;
         },
             error => this.msg = <any>error);
     }
@@ -70,7 +70,7 @@ export class PositionsComponent implements OnInit {
     onOpenPositionPopup() {
         const dialogRef = this.dialog.open(PositionComponent, {
             panelClass: 'position-details-dialog'
-        }); 
+        });
         dialogRef.afterClosed().subscribe(result => {
             this.getpositions();
         });
@@ -80,7 +80,7 @@ export class PositionsComponent implements OnInit {
         const dialogRef = this.dialog.open(PositionComponent, {
             data: position,
             panelClass: 'position-details-dialog'
-        }); 
+        });
         dialogRef.afterClosed().subscribe(result => {
             this.getpositions();
         });
@@ -90,8 +90,8 @@ export class PositionsComponent implements OnInit {
         var confirmResult = confirm('Are you sure you want to delete position?');
         if (confirmResult) {
             this._districtService.delete('user/deletePosition/', id).subscribe((response: any) => {
-                    this.notifier.notify('success', 'Deleted Successfully');
-                    this.getpositions();
+                this.notifier.notify('success', 'Deleted Successfully');
+                this.getpositions();
             });
         }
     }
