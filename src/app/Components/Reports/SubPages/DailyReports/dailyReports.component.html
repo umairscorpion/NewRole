@@ -88,6 +88,11 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
+            <ngx-datatable-column [width]="200" name="ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
+              <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                <div class="ellipsis">{{ row['absenceId'] }}</div>
+              </ng-template>
+            </ngx-datatable-column>
             <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
@@ -146,6 +151,11 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
+            <ngx-datatable-column [width]="200" name="ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
+              <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                <div class="ellipsis">{{ row['absenceId'] }}</div>
+              </ng-template>
+            </ngx-datatable-column>
             <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
@@ -192,6 +202,11 @@
                     : 'N/A'}}, {{row['grade'] != null ? row['grade'] : 'N/A'}}</span>
                   <br>
                 </div>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [width]="200" name="ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
+              <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                <div class="ellipsis">{{ row['absenceId'] }}</div>
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">

@@ -27,19 +27,19 @@
                     <tr *ngFor="let time of timeTracker">
                         <td>
                             <mat-form-field>
-                                <input matInput [matDatepicker]="StartDatePicker" placeholder="Date" [(ngModel)]="time.clockInDate">
+                                <input matInput [matDatepicker]="StartDatePicker" placeholder="Date" [(ngModel)]="time.clockInDate" disabled>
                                 <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
                                 <mat-datepicker #StartDatePicker></mat-datepicker>
                             </mat-form-field>
                         </td>
                         <td>
                             <mat-form-field>
-                                <input matInput type="time" placeholder="Clock In Time" [(ngModel)]="time.startTime">
+                                <input matInput type="time" placeholder="Clock In Time" [(ngModel)]="time.clockInTime">
                             </mat-form-field>
                         </td>
                         <td>
                             <mat-form-field>
-                                <input matInput type="time" placeholder="Clock Out Time" [(ngModel)]="time.endTime">
+                                <input matInput type="time" placeholder="Clock Out Time" [(ngModel)]="time.clockOutTime">
                             </mat-form-field>
                         </td>
                         <td>

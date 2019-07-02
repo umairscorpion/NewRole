@@ -12,7 +12,7 @@ export class TimeClock extends Entity {
     startDate: Date | string
     endDate: Date | string
     activity: string
-    status: number
+    status: string
     totalHours: number
     lastName: string
     totalBreaks: number
@@ -26,4 +26,5 @@ export class TimeClock extends Entity {
     endTime: string;
     totalBreakMinutes: number;
     totalBreakTime:number;
+    hoursAndMinutes: string;
 }
