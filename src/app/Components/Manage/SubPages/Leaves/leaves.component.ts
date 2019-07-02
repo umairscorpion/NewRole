@@ -45,6 +45,7 @@ export class LeavesComponent implements OnInit {
         private router: Router,
         private absenceService: AbsenceService,
         notifier: NotifierService,
+        private activatedRoute: ActivatedRoute,
         public dialog: MatDialog,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer) {
@@ -53,6 +54,11 @@ export class LeavesComponent implements OnInit {
 
     ngOnInit(): void {
         this.GetLeaveTypes();
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params.Tab) {
+                this.selectedTab = 1;
+            }
+        })
         this.tabClicked = 0;
         this.GetLeaveRequests();
         this.getAllowances();

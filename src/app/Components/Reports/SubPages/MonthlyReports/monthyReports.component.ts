@@ -86,7 +86,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         });
     }
 
-    onSubmit($event) {
+    onSubmitt($event) {
         this.date = moment($event.formValue.fromDate).format('dddd, MM/DD/YYYY');
         this.reportService.getSummary($event.formValue).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
@@ -128,6 +128,38 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
             workbook.xlsx.writeBuffer().then((data) => {
                 this.excelService.saveAsExcelFile(data, 'Report.xlsx');
             });
+            this.loadReportSummary();
+        }      
+    }
+
+    onSubmit($event) {
+        this.date = moment($event.formValue.fromDate).format('dddd, MM/DD/YYYY');
+        this.reportService.getSummary($event.formValue).subscribe((summary: ReportSummary[]) => {
+            this.resetChart();
+            this.bindChart(summary[0]);
+        });
+        this.reportService.getDetail($event.formValue).subscribe((details: ReportDetail[]) => {
+            this.allAbsencesInCurrentState = details;
+            this.bindDetails(details);
+        });
+        if ($event.actionName == "print") {
+            this.allAbsencesInCurrentState = this.allAbsencesInCurrentState.filter(function (absence) {
+                delete absence.substituteId;
+                delete absence.absencePosition;
+                delete absence.employeeTypeTitle;
+                delete absence.grade;
+                delete absence.subject;
+                delete absence.postedById;
+                delete absence.statusId;
+                delete absence.anyAttachment;
+                delete absence.fileContentType;
+                delete absence.substituteRequired;
+                delete absence.durationType;
+                delete absence.statusDate;
+                delete absence.substituteProfilePicUrl;
+                return true;
+            });
+            this.excelService.exportAsExcelFile(this.allAbsencesInCurrentState, 'Report');
             this.loadReportSummary();
         }      
     }
