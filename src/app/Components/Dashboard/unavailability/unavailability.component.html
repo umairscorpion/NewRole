@@ -60,7 +60,8 @@
           </div>
           <div class="col-md-2 pr-0 m-5" *ngIf="time">
             <mat-form-field class="ht-30">
-              <input type="text" placeholder="Start Time" matInput formControlName="startTime" [matAutocomplete]="startTimePicker" (input)="timeChanged('startTime')" />
+              <input type="text" placeholder="Start Time" matInput formControlName="startTime" [matAutocomplete]="startTimePicker" (input)="timeChanged('startTime')"
+              />
               <mat-autocomplete #startTimePicker="matAutocomplete" (optionSelected)="timeChanged('startTime')">
                 <mat-option *ngFor="let option of times" [value]="option">
                   {{ option }}
@@ -72,7 +73,8 @@
 
           <div class="col-md-2 pr-0 m-5" *ngIf="time">
             <mat-form-field class="ht-30">
-              <input type="text" placeholder="End Time" matInput formControlName="endTime" [matAutocomplete]="endTimePicker" (input)="timeChanged('endTime')" />
+              <input type="text" placeholder="End Time" matInput formControlName="endTime" [matAutocomplete]="endTimePicker" (input)="timeChanged('endTime')"
+              />
               <mat-autocomplete #endTimePicker="matAutocomplete" (optionSelected)="timeChanged('endTime')">
                 <mat-option *ngFor="let option of endTimes" [value]="option">
                   {{ option }}

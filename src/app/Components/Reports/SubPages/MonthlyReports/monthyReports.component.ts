@@ -86,7 +86,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         });
     }
 
-    onSubmitt($event) {
+    onSubmit($event) {
         this.date = moment($event.formValue.fromDate).format('dddd, MM/DD/YYYY');
         this.reportService.getSummary($event.formValue).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
@@ -132,7 +132,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         }      
     }
 
-    onSubmit($event) {
+    onSubmitt($event) {
         this.date = moment($event.formValue.fromDate).format('dddd, MM/DD/YYYY');
         this.reportService.getSummary($event.formValue).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
