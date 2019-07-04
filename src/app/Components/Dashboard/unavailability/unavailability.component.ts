@@ -39,7 +39,7 @@ export class UnAvailabilityComponent implements OnInit {
         endDate: [this.availability.endDate, Validators.required],
         startTime: [this.availability.startTime, Validators.required],
         endTime: [this.availability.endTime, Validators.required],
-        isAllDayOut: [this.availability.isAllDayOut || false],
+        isAllDayOut: [this.availability.availabilityId ? this.availability.isAllDayOut : true],
         isRepeat: [this.availability.isRepeat || false],
         repeatType: [this.availability.repeatType || 'week'],
         repeatValue: [this.availability.repeatValue || 0],
@@ -62,6 +62,7 @@ export class UnAvailabilityComponent implements OnInit {
       'minutes',
       true
     );
+    this.SetTime(this.availability.availabilityId ? this.availability.isAllDayOut: true);
   }
 
   recurrence() {
@@ -93,7 +94,7 @@ export class UnAvailabilityComponent implements OnInit {
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
     if (!formGroup.invalid) {
-      this.dialogRef.close({ action: 'Submit', id: this.availability.availabilityId, availability: formGroup.value });
+      this.dialogRef.close({ action: 'Submit', id: this.availability.availabilityId, availability: formGroup.getRawValue() });
       this.submitted = false;
     }
   }
@@ -168,6 +169,7 @@ export class UnAvailabilityComponent implements OnInit {
 
     return timeLabels;
   }
+
   pad(value) {
     if (value < 10) {
       return '0' + value;
@@ -192,6 +194,22 @@ export class UnAvailabilityComponent implements OnInit {
           this.form.get(entity).value.substring(3, 5)
         );
       }
+    }
+  }
+
+  //For Selecting End Date Automatically
+  SetEndDateValue(startDate: Date, endDate: Date) {
+    this.form.get('endDate').setValue(startDate);
+  }
+
+  SetTime(result: boolean) {
+    if (result) {
+      this.form.controls['startTime'].disable();
+      this.form.controls['endTime'].disable();
+    }
+    else {
+      this.form.controls['startTime'].enable();
+      this.form.controls['endTime'].enable();
     }
   }
 }

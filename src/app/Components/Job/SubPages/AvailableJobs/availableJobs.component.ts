@@ -56,7 +56,7 @@ export class AvailableJobsComponent implements OnInit {
         private sanitizer: DomSanitizer,
         notifier: NotifierService,
         private activatedRoute: ActivatedRoute,
-        private availabilityService: AvailabilityService,) {
+        private availabilityService: AvailabilityService, ) {
         this.notifier = notifier;
     }
 
@@ -156,6 +156,10 @@ export class AvailableJobsComponent implements OnInit {
             this.notifier.notify('success', 'Declined Successfully.');
             this.GetAvailableJobs();
         }
+        else if (Message == "Unavailable") {
+            this.notifier.notify('error', 'Unavailable, You can not accept it.');
+            this.GetAvailableJobs();
+        }
         else {
             this.notifier.notify('error', 'Problem Occured While Process you Request.Please Try Again Later.');
         }
@@ -216,63 +220,73 @@ export class AvailableJobsComponent implements OnInit {
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
         let endtimetemp = moment(SelectedRow.endTime, 'h:mma');
         let endtime = moment(endtimetemp).format('h:mma');
-        
-        if (currentDate == startdate) {
-            if (currentTime > endtime) {
-                this.notifier.notify('error', 'Job has ended, you cannot accept it.');
+
+        let model = {
+            startDate: moment(SelectedRow.startDate).format('YYYY-MM-DD'),
+            endDate: moment(SelectedRow.endDate).format('YYYY-MM-DD'),
+            startTime: SelectedRow.startTime,
+            endTime: SelectedRow.endTime,
+            UserId: this._userSession.getUserId()
+        }
+        this.availabilityService.CheckSubstituteAvailability(model).subscribe((response: any) => {
+            if (currentDate == startdate) {
+                if (currentTime > endtime) {
+                    this.notifier.notify('error', 'Job has ended, you cannot accept it.');
+                }
+                else {
+                    swal.fire({
+                        title: 'Accept',
+                        text:
+                            'Are you sure you want to Accept this Job?',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonClass: 'btn btn-danger',
+                        cancelButtonClass: 'btn btn-success',
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No',
+                        buttonsStyling: false
+                    }).then(r => {
+                        if (r.value) {
+                            this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                                this.NotifyResponse(response as string);
+                                this.GetAvailableJobs();
+                                this.upcomingJobs.GetUpcommingJobs();
+                            },
+                                error => this.msg = <any>error);
+                        }
+                    });
+                }
             }
             else {
-                swal.fire({
-                    title: 'Accept',
-                    text:
-                        'Are you sure you want to Accept this Job?',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonClass: 'btn btn-danger',
-                    cancelButtonClass: 'btn btn-success',
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    buttonsStyling: false
-                }).then(r => {
-                    if (r.value) {
-                        this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
-                            this.NotifyResponse(response as string);
-                            this.GetAvailableJobs();
-                            this.upcomingJobs.GetUpcommingJobs();
-                        },
-                            error => this.msg = <any>error);
-                    }
-                });
+                if (startdate > currentDate) {
+                    swal.fire({
+                        title: 'Accept',
+                        text:
+                            'Are you sure you want to Accept this Job?',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonClass: 'btn btn-danger',
+                        cancelButtonClass: 'btn btn-success',
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No',
+                        buttonsStyling: false
+                    }).then(r => {
+                        if (r.value) {
+                            this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                                this.NotifyResponse(response as string);
+                                this.GetAvailableJobs()
+                                this.upcomingJobs.GetUpcommingJobs();
+                            },
+                                error => this.msg = <any>error);
+                        }
+                    });
+                }
+                else {
+                    this.notifier.notify('error', 'Something Went Wrong.');
+                }
             }
-        }
-        else {
-            if (startdate > currentDate) {
-                swal.fire({
-                    title: 'Accept',
-                    text:
-                        'Are you sure you want to Accept this Job?',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonClass: 'btn btn-danger',
-                    cancelButtonClass: 'btn btn-success',
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    buttonsStyling: false
-                }).then(r => {
-                    if (r.value) {
-                        this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
-                            this.NotifyResponse(response as string);
-                            this.GetAvailableJobs()
-                            this.upcomingJobs.GetUpcommingJobs();
-                        },
-                            error => this.msg = <any>error);
-                    }
-                });
-            }
-            else {
-                this.notifier.notify('error', 'Something Went Wrong.');
-            }
-        }
+        },
+            error => this.msg = <any>error);
     }
 
     DeclineAbsence(absenceId: any) {
