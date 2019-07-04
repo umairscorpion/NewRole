@@ -47,6 +47,7 @@ export class SubstituteCalendarComponent implements OnInit {
       selectable: true,
       slotDuration: '00:30:00',
       allDaySlot: false,
+      displayEventTime : false,
       header: {
         left: 'today',
         center: 'prev, title, next',
@@ -72,7 +73,7 @@ export class SubstituteCalendarComponent implements OnInit {
           return;
         }
         
-        if (end.isBefore(moment().add(1, 'hour').format())) {
+        if (end.isBefore(moment().add(1, 'hour').format()) || start.isBefore(moment().add(1, 'hour').format())) {
           $('#calendar').fullCalendar('unselect');
           alert('You can not set unavailability in past dates !');
           return false;
@@ -82,7 +83,7 @@ export class SubstituteCalendarComponent implements OnInit {
         availability.startDate = moment(start).format('YYYY-MM-DD');
         availability.startTime = moment(start).format('hh:mm A');
         availability.endDate = moment(forEndDate).format('YYYY-MM-DD');
-        availability.endTime = moment(forEndDate).format('hh:mm A');
+        availability.endTime = moment(end).format('hh:mm A');
 
         if (this.availabilityData && this.availabilityData.length > 0) {
           const booked = this.availabilityData.filter(t => moment(t['start']).format('YYYY-MM-DD') === availability.startDate);
@@ -113,11 +114,12 @@ export class SubstituteCalendarComponent implements OnInit {
       eventResize: event => {
       },
       eventClick: event => {
+        if(event.id == -1) {
+          return false;
+        }
         if (this.doOpen) {
           this.dialogRef.openDialogs.pop();
-          this.availabilityService
-            .get(`availability/${event.id}`)
-            .subscribe((availability: any) => {
+          this.availabilityService.get(`availability/${event.id}`).subscribe((availability: any) => {
               const dialogRef = this.dialogRef.open(
                 UnAvailabilityComponent,
                 {

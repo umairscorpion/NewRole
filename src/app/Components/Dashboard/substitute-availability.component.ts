@@ -7,7 +7,6 @@ import 'fullcalendar-scheduler';
 import { AvailabilityService } from '../../Services/availability.service';
 import { MatDialog } from '@angular/material';
 import { environment } from 'src/environments/environment';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-substitute-availability',
@@ -19,12 +18,11 @@ export class SubstituteAvailabilityComponent implements OnInit {
   containerEl: JQuery;
   resources = new Array<any>();
   userForm: FormGroup;
-
+  
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
-    private availabilityService: AvailabilityService,
-    private sanitizer: DomSanitizer) {
+    private availabilityService: AvailabilityService) {
     const curr = new Date;
     const first = curr.getDate() - (curr.getDay() - 1);
     const last = first + 4;
@@ -127,8 +125,8 @@ export class SubstituteAvailabilityComponent implements OnInit {
           defaultView: 'timelineWeek',
           resources: this.resources,
           events: result,
-          resourceRender: function (resourceObj, labelTds, bodyTds) {
-            labelTds.prepend('<img [src]="pp" width="30" height="30" class="substitute-availability-profile-image">');
+          resourceRender: (resourceObj: any, labelTds, bodyTds) => {
+            labelTds.prepend('<img src="' + environment.profileImageUrl + resourceObj.profilePicUrl +'" width="30" height="30" class="substitute-availability-profile-image">');
           },
           eventRender: (event, element) => {
             element.find('.fc-content').html('<div class="substitute-is-' + event.title.toLowerCase() + '"></div>');
@@ -150,12 +148,5 @@ export class SubstituteAvailabilityComponent implements OnInit {
       return null;
     });
     return resArr;
-  }
-
-  getImage(imageName: string) {
-    if (imageName && imageName.length > 0) {
-      let pp = this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
-      return pp;
-    }
   }
 }

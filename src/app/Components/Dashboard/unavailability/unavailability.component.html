@@ -7,7 +7,6 @@
         <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
       </div>
     </div>
-
     <!-- <div class="row mt-5">
       <div class="col-md-1">
       </div>
@@ -17,19 +16,24 @@
         </mat-form-field>
       </div>
     </div> -->
-
     <div class="row mt-5">
       <div class="col-md-1">
       </div>
       <div class="col-md-10 p-0">
         <mat-radio-group formControlName="availabilityStatusId">
-          <mat-radio-button value="1" color="primary" class="btn btn-sm availability-status-unavailable">Unavailable</mat-radio-button>
-          <mat-radio-button value="2" color="primary" class="btn btn-sm availability-status-vacations ml-2 mr-2">Vacations</mat-radio-button>
-          <mat-radio-button value="3" color="primary" class="btn btn-sm availability-status-recurring" (click)="recurrence()">Recurring</mat-radio-button>
+          <mat-radio-button value="1" color="primary" class="btn btn-sm availability-status-unavailable">
+            Unavailable
+          </mat-radio-button>
+          <mat-radio-button value="2" color="primary" class="btn btn-sm availability-status-vacations ml-2 mr-2">
+            Vacation
+          </mat-radio-button>
+          <mat-radio-button value="3" color="primary" class="btn btn-sm availability-status-recurring"
+            (click)="recurrence()">
+            Recurring
+          </mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
-
     <div class="row mt-5">
       <div class="col-md-1">
         <mat-icon>schedule</mat-icon>
@@ -38,62 +42,71 @@
         <div class="row">
           <div class="col-md-3 pr-0 m-5">
             <mat-form-field>
-              <input placeholder="Start Date" matInput [matDatepicker]="startDatePicker" formControlName="startDate" />
+              <input placeholder="Start Date" (dateChange)="SetEndDateValue(form.value.startDate,form.value.endDate)"
+                matInput [matDatepicker]="startDatePicker" formControlName="startDate" />
               <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #startDatePicker></mat-datepicker>
-              <mat-hint class="form-error-content" *ngIf="form.get('startDate').errors?.required && submitted">Start Date is required</mat-hint>
-              <mat-hint class="form-error-content" *ngIf="form.hasError('notValid') && submitted">Enter a valid Date</mat-hint>
+              <mat-hint class="form-error-content" *ngIf="form.get('startDate').errors?.required && submitted">
+                Start Date is required
+              </mat-hint>
+              <mat-hint class="form-error-content" *ngIf="form.hasError('notValid') && submitted">
+                Enter a valid Date
+              </mat-hint>
             </mat-form-field>
           </div>
           <div class="col-md-3 pr-0 m-5">
-            <mat-form-field [ngClass]="{
-            'appointment-edit-has-error':
-              form.hasError('notValid') ||
-              form.get('endDate').errors?.required
-          }">
-              <input placeholder="End Date" matInput [matDatepicker]="endDatePicker" formControlName="endDate" />
+            <mat-form-field
+              [ngClass]="{'appointment-edit-has-error':form.hasError('notValid') ||form.get('endDate').errors?.required}">
+              <input placeholder="End Date" [min]="form.value.startDate" matInput [matDatepicker]="endDatePicker"
+                formControlName="endDate" />
               <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #endDatePicker></mat-datepicker>
-              <mat-hint class="form-error-content" *ngIf="form.get('endDate').errors?.required && submitted">End Date is required</mat-hint>
-              <mat-hint class="form-error-content" *ngIf="form.hasError('notValid') && submitted">Enter a valid Date</mat-hint>
+              <mat-hint class="form-error-content" *ngIf="form.get('endDate').errors?.required && submitted">
+                End Date is required
+              </mat-hint>
+              <mat-hint class="form-error-content" *ngIf="form.hasError('notValid') && submitted">
+                Enter a valid Date
+              </mat-hint>
             </mat-form-field>
           </div>
           <div class="col-md-2 pr-0 m-5" *ngIf="time">
             <mat-form-field class="ht-30">
-              <input type="text" placeholder="Start Time" matInput formControlName="startTime" [matAutocomplete]="startTimePicker" (input)="timeChanged('startTime')"
-              />
+              <input type="text" placeholder="Start Time" matInput formControlName="startTime"
+                [matAutocomplete]="startTimePicker" (input)="timeChanged('startTime')" />
               <mat-autocomplete #startTimePicker="matAutocomplete" (optionSelected)="timeChanged('startTime')">
                 <mat-option *ngFor="let option of times" [value]="option">
                   {{ option }}
                 </mat-option>
               </mat-autocomplete>
-              <mat-hint class="form-error-content" *ngIf="form.get('startTime').errors?.required && submitted">Start Time is required</mat-hint>
+              <mat-hint class="form-error-content" *ngIf="form.get('startTime').errors?.required && submitted">
+                Start Time is required
+              </mat-hint>
             </mat-form-field>
           </div>
-
           <div class="col-md-2 pr-0 m-5" *ngIf="time">
             <mat-form-field class="ht-30">
-              <input type="text" placeholder="End Time" matInput formControlName="endTime" [matAutocomplete]="endTimePicker" (input)="timeChanged('endTime')"
-              />
+              <input type="text" placeholder="End Time" matInput formControlName="endTime"
+                [matAutocomplete]="endTimePicker" (input)="timeChanged('endTime')" />
               <mat-autocomplete #endTimePicker="matAutocomplete" (optionSelected)="timeChanged('endTime')">
                 <mat-option *ngFor="let option of endTimes" [value]="option">
                   {{ option }}
                 </mat-option>
               </mat-autocomplete>
-              <mat-hint class="form-error-content" *ngIf="form.get('endTime').errors?.required && submitted">End Time is required</mat-hint>
+              <mat-hint class="form-error-content" *ngIf="form.get('endTime').errors?.required && submitted">
+                End Time is required
+              </mat-hint>
             </mat-form-field>
           </div>
-          <div class="p-0 mt-15">
+          <div class="p-0 mt-15" style="margin-left: 15px">
             <button class="btn btn-default btn-sm" type="button" (click)="time = !time">Add time</button>
           </div>
         </div>
       </div>
     </div>
-
     <div class="row mt-5">
       <div class="col-md-1">
       </div>
-      <mat-checkbox formControlName="isAllDayOut">
+      <mat-checkbox formControlName="isAllDayOut" (change)="SetTime(form.value.isAllDayOut)">
         All Day
       </mat-checkbox>
     </div>
@@ -101,7 +114,8 @@
       <div class="col-md-1">
       </div>
       <button class="btn btn-success">Save</button>&nbsp;
-      <button class="btn btn-danger" type="button" (click)="delete()" *ngIf="availability.availabilityId > 0">Delete</button>
+      <button class="btn btn-danger" type="button" (click)="delete()"
+        *ngIf="availability.availabilityId > 0">Delete</button>
     </div>
   </div>
 </form>
