@@ -98,7 +98,7 @@ export class RunPayroll implements OnInit {
         });
     }
 
-    onExportingToCSVV() {
+    onExportingToCSV() {
         const title = 'Payroll Report';
             const header = ["Employee Name", "Absence Id", "Reason", "Date", "Time", "District", "Status", "Substitute", "Notes", "Pay Rate", "Hours", "School"]
             let workbook = new Workbook();
@@ -134,7 +134,7 @@ export class RunPayroll implements OnInit {
 
     }
 
-    onExportingToCSV() {
+    onExportingToCSVV() {
         var configuration = {
             fieldSeparator: ',',
             quoteStrings: '"',
