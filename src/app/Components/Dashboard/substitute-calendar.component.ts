@@ -10,6 +10,7 @@ import { UserAvailability } from '../../Model/userAvailability';
 import { ReportDetail } from '../../Model/Report/report.detail';
 import { UserSession } from '../../Services/userSession.service';
 import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-substitute-calendar',
@@ -28,7 +29,8 @@ export class SubstituteCalendarComponent implements OnInit {
     private dialogRef: MatDialog,
     private availabilityService: AvailabilityService,
     private _userSession: UserSession,
-    private router: Router) { }
+    private router: Router,
+    private notifier: NotifierService) { }
 
   ngOnInit() {
     this.loginedUserRole = this._userSession.getUserRoleId();
@@ -47,7 +49,7 @@ export class SubstituteCalendarComponent implements OnInit {
       selectable: true,
       slotDuration: '00:30:00',
       allDaySlot: false,
-      displayEventTime : false,
+      displayEventTime: false,
       header: {
         left: 'today',
         center: 'prev, title, next',
@@ -65,17 +67,15 @@ export class SubstituteCalendarComponent implements OnInit {
           callback(data);
         });
       },
-      eventRender: (event, element) => {
-
+      eventRender: (event, element: any) => {
       },
       select: (start, end, jsEvent, view, resource) => {
         if (this.loginedUserRole !== 4) { // Substitute = 4
           return;
         }
-        
         if (end.isBefore(moment().add(1, 'hour').format()) || start.isBefore(moment().add(1, 'hour').format())) {
           $('#calendar').fullCalendar('unselect');
-          alert('You can not set unavailability in past dates !');
+          this.notifier.notify('error', 'You can not set unavailability in past dates !');
           return false;
         }
         let forEndDate = moment(end).subtract(1, 'day').format();
@@ -88,7 +88,8 @@ export class SubstituteCalendarComponent implements OnInit {
         if (this.availabilityData && this.availabilityData.length > 0) {
           const booked = this.availabilityData.filter(t => moment(t['start']).format('YYYY-MM-DD') === availability.startDate);
           if (booked && booked.length > 0) {
-            alert('You can not set unavailability for the date you are booked !');
+            this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
+
             return false;
           }
         }
@@ -114,37 +115,37 @@ export class SubstituteCalendarComponent implements OnInit {
       eventResize: event => {
       },
       eventClick: event => {
-        if(event.id == -1) {
+        if (event.id == -1) {
           return false;
         }
         if (this.doOpen) {
           this.dialogRef.openDialogs.pop();
           this.availabilityService.get(`availability/${event.id}`).subscribe((availability: any) => {
-              const dialogRef = this.dialogRef.open(
-                UnAvailabilityComponent,
-                {
-                  panelClass: 'availability-edit-dialog',
-                  data: availability
+            const dialogRef = this.dialogRef.open(
+              UnAvailabilityComponent,
+              {
+                panelClass: 'availability-edit-dialog',
+                data: availability
+              }
+            );
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                console.log({ result });
+                if (result.action === 'Submit') {
+                  this.availabilityService.put('availability/', result.id, result.availability).subscribe(t => {
+                    this.reloadCalendar();
+                    this.getSubstituteAvailibiltySummary();
+                  });
+                } else if (result.action === 'Delete') {
+                  this.availabilityService.delete('availability/', result.id).subscribe(t => {
+                    this.reloadCalendar();
+                    this.getSubstituteAvailibiltySummary();
+                  });
                 }
-              );
-              dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                  console.log({ result });
-                  if (result.action === 'Submit') {
-                    this.availabilityService.put('availability/', result.id, result.availability).subscribe(t => {
-                      this.reloadCalendar();
-                      this.getSubstituteAvailibiltySummary();
-                    });
-                  } else if (result.action === 'Delete') {
-                    this.availabilityService.delete('availability/', result.id).subscribe(t => {
-                      this.reloadCalendar();
-                      this.getSubstituteAvailibiltySummary();
-                    });
-                  }
-                  this.doOpen = true;
-                }
-              });
+                this.doOpen = true;
+              }
             });
+          });
         }
       }
     });

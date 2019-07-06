@@ -7,6 +7,7 @@ import 'fullcalendar-scheduler';
 import { AvailabilityService } from '../../Services/availability.service';
 import { MatDialog } from '@angular/material';
 import { environment } from 'src/environments/environment';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-substitute-availability',
@@ -22,15 +23,17 @@ export class SubstituteAvailabilityComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
-    private availabilityService: AvailabilityService) {
+    private availabilityService: AvailabilityService,
+    private sanitizer: DomSanitizer) {
     const curr = new Date;
     const first = curr.getDate() - (curr.getDay() - 1);
     const last = first + 4;
 
     this.userForm = fb.group({
       date: [{ begin: new Date(curr.setDate(first)), end: new Date(curr.setDate(last)) }],
-      availabilityStatusId: [0],
-      userId: [null]
+      availabilityStatusId: [-1],
+      userId: [null],
+      checkFilter: [null]
     });
   }
 
@@ -41,10 +44,11 @@ export class SubstituteAvailabilityComponent implements OnInit {
 
   onSubmit(form: FormGroup) {
     const model = {
-      'startDate': this.userForm.get('date').value['begin'],
-      'endDate': this.userForm.get('date').value['end'],
+      'startDate': new Date(this.userForm.get('date').value['begin']).toLocaleDateString(),
+      'endDate': new Date(this.userForm.get('date').value['end']).toLocaleDateString(),
       'availabilityStatusId': this.userForm.get('availabilityStatusId').value,
-      'userId': this.userForm.get('userId').value
+      'userId': this.userForm.get('userId').value,
+      'checkFilter': 1
     };
 
     this.containerEl.fullCalendar('gotoDate', model.startDate);
@@ -65,10 +69,11 @@ export class SubstituteAvailabilityComponent implements OnInit {
 
   getData() {
     const model = {
-      'startDate': this.userForm.get('date').value['begin'],
-      'endDate': this.userForm.get('date').value['end'],
+      'startDate': new Date(this.userForm.get('date').value['begin']).toLocaleDateString(),
+      'endDate': new Date(this.userForm.get('date').value['begin']).toLocaleDateString(),
       'availabilityStatusId': this.userForm.get('availabilityStatusId').value,
-      'userId': this.userForm.get('userId').value
+      'userId': this.userForm.get('userId').value,
+      'checkFilter': 0
     };
     this.containerEl.fullCalendar('removeEvents');
     this.availabilityService.post('availability/substitutes', model).subscribe(
@@ -148,5 +153,11 @@ export class SubstituteAvailabilityComponent implements OnInit {
       return null;
     });
     return resArr;
+  }
+
+  getImage(imageName: string) {
+    if (imageName && imageName.length > 0) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
+    }
   }
 }
