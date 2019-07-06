@@ -157,7 +157,7 @@ export class AvailableJobsComponent implements OnInit {
             this.GetAvailableJobs();
         }
         else if (Message == "Unavailable") {
-            this.notifier.notify('error', 'Unavailable, You can not accept it.');
+            this.notifier.notify('error', 'Unable to accept, status set to unavailable.');
             this.GetAvailableJobs();
         }
         else {

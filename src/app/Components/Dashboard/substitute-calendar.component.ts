@@ -67,14 +67,12 @@ export class SubstituteCalendarComponent implements OnInit {
           callback(data);
         });
       },
-      eventRender: (event, element) => {
-
+      eventRender: (event, element: any) => {
       },
       select: (start, end, jsEvent, view, resource) => {
         if (this.loginedUserRole !== 4) { // Substitute = 4
           return;
         }
-
         if (end.isBefore(moment().add(1, 'hour').format()) || start.isBefore(moment().add(1, 'hour').format())) {
           $('#calendar').fullCalendar('unselect');
           this.notifier.notify('error', 'You can not set unavailability in past dates !');
