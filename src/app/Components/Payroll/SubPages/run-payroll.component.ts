@@ -127,7 +127,6 @@ export class RunPayroll implements OnInit {
                 let result = this.objToArray(obj);
                 worksheet.addRow(result);
             });
-            this.eess.generateExcel();
             workbook.xlsx.writeBuffer().then((data) => {
                 this.excelService.saveAsExcelFile(data, 'PayRollReport');
             });
