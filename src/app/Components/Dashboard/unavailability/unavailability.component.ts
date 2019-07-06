@@ -94,6 +94,8 @@ export class UnAvailabilityComponent implements OnInit {
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
     if (!formGroup.invalid) {
+      formGroup.value.startDate = new Date(formGroup.value.startDate).toLocaleDateString();
+      formGroup.value.endDate = new Date(formGroup.value.endDate).toLocaleDateString();
       this.dialogRef.close({ action: 'Submit', id: this.availability.availabilityId, availability: formGroup.getRawValue() });
       this.submitted = false;
     }
