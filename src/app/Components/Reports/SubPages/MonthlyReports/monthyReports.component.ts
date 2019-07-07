@@ -128,7 +128,6 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
             workbook.xlsx.writeBuffer().then((data) => {
                 this.excelService.saveAsExcelFile(data, 'Report.xlsx');
             });
-            this.loadReportSummary();
         }      
     }
 
