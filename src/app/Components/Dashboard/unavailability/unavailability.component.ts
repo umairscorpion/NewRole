@@ -69,8 +69,7 @@ export class UnAvailabilityComponent implements OnInit {
     if (this.doOpen) {
       this.doOpen = false;
       this.dialog.openDialogs.pop();
-      this.form.get('isRepeat').setValue(true);
-
+      this.form.get('isRepeat').setValue(true);     
       const dialogRef = this.dialog.open(
         RecurringComponent,
         {
@@ -80,7 +79,7 @@ export class UnAvailabilityComponent implements OnInit {
       );
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          this.form.patchValue({ ...result.availability });
+          this.form.patchValue({ ...result });
         }
       });
       this.doOpen = true;
@@ -164,11 +163,9 @@ export class UnAvailabilityComponent implements OnInit {
         timeLabels.push(startTimeMoment.format('hh:mm a'));
       }
     }
-
     if (isEndTime) {
       this.form.get('endTime').setValue(timeLabels[0]);
     }
-
     return timeLabels;
   }
 
@@ -206,6 +203,8 @@ export class UnAvailabilityComponent implements OnInit {
 
   SetTime(result: boolean) {
     if (result) {
+      this.form.controls['startTime'].setValue('12:00 AM');
+      this.form.controls['endTime'].setValue('12:00 AM');
       this.form.controls['startTime'].disable();
       this.form.controls['endTime'].disable();
     }

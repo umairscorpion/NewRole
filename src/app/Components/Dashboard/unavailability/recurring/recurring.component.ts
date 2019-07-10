@@ -24,7 +24,7 @@ export class RecurringComponent implements OnInit {
       {
         availabilityId: [this.availability.availabilityId || 0],
         userId: [this.availability.userId || ''],
-        availabilityStatusId: [this.availability.availabilityStatusId || 1],
+        availabilityStatusId: [this.availability.availabilityStatusId || 3],
         title: [this.availability.title || ''],
         startDate: [this.availability.startDate, Validators.required],
         endDate: [this.availability.endDate, Validators.required],

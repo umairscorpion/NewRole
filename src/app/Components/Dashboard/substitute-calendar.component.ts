@@ -24,6 +24,7 @@ export class SubstituteCalendarComponent implements OnInit {
   todayTotalAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
   loginedUserRole = 0;
   availabilityData = [];
+  tooltip: any;
 
   constructor(
     private dialogRef: MatDialog,
@@ -55,6 +56,38 @@ export class SubstituteCalendarComponent implements OnInit {
         center: 'prev, title, next',
         right: 'agendaDay, month, basicWeek'
       },
+      eventMouseover: function (data, event, view) {
+        if (data.allDay) {
+          this.tooltip = '<div class="tooltiptopicevent" style="min-width: 150px; min-height: 70px; width:auto; height:auto; border-color:#808080; border-style: solid; background:#E0E0E0; position:absolute; z-index:10001; padding:10px 10px 10px 10px; line-height: 200%;">' + data.description + '</br>' + 'Full Day' + '</div>';
+        }
+        else {
+          if (data.id == -1) {
+            this.tooltip = '<div class="tooltiptopicevent" style="min-width: 150px; min-height: 70px; width:auto; height:auto; border-color:#808080; border-style: solid; background:#E0E0E0; position:absolute; z-index:10001; padding:10px 10px 10px 10px; line-height: 200%;">' + data.description + '</br>' + moment(data.start).format('hh:mm A') + ' - ' + moment(data.end).format('hh:mm A') + '</br>'  + data.organizationName + '</div>';
+          }
+          else {
+            this.tooltip = '<div class="tooltiptopicevent" style="min-width: 150px; min-height: 70px; width:auto; height:auto; border-color:#808080; border-style: solid; background:#E0E0E0; position:absolute; z-index:10001; padding:10px 10px 10px 10px; line-height: 200%;">' + data.description + '</br>' + moment(data.start).format('hh:mm A') + ' - ' + moment(data.end).format('hh:mm A') + '</div>';
+          }
+        }
+        
+        $("body").append(this.tooltip);
+        $(this).mouseover(function (e) {
+          $(this).css('z-index', 10000);
+          $('.tooltiptopicevent').fadeIn('500');
+        }).mousemove(function (e) {
+          $('.tooltiptopicevent').css('top', e.pageY + 10);
+          $('.tooltiptopicevent').css('left', e.pageX + 20);
+        });
+      },
+      eventMouseout: function (data, event, view) {
+        $(this).css('z-index', 8);
+        $('.tooltiptopicevent').remove();
+      },
+      eventResizeStart: function () {
+        this.tooltip.hide()
+      },
+      eventDragStart: function () {
+        this.tooltip.hide()
+      },
       defaultView: 'month',
       events: (start, end, timezone, callback) => {
         const model = {
@@ -67,7 +100,7 @@ export class SubstituteCalendarComponent implements OnInit {
           callback(data);
         });
       },
-      eventRender: (event, element: any) => {
+      eventRender: (event, element) => {
       },
       select: (start, end, jsEvent, view, resource) => {
         if (this.loginedUserRole !== 4) { // Substitute = 4
@@ -78,21 +111,26 @@ export class SubstituteCalendarComponent implements OnInit {
           this.notifier.notify('error', 'You can not set unavailability in past dates !');
           return false;
         }
-        let forEndDate = moment(end).subtract(1, 'day').format();
         const availability = new UserAvailability();
         availability.startDate = moment(start).format('YYYY-MM-DD');
         availability.startTime = moment(start).format('hh:mm A');
-        availability.endDate = moment(forEndDate).format('YYYY-MM-DD');
+        availability.endDate = moment(end).subtract(1, 'day').format('YYYY-MM-DD');
         availability.endTime = moment(end).format('hh:mm A');
 
         if (this.availabilityData && this.availabilityData.length > 0) {
-          const booked = this.availabilityData.filter(t => moment(t['start']).format('YYYY-MM-DD') === availability.startDate);
+          const booked = this.availabilityData.filter(t => moment(availability.startDate).isSameOrBefore(moment(t['start']).format('YYYY-MM-DD')) && moment(availability.endDate).isSameOrAfter(moment(t['end']).format('YYYY-MM-DD')) && t['id'] < 0);
           if (booked && booked.length > 0) {
             this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
-
             return false;
           }
         }
+        // if (this.availabilityData && this.availabilityData.length > 0) {
+        //   const booked = this.availabilityData.filter(t => moment(availability.startDate).isSameOrBefore(moment(t['start']).format('YYYY-MM-DD')) && moment(availability.endDate).isSameOrAfter(moment(t['end']).format('YYYY-MM-DD')) && t['id'] > 0);
+        //   if (booked && booked.length > 0) {
+        //     this.notifier.notify('error', 'You already unavailable for this date !');
+        //     return false;
+        //   }
+        // }
         const dialogRef = this.dialogRef.open(UnAvailabilityComponent,
           {
             panelClass: 'availability-edit-dialog',
@@ -101,6 +139,13 @@ export class SubstituteCalendarComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
+            if (this.availabilityData && this.availabilityData.length > 0) {
+              const booked = this.availabilityData.filter(t => moment(result.availability.startDate).isSameOrBefore(moment(t['start']).format('YYYY-MM-DD')) && moment(result.availability.endDate).isSameOrAfter(moment(t['end']).format('YYYY-MM-DD')) && t['id'] < 0);
+              if (booked && booked.length > 0) {
+                this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
+                return false;
+              }
+            }
             const model = result.availability;
             console.log({ save: model });
             this.availabilityService.create(model).subscribe(t => {
