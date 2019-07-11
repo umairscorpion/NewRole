@@ -79,7 +79,7 @@ export class UnAvailabilityComponent implements OnInit {
       );
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          this.form.patchValue({ ...result });
+          this.form.patchValue({ ...result.availability });
         }
       });
       this.doOpen = true;

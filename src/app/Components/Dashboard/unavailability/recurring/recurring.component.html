@@ -26,14 +26,14 @@
 
     <div class="row mt-15">
       <label class="col-md-4">Repeat on</label>
-      <mat-button-toggle-group multiple="true" class="col-md-8">
-        <mat-button-toggle color="default" class="mr-8" value="Sun">S</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" value="Mon">M</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" value="Tue">T</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" value="Wed">W</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" value="Thu">T</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" value="Fri">F</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" value="Sat">S</mat-button-toggle>
+      <mat-button-toggle-group multiple="true" class="col-md-8"  formControlName="repeatOnWeekDays">
+        <mat-button-toggle color="default" class="mr-8" [value]="0">S</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="1">M</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="2">T</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="3">W</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="4">T</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="5">F</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="6">S</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
 

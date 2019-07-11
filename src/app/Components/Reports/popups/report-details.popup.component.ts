@@ -320,7 +320,7 @@ export class ReportDetailsComponent implements OnInit {
           this.notifier.notify('error', 'Absence overlapping please select different date or time.');
         }
         else {
-          this.notifier.notify('error', 'Unable to accept, status set to unavailable. Please select different date and time');
+          this.notifier.notify('error', 'Unable to update, status set to unavailable. Please select different date and time');
         }
       });
     }
