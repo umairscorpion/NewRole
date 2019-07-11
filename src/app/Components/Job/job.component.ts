@@ -91,7 +91,7 @@ export class JobComponent implements OnInit {
             panelClass: 'AbsenceDetail-popup',
         });
         const model = new AuditFilter();
-        model.entityId = data.absenceId;
+        model.entityId = data.confirmationNumber;
         this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
             this.insertAbsencesLogView = result;
         });

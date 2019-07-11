@@ -194,7 +194,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
 
     reportDetails(absenceDetail: ReportDetail) {
         const model = new AuditFilter();
-        model.entityId = absenceDetail.absenceId;
+        model.entityId = absenceDetail.confirmationNumber;
         this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
             this.insertAbsencesLogView = result;
         });
