@@ -45,7 +45,7 @@
                                             <input matInput [max]="absenceFirstFormGroup.value.AbsenceEndDate"
                                                 [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
                                                 [matDatepicker]="AbsenceStartDatePicker" placeholder="Start Date"
-                                                formControlName="AbsenceStartDate"
+                                                formControlName="AbsenceStartDate" 
                                                 (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate)">
                                             <mat-datepicker-toggle matSuffix [for]="AbsenceStartDatePicker">
                                             </mat-datepicker-toggle>
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
-                                            <input matInput [min]="absenceFirstFormGroup.value.AbsenceStartDate"
+                                            <input matInput [min]="absenceFirstFormGroup.value.AbsenceStartDate" (dateInput)="SearchAvailableSubstitutes(a)"
                                                 [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
                                                 [matDatepicker]="AbsenceEndDatePicker" placeholder="End Date"
                                                 formControlName="AbsenceEndDate"
@@ -97,11 +97,11 @@
                                     </div>
                                     <div *ngIf='absenceFirstFormGroup.value.Duration != "5"' class="col-md-4 col-lg-4">
                                         <mat-form-field class="col-md-5 col-lg-5">
-                                            <input matInput type="time" placeholder="Start Time"
+                                            <input matInput type="time" placeholder="Start Time" (keyup)="SearchAvailableSubstitutes(a)"
                                                 formControlName="StartTime">
                                         </mat-form-field>
                                         <mat-form-field class="col-md-5 col-lg-5">
-                                            <input matInput type="time" placeholder="End Time"
+                                            <input matInput type="time" placeholder="End Time" (keyup)="SearchAvailableSubstitutes(a)"
                                                 formControlName="EndTime">
                                         </mat-form-field>
                                     </div>

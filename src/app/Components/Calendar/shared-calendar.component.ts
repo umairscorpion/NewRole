@@ -57,10 +57,40 @@ export class SharedCalendarComponent implements OnInit {
           selectable: true,
           slotDuration: '00:30:00',
           allDaySlot: false,
+          displayEventTime: false,
           header: {
             left: 'today',
             center: 'prev, title, next',
             right: 'agendaDay, month, basicWeek'
+          },
+          eventMouseover: function (data, event, view) {
+            if (data.forEvents == "Events") {
+              this.tooltip = '<div class="tooltiptopicevent" style="min-width: 150px; min-height: 70px; width:auto; height:auto; border-color:#808080; border-style: solid; background:#E0E0E0; position:absolute; z-index:10001; padding:10px 10px 10px 10px; line-height: 200%;">' + data.title + '</br>' + 'Full Day' + '</div>';
+            }
+            else {
+              this.tooltip = '<div class="tooltiptopicevent" style="min-width: 150px; min-height: 70px; width:auto; height:auto; border-color:#808080; border-style: solid; background:#E0E0E0; position:absolute; z-index:10001; padding:10px 10px 10px 10px; line-height: 200%;">' + data.description + '</br>' + moment(data.start).format('hh:mm A') + ' - ' + moment(data.end).format('hh:mm A') + '</br>' + data.organizationName + '</div>';
+            }
+            $("body").append(this.tooltip);
+            $(this).mouseover(function (e) {
+              $(this).css('z-index', 10000);
+              $('.tooltiptopicevent').fadeIn('500');
+            }).mousemove(function (e) {
+              $('.tooltiptopicevent').css('top', e.pageY + 10);
+              $('.tooltiptopicevent').css('left', e.pageX + 20);
+            });
+          },
+          eventMouseout: function (data, event, view) {
+            $(this).css('z-index', 8);
+            $('.tooltiptopicevent').remove();
+          },
+          dayClick: function () {
+            this.tooltip.hide()
+          },
+          eventResizeStart: function () {
+            this.tooltip.hide()
+          },
+          eventDragStart: function () {
+            this.tooltip.hide()
           },
           defaultView: 'month',
           events: data,

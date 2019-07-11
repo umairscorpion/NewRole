@@ -256,6 +256,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     SetEndDateValue(startDate: Date, endDate: Date) {
         if (endDate.toString() == "") {
             this.absenceFirstFormGroup.get('AbsenceEndDate').setValue(startDate);
+            this.SearchAvailableSubstitutes("");
         }
     }
 

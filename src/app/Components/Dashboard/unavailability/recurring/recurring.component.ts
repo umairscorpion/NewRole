@@ -24,7 +24,7 @@ export class RecurringComponent implements OnInit {
       {
         availabilityId: [this.availability.availabilityId || 0],
         userId: [this.availability.userId || ''],
-        availabilityStatusId: [this.availability.availabilityStatusId || 1],
+        availabilityStatusId: [this.availability.availabilityStatusId || 3],
         title: [this.availability.title || ''],
         startDate: [this.availability.startDate, Validators.required],
         endDate: [this.availability.endDate, Validators.required],
@@ -34,7 +34,7 @@ export class RecurringComponent implements OnInit {
         isRepeat: [this.availability.isRepeat || true],
         repeatType: [this.availability.repeatType || 'week'],
         repeatValue: [this.availability.repeatValue || 1],
-        repeatOnWeekDays: [this.availability.repeatOnWeekDays || ''],
+        repeatOnWeekDays: [this.availability.repeatOnWeekDays || '1'],
         isEndsNever: [this.availability.isEndsNever || false],
         endsOnAfterNumberOfOccurrance: [this.availability.endsOnAfterNumberOfOccurrance || 10],
         endsOnUntilDate: [this.availability.endsOnUntilDate || new Date()],
@@ -49,6 +49,7 @@ export class RecurringComponent implements OnInit {
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
     if (!formGroup.invalid) {
+      formGroup.value.availabilityStatusId = this.form.controls['availabilityStatusId'].setValue(3);
       this.dialogRef.close({ action: 'Submit', availability: formGroup.value });
       this.submitted = false;
     }

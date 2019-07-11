@@ -8,6 +8,7 @@ import { AvailabilityService } from '../../Services/availability.service';
 import { MatDialog } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-substitute-availability',
@@ -19,12 +20,14 @@ export class SubstituteAvailabilityComponent implements OnInit {
   containerEl: JQuery;
   resources = new Array<any>();
   userForm: FormGroup;
-  
+  SetStartDate: any;
+
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
     private availabilityService: AvailabilityService,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private notifier: NotifierService) {
     const curr = new Date;
     const first = curr.getDate() - (curr.getDay() - 1);
     const last = first + 4;
@@ -43,6 +46,13 @@ export class SubstituteAvailabilityComponent implements OnInit {
   }
 
   onSubmit(form: FormGroup) {
+    var startDateWeek = moment(this.userForm.get('date').value['begin']).week();
+    var endDateWeek = moment(this.userForm.get('date').value['end']).week();
+    var weekDay = moment(this.userForm.get('date').value['begin']).weekday();
+    if (startDateWeek != endDateWeek || weekDay == 0) {
+      this.notifier.notify('error', 'Please select new date range.');
+      return false;
+    }
     const model = {
       'startDate': new Date(this.userForm.get('date').value['begin']).toLocaleDateString(),
       'endDate': new Date(this.userForm.get('date').value['end']).toLocaleDateString(),
@@ -50,7 +60,6 @@ export class SubstituteAvailabilityComponent implements OnInit {
       'userId': this.userForm.get('userId').value,
       'checkFilter': 1
     };
-
     this.containerEl.fullCalendar('gotoDate', model.startDate);
     this.availabilityService.post('availability/substitutes', model).subscribe(
       (availabilities: any) => {
@@ -99,8 +108,9 @@ export class SubstituteAvailabilityComponent implements OnInit {
                 const subsAvailable = {
                   'startDate': weekStart,
                   'endDate': weekEnd,
-                  'availabilityStatusId': 0,
-                  'userId': ''
+                  'availabilityStatusId': -1,
+                  'userId': '',
+                  'checkFilter': 0
                 };
                 this.availabilityService.post('availability/substitutes', subsAvailable).subscribe(
                   (availabilities: any) => {
@@ -131,7 +141,7 @@ export class SubstituteAvailabilityComponent implements OnInit {
           resources: this.resources,
           events: result,
           resourceRender: (resourceObj: any, labelTds, bodyTds) => {
-            labelTds.prepend('<img src="' + environment.profileImageUrl + resourceObj.profilePicUrl +'" width="30" height="30" class="substitute-availability-profile-image">');
+            labelTds.prepend('<img src="' + environment.profileImageUrl + resourceObj.profilePicUrl + '" width="30" height="30" class="substitute-availability-profile-image">');
           },
           eventRender: (event, element) => {
             element.find('.fc-content').html('<div class="substitute-is-' + event.title.toLowerCase() + '"></div>');

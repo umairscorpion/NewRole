@@ -119,6 +119,7 @@ export class ReportDetailsComponent implements OnInit {
       substituteRequired: [''],
       totalInterval: [''],
       originalFileName: [''],
+      confirmationNumber: [''],
     });
   }
 
@@ -157,7 +158,7 @@ export class ReportDetailsComponent implements OnInit {
           //   this.notifier.notify('error', 'Not able to cancel now.');
           //   return;
           // }
-          this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+          this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
             this.dialogRef.close('Reload');
             this.notifier.notify('success', 'Cancelled Successfully.');
           });
@@ -183,12 +184,12 @@ export class ReportDetailsComponent implements OnInit {
         buttonsStyling: false
       }).then(r => {
         if (r.value) {
-          if (absenceStartDate <= currentDate) {
-            this.dialogRef.close();
-            this.notifier.notify('error', 'Not able to Release now.');
-            return;
-          }
-          this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+          // if (absenceStartDate <= currentDate) {
+          //   this.dialogRef.close();
+          //   this.notifier.notify('error', 'Not able to Release now.');
+          //   return;
+          // }
+          this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus',this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
             if (response == "success") {
               this.dialogRef.close('Reload');
               this.notifier.notify('success', 'Released Successfully.');
@@ -214,10 +215,14 @@ export class ReportDetailsComponent implements OnInit {
       buttonsStyling: false
     }).then(r => {
       if (r.value) {
-        this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub', this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
+        this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub',this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
           if (response == "success") {
             this.dialogRef.close('Reload');
             this.notifier.notify('success', 'Assign Successfully.');
+          }
+          if (response == "error") {
+            this.dialogRef.close('Reload');
+            this.notifier.notify('error', 'Unable to Assign.');
           }
         },
           error => this.msg = <any>error);
@@ -309,15 +314,19 @@ export class ReportDetailsComponent implements OnInit {
         fileContentType: formGroup.value.fileContentType,
         fileExtention: formGroup.value.fileExtention,
         substituteId: formGroup.value.substituteId,
-        absenceType: formGroup.value.absenceType
+        absenceType: formGroup.value.absenceType,
+        confirmationNumber: formGroup.value.confirmationNumber
       }
       this.absenceService.Patch('/Absence/updateAbsence/', AbsenceModel).subscribe((respose: any) => {
         if (respose == "success") {
           this.dialogRef.close('Reload');
           this.notifier.notify('success', 'Updated Successfully');
         }
-        else {
+        else if((respose == "overlap")) {
           this.notifier.notify('error', 'Absence overlapping please select different date or time.');
+        }
+        else {
+          this.notifier.notify('error', 'Unable to update, status set to unavailable. Please select different date and time');
         }
       });
     }

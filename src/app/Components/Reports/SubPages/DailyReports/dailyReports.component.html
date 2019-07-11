@@ -88,12 +88,12 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="200" name="ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="150" name="Job ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                <div class="ellipsis">{{ row['absenceId'] }}</div>
+                <div class="ellipsis">{{ row['confirmationNumber'] }}</div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="240" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis" *ngIf="row['endDate']!=row['startDate']">{{ row['endDate'] | date:'E, M/d/y' }}
@@ -103,13 +103,13 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="240" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="150" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" *ngIf="row['absenceType']!=2">{{ row['statusTitle'] }}</div>
                 <div class="ellipsis" *ngIf="row['absenceType']==2">Assigned</div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="260" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="240" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="row">
                   <div class="col-md-1">
@@ -151,12 +151,12 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="200" name="ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="150" name="Job ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                <div class="ellipsis">{{ row['absenceId'] }}</div>
+                <div class="ellipsis">{{ row['confirmationNumber'] }}</div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="240" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis" *ngIf="row['endDate']!=row['startDate']">{{ row['endDate'] | date:'E, M/d/y' }}
@@ -166,12 +166,12 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="240" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="150" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['statusTitle'] }}</div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="260" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="240" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 N/A
               </ng-template>
@@ -204,12 +204,12 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="200" name="ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="150" name="Job ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                <div class="ellipsis">{{ row['absenceId'] }}</div>
+                <div class="ellipsis">{{ row['confirmationNumber'] }}</div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="260" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="240" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['startDate'] | date:'E, M/d/y' }}</div>
                 <div class="ellipsis" *ngIf="row['endDate']!=row['startDate']">{{ row['endDate'] | date:'E, M/d/y' }}
@@ -219,12 +219,12 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="240" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="150" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 N/A
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="260" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="240" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 No Sub Required
               </ng-template>

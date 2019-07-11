@@ -82,6 +82,7 @@ export class PopupForCancelAbsencesComponent implements OnInit {
       this.schoolInformation = data;
     });
   }
+
   GetDistricts(): void {
     this.dataContext.get('district/getDistricts').subscribe((data: any) => {
       this.Districts = data;
@@ -99,6 +100,7 @@ export class PopupForCancelAbsencesComponent implements OnInit {
       }
     });
   }
+  
   onCloseDialog() {
     this._dialogRef.close();
   }

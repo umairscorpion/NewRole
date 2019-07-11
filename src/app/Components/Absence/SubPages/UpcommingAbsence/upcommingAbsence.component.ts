@@ -49,7 +49,7 @@ export class UpcommingAbsenceComponent implements OnInit {
     GetAbsences(): void {
         let StartDate = this.CurrentDate.toISOString();
         let EndDate = new Date();
-        EndDate.setDate(this.currentDate.getDate() + 30);
+        EndDate.setDate(this.currentDate.getDate() + 365);
         let UserId = this._userSession.getUserId();
         this._dataContext.get('Absence/getAbsences' + "/" + StartDate + "/" + EndDate.toISOString() + "/" + UserId).subscribe((data: any) => {
             this.UpcommingAbsences.data = data;
@@ -60,7 +60,7 @@ export class UpcommingAbsenceComponent implements OnInit {
     ShowDetail(AbsenceDetail: any) {
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
         const model = new AuditFilter();
-        model.entityId = AbsenceDetail.absenceId;
+        model.entityId = AbsenceDetail.confirmationNumber;
         this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
             this.insertAbsencesLogView = result;
         });
@@ -86,7 +86,7 @@ export class UpcommingAbsenceComponent implements OnInit {
                     this.notifier.notify('error', 'Job has ended, you cannot cancel it.');
                     return;
                 }
-                this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus',SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                     if (response == "success") {
                         this.notifier.notify('success', 'Cancelled Successfully.');
                         this.GetAbsences();
@@ -100,6 +100,7 @@ export class UpcommingAbsenceComponent implements OnInit {
     EditAbsence(absenceDetail: any) {
         console.log(absenceDetail);
         let modeldata = new ReportDetail();
+        modeldata.confirmationNumber = absenceDetail.confirmationNumber;
         modeldata.reason = absenceDetail.absenceReasonDescription;
         modeldata.absenceId = absenceDetail.absenceId;
         modeldata.startDate = absenceDetail.startDate;
@@ -124,7 +125,7 @@ export class UpcommingAbsenceComponent implements OnInit {
         modeldata.callingPage = 'Absence' ;
 
         const model = new AuditFilter();
-        model.entityId = absenceDetail.absenceId;
+        model.entityId = absenceDetail.confirmationNumber;
         this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
             this.insertAbsencesLogView = result;
         });
