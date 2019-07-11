@@ -78,6 +78,9 @@
                       <i class="fa fa-lock fa-stack-1x"></i>
                     </span>
                   </a>
+                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Resend Welcome Letter" matTooltipPosition="below">
+                    <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
+                  </a>
                   <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
                     [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'" matTooltipPosition="above"
                     [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)" color=""></mat-slide-toggle>
