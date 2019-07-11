@@ -322,8 +322,11 @@ export class ReportDetailsComponent implements OnInit {
           this.dialogRef.close('Reload');
           this.notifier.notify('success', 'Updated Successfully');
         }
-        else {
+        else if((respose == "overlap")) {
           this.notifier.notify('error', 'Absence overlapping please select different date or time.');
+        }
+        else {
+          this.notifier.notify('error', 'Unable to update, status set to unavailable. Please select different date and time');
         }
       });
     }

@@ -3,7 +3,7 @@ import { Entity } from "./entity";
 export class UserAvailability extends Entity {
   availabilityId: number;
   userId: string;
-  availabilityStatusId: number | null;
+  availabilityStatusId: number;
   availabilityContentBackgroundColor: string;
   availabilityIconCss: string;
   title: string;
