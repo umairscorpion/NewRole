@@ -43,4 +43,5 @@ export class Absence extends Entity {
     profilePictureSafeUrl: SafeUrl;
     IsApprovalRequired: boolean;
     Requested: boolean;
+    confirmationNumber: string;
 }

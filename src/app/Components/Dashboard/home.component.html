@@ -127,9 +127,9 @@
                     </div>
                     <div class="col-md-3">
                         <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="Approve"
-                            matTooltipPosition="above" (click)="onApproveClick(leave.leaveRequestId, leave.absenceId)">check</i>
+                            matTooltipPosition="above" (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber )">check</i>
                         <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;" #tooltip="matTooltip" matTooltip="Deny"
-                            matTooltipPosition="above" (click)="onDenyClick(leave.leaveRequestId, leave.absenceId)">close</i>
+                            matTooltipPosition="above" (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)">close</i>
                     </div>
                     <mat-divider></mat-divider>
                 </mat-list-item>
