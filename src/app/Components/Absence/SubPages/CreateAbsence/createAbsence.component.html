@@ -46,7 +46,7 @@
                                                 [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
                                                 [matDatepicker]="AbsenceStartDatePicker" placeholder="Start Date"
                                                 formControlName="AbsenceStartDate" 
-                                                (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate)">
+                                                (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate);SearchAvailableSubstitutes('a')">
                                             <mat-datepicker-toggle matSuffix [for]="AbsenceStartDatePicker">
                                             </mat-datepicker-toggle>
                                             <mat-datepicker [dateClass]="dateClass" #AbsenceStartDatePicker>
@@ -55,11 +55,12 @@
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
-                                            <input matInput [min]="absenceFirstFormGroup.value.AbsenceStartDate" (dateInput)="SearchAvailableSubstitutes('a')"
+                                            <input matInput [min]="absenceFirstFormGroup.value.AbsenceStartDate"
                                                 [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
                                                 [matDatepicker]="AbsenceEndDatePicker" placeholder="End Date"
                                                 formControlName="AbsenceEndDate"
-                                                (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate)">
+                                                (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate)"
+                                                (dateInput)="SearchAvailableSubstitutes('a')">
                                             <mat-datepicker-toggle matSuffix [for]="AbsenceEndDatePicker">
                                             </mat-datepicker-toggle>
                                             <mat-datepicker [dateClass]="dateClass" #AbsenceEndDatePicker>
