@@ -30,8 +30,16 @@ export class AvailabilityService extends RestService<UserAvailability> {
       );
   }
 
-  create(model: any): any {
+  create(startDate: any, endDate: any, model: any): any {
+    model.startDate = startDate;
+    model.endDate = endDate;
     return this.httpClient.post(`${environment.apiUrl}availability`, model);
+  }
+
+  update(id: number, startDate: any, endDate: any, model: any): any {
+    model.startDate = startDate;
+    model.endDate = endDate;
+    return this.httpClient.put(`${environment.apiUrl}availability/${id}`, model);
   }
 
   createEvent(model: any): any {

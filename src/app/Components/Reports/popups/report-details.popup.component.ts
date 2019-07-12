@@ -95,8 +95,8 @@ export class ReportDetailsComponent implements OnInit {
       absenceType: [''],
       employeeId: [''],
       employeeName: [''],
-      endDate: [''],
-      endTime: [{ value: '', disabled: true }],
+      endDate: ['', [Validators.required]],
+      endTime: [{ value: '', disabled: true }, [Validators.required]],
       fileContentType: [''],
       fileExtention: [''],
       grade: [''],
@@ -109,8 +109,8 @@ export class ReportDetailsComponent implements OnInit {
       positionDescription: [''],
       positionId: [''],
       profilePicture: [''],
-      startDate: [''],
-      startTime: [{ value: '', disabled: true }],
+      startDate: ['', [Validators.required]],
+      startTime: [{ value: '', disabled: true }, [Validators.required]],
       status: [''],
       subjectDescription: [''],
       substituteId: ['', Validators.required],
@@ -239,10 +239,10 @@ export class ReportDetailsComponent implements OnInit {
       let filter = {
         districtId: this._userSession.getUserDistrictId(),
         employeeId: this.EmployeeIdForAbsence,
-        startDate: moment(this.reportDetail.startDate).format('MM/DD/YYYY'),
-        endDate: moment(this.reportDetail.endDate).format('MM/DD/YYYY'),
-        startTime: this.reportDetail.startTime,
-        endTime: this.reportDetail.endTime
+        startDate: moment(this.absenceForm.value.startDate).format('MM/DD/YYYY'),
+        endDate: moment(this.absenceForm.value.endDate).format('MM/DD/YYYY'),
+        startTime: this.absenceForm.getRawValue().startTime,
+        endTime:  this.absenceForm.getRawValue().endTime
       }
       this.availableSubstitutes = this.http.post<User[]>(environment.apiUrl + 'user/getAvailableSubstitutes', filter);
       this.availableSubstitutes = this.availableSubstitutes.map((users: any) => users.filter((val: User) => val.firstName.toLowerCase().includes(SearchedText.toLowerCase())));
@@ -316,11 +316,21 @@ export class ReportDetailsComponent implements OnInit {
           this.dialogRef.close('Reload');
           this.notifier.notify('success', 'Updated Successfully');
         }
-        else if((respose == "overlap")) {
+        else if ((respose == "overlap")) {
           this.notifier.notify('error', 'Absence overlapping please select different date or time.');
+          this.absenceForm.controls['startDate'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['endDate'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['startTime'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['endTime'].setErrors({ 'incorrect': true });
+          return false;
         }
         else {
           this.notifier.notify('error', 'Unable to update, status set to unavailable. Please select different date and time');
+          this.absenceForm.controls['startDate'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['endDate'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['startTime'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['endTime'].setErrors({ 'incorrect': true });
+          return false;
         }
       });
     }
