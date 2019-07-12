@@ -117,20 +117,6 @@ export class SubstituteCalendarComponent implements OnInit {
         availability.endDate = moment(end).subtract(1, 'day').format('YYYY-MM-DD');
         availability.endTime = moment(end).format('hh:mm A');
 
-        if (this.availabilityData && this.availabilityData.length > 0) {
-          const booked = this.availabilityData.filter(t => moment(availability.startDate).isSameOrBefore(moment(t['start']).format('YYYY-MM-DD')) && moment(availability.endDate).isSameOrAfter(moment(t['end']).format('YYYY-MM-DD')) && t['id'] < 0);
-          if (booked && booked.length > 0) {
-            this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
-            return false;
-          }
-        }
-        // if (this.availabilityData && this.availabilityData.length > 0) {
-        //   const booked = this.availabilityData.filter(t => moment(availability.startDate).isSameOrBefore(moment(t['start']).format('YYYY-MM-DD')) && moment(availability.endDate).isSameOrAfter(moment(t['end']).format('YYYY-MM-DD')) && t['id'] > 0);
-        //   if (booked && booked.length > 0) {
-        //     this.notifier.notify('error', 'You already unavailable for this date !');
-        //     return false;
-        //   }
-        // }
         const dialogRef = this.dialogRef.open(UnAvailabilityComponent,
           {
             panelClass: 'availability-edit-dialog',
@@ -138,20 +124,9 @@ export class SubstituteCalendarComponent implements OnInit {
           });
 
         dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            if (this.availabilityData && this.availabilityData.length > 0) {
-              const booked = this.availabilityData.filter(t => moment(result.availability.startDate).isSameOrBefore(moment(t['start']).format('YYYY-MM-DD')) && moment(result.availability.endDate).isSameOrAfter(moment(t['end']).format('YYYY-MM-DD')) && t['id'] < 0);
-              if (booked && booked.length > 0) {
-                this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
-                return false;
-              }
-            }
-            const model = result.availability;
-            console.log({ save: model });
-            this.availabilityService.create(model).subscribe(t => {
-              this.reloadCalendar();
-              this.getSubstituteAvailibiltySummary();
-            });
+          if (result) {          
+            this.reloadCalendar();
+            this.getSubstituteAvailibiltySummary();
           }
         });
       },
@@ -176,11 +151,9 @@ export class SubstituteCalendarComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
               if (result) {
                 console.log({ result });
-                if (result.action === 'Submit') {
-                  this.availabilityService.put('availability/', result.id, result.availability).subscribe(t => {
-                    this.reloadCalendar();
-                    this.getSubstituteAvailibiltySummary();
-                  });
+                if (result.action === 'Submit') {                
+                  this.reloadCalendar();
+                  this.getSubstituteAvailibiltySummary();
                 } else if (result.action === 'Delete') {
                   this.availabilityService.delete('availability/', result.id).subscribe(t => {
                     this.reloadCalendar();
