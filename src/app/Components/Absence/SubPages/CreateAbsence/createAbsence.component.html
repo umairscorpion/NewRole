@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
-                                            <input matInput [min]="absenceFirstFormGroup.value.AbsenceStartDate" (dateInput)="SearchAvailableSubstitutes(a)"
+                                            <input matInput [min]="absenceFirstFormGroup.value.AbsenceStartDate" (dateInput)="SearchAvailableSubstitutes('a')"
                                                 [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
                                                 [matDatepicker]="AbsenceEndDatePicker" placeholder="End Date"
                                                 formControlName="AbsenceEndDate"
