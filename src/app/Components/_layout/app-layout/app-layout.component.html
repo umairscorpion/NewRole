@@ -35,6 +35,7 @@
       </mat-sidenav>
       <mat-sidenav-content [ngClass]="{'col-md-10': isOpen , 'col-md-10 col-md-offset-1': !isOpen}" class="right-content">
         <router-outlet (activate)="onActivate($event)"></router-outlet>
+        
       </mat-sidenav-content>
     </mat-sidenav-container>
   </div>

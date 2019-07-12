@@ -161,7 +161,7 @@
                                                 formControlName="AbsenceType">
                                                 <mat-option *ngFor="let type of absenceTypes" [value]="type.absenceType"
                                                     [disabled]="(type.absenceType == 5 || type.absenceType == 1 
-                                                    || type.absenceType == 2 || type.absenceType == 3) && NeedASub">
+                                                    || type.absenceType == 2 || type.absenceType == 3) && (NeedASub)">
                                                     {{type.title}}
                                                 </mat-option>
                                             </mat-select>
