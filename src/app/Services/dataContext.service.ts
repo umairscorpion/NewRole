@@ -70,8 +70,8 @@ export class DataContext {
         return this._http.get(this.baseUrl + url + "/" + userId + "/" + userLevel);
     }
 
-    UpdateAbsenceStatus(url: string, AbsenceId: number, StatusId: number, UpdateStatusDate: string, userId: string): Observable<any> {
-        return this._http.get(this.baseUrl + url + "/" + AbsenceId + "/" + StatusId + "/" + UpdateStatusDate + "/" + userId);
+    UpdateAbsenceStatus(url: string, ConfirmationNumber: string, AbsenceId: number, StatusId: number, UpdateStatusDate: string, userId: string): Observable<any> {
+        return this._http.get(this.baseUrl + url + "/" + ConfirmationNumber + "/" + AbsenceId + "/" + StatusId + "/" + UpdateStatusDate + "/" + userId);
     }
 
     private handleError(error: Response) {
@@ -91,8 +91,8 @@ export class DataContext {
         return this._http.post(this.baseUrl + url, model, { responseType: 'blob' });
     }
 
-    UpdateAbsenceStatusAndSub(url: string, AbsenceId: number, StatusId: number, UpdateStatusDate: string, userId: string, SubstituteId: string, SubstituteRequired: boolean): Observable<any> {
-        return this._http.get(this.baseUrl + url + "/" + AbsenceId + "/" + StatusId + "/" + UpdateStatusDate + "/" + userId + "/" + SubstituteId + "/" + SubstituteRequired);
+    UpdateAbsenceStatusAndSub(url: string, ConfirmationNumber:string, AbsenceId: number, StatusId: number, UpdateStatusDate: string, userId: string, SubstituteId: string, SubstituteRequired: boolean): Observable<any> {
+        return this._http.get(this.baseUrl + url + "/" + ConfirmationNumber + "/" + AbsenceId + "/" + StatusId + "/" + UpdateStatusDate + "/" + userId + "/" + SubstituteId + "/" + SubstituteRequired);
     }
 
     CancelAbsences(url: string, data: string): Observable<any> {

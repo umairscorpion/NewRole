@@ -157,6 +157,28 @@ export class EmployeesComponent implements OnInit {
       error => this.msg = <any>error);
   }
 
+  ResendWelcomeLetter(user: any) {
+    swal.fire({
+      title: 'Send',
+      text:
+        'Are you sure, you want to resend welcome letter?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-danger',
+      cancelButtonClass: 'btn btn-success',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      buttonsStyling: false
+    }).then(r => {
+      if (r.value) {
+        this._dataContext.post('user/resendWelcomeLetter', user).subscribe((data: any) => {
+          this.notifier.notify('success', 'Sent Successfully');
+        },
+          error => this.msg = <any>error);
+      }
+    });
+  }
+
   ViewEmployeeDetail(SelectedRow: any) {
     this._dataContext.getById('user/getUserById', SelectedRow.userId).subscribe((data: any) => {
       this.dialog.open(PopupDialogForEmployeeDetail, {

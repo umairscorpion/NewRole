@@ -42,5 +42,5 @@ export class AuditFilter {
     endDate: string;
     districtId: number;
     organizationId: string;
-    entityId: number;
+    entityId: string;
 }

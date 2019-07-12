@@ -30,4 +30,5 @@ export class LeaveRequest extends Entity {
     cancelledDate: string;
     cancelledBy: string;
     employeeProfilePicUrl: string;
+    confirmationNumber: string
 }

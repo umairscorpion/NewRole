@@ -94,7 +94,7 @@ export class MyJobsComponent implements OnInit {
                 }).then(r => {
                     if (r.value) {
                         if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
-                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus',SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
                                 this.GetUpcommingJobs();
@@ -124,7 +124,7 @@ export class MyJobsComponent implements OnInit {
                             this.notifier.notify('error', 'Not able to Release now.'); 
                             return; 
                         }
-                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus',SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
                                 this.GetUpcommingJobs();

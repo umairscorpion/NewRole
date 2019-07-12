@@ -106,6 +106,28 @@ export class SubstitutesComponent implements OnInit {
     });
   }
 
+  ResendWelcomeLetter(user: any) {
+    swal.fire({
+      title: 'Send',
+      text:
+        'Are you sure, you want to resend welcome letter?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-danger',
+      cancelButtonClass: 'btn btn-success',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      buttonsStyling: false
+    }).then(r => {
+      if (r.value) {
+        this._dataContext.post('user/resendWelcomeLetter', user).subscribe((data: any) => {
+          this.notifier.notify('success', 'Send Successfully');
+        },
+          error => this.msg = <any>error);
+      }
+    });
+  }
+
   EditSubstitute(SelectedRow: any) {
     this.router.navigate(['/manage/substitutes/addSubstitute'], { queryParams: { Id: SelectedRow.userId } });
   }

@@ -107,13 +107,14 @@ export class LeavesComponent implements OnInit {
             this.dataSourceForLeaveRequests.data.forEach((row: any) => this.selection.select(row));
     }
 
-    onApproveClick(leaveRequestId: number, absenceId: string) {
+    onApproveClick(leaveRequestId: number, absenceId: string, confirmationNumber:string) {
         let leaveStatusModel = {
             LeaveRequestId: leaveRequestId,
             IsApproved: 1,
             IsDeniend: 0,
             isArchived: 0,
-            AbsenceId: absenceId
+            AbsenceId: absenceId,
+            ConfirmationNumber: confirmationNumber
         }
         swal.fire({
             title: 'Approve',
@@ -147,13 +148,14 @@ export class LeavesComponent implements OnInit {
         });
     }
 
-    onDenyClick(leaveRequestId: number, absenceId: string) {
+    onDenyClick(leaveRequestId: number, absenceId: string, confirmationNumber:string) {
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
             isApproved: 0,
             isDeniend: 1,
             isArchived: 0,
-            AbsenceId: absenceId
+            AbsenceId: absenceId,
+            ConfirmationNumber: confirmationNumber
         }
         swal.fire({
             title: 'Deny',
@@ -187,11 +189,12 @@ export class LeavesComponent implements OnInit {
         });
     }
 
-    onArchiveRequest(leaveRequestId: number, absenceId: string) {
+    onArchiveRequest(leaveRequestId: number, absenceId: string, confirmationNumber:string) {
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
             isArchived: 1,
-            AbsenceId: absenceId
+            AbsenceId: absenceId,
+            ConfirmationNumber: confirmationNumber
         }
         swal.fire({
             title: 'Archive',

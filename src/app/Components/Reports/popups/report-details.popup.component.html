@@ -28,8 +28,8 @@
       <table *ngIf="menuAction == 'view' || menuAction == 'delete'" class="report-details-table" cellpadding="3"
         cellspacing="3" width="100%">
         <tr>
-          <td>ID:</td>
-          <td>{{reportDetail.absenceId}}</td>
+          <td>Job ID:</td>
+          <td>{{reportDetail.confirmationNumber}}</td>
         </tr>
         <tr>
           <td>Reason:</td>
@@ -83,8 +83,8 @@
       </table>
       <table *ngIf="menuAction == 'edit'" class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
         <tr>
-          <td>ID:</td>
-          <td>{{reportDetail.absenceId}}</td>
+          <td>Job ID:</td>
+          <td>{{reportDetail.confirmationNumber}}</td>
         </tr>
         <tr *ngIf="reportDetail.callingPage != 'Absence'">
           <td>Reason:</td>

@@ -52,6 +52,16 @@ export class LoginComponent implements OnInit {
                 this.loginFrm.setValue(model);
                 this.onSubmit(this.loginFrm);
             }
+            else if (params.pa && params.email) {
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userClaims');
+                let model = {
+                    userName: params.email,
+                    password: params.pa
+                }
+                this.loginFrm.setValue(model);
+                this.onSubmit(this.loginFrm);
+            }
         })
     }
 
