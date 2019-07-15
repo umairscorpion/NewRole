@@ -70,6 +70,10 @@ export class SideNavComponent implements OnInit {
         alert("Called");
     }
 
+    openHelpDesk() {
+        window.open("https://subzz-kb-05222019.groovehq.com/help", "_blank");
+    }
+
     showSearchPopup() {
         this.dialogRefSearch = this.dialog.open(PopupDialogForSearch, {
             width: '750px',

@@ -106,7 +106,7 @@
     <div class="row mt-5">
       <div class="col-md-1">
       </div>
-      <mat-checkbox formControlName="isAllDayOut" (change)="SetTime(form.value.isAllDayOut)" (click)="!isAllDayOut ? time = !time : time = time">
+      <mat-checkbox formControlName="isAllDayOut" (change)="SetTime(form.value.isAllDayOut)" (click)="!form.value.isAllDayOut ? time = !time : time = time">
         All Day
       </mat-checkbox>
     </div>
