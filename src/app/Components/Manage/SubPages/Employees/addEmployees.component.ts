@@ -62,7 +62,6 @@ export class AddEmployeesComponent implements OnInit {
             EmailId: ['', [Validators.required, Validators.email]],
             PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             IsActive: [1],
-            Password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+)$/)]]
         });
         if (this._userSession.getUserRoleId() == 2) {
             this.employeeForm.get('WorkLocaion').setValue('2');
@@ -101,8 +100,7 @@ export class AddEmployeesComponent implements OnInit {
                         OrganizationId: data[0].organizationId ? data[0].organizationId : '',
                         SecondarySchools: data[0].secondarySchools,
                         PhoneNumber: data[0].phoneNumber,
-                        IsActive: data[0].isActive,
-                        Password: data[0].password
+                        IsActive: data[0].isActive
                     }
                     this.getImage(data[0].profilePicture);
                     this.employeeForm.setValue(EmployeeModel);
@@ -291,8 +289,7 @@ export class AddEmployeesComponent implements OnInit {
                         Email: form.value.EmailId,
                         PhoneNumber: form.value.PhoneNumber,
                         ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
-                        IsActive: form.value.IsActive,
-                        Password: form.value.Password
+                        IsActive: form.value.IsActive
                     }
 
                     if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {

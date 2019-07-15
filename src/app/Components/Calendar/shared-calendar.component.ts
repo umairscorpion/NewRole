@@ -10,6 +10,7 @@ import { AbsenceService } from 'src/app/Services/absence.service';
 import { MatDialog } from '@angular/material';
 import { EventAddComponent } from './event-add/event-add.component';
 import { DataContext } from '../../Services/dataContext.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-shared-calendar',
@@ -23,19 +24,47 @@ export class SharedCalendarComponent implements OnInit {
   todayTotalAbsenceDetails: ReportDetail[] = Array<ReportDetail>();
   loginedUserRole = 0;
   Organizations: any;
+  resources = new Array<any>();
+  FilterForm: FormGroup;
 
   constructor(
     private availabilityService: AvailabilityService,
     private absenceService: AbsenceService,
     private _userSession: UserSession,
     private _dataContext: DataContext,
-    private dialogRef: MatDialog) { }
+    private dialogRef: MatDialog,
+    private fb: FormBuilder) {
+      this.FilterForm = fb.group({
+        organizationId: [0]
+      });
+     }
 
   ngOnInit() {
     this.loginedUserRole = this._userSession.getUserRoleId();
     this.containerEl = $('#calendar');
     this.loadAbsences();
     this.GetOrganizations(this._userSession.getUserDistrictId());
+  }
+
+  onSubmit(form: FormGroup) {
+    const currentDate: Date = new Date();
+    const startDate = new Date();
+    startDate.setMonth(currentDate.getMonth() - 6);
+    const endDate = new Date();
+    endDate.setMonth(currentDate.getMonth() + 6);
+    let userId = this._userSession.getUserId();
+    let districtId = this._userSession.getUserLevelId() === 4 ? 0 : this._userSession.getUserDistrictId();
+    let organizationId = this._userSession.getUserLevelId() === 4 ? '' : this._userSession.getUserOrganizationId();
+    let model = {
+      startDate, endDate, userId, districtId, organizationId : this.FilterForm.value.organizationId == 0 ? '' : this.FilterForm.value.organizationId
+    }
+    this.absenceService.CalendarView('Absence/views/calendar', model).subscribe(
+      (data: any) => {
+        console.log({ absences: data });
+        this.containerEl.fullCalendar('refetchResources');
+          this.containerEl.fullCalendar('removeEvents');
+          this.containerEl.fullCalendar('renderEvents', data, true);
+      });
   }
 
   loadAbsences() {
@@ -45,8 +74,12 @@ export class SharedCalendarComponent implements OnInit {
     const endDate = new Date();
     endDate.setMonth(currentDate.getMonth() + 6);
     const userId = this._userSession.getUserId();
-    const campusId = this._userSession.getUserLevelId() === 1 ? '-1' : this._userSession.getUserOrganizationId();
-    this.absenceService.CalendarView(startDate, endDate, userId, campusId).subscribe(
+    const districtId = this._userSession.getUserLevelId() === 4 ? 0 : this._userSession.getUserDistrictId();
+    const organizationId = this._userSession.getUserLevelId() === 4 ? '' : this._userSession.getUserOrganizationId();
+    let model = {
+      startDate, endDate, userId, districtId, organizationId
+    }
+    this.absenceService.CalendarView('Absence/views/calendar', model).subscribe(
       (data: any) => {
         console.log({ absences: data });
         this.containerEl.fullCalendar({
@@ -82,9 +115,6 @@ export class SharedCalendarComponent implements OnInit {
           eventMouseout: function (data, event, view) {
             $(this).css('z-index', 8);
             $('.tooltiptopicevent').remove();
-          },
-          dayClick: function () {
-            this.tooltip.hide()
           },
           eventResizeStart: function () {
             this.tooltip.hide()
@@ -136,6 +166,10 @@ export class SharedCalendarComponent implements OnInit {
   GetOrganizations(DistrictId: number): void {
     this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
       this.Organizations = data;
+      if (this._userSession.getUserRoleId() == 2) {
+        this.FilterForm.get('organizationId').setValue(this._userSession.getUserOrganizationId());
+        this.FilterForm.controls['organizationId'].disable();
+      }
     },
       error => <any>error);
   }

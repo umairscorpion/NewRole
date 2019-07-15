@@ -55,6 +55,9 @@ export class RolePermissionsComponent implements OnInit {
       this.loadPermissions(this.id);
     });
     this.LoadUserResources();
+    if (this.id > 0) {
+      this.form.controls['name'].disable();
+    }
   }
 
   LoadUserResources(): void {

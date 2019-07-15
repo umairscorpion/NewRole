@@ -60,7 +60,7 @@
         </tr>
         <tr *ngIf='reportDetail.substituteId == -1'>
           <td>Substitute:</td>
-          <td>No Substitute</td>
+          <td>N/A</td>
         </tr>
         <tr>
           <td>Posted:</td>
@@ -154,7 +154,7 @@
         <tr *ngIf="reportDetail.substituteRequired">
           <td>Substitute:</td>
           <td *ngIf='reportDetail.statusId == 2'>{{reportDetail.substituteName}}</td>
-          <td *ngIf="reportDetail.statusId != 2 && reportDetail.callingPage == 'Absence'">No Substitute</td>
+          <td *ngIf="reportDetail.statusId != 2 && reportDetail.callingPage == 'Absence'">N/A</td>
           <td *ngIf="reportDetail.statusId != 2 && reportDetail.callingPage != 'Absence'">
             <mat-form-field class="row col-md-9">
               <input type="text" placeholder="Search Substitute Name"

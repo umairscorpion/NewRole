@@ -149,24 +149,7 @@
                                 </mat-error>
                             </mat-form-field>
                         </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-3">Password</td>
-                        <td>
-                            <mat-form-field hintLabel="Min 8 and Max 20 characters." class="col-md-7">
-                                <input matInput #pass type="password" autocomplete="off" minlength="8" maxlength="20" 
-                                formControlName="Password" placeholder="Password">
-                                <mat-hint align="end">{{pass.value?.length || 0}}/20</mat-hint>
-                                <mat-error *ngIf="employeeForm.controls['Password'].hasError('required')">
-                                    Password is required.
-                                </mat-error>
-                                <mat-error *ngIf="employeeForm.controls['Password'].hasError('pattern')">
-                                    Please use both uppercase and lowercase letters as well as numbers.
-                                </mat-error>
-                            </mat-form-field>
-                        </td>
-                        <td></td>
-                    </tr>
+                    </tr>                   
                     <tr>
                         <td class="col-md-3">Work Email Address</td>
                         <td>

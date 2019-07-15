@@ -92,7 +92,8 @@ export class SubstituteCalendarComponent implements OnInit {
       events: (start, end, timezone, callback) => {
         const model = {
           StartDate: moment(start).format('YYYY-MM-DD'),
-          EndDate: moment(end).format('YYYY-MM-DD')
+          EndDate: moment(end).format('YYYY-MM-DD'),
+          UserRoleId: this.loginedUserRole
         };
         this.availabilityService.getAll(model).subscribe((data: any) => {
           this.containerEl.fullCalendar('removeEvents');
