@@ -45,16 +45,18 @@ export class MyJobsComponent implements OnInit {
     }
 
     GetUpcommingJobs() {
-        let StartDate = this.CurrentDate.toISOString();
         let EndDate = new Date();
-        EndDate.setDate(this.currentDate.getDate() + 30);
-        let UserId = this._userSession.getUserId();
-        let DistrictId = this._userSession.getUserDistrictId();
-        let Status = 2;
+        EndDate.setDate(this.currentDate.getDate() + 30)
+        let model = {
+             StartDate: this.CurrentDate.toISOString(),
+             EndDate: EndDate.toISOString(),
+             SubstituteId: this._userSession.getUserId(),
+             DistrictId: this._userSession.getUserDistrictId(),
+             Status: 2,
+        }
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
-        this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + false + "/" + Status).subscribe((data: any) => {
+        this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
                 this.UpcommingJobs.data = data;
                 this.UpcomingJobCount = data.length
                 this.UpcomingCountEvent.emit(this.UpcomingJobCount)
@@ -78,7 +80,7 @@ export class MyJobsComponent implements OnInit {
             else if (currentTime > starttime) {
                 this.notifier.notify('error', 'Job has started, unable to release.');
             }
-            
+
             else {
                 swal.fire({
                     title: 'Release',
@@ -94,7 +96,7 @@ export class MyJobsComponent implements OnInit {
                 }).then(r => {
                     if (r.value) {
                         if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
-                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus',SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
                                 this.GetUpcommingJobs();
@@ -120,11 +122,11 @@ export class MyJobsComponent implements OnInit {
                     buttonsStyling: false
                 }).then(r => {
                     if (r.value) {
-                        if ((SelectedRow.startDate as Date) <= this.currentDate) { 
-                            this.notifier.notify('error', 'Not able to Release now.'); 
-                            return; 
+                        if ((SelectedRow.startDate as Date) <= this.currentDate) {
+                            this.notifier.notify('error', 'Not able to Release now.');
+                            return;
                         }
-                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus',SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
                                 this.GetUpcommingJobs();
@@ -181,6 +183,15 @@ export class MyJobsComponent implements OnInit {
     }
 
     SearchUpcommingJobs(SearchFilter: any): void {
+        let model = {
+            StartDate: SearchFilter.value.FilterStartDate.toISOString(),
+            EndDate: SearchFilter.value.FilterEndDate.toISOString(),
+            SubstituteId: this._userSession.getUserId(),
+            DistrictId: SearchFilter.getRawValue().DistrictId,
+            Status: 2,
+            OrganizationId: SearchFilter.value.OrganizationId
+
+       }
         if (this.FilterForm.valid) {
             this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"
                 + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +

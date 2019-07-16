@@ -44,7 +44,7 @@ export class AppLayoutComponent implements OnInit {
       }
     });
   }
-
+  
   ngOnInit() {
     this.loadUserResources(2, -1, 0);
     this.sideNavService.change.subscribe((isOpen: any) => {
