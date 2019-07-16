@@ -46,7 +46,7 @@ export class MyJobsComponent implements OnInit {
 
     GetUpcommingJobs() {
         let EndDate = new Date();
-        EndDate.setDate(this.currentDate.getDate() + 30)
+        EndDate.setDate(this.currentDate.getDate() + 30);
         let model = {
              StartDate: this.CurrentDate.toISOString(),
              EndDate: EndDate.toISOString(),
@@ -190,7 +190,6 @@ export class MyJobsComponent implements OnInit {
             DistrictId: SearchFilter.getRawValue().DistrictId,
             Status: 2,
             OrganizationId: SearchFilter.value.OrganizationId
-
        }
         if (this.FilterForm.valid) {
             this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"

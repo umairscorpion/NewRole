@@ -44,13 +44,16 @@ export class PastJobsComponent implements OnInit {
         let StartDate = new Date();
         let EndDate = this.CurrentDate.toISOString();
         StartDate.setDate(this.currentDate.getDate() - 30);
-        let UserId = this._userSession.getUserId();
-        let DistrictId = this._userSession.getUserDistrictId();
-        let Status = 2;
+        let model = {
+            StartDate: StartDate.toISOString(),
+            EndDate: EndDate,
+            SubstituteId: this._userSession.getUserId(),
+            DistrictId: this._userSession.getUserDistrictId(),
+            Status: 2,
+       }
         this.FilterForm.get('FilterStartDate').setValue(StartDate);
         this.FilterForm.get('FilterEndDate').setValue(this.CurrentDate);
-        this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate.toISOString() + "/" + EndDate +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + false + "/" + Status).subscribe((data: any) => {
+        this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
                 this.PastJobs.data = data;
                 this.PastJobCount = data.length
                 this.PastCountEvent.emit(this.PastJobCount)
@@ -89,9 +92,16 @@ export class PastJobsComponent implements OnInit {
 
     SearchPastJobs(SearchFilter: any): void {
         if (this.FilterForm.valid) {
-            this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"
-                + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +
-                "/" + SearchFilter.getRawValue().DistrictId + "/" + false + "/" + 2).subscribe((data: any) => {
+            let model = {
+                StartDate: SearchFilter.value.FilterStartDate.toISOString(),
+                EndDate: SearchFilter.value.FilterEndDate.toISOString(),
+                SubstituteId: this._userSession.getUserId(),
+                DistrictId: SearchFilter.getRawValue().DistrictId,
+                Status: 2,
+                Requested: false,
+                OrganizationId: SearchFilter.value.OrganizationId
+           }
+            this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
                     this.PastJobs.data = data;
                     this.PastJobCount = data.length
                     this.PastCountEvent.emit(this.PastJobCount)
