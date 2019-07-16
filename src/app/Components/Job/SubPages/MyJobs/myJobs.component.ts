@@ -187,14 +187,12 @@ export class MyJobsComponent implements OnInit {
             StartDate: SearchFilter.value.FilterStartDate.toISOString(),
             EndDate: SearchFilter.value.FilterEndDate.toISOString(),
             SubstituteId: this._userSession.getUserId(),
-            DistrictId: SearchFilter.getRawValue().DistrictId,
+            DistrictId: this._userSession.getUserDistrictId(),
             Status: 2,
             OrganizationId: SearchFilter.value.OrganizationId
        }
         if (this.FilterForm.valid) {
-            this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"
-                + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +
-                "/" + SearchFilter.getRawValue().DistrictId + "/" + false + "/" + 2).subscribe((data: any) => {
+            this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
                     this.UpcommingJobs.data = data;
                     this.UpcomingJobCount = data.length
                     this.UpcomingCountEvent.emit(this.UpcomingJobCount)

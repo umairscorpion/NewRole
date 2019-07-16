@@ -125,7 +125,7 @@ export class AvailableJobsComponent implements OnInit {
             StartDate: SearchFilter.value.FilterStartDate.toISOString(),
             EndDate: SearchFilter.value.FilterEndDate.toISOString(),
             SubstituteId: this._userSession.getUserId(),
-            DistrictId: SearchFilter.getRawValue().DistrictId,
+            DistrictId: this._userSession.getUserDistrictId(),
             Status: 1,
             OrganizationId: SearchFilter.value.OrganizationId,
             Requested: SearchFilter.value.Requested

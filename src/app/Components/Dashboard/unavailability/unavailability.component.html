@@ -21,13 +21,13 @@
       </div>
       <div class="col-md-10 p-0">
         <mat-radio-group formControlName="availabilityStatusId">
-          <mat-radio-button value="1" color="primary" class="btn btn-sm availability-status-unavailable">
+          <mat-radio-button [value]="1" color="primary" class="btn btn-sm availability-status-unavailable">
             Unavailable
           </mat-radio-button>
-          <mat-radio-button value="2" color="primary" class="btn btn-sm availability-status-vacations ml-2 mr-2">
+          <mat-radio-button [value]="2" color="primary" class="btn btn-sm availability-status-vacations ml-2 mr-2">
             Vacation
           </mat-radio-button>
-          <mat-radio-button value="3" color="primary" class="btn btn-sm availability-status-recurring"
+          <mat-radio-button [value]="3" color="primary" class="btn btn-sm availability-status-recurring"
             (click)="recurrence()">
             Recurring
           </mat-radio-button>
@@ -106,7 +106,7 @@
     <div class="row mt-5">
       <div class="col-md-1">
       </div>
-      <mat-checkbox formControlName="isAllDayOut" (change)="SetTime(form.value.isAllDayOut)" (click)="!form.value.isAllDayOut ? time = !time : time = time">
+      <mat-checkbox formControlName="isAllDayOut" (change)="SetTime(form.value.isAllDayOut)">
         All Day
       </mat-checkbox>
     </div>
