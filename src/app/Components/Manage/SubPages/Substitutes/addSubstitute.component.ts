@@ -217,7 +217,8 @@ export class AddSubstituteComponent implements OnInit {
                         ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
                         PayRate: form.value.PayRate,
                         HourLimit: form.value.HourLimit,
-                        IsActive: form.value.IsActive
+                        IsActive: form.value.IsActive,
+                        Password: '1234567890'
                     }
                     if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
                         this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
