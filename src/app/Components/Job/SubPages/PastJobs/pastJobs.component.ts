@@ -96,7 +96,7 @@ export class PastJobsComponent implements OnInit {
                 StartDate: SearchFilter.value.FilterStartDate.toISOString(),
                 EndDate: SearchFilter.value.FilterEndDate.toISOString(),
                 SubstituteId: this._userSession.getUserId(),
-                DistrictId: SearchFilter.getRawValue().DistrictId,
+                DistrictId: this._userSession.getUserDistrictId(),
                 Status: 2,
                 Requested: false,
                 OrganizationId: SearchFilter.value.OrganizationId
