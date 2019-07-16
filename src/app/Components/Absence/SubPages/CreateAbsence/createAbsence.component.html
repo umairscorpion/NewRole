@@ -133,18 +133,7 @@
                             <div class="row" style="height: 56.56px;">
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6">
-                                        <div class="col-md-12 col-lg-12">
-                                            <mat-slide-toggle #tooltip="matTooltip" labelPosition="before" formControlName="onlyCertified" style="margin-left:5px" matTooltip="Click to enable" matTooltipPosition="above"
-                                                color="">
-                                                Requires Certified Sub?
-                                            </mat-slide-toggle>
-                                        </div>
-                                        <div class="col-md-12 col-lg-12">
-                                                <mat-slide-toggle #tooltip="matTooltip" labelPosition="before" formControlName="onlySubjectSpecialist" style="margin-left:5px" matTooltip="Click to enable" matTooltipPosition="above"
-                                                    color="">
-                                                    Only notify subject specialist?
-                                                </mat-slide-toggle>
-                                            </div>
+
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
@@ -181,6 +170,16 @@
                                                     <button mat-raised-button type="button" style="background-color:lightgreen; color:white">{{substitute.isActive ? 'Available' : 'Inactivated'}}</button>
                                                 </div>
                                             </mat-option>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="col-md-12 col-lg-12">
+                                                Requires Certified Sub?
+                                            <ui-switch [checked]="false" style="color: white" (valueChange)="onchangeOnlyCertified(absenceFirstFormGroup.value.onlyCertified)"></ui-switch>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12">
+                                            Only notify subject specialist?
+                                            <ui-switch [checked]="false" style="color: white" (valueChange)="onchangeOnlySpecialist(absenceFirstFormGroup.value.onlySubjectSpecialist)"></ui-switch>
                                         </div>
                                     </div>
                                 </div>

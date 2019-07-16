@@ -661,6 +661,14 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         return Isoverlap;
     }
 
+    onchangeOnlyCertified(value: boolean) {
+        this.absenceFirstFormGroup.get('onlyCertified').setValue(!value);
+    }
+
+    onchangeOnlySpecialist(value: boolean) {
+        this.absenceFirstFormGroup.get('onlySubjectSpecialist').setValue(!value);
+    }
+
     expandPannel() {
         this.preferredSubPanel.expanded = !this.preferredSubPanel.expanded;
     }

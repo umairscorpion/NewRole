@@ -198,6 +198,7 @@ import { SplashScreenComponent } from './Components/Dashboard/splash-screen/spla
 import { SettingsService } from './Services/settings.service';
 import { RoundPipe } from './Shared/pipe/round.pipe';
 import { DatePipe } from '../../node_modules/@angular/common';
+import { UiSwitchModule } from 'ngx-ui-switch';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -254,6 +255,15 @@ const customNotifierOptions: NotifierOptions = {
 
 @NgModule({
     imports: [
+        UiSwitchModule.forRoot({
+            size: 'small',
+            color: 'rgb(0, 189, 99)',
+            switchColor: '#FFFFFF',
+            defaultBgColor: '#3ab7a9',
+            defaultBoColor : '#3ab7a9',
+            checkedLabel: 'NO',
+            uncheckedLabel: 'YES'
+          }),
         NgxPrintModule,
         TagInputModule,
         NgxDatatableModule,
