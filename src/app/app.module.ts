@@ -257,7 +257,7 @@ const customNotifierOptions: NotifierOptions = {
     imports: [
         UiSwitchModule.forRoot({
             size: 'small',
-            color: 'rgb(0, 189, 99)',
+            color: 'rgb(58,183,169)',
             switchColor: '#FFFFFF',
             defaultBgColor: '#3ab7a9',
             defaultBoColor : '#3ab7a9',
