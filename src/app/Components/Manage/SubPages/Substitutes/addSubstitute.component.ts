@@ -61,12 +61,7 @@ export class AddSubstituteComponent implements OnInit {
             PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             PayRate: ['0'],
             HourLimit: ['0'],
-<<<<<<< HEAD
-            IsActive: [1],
-            // Password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+)$/)]]
-=======
             IsActive: [1]
->>>>>>> ac3c34bef4eda9b5dad68d853de262020d5cf1e0
         });
         this.getpositions()
         // this.GetUserTypes();
@@ -93,12 +88,7 @@ export class AddSubstituteComponent implements OnInit {
                         PhoneNumber: data[0].phoneNumber,
                         PayRate: data[0].payRate as string,
                         HourLimit: data[0].hourLimit,
-<<<<<<< HEAD
-                        IsActive: data[0].isActive,
-                        // Password: data[0].password
-=======
                         IsActive: data[0].isActive
->>>>>>> ac3c34bef4eda9b5dad68d853de262020d5cf1e0
                     }
                     this.getImage(data[0].profilePicture);
                     this.substituteForm.setValue(SubstituteModel);
