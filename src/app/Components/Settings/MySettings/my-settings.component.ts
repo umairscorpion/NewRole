@@ -138,20 +138,19 @@ export class MySettingComponent implements OnInit {
     }
 
     SaveCategories(Categories: any): void {
-        
-            let data = this.categoriesForNotification.data;
-            this._dataContext.Patch('user/updateUserCategories', data).subscribe((data: any) => {
-                this.notifier.notify('success', 'Updated Successfully');
-            },
-                (err: HttpErrorResponse) => {
-                    this.notifier.notify('error', err.error.error_description);
-                });
- }
 
- onChangeCategory(event)
- {
-    event.isNotificationSend = !event.isNotificationSend;
- }
+        let data = this.categoriesForNotification.data;
+        this._dataContext.Patch('user/updateUserCategories', data).subscribe((data: any) => {
+            this.notifier.notify('success', 'Updated Successfully');
+        },
+            (err: HttpErrorResponse) => {
+                this.notifier.notify('error', err.error.error_description);
+            });
+    }
+
+    onChangeCategory(event) {
+        event.isNotificationSend = !event.isNotificationSend;
+    }
 
  onChangeGrade(event)
  {
@@ -216,17 +215,17 @@ export class MySettingComponent implements OnInit {
 
     SavePreferredSchoolSettings(AllSchools: any): void {
         let data = this.schoolsForNotification.data;
-            this._dataContext.Patch('user/UpdateEnabledSchools', data).subscribe((data: any) => {
-                this.notifier.notify('success', 'Updated Successfully');
-            },
-                (err: HttpErrorResponse) => {
-                    this.notifier.notify('error', err.error.error_description);
-                });
-     }
+        this._dataContext.Patch('user/UpdateEnabledSchools', data).subscribe((data: any) => {
+            this.notifier.notify('success', 'Updated Successfully');
+        },
+            (err: HttpErrorResponse) => {
+                this.notifier.notify('error', err.error.error_description);
+            });
+    }
 
-     onChangeSchool(event){
+    onChangeSchool(event) {
         event.isEnabled = !event.isEnabled;
-        
+
     }
 
     getSchoolSettings() {

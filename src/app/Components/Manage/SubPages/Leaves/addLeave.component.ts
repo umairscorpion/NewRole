@@ -74,7 +74,7 @@ export class AddLeaveComponent implements OnInit {
                 isVisible: form.value.isVisible ? form.value.isVisible : false,
                 districtId: this.userSession.getUserDistrictId(),
                 organizationId: this.userSession.getUserOrganizationId() ? this.userSession.getUserDistrictId() : '-1',
-                allowanceType: form.value.allowanceType
+                allowanceType: form.value.allowanceType ? form.value.allowanceType : 0 
             }
             this.absenceService.insertLeaveType(leaveFormModel).subscribe((data: any) => {
                 if (this.leaveIdForEdit > 0) {

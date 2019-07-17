@@ -68,16 +68,18 @@ export class AvailableJobsComponent implements OnInit {
     }
 
     GetAvailableJobs() {
-        let StartDate = this.CurrentDate.toISOString();
         let EndDate = new Date();
         EndDate.setDate(this.currentDate.getDate() + 30);
-        let UserId = this._userSession.getUserId();
-        let DistrictId = this._userSession.getUserDistrictId();
-        let Status = 1;
+        let model = {
+            StartDate: this.CurrentDate.toISOString(),
+            EndDate: EndDate.toISOString(),
+            SubstituteId: this._userSession.getUserId(),
+            DistrictId: this._userSession.getUserDistrictId(),
+            Status: 1,
+       }
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
-        this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate + "/" + EndDate.toISOString() +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + false + "/" + Status).subscribe((data: Absence[]) => {
+        this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: Absence[]) => {
                 this.AvailableJobs.data = data;
                 this.AvailableJobCount = data.length;
                 this.AvailableCountEvent.emit(this.AvailableJobCount);
@@ -121,10 +123,17 @@ export class AvailableJobsComponent implements OnInit {
     }
 
     SearchAvailableJobs(SearchFilter: any): void {
+        let model = {
+            StartDate: SearchFilter.value.FilterStartDate.toISOString(),
+            EndDate: SearchFilter.value.FilterEndDate.toISOString(),
+            SubstituteId: this._userSession.getUserId(),
+            DistrictId: this._userSession.getUserDistrictId(),
+            Status: 1,
+            OrganizationId: SearchFilter.value.OrganizationId,
+            Requested: SearchFilter.value.Requested
+       }
         if (this.FilterForm.valid) {
-            this._dataContext.get('Job/getAvailableJobs' + "/" + SearchFilter.value.FilterStartDate.toISOString() + "/"
-                + SearchFilter.value.FilterEndDate.toISOString() + "/" + this._userSession.getUserId() + "/" + SearchFilter.value.OrganizationId +
-                "/" + SearchFilter.getRawValue().DistrictId + "/" + SearchFilter.value.Requested + "/" + 1).subscribe((data: any) => {
+            this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
                     this.AvailableJobs.data = data;
                     this.AvailableJobCount = data.length;
                     this.AvailableCountEvent.emit(this.AvailableJobCount)
@@ -198,13 +207,14 @@ export class AvailableJobsComponent implements OnInit {
     GetMyJobs() {
         let StartDate = new Date();
         let EndDate = new Date();
-        StartDate.setDate(this.currentDate.getDate() - 150);
-        EndDate.setDate(this.currentDate.getDate() + 150);
-        let UserId = this._userSession.getUserId();
-        let DistrictId = this._userSession.getUserDistrictId();
-        let Status = 2;
-        this._dataContext.get('Job/getAvailableJobs' + "/" + StartDate.toISOString() + "/" + EndDate.toISOString() +
-            "/" + UserId + "/" + "-1" + "/" + DistrictId + "/" + false + "/" + Status).subscribe((data: any) => {
+        let model = {
+            StartDate: StartDate.toISOString(),
+            EndDate: EndDate.toISOString(),
+            SubstituteId: this._userSession.getUserId(),
+            DistrictId: this._userSession.getUserDistrictId(),
+            Status: 2,
+       }
+        this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
                 this.myJobs = data;
             },
                 error => this.msg = <any>error);

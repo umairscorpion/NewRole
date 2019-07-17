@@ -172,7 +172,7 @@ export class EmployeesComponent implements OnInit {
     }).then(r => {
       if (r.value) {
         this._dataContext.post('user/resendWelcomeLetter', user).subscribe((data: any) => {
-          this.notifier.notify('success', 'Send Successfully');
+          this.notifier.notify('success', 'Sent Successfully');
         },
           error => this.msg = <any>error);
       }

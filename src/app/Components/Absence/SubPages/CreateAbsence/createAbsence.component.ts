@@ -150,7 +150,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             AbsenceEndDate: ['', Validators.required],
             PositionId: [''],
             AbsenceType: [Validators.required],
-            Substitutes: [[]]
+            Substitutes: [[]],
+            onlyCertified: [false],
+            onlySubjectSpecialist: [false]
         });
 
         this.absenceSecondFormGroup = this._formBuilder.group({
@@ -614,7 +616,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                     FirstAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 1 ? Substitutes : '-1',
                 Interval: this.ContactSub == "1" ? 0 : this.ContactSubTime,
                 TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime + this.ContactSubTime,
-                isApprovalRequired: this.isApprovalNeeded && this.loginedUserRole === 3 ? 0 : 1
+                isApprovalRequired: this.isApprovalNeeded && this.loginedUserRole === 3 ? 0 : 1,
+                onlyCertified: FirstAbsenceForm.value.onlyCertified,
+                onlySubjectSpecialist: FirstAbsenceForm.value.onlySubjectSpecialist
             }
 
             if (!this.CheckDataAndTimeOverlape(FirstAbsenceForm.value.AbsenceStartDate as Date,
@@ -655,6 +659,14 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             }
         });
         return Isoverlap;
+    }
+
+    onchangeOnlyCertified(value: boolean) {
+        this.absenceFirstFormGroup.get('onlyCertified').setValue(!value);
+    }
+
+    onchangeOnlySpecialist(value: boolean) {
+        this.absenceFirstFormGroup.get('onlySubjectSpecialist').setValue(!value);
     }
 
     expandPannel() {
