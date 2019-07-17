@@ -24,6 +24,8 @@ export class MySettingComponent implements OnInit {
     modalBtnTitle: string;
     Categories: any;
     NotificationEvents: any;
+    GradeLevelNotifications: any;
+    SubjectNotifications:any;
     PreferredSchools: any;
     OrganizationId: any;
     organizations: Organization[] = Array<Organization>();
@@ -38,6 +40,10 @@ export class MySettingComponent implements OnInit {
     notificationEvents = new MatTableDataSource();
     displayedColumnsForCategories: string[] = ['category', 'notification'];
     categoriesForNotification = new MatTableDataSource();
+    displayedColumnsForGradeLevels: string[] = ['grade', 'notification'];
+    gradeLevelsForNotification = new MatTableDataSource();
+    displayedColumnsForSubjects: string[] = ['subject', 'notification'];
+    subjectsForNotification = new MatTableDataSource();
     displayedColumnsForSchools: string[] = ['school', 'notification'];
     schoolsForNotification = new MatTableDataSource();
     SubstituteList: any;
@@ -63,6 +69,8 @@ export class MySettingComponent implements OnInit {
         this.generateForms();
         this.GetSubstituteCategories();
         this.GetSubstituteNotificationEvents();
+        this.GetGradeLevelsForNotification();
+        this.GetSubjectsForNotifications();
         this.GetOrganizations(this._userSession.getUserDistrictId());
     }
 
@@ -86,6 +94,22 @@ export class MySettingComponent implements OnInit {
         this._dataContext.get('user/getSubstituteNotificationEvents').subscribe((data: any) => {
             this.NotificationEvents = data;
             this.notificationEvents.data = data;
+        },
+            error => <any>error);
+    }
+
+    GetGradeLevelsForNotification(): void {
+        this._dataContext.get('user/getGradeLevelsForNotification').subscribe((data: any) => {
+            this.GradeLevelNotifications = data;
+            this.gradeLevelsForNotification.data = data;
+        },
+            error => <any>error);
+    }
+
+    GetSubjectsForNotifications(): void {
+        this._dataContext.get('user/getSubjectsForNotifications').subscribe((data: any) => {
+            this.SubjectNotifications = data;
+            this.subjectsForNotification.data = data;
         },
             error => <any>error);
     }
@@ -128,6 +152,16 @@ export class MySettingComponent implements OnInit {
         event.isNotificationSend = !event.isNotificationSend;
     }
 
+ onChangeGrade(event)
+ {
+    event.gradeNotification = !event.gradeNotification;
+ }
+
+ onChangeSubject(event)
+ {
+    event.subjectNotification = !event.subjectNotification;
+ }
+
     UpdateNotificationEvents(Event: any): void {
         let data = this.notificationEvents.data;
 
@@ -135,6 +169,34 @@ export class MySettingComponent implements OnInit {
 
             this.notifier.notify('success', 'Updated Successfully');
             this.GetSubstituteNotificationEvents();
+        },
+            (err: HttpErrorResponse) => {
+                this.notifier.notify('error', err.error.error_description);
+            });
+
+    }
+
+    UpdateGradeLevelNotifications(Event: any): void {
+        let data = this.gradeLevelsForNotification.data;
+
+        this._dataContext.Patch('user/updateGradeLevelNotification', data).subscribe((data: any) => {
+
+            this.notifier.notify('success', 'Updated Successfully');
+            this.GetGradeLevelsForNotification();
+        },
+            (err: HttpErrorResponse) => {
+                this.notifier.notify('error', err.error.error_description);
+            });
+
+    }
+
+    UpdateSubjectNotifications(Event: any): void {
+        let data = this.subjectsForNotification.data;
+
+        this._dataContext.Patch('user/updateSubjectNotification', data).subscribe((data: any) => {
+
+            this.notifier.notify('success', 'Updated Successfully');
+            this.GetSubjectsForNotifications();
         },
             (err: HttpErrorResponse) => {
                 this.notifier.notify('error', err.error.error_description);
