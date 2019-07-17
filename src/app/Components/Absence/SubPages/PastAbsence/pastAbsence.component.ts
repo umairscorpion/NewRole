@@ -20,7 +20,7 @@ export class PastAbsenceComponent implements OnInit {
     PastAbsences = new MatTableDataSource();
     msg: string;
     currentDate: Date = new Date();
-    displayedColumns = ['AbsenceDate', 'Posted', 'Location', 'Status', 'Substitute', 'Action'];
+    displayedColumns = ['AbsenceDate','JobId', 'Posted', 'Location', 'Status', 'Substitute', 'Action'];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;

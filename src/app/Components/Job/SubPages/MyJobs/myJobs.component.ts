@@ -24,7 +24,7 @@ export class MyJobsComponent implements OnInit {
     UpcommingJobs = new MatTableDataSource();
     msg: string;
     currentDate: Date = new Date();
-    displayedColumns = ['AbsenceDate', 'Posted', 'Location', 'Employee', 'Status', 'Action'];
+    displayedColumns = ['AbsenceDate','JobId', 'Posted', 'Location', 'Employee', 'Status', 'Action'];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;

@@ -62,7 +62,7 @@ export class AddSubstituteComponent implements OnInit {
             PayRate: ['0'],
             HourLimit: ['0'],
             IsActive: [1],
-            Password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+)$/)]]
+            // Password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+)$/)]]
         });
         this.getpositions()
         // this.GetUserTypes();
@@ -90,7 +90,7 @@ export class AddSubstituteComponent implements OnInit {
                         PayRate: data[0].payRate as string,
                         HourLimit: data[0].hourLimit,
                         IsActive: data[0].isActive,
-                        Password: data[0].password
+                        // Password: data[0].password
                     }
                     this.getImage(data[0].profilePicture);
                     this.substituteForm.setValue(SubstituteModel);
@@ -220,7 +220,7 @@ export class AddSubstituteComponent implements OnInit {
                         PayRate: form.value.PayRate,
                         HourLimit: form.value.HourLimit,
                         IsActive: form.value.IsActive,
-                        Password: form.value.Password
+                        Password: '1234567890'
                     }
                     if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
                         this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {

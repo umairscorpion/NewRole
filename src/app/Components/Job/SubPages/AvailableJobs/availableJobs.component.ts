@@ -16,7 +16,9 @@ import { AvailabilityService } from 'src/app/Services/availability.service';
 
 @Component({
     selector: 'available-jobs',
-    templateUrl: 'availableJobs.component.html'
+    templateUrl: 'availableJobs.component.html',
+    styleUrls: ['availableJobs.component.scss']
+    
 })
 export class AvailableJobsComponent implements OnInit {
     coloringAbsences = (d: Date) => {
@@ -41,7 +43,7 @@ export class AvailableJobsComponent implements OnInit {
     private notifier: NotifierService;
     msg: string;
     currentDate: Date = new Date();
-    displayedColumns = ['AbsenceDate', 'Posted', 'Location', 'Employee', 'Notes', 'Attachment', 'Action'];
+    displayedColumns = ['AbsenceDate','JobId', 'Posted', 'Location', 'Employee', 'Notes', 'Attachment', 'Action'];
     AvailableJobs = new MatTableDataSource();
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;

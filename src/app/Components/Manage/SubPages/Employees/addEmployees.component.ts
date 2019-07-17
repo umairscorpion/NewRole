@@ -292,7 +292,7 @@ export class AddEmployeesComponent implements OnInit {
                         PhoneNumber: form.value.PhoneNumber,
                         ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
                         IsActive: form.value.IsActive,
-                        Password: form.value.Password
+                        Password: '1234567890'
                     }
 
                     if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
