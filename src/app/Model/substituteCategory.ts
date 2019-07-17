@@ -16,4 +16,16 @@ textAlert: boolean;
 eventName: string;
 substituteId: string;
 
+//Grade Levels for Notifications
+gradeNotificationId: number;
+teachingLevelId: number;
+gradeName: string;
+gradeNotification: boolean;
+
+//Grade Levels for Notifications
+subjectNotificationId: number;
+TeacherSpecialityId: number;
+subjectName: string;
+subjectNotification: boolean;
+
 }
