@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
                 // }));
             },
                 (err: HttpErrorResponse) => {
-                    this.notifier.notify('error', err.statusText);
+                    this.notifier.notify('error', err.statusText.toLowerCase() == "ok" || err.statusText.toLowerCase() == "unauthorized" ? "Invalid email or password": "Invalid email or password");
                 });
         }
         this.formSubmitAttempt = true;

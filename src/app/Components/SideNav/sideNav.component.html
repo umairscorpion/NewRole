@@ -4,7 +4,7 @@
       <mat-icon class="top-Bar-text">menu</mat-icon>
     </button>
     <span>
-      <a  (click)="GotoDashboard()" style="cursor: pointer;color:white">Subzz</a>
+      <a (click)="GotoDashboard()" style="cursor: pointer;color:white">Subzz</a>
     </span>
     <span class="adjust-spacer"></span>
     <!-- <img class="img-circle" [src]="ProfilePicture" onError="this.src='assets/Images/noimage.png'" height="34" width="34"> -->
@@ -13,14 +13,14 @@
     <!-- <form *ngIf='ShowHide'>
         <input type="text" placeholder="search">
     </form> -->
-    <button mat-icon-button *ngIf = "UserRole != 4 && UserRole != 3">
+    <button mat-icon-button *ngIf="UserRole != 4 && UserRole != 3">
       <mat-icon class="top-Bar-text" (click)="showSearchPopup()">search</mat-icon>
     </button>
     <button mat-icon-button class="hexagon">
       <mat-icon class="top-Bar-text" (click)="showSettingsPopup()">settings</mat-icon>
     </button>
     <button mat-icon-button>
-      <mat-icon class="top-Bar-text">help_outline</mat-icon>
+      <mat-icon class="top-Bar-text" (click)="openHelpDesk()">help_outline</mat-icon>
     </button>
     <span style="color:white;font-size: 16px;">Help</span>
     <button mat-icon-button>

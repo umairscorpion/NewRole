@@ -95,8 +95,8 @@ export class ReportDetailsComponent implements OnInit {
       absenceType: [''],
       employeeId: [''],
       employeeName: [''],
-      endDate: [''],
-      endTime: [{ value: '', disabled: true }],
+      endDate: ['', [Validators.required]],
+      endTime: [{ value: '', disabled: true }, [Validators.required]],
       fileContentType: [''],
       fileExtention: [''],
       grade: [''],
@@ -109,8 +109,8 @@ export class ReportDetailsComponent implements OnInit {
       positionDescription: [''],
       positionId: [''],
       profilePicture: [''],
-      startDate: [''],
-      startTime: [{ value: '', disabled: true }],
+      startDate: ['', [Validators.required]],
+      startTime: [{ value: '', disabled: true }, [Validators.required]],
       status: [''],
       subjectDescription: [''],
       substituteId: ['', Validators.required],
@@ -138,7 +138,6 @@ export class ReportDetailsComponent implements OnInit {
     }
     else if (action === 'delete') {
       let StatusId = 4;
-      let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
       let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
       swal.fire({
         title: 'Cancel',
@@ -153,11 +152,6 @@ export class ReportDetailsComponent implements OnInit {
         buttonsStyling: false
       }).then(r => {
         if (r.value) {
-          // if (absenceStartDate <= currentDate) {
-          //   this.dialogRef.close();
-          //   this.notifier.notify('error', 'Not able to cancel now.');
-          //   return;
-          // }
           this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
             this.dialogRef.close('Reload');
             this.notifier.notify('success', 'Cancelled Successfully.');
@@ -168,9 +162,7 @@ export class ReportDetailsComponent implements OnInit {
     }
     else if (action === 'release') {
       let StatusId = 1;
-      let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
       let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
-
       swal.fire({
         title: 'Release',
         text:
@@ -184,15 +176,42 @@ export class ReportDetailsComponent implements OnInit {
         buttonsStyling: false
       }).then(r => {
         if (r.value) {
-          // if (absenceStartDate <= currentDate) {
-          //   this.dialogRef.close();
-          //   this.notifier.notify('error', 'Not able to Release now.');
-          //   return;
-          // }
-          this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus',this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+          this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
             if (response == "success") {
               this.dialogRef.close('Reload');
               this.notifier.notify('success', 'Released Successfully.');
+            }
+          });
+        }
+      });
+    }
+    else if (action === 'resend') {
+      let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
+      let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
+      if(absenceStartDate <= currentDate) {
+        this.notifier.notify('error', 'Job has ended, unable to resend this job.');
+        return false;
+      }
+      let model = {
+        absenceId: this.reportDetail.absenceId
+      }
+      swal.fire({
+        title: 'Resend',
+        text:
+          'Are you sure you want to Resend this job?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-danger',
+        cancelButtonClass: 'btn btn-success',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        buttonsStyling: false
+      }).then(r => {
+        if (r.value) {
+          this._dataContext.post('Communication/ResendJob', model).subscribe((response: any) => {
+            if (response == "success") {
+              this.dialogRef.close('Reload');
+              this.notifier.notify('success', 'Resend Successfully.');
             }
           });
         }
@@ -215,7 +234,7 @@ export class ReportDetailsComponent implements OnInit {
       buttonsStyling: false
     }).then(r => {
       if (r.value) {
-        this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub',this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
+        this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub', this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
           if (response == "success") {
             this.dialogRef.close('Reload');
             this.notifier.notify('success', 'Assign Successfully.');
@@ -244,10 +263,10 @@ export class ReportDetailsComponent implements OnInit {
       let filter = {
         districtId: this._userSession.getUserDistrictId(),
         employeeId: this.EmployeeIdForAbsence,
-        startDate: moment(this.reportDetail.startDate).format('MM/DD/YYYY'),
-        endDate: moment(this.reportDetail.endDate).format('MM/DD/YYYY'),
-        startTime: this.reportDetail.startTime,
-        endTime: this.reportDetail.endTime
+        startDate: moment(this.absenceForm.value.startDate).format('MM/DD/YYYY'),
+        endDate: moment(this.absenceForm.value.endDate).format('MM/DD/YYYY'),
+        startTime: this.absenceForm.getRawValue().startTime,
+        endTime: this.absenceForm.getRawValue().endTime
       }
       this.availableSubstitutes = this.http.post<User[]>(environment.apiUrl + 'user/getAvailableSubstitutes', filter);
       this.availableSubstitutes = this.availableSubstitutes.map((users: any) => users.filter((val: User) => val.firstName.toLowerCase().includes(SearchedText.toLowerCase())));
@@ -322,11 +341,21 @@ export class ReportDetailsComponent implements OnInit {
           this.dialogRef.close('Reload');
           this.notifier.notify('success', 'Updated Successfully');
         }
-        else if((respose == "overlap")) {
+        else if ((respose == "overlap")) {
           this.notifier.notify('error', 'Absence overlapping please select different date or time.');
+          this.absenceForm.controls['startDate'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['endDate'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['startTime'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['endTime'].setErrors({ 'incorrect': true });
+          return false;
         }
         else {
           this.notifier.notify('error', 'Unable to update, status set to unavailable. Please select different date and time');
+          this.absenceForm.controls['startDate'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['endDate'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['startTime'].setErrors({ 'incorrect': true });
+          this.absenceForm.controls['endTime'].setErrors({ 'incorrect': true });
+          return false;
         }
       });
     }

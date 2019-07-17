@@ -146,10 +146,9 @@
 
                         <ng-container matColumnDef="Attachment">
                             <mat-header-cell *matHeaderCellDef> Attachment </mat-header-cell>
-                            <mat-cell *matCellDef="let Absence" style="cursor: pointer;"
-                                (click)="ShowAttachment(Absence)">
+                            <mat-cell *matCellDef="let Absence" style="cursor: pointer;">
                                 <div *ngIf="Absence.attachedFileName">
-                                    <i class="material-icons" #tooltip="matTooltip" style="color:#333333"
+                                    <i class="material-icons" #tooltip="matTooltip" (click)="ShowAttachment(Absence)" style="color:#333333"
                                         matTooltip="View Attachment" matTooltipPosition="below">
                                         attach_file
                                     </i>

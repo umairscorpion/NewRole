@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { RecurringComponent } from './recurring/recurring.component';
 import swal from 'sweetalert2';
+import { AvailabilityService } from 'src/app/Services/availability.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-unavailability-component',
@@ -24,6 +26,8 @@ export class UnAvailabilityComponent implements OnInit {
     private dialogRef: MatDialogRef<UnAvailabilityComponent>,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
+    private availabilityService: AvailabilityService,
+    private notifier: NotifierService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.availability = data;
   }
@@ -93,10 +97,60 @@ export class UnAvailabilityComponent implements OnInit {
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
     if (!formGroup.invalid) {
-      formGroup.value.startDate = new Date(formGroup.value.startDate).toLocaleDateString();
-      formGroup.value.endDate = new Date(formGroup.value.endDate).toLocaleDateString();
-      this.dialogRef.close({ action: 'Submit', id: this.availability.availabilityId, availability: formGroup.getRawValue() });
-      this.submitted = false;
+      if(this.availability.availabilityId > 0) {
+        formGroup.value.startDate = moment(new Date(formGroup.value.startDate).toLocaleDateString()).format('YYYY-MM-DD');
+        formGroup.value.endDate = moment(new Date(formGroup.value.endDate).toLocaleDateString()).format('YYYY-MM-DD');
+        this.availabilityService.update(this.availability.availabilityId, formGroup.value.startDate, formGroup.value.endDate, formGroup.getRawValue()).subscribe((data: any) => {
+          if(data == 'accepted') {
+            this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
+            this.form.controls['startDate'].setErrors({ 'incorrect': true });
+            this.form.controls['endDate'].setErrors({ 'incorrect': true });
+            this.form.controls['startTime'].setErrors({ 'incorrect': true });
+            this.form.controls['endTime'].setErrors({ 'incorrect': true });
+            return false;
+          }
+          else if(data == 'unavailable') {
+            this.notifier.notify('error', 'Status set to unavailable. Please select different date and time.');
+            this.form.controls['startDate'].setErrors({ 'incorrect': true });
+            this.form.controls['endDate'].setErrors({ 'incorrect': true });
+            this.form.controls['startTime'].setErrors({ 'incorrect': true });
+            this.form.controls['endTime'].setErrors({ 'incorrect': true });
+            return false;
+          }    
+          else {
+            this.notifier.notify('success', 'Updated Successfully');
+            this.dialogRef.close({ action: 'Submit' });
+            this.submitted = false;
+          }       
+        });
+      }
+      else {
+        this.availabilityService.create(formGroup.value.startDate, formGroup.value.endDate, formGroup.getRawValue()).subscribe((data: any) => {
+          formGroup.value.startDate = moment(new Date(formGroup.value.startDate).toLocaleDateString()).format('YYYY-MM-DD');
+          formGroup.value.endDate = moment(new Date(formGroup.value.endDate).toLocaleDateString()).format('YYYY-MM-DD');
+          if(data == 'accepted') {
+            this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
+            this.form.controls['startDate'].setErrors({ 'incorrect': true });
+            this.form.controls['endDate'].setErrors({ 'incorrect': true });
+            this.form.controls['startTime'].setErrors({ 'incorrect': true });
+            this.form.controls['endTime'].setErrors({ 'incorrect': true });
+            return false;
+          }
+          else if(data == 'unavailable') {
+            this.notifier.notify('error', 'Status set to unavailable. Please select different date and time.');
+            this.form.controls['startDate'].setErrors({ 'incorrect': true });
+            this.form.controls['endDate'].setErrors({ 'incorrect': true });
+            this.form.controls['startTime'].setErrors({ 'incorrect': true });
+            this.form.controls['endTime'].setErrors({ 'incorrect': true });
+            return false;
+          }    
+          else {
+            this.notifier.notify('success', 'Added Successfully');
+            this.dialogRef.close({ action: 'Submit' });
+            this.submitted = false;
+          }         
+        });
+      }
     }
   }
 

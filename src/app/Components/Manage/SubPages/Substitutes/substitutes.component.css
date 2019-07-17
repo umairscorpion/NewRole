@@ -25,3 +25,28 @@
     display: flex;
     align-items: center;
   }
+
+  .mat-column-Active {
+    flex: 0 0 5% !important;
+    min-width: 100px !important;
+}
+
+.mat-column-PhoneNumber {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+
+.mat-column-FirstName {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+
+.mat-column-LastName {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+
+.mat-column-Position {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
