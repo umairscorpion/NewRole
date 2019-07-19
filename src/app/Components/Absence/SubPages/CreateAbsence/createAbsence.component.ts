@@ -116,12 +116,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.GetOrganizations(this._userSession.getUserDistrictId());
         this.GetPositions();
         this.InitializeValues();
-        this.preferredSubPanel.expandedChange.subscribe((data) => {
-            this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
-        });
-        this.preferredSubPanel.expandedChange.subscribe((data) => {
-            this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
-        });
+        // this.preferredSubPanel.expandedChange.subscribe((data) => {
+        //     this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+        // });
     }
 
     GenerateForms(): void {
@@ -151,7 +148,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             PositionId: [''],
             AbsenceType: [Validators.required],
             Substitutes: [[]],
-            onlyCertified: [false],
+            onlyCertified: [true],
             onlySubjectSpecialist: [false]
         });
 

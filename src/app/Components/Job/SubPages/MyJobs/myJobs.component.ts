@@ -65,12 +65,12 @@ export class MyJobsComponent implements OnInit {
     }
 
     ReleaseJob(SelectedRow: any, StatusId: number) {
-        let currentTime = moment().format('h:mma');
+        let currentTime = moment();
         let currentDate = moment().format('YYYY MM DD');
-        let starttimetemp = moment(SelectedRow.startTime, 'h:mma');
-        let starttime = moment(starttimetemp).format('h:mma');
-        let endtimetemp = moment(SelectedRow.endTime, 'h:mma');
-        let endtime = moment(endtimetemp).format('h:mma');
+        let starttime = moment(SelectedRow.startTime, 'h:mma');
+        // let starttime = moment(starttimetemp).format('h:mma');
+        let endtime = moment(SelectedRow.endTime, 'h:mma');
+        // let endtime = moment(endtimetemp).format('h:mma');
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
 
         if (currentDate == startdate) {
