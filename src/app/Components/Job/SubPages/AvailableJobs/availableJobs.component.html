@@ -99,11 +99,16 @@
                         <!-- Position Column -->
                         <ng-container matColumnDef="AbsenceDate">
                             <mat-header-cell *matHeaderCellDef> Absence Date </mat-header-cell>
-                            <td mat-cell *matCellDef="let Absence">
-                                <b>{{ Absence.startDate | date:'E, M/d/y' }} </b>
-                                <br>
+                            <mat-cell *matCellDef="let Absence">{{ Absence.startDate | date:'E, M/d/y' }}
+                            <br>
                                 {{Absence.startTime | convertFrom24HourTo12HourFormat}}-{{Absence.endTime | convertFrom24HourTo12HourFormat}}
-                            </td>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="JobId">
+                            <mat-header-cell *matHeaderCellDef> Job ID </mat-header-cell>
+                            <mat-cell *matCellDef="let Absence">
+                                {{Absence.confirmationNumber}}
+                            </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="JobId">
                             <mat-header-cell *matHeaderCellDef> Job ID </mat-header-cell>

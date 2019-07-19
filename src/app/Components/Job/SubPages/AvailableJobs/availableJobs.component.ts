@@ -227,11 +227,11 @@ export class AvailableJobsComponent implements OnInit {
     }
 
     AcceptAbsence(SelectedRow: any) {
-        let currentTime = moment().format('h:mma');
+        let currentTime = moment();
         let currentDate = moment().format('YYYY MM DD');
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
-        let endtimetemp = moment(SelectedRow.endTime, 'h:mma');
-        let endtime = moment(endtimetemp).format('h:mma');
+        let endtime = moment(SelectedRow.endTime, 'h:mma');
+        // let endtime = moment(endtimetemp).format('h:mma');
 
         let model = {
             startDate: moment(SelectedRow.startDate).format('YYYY-MM-DD'),

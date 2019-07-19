@@ -218,7 +218,7 @@ export class AddSubstituteComponent implements OnInit {
                         PayRate: form.value.PayRate,
                         HourLimit: form.value.HourLimit,
                         IsActive: form.value.IsActive,
-                        Password: '1234567890'
+                        Password: 'Password1'
                     }
                     if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
                         this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
