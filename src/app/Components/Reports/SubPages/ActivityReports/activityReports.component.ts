@@ -10,7 +10,6 @@ import { ngxCsv } from 'ngx-csv';
     templateUrl: 'activityReports.component.html'
 })
 export class ActivityReportsComponent implements OnInit, AfterViewInit {
-
     noAbsenceMessage = true;
     reportFilterForm: FormGroup;
     activityReport: AuditFilter[] = Array<AuditFilter>();
