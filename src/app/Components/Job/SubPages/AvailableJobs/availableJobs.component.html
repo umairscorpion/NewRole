@@ -110,12 +110,6 @@
                                 {{Absence.confirmationNumber}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="JobId">
-                            <mat-header-cell *matHeaderCellDef> Job ID </mat-header-cell>
-                            <mat-cell *matCellDef="let Absence">
-                                {{Absence.confirmationNumber}}
-                            </mat-cell>
-                        </ng-container>
                         <ng-container matColumnDef="Posted">
                             <mat-header-cell *matHeaderCellDef> Posted </mat-header-cell>
                             <mat-cell *matCellDef="let Absence"> {{Absence.createdDate | date}}

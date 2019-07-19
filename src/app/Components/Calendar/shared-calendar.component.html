@@ -1,23 +1,27 @@
-<div class="col-md-12">
-  <h2>Shared Calendar</h2>
-  <form [formGroup]="FilterForm" (onSubmit)="onSubmit(FilterForm)">
-    <div class="row">
-      <div>
-        <mat-form-field class="col-md-3">
-          <mat-select placeholder="Campus" formControlName="organizationId">
-            <mat-option [value]="0">All School's</mat-option>
-            <mat-option *ngFor="let organization of Organizations" [value]="organization.schoolId">
-              {{organization.schoolName}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-md-3" *ngIf="loginedUserRole != 2">
-        <button type="button" mat-raised-button class="btn btn-success" (click)="onSubmit(FilterForm)">
-          Search
-        </button>&nbsp;
-      </div>
+<mat-card>
+  <div class="row">
+    <div class="col-md-12">
+      <mat-card-title>Shared Calendar</mat-card-title>
+      <form [formGroup]="FilterForm" (onSubmit)="onSubmit(FilterForm)">
+        <div class="row">
+          <div>
+            <mat-form-field class="col-md-3">
+              <mat-select placeholder="Campus" formControlName="organizationId">
+                <mat-option [value]="0">All School's</mat-option>
+                <mat-option *ngFor="let organization of Organizations" [value]="organization.schoolId">
+                  {{organization.schoolName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3" *ngIf="loginedUserRole != 2">
+            <button type="button" mat-raised-button class="btn btn-success" (click)="onSubmit(FilterForm)">
+              Search
+            </button>&nbsp;
+          </div>
+        </div>
+      </form>
+      <div id="calendar"></div>
     </div>
-  </form>
-  <div id="calendar"></div>
-</div>
+  </div>
+</mat-card>
