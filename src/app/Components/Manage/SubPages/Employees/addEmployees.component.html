@@ -45,10 +45,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="col-md-3">Role</td>
+                        <td class="col-md-3">Position</td>
                         <td>
                             <mat-form-field class="col-md-7">
-                                <mat-select placeholder="Role" (selectionChange)="onChangeEmployeeType($event.value)"
+                                <mat-select placeholder="Position" (selectionChange)="onChangeEmployeeType($event.value)"
                                     formControlName="UserTypeId">
                                     <mat-option>--</mat-option>
                                     <mat-option *ngFor="let userType of userTypes" [value]="userType.id">
@@ -56,7 +56,7 @@
                                     </mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="employeeForm.controls['UserTypeId'].hasError('required')">
-                                    Role is required.
+                                    Position is required.
                                 </mat-error>
                             </mat-form-field>
                         </td>
