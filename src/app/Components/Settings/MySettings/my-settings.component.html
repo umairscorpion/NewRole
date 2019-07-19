@@ -152,47 +152,126 @@
                                 </div> -->
                         </mat-tab>
                         <mat-tab *ngIf='isSubstitute' label="Categories Settings">
+                            
                             <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 categories-div">
-                                <div class="col-md-8 heading-div">
-                                    <p>
-                                        <b> Select Categories against which you want to get notifications.</b>
-                                    </p>
-                                </div>
                                 <div class="col-md-8"
-                                    style="overflow-y: scroll; height:400px; width: 100%; margin-top: 10px;">
+                                    style="height:565px; width: 100%; margin-top: 10px;">
                                     <!-- <mat-selection-list #Category>
                                         <mat-list-option *ngFor="let category of Categories" [value]="category.id"
                                             [selected]="category.isNotificationSend">
                                             {{category.title}}
                                         </mat-list-option>
                                     </mat-selection-list> -->
-                                    <table mat-table style="width: 100%" [dataSource]="categoriesForNotification">
+                                    <mat-tab-group>
+                                            <mat-tab label="Category">
+                                                    <div class="col-md-8 heading-div">
+                                                            <p>
+                                                                <b> Select Categories for which you want to get notifications.</b>
+                                                            </p>
+                                                        </div>
+                                                <div class="col-md-8"
+                                                style="overflow-y: scroll; height:400px; width: 100%; margin-top: 10px;">
+                                                    <table mat-table style="width: 100%" [dataSource]="categoriesForNotification">
 
-                                        <ng-container matColumnDef="category">
-                                            <th mat-header-cell *matHeaderCellDef> Category </th>
-                                            <td mat-cell *matCellDef="let row"> {{row.title}} </td>
-                                        </ng-container>
+                                                            <ng-container matColumnDef="category">
+                                                                <th mat-header-cell *matHeaderCellDef> Category </th>
+                                                                <td mat-cell *matCellDef="let row"> {{row.title}} </td>
+                                                            </ng-container>
+                    
+                                                            <ng-container matColumnDef="notification">
+                                                                <th style="padding-left: 70px;" mat-header-cell *matHeaderCellDef>Get
+                                                                    Notification</th>
+                                                                <td mat-cell style="padding-left: 100px;"
+                                                                    *matCellDef="let row ;let i = index;">
+                                                                    <mat-checkbox color="primary" (change)="onChangeCategory(row)"
+                                                                        [checked]="row.isNotificationSend">
+                                                                    </mat-checkbox>
+                                                                </td>
+                                                            </ng-container>
+                                                            <tr mat-header-row *matHeaderRowDef="displayedColumnsForCategories"></tr>
+                                                            <tr mat-row *matRowDef="let row; columns: displayedColumnsForCategories;"></tr>
+                                                        </table>
+                                                    </div>
+                                                    
+                                                    <div class="categories-save-btn">
+                                                            <button style="background-color: #04c0be; color: white;" mat-raised-button
+                                                                (click)="SaveCategories(categoriesForNotification)">Save</button>
+                                                        </div>
+                                            </mat-tab>
+                                            <mat-tab label="Grade Level">
+                                                    <div class="col-md-8 heading-div">
+                                                            <p>
+                                                                <b> Select Grade Level for which you want to get notifications.</b>
+                                                            </p>
+                                                        </div>
+                                                    <div class="col-md-8"
+                                                    style="overflow-y: scroll; height:400px; width: 100%; margin-top: 10px;">
+                                                    <table mat-table style="width: 100%" [dataSource]="gradeLevelsForNotification">
 
-                                        <ng-container matColumnDef="notification">
-                                            <th style="padding-left: 70px;" mat-header-cell *matHeaderCellDef>Get
-                                                Notification</th>
-                                            <td mat-cell style="padding-left: 100px;"
-                                                *matCellDef="let row ;let i = index;">
-                                                <mat-checkbox color="primary" (change)="onChangeCategory(row)"
-                                                    [checked]="row.isNotificationSend">
-                                                </mat-checkbox>
-                                            </td>
-                                        </ng-container>
-                                        <tr mat-header-row *matHeaderRowDef="displayedColumnsForCategories"></tr>
-                                        <tr mat-row *matRowDef="let row; columns: displayedColumnsForCategories;"></tr>
-                                    </table>
+                                                            <ng-container matColumnDef="grade">
+                                                                <th mat-header-cell *matHeaderCellDef> Grade Level </th>
+                                                                <td mat-cell *matCellDef="let row"> {{row.gradeName}}</td>
+                                                            </ng-container>
+                    
+                                                            <ng-container matColumnDef="notification">
+                                                                <th style="padding-left: 220px;" mat-header-cell *matHeaderCellDef>Get
+                                                                    Notification</th>
+                                                                <td mat-cell style="padding-left: 250px;"
+                                                                    *matCellDef="let row ;let i = index;">
+                                                                    <mat-checkbox color="primary" (change)="onChangeGrade(row)"
+                                                                        [checked]="row.gradeNotification">
+                                                                    </mat-checkbox>
+                                                                </td>
+                                                            </ng-container>
+                                                            <tr mat-header-row *matHeaderRowDef="displayedColumnsForGradeLevels"></tr>
+                                                            <tr mat-row *matRowDef="let row; columns: displayedColumnsForGradeLevels;"></tr>
+                                                        </table>
+                                                        </div>
+                                                        <div class="categories-save-btn">
+                                                                <button style="background-color: #04c0be; color: white;" mat-raised-button
+                                                                    (click)="UpdateGradeLevelNotifications(gradeLevelsForNotification)">Save</button>
+                                                            </div>
+                                            </mat-tab>
+                                            <mat-tab label="Subjects">
+                                                    <div class="col-md-8 heading-div">
+                                                            <p>
+                                                                <b> Select Subjects for which you want to get notifications.</b>
+                                                            </p>
+                                                        </div>
+                                                    <div class="col-md-8"
+                                                    style="overflow-y: scroll; height:400px; width: 100%; margin-top: 10px;">
+                                                    <table mat-table style="width: 100%" [dataSource]="subjectsForNotification">
+
+                                                            <ng-container matColumnDef="subject">
+                                                                <th mat-header-cell *matHeaderCellDef> Subject </th>
+                                                                <td mat-cell *matCellDef="let row"> {{row.subjectName}} </td>
+                                                            </ng-container>
+                    
+                                                            <ng-container matColumnDef="notification">
+                                                                <th style="padding-left: 220px;" mat-header-cell *matHeaderCellDef>Get
+                                                                    Notification</th>
+                                                                <td mat-cell style="padding-left: 250px;"
+                                                                    *matCellDef="let row ;let i = index;">
+                                                                    <mat-checkbox color="primary" (change)="onChangeSubject(row)"
+                                                                        [checked]="row.subjectNotification">
+                                                                    </mat-checkbox>
+                                                                </td>
+                                                            </ng-container>
+                                                            <tr mat-header-row *matHeaderRowDef="displayedColumnsForSubjects"></tr>
+                                                            <tr mat-row *matRowDef="let row; columns: displayedColumnsForSubjects;"></tr>
+                                                        </table>
+                                                        </div>
+                                                        <div class="categories-save-btn">
+                                                                <button style="background-color: #04c0be; color: white;" mat-raised-button
+                                                                    (click)="UpdateSubjectNotifications(subjectsForNotification)">Save</button>
+                                                            </div>
+                                            </mat-tab>
+                                        </mat-tab-group>
+                                    
                                 </div>
 
                             </div>
-                            <div class="col-md-8 categories-save-btn">
-                                <button style="background-color: #04c0be; color: white;" mat-raised-button
-                                    (click)="SaveCategories(categoriesForNotification)">Save</button>
-                            </div>
+                           
                         </mat-tab>
                         <mat-tab label="Notification Settings">
                             <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 notification-div">

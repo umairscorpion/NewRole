@@ -10,6 +10,10 @@
         <br>
         <table class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
             <tr>
+                <td>Job ID:</td>
+                <td>{{data.confirmationNumber}}</td>
+            </tr>
+            <tr>
                 <td>Employee:</td>
                 <td>{{data.employeeName}}</td>
             </tr>
@@ -61,8 +65,7 @@
             <tr>
                 <td>Attachment:</td>
                 <td *ngIf='data.anyAttachment'>
-                    <button mat-button type="button" color="warn" (click)="DownloadFile()"
-                        matTooltip="View Attachment">
+                    <button mat-button type="button" color="warn" (click)="DownloadFile()" matTooltip="View Attachment">
                         <i class="material-icons">visibility</i>
                         {{data.originalFileName}}
                     </button>
