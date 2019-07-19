@@ -266,10 +266,10 @@ export class ReportDetailsComponent implements OnInit {
       let filter = {
         districtId: this._userSession.getUserDistrictId(),
         employeeId: this.EmployeeIdForAbsence,
-        startDate: moment(this.absenceForm.value.startDate).format('MM/DD/YYYY'),
-        endDate: moment(this.absenceForm.value.endDate).format('MM/DD/YYYY'),
-        startTime: this.absenceForm.getRawValue().startTime,
-        endTime: this.absenceForm.getRawValue().endTime
+        startDate: this.absenceForm.value.startDate ? moment(this.absenceForm.value.startDate).format('MM/DD/YYYY') : moment(this.reportDetail.startDate).format('MM/DD/YYYY'),
+        endDate: this.absenceForm.value.endDate ? moment(this.absenceForm.value.endDate).format('MM/DD/YYYY') : moment(this.reportDetail.endDate).format('MM/DD/YYYY'),
+        startTime: this.absenceForm.getRawValue().startTime ? this.absenceForm.getRawValue().startTime : this.reportDetail.startTime,
+        endTime: this.absenceForm.getRawValue().endTime ? this.absenceForm.getRawValue().endTime : this.reportDetail.endTime
       }
       this.availableSubstitutes = this.http.post<User[]>(environment.apiUrl + 'user/getAvailableSubstitutes', filter);
       this.availableSubstitutes = this.availableSubstitutes.map((users: any) => users.filter((val: User) => val.firstName.toLowerCase().includes(SearchedText.toLowerCase())));
