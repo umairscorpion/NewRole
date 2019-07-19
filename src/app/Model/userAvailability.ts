@@ -16,7 +16,6 @@ export class UserAvailability extends Entity {
   repeatType: string;
   repeatValue: number | null;
   repeatOnWeekDays: string;
-  isEndsNever: boolean;
   endsOnAfterNumberOfOccurrance: number | null;
   endsOnUntilDate: string;
   notes: string;
@@ -27,4 +26,7 @@ export class UserAvailability extends Entity {
   isArchived: boolean | null;
   archivedOn: Date | string | null;
   archivedBy: string;
+  isEndsNever: boolean;
+  isEndsOnDate: boolean;
+  isEndsOnAfterNumberOfOccurrance: boolean;
 }

@@ -47,10 +47,11 @@ export class UnAvailabilityComponent implements OnInit {
         isRepeat: [this.availability.isRepeat || false],
         repeatType: [this.availability.repeatType || 'week'],
         repeatValue: [this.availability.repeatValue || 0],
-        repeatOnWeekDays: [this.availability.repeatOnWeekDays || ''],
-        isEndsNever: [this.availability.isEndsNever || false],
+        repeatOnWeekDays: [this.availability.repeatOnWeekDays || [new Date().getDay()]],
         endsOnAfterNumberOfOccurrance: [this.availability.endsOnAfterNumberOfOccurrance || 0],
         endsOnUntilDate: [this.availability.endsOnUntilDate || ''],
+        isEndsOnDate: [this.availability.isEndsOnDate || true],
+        isEndsOnAfterNumberOfOccurrance: [this.availability.isEndsOnAfterNumberOfOccurrance || false],
       },
       { validator: this.checkDates }
     );
@@ -66,14 +67,14 @@ export class UnAvailabilityComponent implements OnInit {
       'minutes',
       true
     );
-    this.SetTime(this.availability.availabilityId ? this.availability.isAllDayOut: true);
+    this.SetTime(this.availability.availabilityId ? this.availability.isAllDayOut : true);
   }
 
   recurrence() {
     if (this.doOpen) {
       this.doOpen = false;
       this.dialog.openDialogs.pop();
-      this.form.get('isRepeat').setValue(true);     
+      this.form.get('isRepeat').setValue(true);
       const dialogRef = this.dialog.open(
         RecurringComponent,
         {
@@ -97,11 +98,19 @@ export class UnAvailabilityComponent implements OnInit {
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
     if (!formGroup.invalid) {
-      if(this.availability.availabilityId > 0) {
-        formGroup.value.startDate = moment(new Date(formGroup.value.startDate).toLocaleDateString()).format('YYYY-MM-DD');
-        formGroup.value.endDate = moment(new Date(formGroup.value.endDate).toLocaleDateString()).format('YYYY-MM-DD');
-        this.availabilityService.update(this.availability.availabilityId, formGroup.value.startDate, formGroup.value.endDate, formGroup.getRawValue()).subscribe((data: any) => {
-          if(data == 'accepted') {
+      if (this.availability.availabilityId > 0) {
+        let startDate = moment(new Date(formGroup.value.startDate).toLocaleDateString()).format('YYYY-MM-DD');
+        let endDate = moment(new Date(formGroup.value.endDate).toLocaleDateString()).format('YYYY-MM-DD');
+        let endsOnUntilDate = moment(new Date(formGroup.value.endsOnUntilDate).toLocaleDateString()).format('YYYY-MM-DD');
+        let endDateAfterNumberOfOccurrances = moment().add(formGroup.value.endsOnAfterNumberOfOccurrance, 'weeks').format('YYYY-MM-DD');
+        let model = {
+          startDate,
+          endDate,
+          endsOnUntilDate,
+          endDateAfterNumberOfOccurrances
+        }     
+        this.availabilityService.update(this.availability.availabilityId, model, formGroup.getRawValue()).subscribe((data: any) => {
+          if (data == 'accepted') {
             this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
             this.form.controls['startDate'].setErrors({ 'incorrect': true });
             this.form.controls['endDate'].setErrors({ 'incorrect': true });
@@ -109,26 +118,34 @@ export class UnAvailabilityComponent implements OnInit {
             this.form.controls['endTime'].setErrors({ 'incorrect': true });
             return false;
           }
-          else if(data == 'unavailable') {
+          else if (data == 'unavailable') {
             this.notifier.notify('error', 'Status set to unavailable. Please select different date and time.');
             this.form.controls['startDate'].setErrors({ 'incorrect': true });
             this.form.controls['endDate'].setErrors({ 'incorrect': true });
             this.form.controls['startTime'].setErrors({ 'incorrect': true });
             this.form.controls['endTime'].setErrors({ 'incorrect': true });
             return false;
-          }    
+          }
           else {
             this.notifier.notify('success', 'Updated Successfully');
             this.dialogRef.close({ action: 'Submit' });
             this.submitted = false;
-          }       
+          }
         });
       }
       else {
-        this.availabilityService.create(formGroup.value.startDate, formGroup.value.endDate, formGroup.getRawValue()).subscribe((data: any) => {
-          formGroup.value.startDate = moment(new Date(formGroup.value.startDate).toLocaleDateString()).format('YYYY-MM-DD');
-          formGroup.value.endDate = moment(new Date(formGroup.value.endDate).toLocaleDateString()).format('YYYY-MM-DD');
-          if(data == 'accepted') {
+        let startDate = moment(new Date(formGroup.value.startDate).toLocaleDateString()).format('YYYY-MM-DD');
+        let endDate = moment(new Date(formGroup.value.endDate).toLocaleDateString()).format('YYYY-MM-DD');
+        let endsOnUntilDate = moment(new Date(formGroup.value.endsOnUntilDate).toLocaleDateString()).format('YYYY-MM-DD');
+        let endDateAfterNumberOfOccurrances = moment().add(formGroup.value.endsOnAfterNumberOfOccurrance, 'weeks').format('YYYY-MM-DD');
+        let model = {
+          startDate,
+          endDate,
+          endsOnUntilDate,
+          endDateAfterNumberOfOccurrances
+        }     
+        this.availabilityService.create(model, formGroup.getRawValue()).subscribe((data: any) => {        
+          if (data == 'accepted') {
             this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
             this.form.controls['startDate'].setErrors({ 'incorrect': true });
             this.form.controls['endDate'].setErrors({ 'incorrect': true });
@@ -136,19 +153,19 @@ export class UnAvailabilityComponent implements OnInit {
             this.form.controls['endTime'].setErrors({ 'incorrect': true });
             return false;
           }
-          else if(data == 'unavailable') {
+          else if (data == 'unavailable') {
             this.notifier.notify('error', 'Status set to unavailable. Please select different date and time.');
             this.form.controls['startDate'].setErrors({ 'incorrect': true });
             this.form.controls['endDate'].setErrors({ 'incorrect': true });
             this.form.controls['startTime'].setErrors({ 'incorrect': true });
             this.form.controls['endTime'].setErrors({ 'incorrect': true });
             return false;
-          }    
+          }
           else {
             this.notifier.notify('success', 'Added Successfully');
             this.dialogRef.close({ action: 'Submit' });
             this.submitted = false;
-          }         
+          }
         });
       }
     }
@@ -265,6 +282,13 @@ export class UnAvailabilityComponent implements OnInit {
     else {
       this.form.controls['startTime'].enable();
       this.form.controls['endTime'].enable();
+    }
+  }
+
+  OnchangeAvailabilityStatus(value: any) {
+    if (value == 1 || value == 2) {
+      this.form.controls['isEndsOnDate'].setValue(false);
+      this.form.controls['isEndsOnAfterNumberOfOccurrance'].setValue(false);
     }
   }
 }
