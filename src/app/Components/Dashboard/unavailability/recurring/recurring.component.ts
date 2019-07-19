@@ -32,10 +32,11 @@ export class RecurringComponent implements OnInit {
         isRepeat: [this.availability.isRepeat || true],
         repeatType: [this.availability.repeatType || 'week'],
         repeatValue: [this.availability.repeatValue || 1],
-        repeatOnWeekDays: [this.availability.repeatOnWeekDays || '1'],
-        isEndsNever: [this.availability.isEndsNever || false],
+        repeatOnWeekDays: [this.availability.repeatOnWeekDays || [new Date().getDay()]],
         endsOnAfterNumberOfOccurrance: [this.availability.endsOnAfterNumberOfOccurrance || 10],
         endsOnUntilDate: [this.availability.endsOnUntilDate || new Date()],
+        isEndsOnDate: [this.availability.isEndsOnDate || true],
+        isEndsOnAfterNumberOfOccurrance: [this.availability.isEndsOnAfterNumberOfOccurrance || false],
       }
     );
   }
@@ -51,5 +52,16 @@ export class RecurringComponent implements OnInit {
       this.dialogRef.close({ action: 'Submit', availability: formGroup.value });
       this.submitted = false;
     }
+  }
+
+  Onchange(value: any) {
+    if (value == "on") {
+      this.form.controls['isEndsOnDate'].setValue(true);
+      this.form.controls['isEndsOnAfterNumberOfOccurrance'].setValue(false);
+    }
+    else {
+      this.form.controls['isEndsOnDate'].setValue(false);
+      this.form.controls['isEndsOnAfterNumberOfOccurrance'].setValue(true);
+    }    
   }
 }

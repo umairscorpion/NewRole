@@ -40,15 +40,14 @@
     <section class="mt-25">
       <label>Ends</label>
       <mat-radio-group class="vertical-radio-group m-0" [(ngModel)]="endsOn" [ngModelOptions]="{standalone: true}">
-        <mat-radio-button value="never">Never</mat-radio-button>
-        <mat-radio-button value="on">On&nbsp;
+        <mat-radio-button value="on" (change)="Onchange($event.value)">On&nbsp;
           <mat-form-field class="w-50">
             <input matInput [matDatepicker]="endsOnDatePicker" formControlName="endsOnUntilDate" (disabled)="endsOn != 'on'" />
             <mat-datepicker-toggle matSuffix [for]="endsOnDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #endsOnDatePicker></mat-datepicker>
           </mat-form-field>
         </mat-radio-button>
-        <mat-radio-button value="after">After
+        <mat-radio-button value="after" (change)="Onchange($event.value)">After
           &nbsp;
           <mat-form-field class="w-20">
             <input matInput type="number" class="text-align-right" formControlName="endsOnAfterNumberOfOccurrance" min="10" max="99" (disabled)="endsOn != 'after'"> occurrences
@@ -58,8 +57,8 @@
     </section>
 
     <div class="row mt-5">
-      <div class="col-md-5 pull-right">
-        <button class="btn btn-success" type="submit">Done</button>&nbsp;
+      <div class="col-md-5 pr-0">
+        <button class="btn btn-success" type="submit">Done</button>
         <button class="btn btn-primary" type="button" (click)="onClose()">Cancel</button>
       </div>
     </div>

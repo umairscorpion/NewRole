@@ -87,18 +87,7 @@ export class PositionsComponent implements OnInit {
         });
     }
 
-    // deletePosition(id: number): void {
-    //     var confirmResult = confirm('Are you sure you want to delete position?');
-    //     if (confirmResult) {
-    //         this._districtService.delete('user/deletePosition/', id).subscribe((response: any) => {
-    //                 this.notifier.notify('success', 'Deleted Successfully');
-    //                 this.getpositions();
-    //         });
-    //     }
-    // }
-
-    deletePosition(id: number): void {
-    
+    deletePosition(id: number): void {    
         swal.fire({
             title: 'Delete',
             text:

@@ -47,6 +47,8 @@ export class ReportDetailsComponent implements OnInit {
   SuccessMessage: boolean;
   Substututes: Observable<IEmployee[]>;
   msg: string;
+  //To Disable Resend Button
+  forDisableResendButton: boolean = false;
   //Available Substitutes
   availableSubstitutes: Observable<User[]>;
 
@@ -65,6 +67,15 @@ export class ReportDetailsComponent implements OnInit {
     this.reportDetail = data;
     if (this.reportDetail.originalFileName) {
       this.reportDetail.originalFileName = this.reportDetail.originalFileName.substr(0, 15);
+    }
+    let Time = moment();
+    let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
+    let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
+    let absenceStartTime = moment(this.reportDetail.startTime, 'h:mma');
+    if (absenceStartDate <= currentDate) {
+      if (Time > absenceStartTime) {
+        this.forDisableResendButton = true;
+      }
     }
     this.notifier = notifier;
   }
@@ -138,7 +149,6 @@ export class ReportDetailsComponent implements OnInit {
     }
     else if (action === 'delete') {
       let StatusId = 4;
-      let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
       swal.fire({
         title: 'Cancel',
         text:
@@ -162,7 +172,6 @@ export class ReportDetailsComponent implements OnInit {
     }
     else if (action === 'release') {
       let StatusId = 1;
-      let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
       swal.fire({
         title: 'Release',
         text:
@@ -186,12 +195,6 @@ export class ReportDetailsComponent implements OnInit {
       });
     }
     else if (action === 'resend') {
-      let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
-      let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
-      if(absenceStartDate <= currentDate) {
-        this.notifier.notify('error', 'Job has ended, unable to resend this job.');
-        return false;
-      }
       let model = {
         absenceId: this.reportDetail.absenceId
       }
