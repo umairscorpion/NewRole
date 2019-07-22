@@ -107,7 +107,7 @@ export class LeavesComponent implements OnInit {
             this.dataSourceForLeaveRequests.data.forEach((row: any) => this.selection.select(row));
     }
 
-    onApproveClick(leaveRequestId: number, absenceId: string, confirmationNumber:string) {
+    onApproveClick(leaveRequestId: number, absenceId: string, confirmationNumber: string) {
         let leaveStatusModel = {
             LeaveRequestId: leaveRequestId,
             IsApproved: 1,
@@ -148,7 +148,7 @@ export class LeavesComponent implements OnInit {
         });
     }
 
-    onDenyClick(leaveRequestId: number, absenceId: string, confirmationNumber:string) {
+    onDenyClick(leaveRequestId: number, absenceId: string, confirmationNumber: string) {
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
             isApproved: 0,
@@ -189,7 +189,7 @@ export class LeavesComponent implements OnInit {
         });
     }
 
-    onArchiveRequest(leaveRequestId: number, absenceId: string, confirmationNumber:string) {
+    onArchiveRequest(leaveRequestId: number, absenceId: string, confirmationNumber: string) {
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
             isArchived: 1,
@@ -262,9 +262,11 @@ export class LeavesComponent implements OnInit {
         }).then(r => {
             if (r.value) {
                 this.absenceService.delete('Leave/deleteLeaveType/', leaveTypeId).subscribe((response: any) => {
-                    if (response === -1) {
+                    if (response == 1) {
                         this.notifier.notify('success', 'Deleted Successfully');
                         this.GetLeaveTypes();
+                    } else {
+                        this.notifier.notify('error', 'There is Absence with this leave type.');
                     }
                 },
                     error => this.msg = <any>error);
