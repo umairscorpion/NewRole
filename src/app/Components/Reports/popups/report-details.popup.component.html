@@ -3,16 +3,20 @@
     <mat-dialog-actions>
       <div class="col-md-8 pr-0">
         <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
-        <button *ngIf="reportDetail.callingPage != 'Absence'" [disabled]="reportDetail.statusId == 1 || !reportDetail.substituteRequired" 
-        type="button" mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
-        <button *ngIf="reportDetail.callingPage != 'Absence'" [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired" 
-        type="button" mat-raised-button class="btn btn-default" (click)="performAction('assign')">Assign</button>
-        <button [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired || forDisableResendButton" 
-        type="button" mat-raised-button class="btn btn-default" (click)="performAction('resend')">Resend</button>
+        <button *ngIf="reportDetail.callingPage != 'Absence'"
+          [disabled]="reportDetail.statusId == 1 || !reportDetail.substituteRequired" type="button" mat-raised-button
+          class="btn btn-default" (click)="performAction('release')">Release</button>
+        <button *ngIf="reportDetail.callingPage != 'Absence'"
+          [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired" type="button" mat-raised-button
+          class="btn btn-default" (click)="performAction('assign')">Assign</button>
+        <button [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired || forDisableResendButton"
+          type="button" mat-raised-button class="btn btn-default" (click)="performAction('resend')">Resend</button>
       </div>
       <div class="col-md-4 pl-0" style="text-align: right">
-        <button *ngIf="reportDetail.callingPage != 'Absence'" type="button" mat-raised-button class="btn btn-warning" (click)="performAction('delete')">Delete</button>
-        <button [hideIfUnauthorized]="'EDIT_STAFF_ABSENCES'" type="button" mat-raised-button class="btn btn-info" (click)="performAction('edit')">Edit</button>
+        <button *ngIf="reportDetail.callingPage != 'Absence'" type="button" mat-raised-button class="btn btn-warning"
+          (click)="performAction('delete')">Delete</button>
+        <button [hideIfUnauthorized]="'EDIT_STAFF_ABSENCES'" type="button" mat-raised-button class="btn btn-info"
+          (click)="performAction('edit')">Edit</button>
       </div>
     </mat-dialog-actions>
     <hr>
@@ -22,8 +26,8 @@
       </div>
       <div class="absence-summary-title p-2 mt-2">Absence Summary</div>
       <br>
-      <table *ngIf="menuAction == 'view' || menuAction == 'delete' || menuAction == 'resend'" class="report-details-table" cellpadding="3"
-        cellspacing="3" width="100%">
+      <table *ngIf="menuAction == 'view' || menuAction == 'delete' || menuAction == 'resend'"
+        class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
         <tr>
           <td>Job ID:</td>
           <td>{{reportDetail.confirmationNumber}}</td>
@@ -104,7 +108,7 @@
           <td>
             <mat-form-field>
               <input matInput [matDatepicker]="StartDatePicker" placeholder="Start Date" formControlName="startDate"
-                (dateChange)="SetEndDateValue(absenceForm.value.startDate,absenceForm.value.endDate)" 
+                (dateChange)="SetEndDateValue(absenceForm.value.startDate,absenceForm.value.endDate)"
                 (dateInput)="SearchAvailableSubstitutes('a')">
               <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
               <mat-datepicker [dateClass]="dateClass" #StartDatePicker></mat-datepicker>
@@ -135,12 +139,12 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field class="col-md-4">
-              <input matInput type="time" placeholder="Start Time" formControlName="startTime" 
-              (keyup)="SearchAvailableSubstitutes('a')" (change)="SearchAvailableSubstitutes('a')">
+              <input matInput type="time" placeholder="Start Time" formControlName="startTime"
+                (change)="SearchAvailableSubstitutes('a')">
             </mat-form-field>
             <mat-form-field class="col-md-4">
-              <input matInput type="time" placeholder="End Time" formControlName="endTime" 
-              (keyup)="SearchAvailableSubstitutes('a')" (change)="SearchAvailableSubstitutes('a')">
+              <input matInput type="time" placeholder="End Time" formControlName="endTime"
+                (change)="SearchAvailableSubstitutes('a')">
             </mat-form-field>
           </td>
         </tr>
