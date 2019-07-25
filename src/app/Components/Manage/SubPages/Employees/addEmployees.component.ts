@@ -192,12 +192,14 @@ export class AddEmployeesComponent implements OnInit {
 
     OnchangeWorkLocation(event: any) {
         if (+event === 2) {
+            this.employeeForm.get('role').setValue(2);
             this.employeeForm.controls["OrganizationId"].setValidators([Validators.required]);
             this.employeeForm.controls['OrganizationId'].updateValueAndValidity();
             this.showOrganization = true;
             this.showDistrict = false;
         }
         else {
+            this.employeeForm.get('role').setValue(1);
             this.employeeForm.controls['OrganizationId'].clearValidators();
             this.employeeForm.controls["District"].setValidators([Validators.required]);
             this.employeeForm.controls['District'].updateValueAndValidity();
