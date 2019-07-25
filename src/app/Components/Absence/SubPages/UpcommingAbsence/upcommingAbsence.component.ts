@@ -22,7 +22,7 @@ export class UpcommingAbsenceComponent implements OnInit {
     UpcommingAbsences = new MatTableDataSource();
     msg: string;
     currentDate: Date = new Date();
-    displayedColumns = ['AbsenceDate','JobId', 'Posted', 'Location', 'Status', 'Substitute', 'Action'];
+    displayedColumns = ['AbsenceDate', 'JobId', 'Posted', 'Location', 'Status', 'Substitute', 'Action'];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
@@ -68,8 +68,31 @@ export class UpcommingAbsenceComponent implements OnInit {
     }
 
     UpdateStatus(SelectedRow: any, StatusId: number) {
-        let absenceStartDate = moment(SelectedRow.startDate).format('MM/DD/YYYY');
+        let currentTime = moment();
         let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
+        let starttime = moment(SelectedRow.startTime, 'h:mma');
+        let endtime = moment(SelectedRow.endTime, 'h:mma');
+        let absenceStartDate = moment(SelectedRow.startDate).format('MM/DD/YYYY');
+        if (SelectedRow.status == 4) {
+            this.notifier.notify('error', 'Job already canceled.');
+            return;
+        }
+        else if (SelectedRow.status == 2) {
+            this.notifier.notify('error', 'Job has accepted, you cannot cancel it.');
+            return;
+        }
+        else {
+            if (absenceStartDate <= currentDate) {
+                if (currentTime > endtime) {
+                    this.notifier.notify('error', 'Job has ended, you cannot cancel it.');
+                    return;
+                }
+                else if (currentTime > starttime) {
+                    this.notifier.notify('error', 'Job has started, you cannot cancel it.');
+                    return;
+                }
+            }
+        }
         swal.fire({
             title: 'Cancel',
             text:
@@ -83,11 +106,7 @@ export class UpcommingAbsenceComponent implements OnInit {
             buttonsStyling: false
         }).then(r => {
             if (r.value) {
-                if (absenceStartDate <= currentDate) {
-                    this.notifier.notify('error', 'Job has ended, you cannot cancel it.');
-                    return;
-                }
-                this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus',SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                     if (response == "success") {
                         this.notifier.notify('success', 'Cancelled Successfully.');
                         this.GetAbsences();
@@ -99,7 +118,6 @@ export class UpcommingAbsenceComponent implements OnInit {
     }
 
     EditAbsence(absenceDetail: any) {
-        console.log(absenceDetail);
         let modeldata = new ReportDetail();
         modeldata.confirmationNumber = absenceDetail.confirmationNumber;
         modeldata.reason = absenceDetail.absenceReasonDescription;
@@ -123,16 +141,17 @@ export class UpcommingAbsenceComponent implements OnInit {
         modeldata.fileContentType = absenceDetail.fileContentType;
         modeldata.originalFileName = absenceDetail.originalFileName;
         modeldata.employeeProfilePicUrl = absenceDetail.employeeProfilePicUrl;
-        modeldata.callingPage = 'Absence' ;
+        modeldata.absenceResendCounter = absenceDetail.absenceResendCounter;
+        modeldata.callingPage = 'Absence';
 
         const model = new AuditFilter();
         model.entityId = absenceDetail.confirmationNumber;
         this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
             this.insertAbsencesLogView = result;
         });
-        
+
         const dialogEdit = this.dialogRef.open(
-            ReportDetailsComponent,{
+            ReportDetailsComponent, {
                 panelClass: 'report-details-dialog',
                 data: modeldata
             }

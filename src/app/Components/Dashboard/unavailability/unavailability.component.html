@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate>
+<form [formGroup]="form" (ngSubmit)="onSubmit(form)">
   <div id="Unavailable" class="p-10 mt-1">
     <div class="row">
       <div class="col-md-11">
@@ -7,27 +7,21 @@
         <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onClose()">clear</mat-icon>
       </div>
     </div>
-    <!-- <div class="row mt-5">
-      <div class="col-md-1">
-      </div>
-      <div class="col-md-11 p-0">
-        <mat-form-field>
-          <input matInput placeholder="Add title" formControlName="title">
-        </mat-form-field>
-      </div>
-    </div> -->
     <div class="row mt-5">
       <div class="col-md-1">
       </div>
       <div class="col-md-10 p-0">
         <mat-radio-group formControlName="availabilityStatusId">
-          <mat-radio-button [value]="1" color="primary" class="btn btn-sm availability-status-unavailable" (change)="OnchangeAvailabilityStatus($event.value)">
+          <mat-radio-button [value]="1" color="primary" class="btn btn-sm availability-status-unavailable"
+            (change)="OnchangeAvailabilityStatus($event.value)">
             Unavailable
           </mat-radio-button>
-          <mat-radio-button [value]="2" color="primary" class="btn btn-sm availability-status-vacations ml-2 mr-2" (change)="OnchangeAvailabilityStatus($event.value)">
+          <mat-radio-button [value]="2" color="primary" class="btn btn-sm availability-status-vacations ml-2 mr-2"
+            (change)="OnchangeAvailabilityStatus($event.value)">
             Vacation
           </mat-radio-button>
-          <mat-radio-button [value]="3" color="primary" class="btn btn-sm availability-status-recurring" (click)="recurrence()">
+          <mat-radio-button [value]="3" color="primary" class="btn btn-sm availability-status-recurring"
+            (click)="recurrence()">
             Recurring
           </mat-radio-button>
         </mat-radio-group>
@@ -78,7 +72,7 @@
                 </mat-option>
               </mat-autocomplete>
               <mat-hint class="form-error-content" *ngIf="form.get('startTime').errors?.required && submitted">
-                Start Time is required
+                Start Time is required.
               </mat-hint>
             </mat-form-field>
           </div>
@@ -92,7 +86,7 @@
                 </mat-option>
               </mat-autocomplete>
               <mat-hint class="form-error-content" *ngIf="form.get('endTime').errors?.required && submitted">
-                End Time is required
+                End Time is required.
               </mat-hint>
             </mat-form-field>
           </div>
@@ -113,8 +107,9 @@
       <div class="col-md-1">
       </div>
       <button class="btn btn-success">Save</button>&nbsp;
-      <button class="btn btn-danger" type="button" (click)="delete()"
-        *ngIf="availability.availabilityId > 0">Delete</button>
+      <button class="btn btn-danger" type="button" (click)="delete()" *ngIf="availability.availabilityId > 0">
+        Delete
+      </button>
     </div>
   </div>
 </form>

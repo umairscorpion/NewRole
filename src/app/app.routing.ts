@@ -69,7 +69,7 @@ import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-pa
 import { SharedCalendarComponent } from './Components/Calendar/shared-calendar.component';
 import { UserRoleType } from './Shared/enum';
 import { SubscriptionComponent } from './Components/User/Unsubscribed/unsubscribed.component';
-
+import { SchoolFilesComponent } from './Components/SchoolFiles/school-files.component';
 
 const appRoutes: Routes = [
     {
@@ -604,6 +604,18 @@ const appRoutes: Routes = [
                 data: {
                     path: '/trainingGuide',
                     title: 'Training Guide',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee, UserRoleType.Substitute] }
+                }
+            },
+            {
+                path: 'schoolFiles', component: SchoolFilesComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/schoolFiles',
+                    title: 'School Files',
                     type: 'main',
                     icontype: 'apps',
                     collapse: 'components',

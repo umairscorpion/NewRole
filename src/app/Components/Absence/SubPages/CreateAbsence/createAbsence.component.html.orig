@@ -22,12 +22,19 @@
                                                 a Sub</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
-                                    <div class="col-md-6 col-lg-6 ">
+<<<<<<< HEAD
+                                    <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10"
                                             *ngIf='absenceFirstFormGroup.value.selfEmployeeVacancy == "2"'>
                                             <input type="text" placeholder="Search Employee Name" aria-label="Number"
                                                 (input)="SearchEmployees($event.target.value)" matInput
                                                 formControlName="EmployeeId" [matAutocomplete]="auto">
+=======
+                                    <div class="col-md-6 col-lg-6 ">
+                                        <mat-form-field class="col-md-10 col-lg-10" *ngIf='absenceFirstFormGroup.value.selfEmployeeVacancy == "2"'>
+                                            <input type="text" placeholder="Search Employee Name" aria-label="Number" (input)="SearchEmployees($event.target.value)"
+                                                matInput formControlName="EmployeeId" [matAutocomplete]="auto">
+>>>>>>> 2bb35b26b3858c2fcc2a04bb3860fee57bb1aeb2
                                             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
                                                 <mat-option (onSelectionChange)="employeeSelection(employee)"
                                                     *ngFor="let employee of Employees | async" [value]="employee">
@@ -41,11 +48,17 @@
                             <div class="row changePadding">
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6">
-                                        <mat-form-field class="col-md-10 col-lg-10 ">
+<<<<<<< HEAD
+                                        <mat-form-field class="col-md-10 col-lg-10">
                                             <input matInput [max]="absenceFirstFormGroup.value.AbsenceEndDate"
                                                 [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
                                                 [matDatepicker]="AbsenceStartDatePicker" placeholder="Start Date"
                                                 formControlName="AbsenceStartDate"
+=======
+                                        <mat-form-field class="col-md-10 col-lg-10 ">
+                                            <input matInput [max]="absenceFirstFormGroup.value.AbsenceEndDate" [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
+                                                [matDatepicker]="AbsenceStartDatePicker" placeholder="Start Date" formControlName="AbsenceStartDate"
+>>>>>>> 2bb35b26b3858c2fcc2a04bb3860fee57bb1aeb2
                                                 (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate);SearchAvailableSubstitutes('a')">
                                             <mat-datepicker-toggle matSuffix [for]="AbsenceStartDatePicker">
                                             </mat-datepicker-toggle>
@@ -251,9 +264,10 @@
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <div class="col-md-6 col-lg-6">
-                                                Requires Certified sub?
+                                            Requires Certified Sub?
                                         </div>
                                         <div class="col-md-6 col-lg-6">
+<<<<<<< HEAD
                                             <ui-switch [checked]="true" style="color: white"
                                                 (valueChange)="onchangeOnlyCertified(absenceFirstFormGroup.value.onlyCertified)">
                                             </ui-switch>
@@ -265,6 +279,20 @@
                                             <ui-switch [checked]="false" style="color: white"
                                                 (valueChange)="onchangeOnlySpecialist(absenceFirstFormGroup.value.onlySubjectSpecialist)">
                                             </ui-switch>
+=======
+                                            <div class="col-md-6 col-lg-6">
+                                                Requires Certified sub?
+                                            </div>
+                                            <div class="col-md-6 col-lg-6">
+                                                    <ui-switch [checked]="true" style="color: white" (valueChange)="onchangeOnlyCertified(absenceFirstFormGroup.value.onlyCertified)"></ui-switch>
+                                                </div>
+                                            <div class="col-md-6 col-lg-6">
+                                                Only notify subject specialist?
+                                            </div>
+                                            <div class="col-md-6 col-lg-6">
+                                                    <ui-switch [checked]="false" style="color: white" (valueChange)="onchangeOnlySpecialist(absenceFirstFormGroup.value.onlySubjectSpecialist)"></ui-switch>
+                                                </div>
+>>>>>>> 2bb35b26b3858c2fcc2a04bb3860fee57bb1aeb2
                                         </div>
                                     </div>
                                 </div>

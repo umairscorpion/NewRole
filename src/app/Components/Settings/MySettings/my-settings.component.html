@@ -34,7 +34,7 @@
                                                 <br> Remaining choices: {{5 - FavoriteSubstututes.length}}
                                             </div>
                                             <div class="col-md-7">
-                                                <mat-form-field class="col-md-5 col-lg-5">
+                                                <mat-form-field class="col-md-8 col-lg-8">
                                                     <input type="text" placeholder="Search Substitute here"
                                                         aria-label="Number"
                                                         (input)="SearchSubstitutes($event.target.value)" matInput
@@ -43,6 +43,9 @@
                                                         <mat-option
                                                             (onSelectionChange)="SelectToAddInPreferredSubstitute(user)"
                                                             *ngFor="let user of SubstituteList | async" [value]="">
+                                                            <img class="img-circle"
+                                                                [src]="getImage(user.profilePicture)" width="25"
+                                                                height="25">
                                                             {{user.firstName}}
                                                         </mat-option>
                                                     </mat-autocomplete>
@@ -69,7 +72,7 @@
                                                 <br> Remaining choices: {{5 - BlockedSubstitutes.length}}
                                             </div>
                                             <div class="col-md-7">
-                                                <mat-form-field class="col-md-10 col-lg-10">
+                                                <mat-form-field class="col-md-8 col-lg-8">
                                                     <input type="text" placeholder="Search Substitute here"
                                                         aria-label="Number"
                                                         (input)="SearchSubstitutes($event.target.value)" matInput
@@ -77,6 +80,9 @@
                                                     <mat-autocomplete #auto="matAutocomplete">
                                                         <mat-option (onSelectionChange)="SelectToBlockSubstitite(user)"
                                                             *ngFor="let user of SubstituteList | async" [value]="">
+                                                            <img class="img-circle"
+                                                                [src]="getImage(user.profilePicture)" width="25"
+                                                                height="25">
                                                             {{user.firstName}}
                                                         </mat-option>
                                                     </mat-autocomplete>

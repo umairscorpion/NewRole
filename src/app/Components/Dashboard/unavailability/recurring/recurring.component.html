@@ -26,31 +26,32 @@
 
     <div class="row mt-15">
       <label class="col-md-4">Repeat on</label>
-      <mat-button-toggle-group multiple="true" class="col-md-8"  formControlName="repeatOnWeekDays">
-        <mat-button-toggle color="default" class="mr-8" [value]="0">S</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" [value]="1">M</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" [value]="2">T</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" [value]="3">W</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" [value]="4">T</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" [value]="5">F</mat-button-toggle>
-        <mat-button-toggle color="default" class="mr-8" [value]="6">S</mat-button-toggle>
+      <mat-button-toggle-group multiple="true" class="col-md-8" formControlName="repeatOnWeekDays">
+        <mat-button-toggle color="default" class="mr-8" [value]="'0'">S</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="'1'">M</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="'2'">T</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="'3'">W</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="'4'">T</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="'5'">F</mat-button-toggle>
+        <mat-button-toggle color="default" class="mr-8" [value]="'6'">S</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
 
     <section class="mt-25">
       <label>Ends</label>
-      <mat-radio-group class="vertical-radio-group m-0" [(ngModel)]="endsOn" [ngModelOptions]="{standalone: true}">
-        <mat-radio-button value="on" (change)="Onchange($event.value)">On&nbsp;
+      <mat-radio-group class="vertical-radio-group m-0" formControlName="endsOnStatusId">
+        <mat-radio-button [value]="1" (change)="Onchange($event.value)">On&nbsp;
           <mat-form-field class="w-50">
-            <input matInput [matDatepicker]="endsOnDatePicker" formControlName="endsOnUntilDate" (disabled)="endsOn != 'on'" />
+            <input matInput [matDatepicker]="endsOnDatePicker" formControlName="endsOnUntilDate" />
             <mat-datepicker-toggle matSuffix [for]="endsOnDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #endsOnDatePicker></mat-datepicker>
           </mat-form-field>
         </mat-radio-button>
-        <mat-radio-button value="after" (change)="Onchange($event.value)">After
+        <mat-radio-button [value]="2" (change)="Onchange($event.value)">After
           &nbsp;
           <mat-form-field class="w-20">
-            <input matInput type="number" class="text-align-right" formControlName="endsOnAfterNumberOfOccurrance" min="10" max="99" (disabled)="endsOn != 'after'"> occurrences
+            <input matInput type="number" class="text-align-right" formControlName="endsOnAfterNumberOfOccurrance"
+              min="10" max="99" (disabled)="endsOn != 'after'"> occurrences
           </mat-form-field>
         </mat-radio-button>
       </mat-radio-group>

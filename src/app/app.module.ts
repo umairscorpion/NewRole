@@ -200,6 +200,7 @@ import { RoundPipe } from './Shared/pipe/round.pipe';
 import { DatePipe } from '../../node_modules/@angular/common';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SubscriptionComponent } from './Components/User/Unsubscribed/unsubscribed.component';
+import { SchoolFilesComponent } from './Components/SchoolFiles/school-files.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -398,7 +399,8 @@ const customNotifierOptions: NotifierOptions = {
         ResetPasswordComponent,
         EventAddComponent,
         SplashScreenComponent,
-        SubscriptionComponent
+        SubscriptionComponent,
+        SchoolFilesComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

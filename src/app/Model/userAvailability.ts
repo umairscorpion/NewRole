@@ -26,7 +26,7 @@ export class UserAvailability extends Entity {
   isArchived: boolean | null;
   archivedOn: Date | string | null;
   archivedBy: string;
-  isEndsNever: boolean;
+  endsOnStatusId: number;
   isEndsOnDate: boolean;
   isEndsOnAfterNumberOfOccurrance: boolean;
 }

@@ -41,4 +41,5 @@ export class ReportDetail extends Entity {
   callingPage: string;
   editMode: boolean;
   confirmationNumber: string;
+  absenceResendCounter: number;
 }

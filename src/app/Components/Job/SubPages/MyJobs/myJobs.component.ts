@@ -68,11 +68,8 @@ export class MyJobsComponent implements OnInit {
         let currentTime = moment();
         let currentDate = moment().format('YYYY MM DD');
         let starttime = moment(SelectedRow.startTime, 'h:mma');
-        // let starttime = moment(starttimetemp).format('h:mma');
         let endtime = moment(SelectedRow.endTime, 'h:mma');
-        // let endtime = moment(endtimetemp).format('h:mma');
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
-
         if (currentDate == startdate) {
             if (currentTime > endtime) {
                 this.notifier.notify('error', 'Job has ended, unable to release.');
@@ -80,7 +77,6 @@ export class MyJobsComponent implements OnInit {
             else if (currentTime > starttime) {
                 this.notifier.notify('error', 'Job has started, unable to release.');
             }
-
             else {
                 swal.fire({
                     title: 'Release',
@@ -95,7 +91,7 @@ export class MyJobsComponent implements OnInit {
                     buttonsStyling: false
                 }).then(r => {
                     if (r.value) {
-                        if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not aBle to release now'); return; }
+                        if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not able to release now.'); return; }
                         this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
@@ -239,7 +235,7 @@ export class MyJobsComponent implements OnInit {
             this.GetUpcommingJobs();
         }
         else {
-            this.notifier.notify('error', 'Problem Occured While Process you Request.Please Try Again Later.');
+            this.notifier.notify('error', 'Problem Occured While Process you Request. Please Try Again Later.');
         }
     }
 }
