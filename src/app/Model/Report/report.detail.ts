@@ -42,4 +42,6 @@ export class ReportDetail extends Entity {
   editMode: boolean;
   confirmationNumber: string;
   absenceResendCounter: number;
+  employeeFirstName: string;
+  employeeLastName: string;
 }
