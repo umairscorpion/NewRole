@@ -512,7 +512,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: { roles: [UserRoleType.SuperAdmin] }
+                    permission: { roles: [UserRoleType.SuperAdmin, UserRoleType.DistrictAdmin] }
                 }
             },
             {
@@ -528,7 +528,7 @@ const appRoutes: Routes = [
                 }
             },
             {
-                path: 'role/permissions/:id', component: RolePermissionsComponent, canActivate: [AuthGuard],
+                path: 'role/permissions/:id/:userId', component: RolePermissionsComponent, canActivate: [AuthGuard],
                 data: {
                     path: '/role/permissions',
                     title: 'Permissions',
@@ -536,7 +536,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: { roles: [UserRoleType.SuperAdmin] }
+                    permission: { roles: [UserRoleType.SuperAdmin, UserRoleType.DistrictAdmin] }
                 }
             },
             {

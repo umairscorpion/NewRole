@@ -72,7 +72,7 @@
           </div>
         </mat-card>
       </mat-tab>
-      <mat-tab label="Time Off Requests ({{submittedLeaveRequests.length}})">
+      <mat-tab [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" label="Time Off Requests ({{submittedLeaveRequests.length}})">
         <!-- md-dynamic-height md-stretch-tabs -->
         <mat-tab-group [selectedIndex]="0" (selectedTabChange)="tabClick($event)">
           <mat-tab label="Absence Requests">
@@ -95,11 +95,11 @@
                       <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
                         #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a;font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
                         #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
                       </button>
@@ -124,11 +124,11 @@
                       <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
                         #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
                         #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
                         <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
                           class="fa fa-mail-forward"></i>
@@ -154,11 +154,11 @@
                       <br> {{ leave.endDate | date:'E, M/d/y' }}
                     </div>
                     <div class="col-md-3">
-                      <button mat-icon-button (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
                         #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
                         <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
                         #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below" #tooltip="matTooltip"
                         matTooltip="Archive" matTooltipPosition="below">
                         <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"

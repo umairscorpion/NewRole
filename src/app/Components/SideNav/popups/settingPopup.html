@@ -23,14 +23,14 @@
                 <div style="margin-top: 20px">
                     <b>Tools</b>
                 </div>
-                <div *ngIf="userRole != 4 && userRole != 3" style="margin-top:20px">
+                <div *ngIf="userRole != 4 && userRole != 3" style="margin-top:20px" [hideIfUnauthorized]="'ACCESS_AUDIT_LOGS'">
                     <a (click)="openAuditLog()">Audit Log</a>
                 </div>
                 <div style="margin-top:20px" *ngIf="userRole === 3 || userRole === 4">
                     <!-- Teacher, Substitute -->
                     <a (click)="openCalendar()">Calendar</a>
                 </div>
-                <div *ngIf="userRole != 4" style="margin-top:20px">
+                <div *ngIf="userRole != 4" style="margin-top:20px" [hideIfUnauthorized]="'VIEW_SUBSTITUTE_AVAILABILITY'">
                     <a (click)="openSubstituteUnavailabilityCalendar()">Substitute Availability</a>
                 </div>
                 <div style="margin-top: 20px">

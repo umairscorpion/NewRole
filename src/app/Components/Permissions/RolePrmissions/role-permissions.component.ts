@@ -13,6 +13,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 })
 export class RolePermissionsComponent implements OnInit {
   id = 0;
+  userId = "";
   role: Role;
   permissions: PermissionCategory[];
   submitted = false;
@@ -40,6 +41,7 @@ export class RolePermissionsComponent implements OnInit {
     this.form = this._formBuilder.group(
       {
         role_Id: [this.id || 0],
+        userId: [this.userId || ""],
         name: [
           '',
           Validators.compose([
@@ -52,7 +54,8 @@ export class RolePermissionsComponent implements OnInit {
     );
     this.route.params.subscribe(params => {
       this.id = params.id;
-      this.loadPermissions(this.id);
+      this.userId = params.userId;
+      this.loadPermissions(this.id, this.userId);
     });
     this.LoadUserResources();
     if (this.id > 0) {
@@ -74,9 +77,12 @@ export class RolePermissionsComponent implements OnInit {
     permission.isChecked = !permission.isChecked;
   }
 
-  loadPermissions(id) {
+  loadPermissions(id, userId) {
     if (id) {
-      this.rolePermissionService.rolePermissions(id).subscribe((data: Role) => {
+      if (userId == "undefined") {
+        userId = "-1"
+      }
+      this.rolePermissionService.rolePermissions(id, userId).subscribe((data: Role) => {
         this.role = data;
         this.permissions = data.permissionsCategories;
         this.form.patchValue(this.role);
@@ -89,6 +95,10 @@ export class RolePermissionsComponent implements OnInit {
     if (!formGroup.invalid) {
       let role = new Role();
       role = formGroup.value;
+      role.userId = this.userId;
+      if (role.userId == "undefined") {
+        role.userId = "-1"
+      }
       role.permissionsCategories = this.permissions;
       this.rolePermissionService.updateRolePermissions(role).subscribe(t => {
         this.router.navigate(['/permissions']);

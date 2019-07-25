@@ -23,7 +23,7 @@
     .dPage { margin-top: 110px; }
 }
 </style>
-<div class="dPage" id="dPage">
+<div class="dPage" *ngIf="!subscribed" id="dPage">
     <div>
         <div>
             <div>
@@ -45,4 +45,20 @@
             </div>
         </form>
     </div>
+</div>
+<div class="dPage" *ngIf="subscribed" id="dPage">
+        <div>
+            <div>
+                <div>
+                    <img src="https://loginsubzz.com/Images/logo-green.png"/>
+                </div>
+            </div>
+            <div>
+                <p id="headingPsss"> Welcome back!</p>
+            </div>
+            <div>
+                <p> You have opted back in to receive Subzz emails about tips and special offers on Subzz</p>
+            </div>
+            <div></div>
+        </div>
 </div>

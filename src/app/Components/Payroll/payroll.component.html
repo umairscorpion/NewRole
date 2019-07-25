@@ -3,7 +3,7 @@
         <mat-card-title>Payroll</mat-card-title>
         <mat-tab-group (selectedTabChange)="onTabChanged($event)">
             <mat-tab label="Payroll Report">
-                <run-payroll></run-payroll>
+                <run-payroll [hideIfUnauthorized]="'ACCESS_PAYROLL'"></run-payroll>
             </mat-tab>
             <mat-tab label="Payroll Settings">
                 <div class="col-md-12 col-lg-12">
@@ -54,7 +54,7 @@
                 </div>
             </mat-tab>
             <mat-tab label="Payrates">
-                <payRate-details></payRate-details>
+                <payRate-details [hideIfUnauthorized]="'ACCESS_PAYRATES'"></payRate-details>
             </mat-tab>
         </mat-tab-group>
     </mat-card-content>

@@ -8,6 +8,7 @@ import { UserService } from '../../Service/user.service';
 import { UserEditComponent } from '../User/userEdit/userEdit.component';
 import { MatDialog } from '@angular/material';
 import swal from 'sweetalert2';
+import { UserSession } from '../../Services/userSession.service';
 
 @Component({
     templateUrl: 'permissions.component.html',
@@ -27,14 +28,16 @@ export class PermissionsComponent implements OnInit {
     selectedAllRoles = false;
     isOpen = true;
     msg: string;
-
+    userRole: number;
     constructor(
         private userService: UsersService,
         private roleService: RoleService,
         private _userService: UserService,
+        private _userSession: UserSession,
         media: MediaMatcher,
         changeDetectorRef: ChangeDetectorRef,
         private dialog: MatDialog) {
+        this.userRole = _userSession.getUserRoleId();
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);

@@ -14,10 +14,12 @@ import { AuditFilter } from '../../../../Model/auditLog';
 import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
 import { DatePipe } from '../../../../../../node_modules/@angular/common';
 import { Workbook } from 'exceljs';
+import { TimeFormatPipe } from '../../../../Shared/pipe/time.pipe';
 
 @Component({
     selector:'monthly-reports',
-    templateUrl: 'monthlyReports.component.html'
+    templateUrl: 'monthlyReports.component.html',
+    providers: [TimeFormatPipe]
 })
 export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     @ViewChildren('chartTotal') chartTotal: ElementRef;
@@ -59,7 +61,8 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         private sanitizer: DomSanitizer,
         private excelService: ExcelService,
         private auditLogService: AuditLogService,
-        private datePipe: DatePipe
+        private datePipe: DatePipe,
+        private timeFormatPipe: TimeFormatPipe
     ) {
     }
 
@@ -98,7 +101,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         });
         if ($event.actionName == "print") {
             const title = 'Report';
-            const header = ["Employee Name", "Absence Id", "Reason", "Date", "Time", "District", "Status", "Substitute", "Notes", "School"]
+            const header = ["Last Name", "First Name", "Job Id", "Reason", "Date", "Time", "Status", "Substitute", "Notes", "District", "School"]
             let workbook = new Workbook();
             let worksheet = workbook.addWorksheet('Report');
             let titleRow = worksheet.addRow([title]);
@@ -186,16 +189,19 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     getImage(imageName: string) {
-        if (imageName && imageName.length > 0) {
+        if (imageName && imageName.length  > 0) {
             return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
         }
     }
     
     objToArray(report: ReportDetail) {
         var result = [];
-        result.push(report.employeeName, report.absenceId, report.reason, report.startDate + " - " + report.endDate,
-            report.startTime + "-" + report.endTime,
-            report.districtName, report.statusTitle, report.substituteName, report.notes, report.schoolName)
+        result.push(report.employeeName, report.employeeName,
+         report.confirmationNumber, report.reason,  moment(report.startDate).format('MM/DD/YYYY')
+            + " - " + moment(report.endDate).format('MM/DD/YYYY'),
+            this.timeFormatPipe.transform(report.startTime) + "-" + this.timeFormatPipe.transform(report.endTime),
+             report.statusTitle, report.substituteName,
+            report.districtName, report.notes, report.schoolName)
         return result;
     }
 }
