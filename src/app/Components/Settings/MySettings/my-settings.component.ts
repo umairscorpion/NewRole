@@ -8,6 +8,8 @@ import { User } from '../../../Model/user';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EmployeeService } from '../../../Service/Manage/employees.service';
 import { Organization } from '../../../Model/organization';
+import { environment } from 'src/environments/environment';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     templateUrl: 'my-settings.component.html',
@@ -56,7 +58,8 @@ export class MySettingComponent implements OnInit {
         notifier: NotifierService,
         private _userSession: UserSession,
         private _formBuilder: FormBuilder,
-        private _employeeService: EmployeeService) {
+        private _employeeService: EmployeeService,
+        private sanitizer: DomSanitizer) {
         this.notifier = notifier;
     }
 
@@ -240,6 +243,7 @@ export class MySettingComponent implements OnInit {
         let OrgId = this._userSession.getUserOrganizationId();
         let DistrictId = this._userSession.getUserDistrictId();
         this.SubstituteList = this._employeeService.searchUser('user/getEmployeeSuggestions', SearchText, IsSearchSubstitute, OrgId, DistrictId);
+        console.log(this.SubstituteList);
     }
 
     SelectToAddInPreferredSubstitute(Substitute: any) {
@@ -349,4 +353,10 @@ export class MySettingComponent implements OnInit {
 
     onChangeTab(tab: any) {
     }
+
+    getImage(imageName: string) {
+        if (imageName && imageName.length > 0) {
+          return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
+        }
+      }
 }

@@ -47,10 +47,11 @@ export class UnAvailabilityComponent implements OnInit {
         isRepeat: [this.availability.isRepeat || false],
         repeatType: [this.availability.repeatType || 'week'],
         repeatValue: [this.availability.repeatValue || 0],
-        repeatOnWeekDays: [this.availability.repeatOnWeekDays || [new Date().getDay()]],
+        repeatOnWeekDays: [this.availability.repeatOnWeekDay || [new Date().getDay().toString()], Validators.required],
         endsOnAfterNumberOfOccurrance: [this.availability.endsOnAfterNumberOfOccurrance || 0],
-        endsOnUntilDate: [this.availability.endsOnUntilDate || ''],
-        isEndsOnDate: [this.availability.isEndsOnDate || true],
+        endsOnUntilDate: [this.availability.endsOnUntilDate || new Date()],
+        endsOnStatusId: [this.availability.isEndsOnDate ? 1 : this.availability.isEndsOnAfterNumberOfOccurrance ? 2 : 1],
+        isEndsOnDate: [this.availability.isEndsOnDate || false],
         isEndsOnAfterNumberOfOccurrance: [this.availability.isEndsOnAfterNumberOfOccurrance || false],
       },
       { validator: this.checkDates }
@@ -108,22 +109,21 @@ export class UnAvailabilityComponent implements OnInit {
           endDate,
           endsOnUntilDate,
           endDateAfterNumberOfOccurrances
-        }     
+        }
         this.availabilityService.update(this.availability.availabilityId, model, formGroup.getRawValue()).subscribe((data: any) => {
           if (data == 'accepted') {
             this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
-            this.form.controls['startDate'].setErrors({ 'incorrect': true });
-            this.form.controls['endDate'].setErrors({ 'incorrect': true });
-            this.form.controls['startTime'].setErrors({ 'incorrect': true });
-            this.form.controls['endTime'].setErrors({ 'incorrect': true });
+            this.SetDateTimeErrors();
             return false;
           }
           else if (data == 'unavailable') {
             this.notifier.notify('error', 'Status set to unavailable. Please select different date and time.');
-            this.form.controls['startDate'].setErrors({ 'incorrect': true });
-            this.form.controls['endDate'].setErrors({ 'incorrect': true });
-            this.form.controls['startTime'].setErrors({ 'incorrect': true });
-            this.form.controls['endTime'].setErrors({ 'incorrect': true });
+            this.SetDateTimeErrors();
+            return false;
+          }
+          else if (data == 'overlap') {
+            this.notifier.notify('error', 'Status set to unavailable. Please select different date and time.');
+            this.SetDateTimeErrors();
             return false;
           }
           else {
@@ -137,28 +137,27 @@ export class UnAvailabilityComponent implements OnInit {
         let startDate = moment(new Date(formGroup.value.startDate).toLocaleDateString()).format('YYYY-MM-DD');
         let endDate = moment(new Date(formGroup.value.endDate).toLocaleDateString()).format('YYYY-MM-DD');
         let endsOnUntilDate = moment(new Date(formGroup.value.endsOnUntilDate).toLocaleDateString()).format('YYYY-MM-DD');
-        let endDateAfterNumberOfOccurrances = moment().add(formGroup.value.endsOnAfterNumberOfOccurrance, 'weeks').format('YYYY-MM-DD');
+        let endDateAfterNumberOfOccurrances = moment(new Date(formGroup.value.startDate).toLocaleDateString()).add(formGroup.value.endsOnAfterNumberOfOccurrance, 'weeks').format('YYYY-MM-DD');
         let model = {
           startDate,
           endDate,
           endsOnUntilDate,
           endDateAfterNumberOfOccurrances
-        }     
-        this.availabilityService.create(model, formGroup.getRawValue()).subscribe((data: any) => {        
+        }
+        this.availabilityService.create(model, formGroup.getRawValue()).subscribe((data: any) => {
           if (data == 'accepted') {
             this.notifier.notify('error', 'You can not set unavailability for the date you are booked !');
-            this.form.controls['startDate'].setErrors({ 'incorrect': true });
-            this.form.controls['endDate'].setErrors({ 'incorrect': true });
-            this.form.controls['startTime'].setErrors({ 'incorrect': true });
-            this.form.controls['endTime'].setErrors({ 'incorrect': true });
+            this.SetDateTimeErrors();
             return false;
           }
           else if (data == 'unavailable') {
             this.notifier.notify('error', 'Status set to unavailable. Please select different date and time.');
-            this.form.controls['startDate'].setErrors({ 'incorrect': true });
-            this.form.controls['endDate'].setErrors({ 'incorrect': true });
-            this.form.controls['startTime'].setErrors({ 'incorrect': true });
-            this.form.controls['endTime'].setErrors({ 'incorrect': true });
+            this.SetDateTimeErrors();
+            return false;
+          }
+          else if (data == 'overlap') {
+            this.notifier.notify('error', 'Status set to unavailable. Please select different date and time.');
+            this.SetDateTimeErrors();
             return false;
           }
           else {
@@ -290,5 +289,12 @@ export class UnAvailabilityComponent implements OnInit {
       this.form.controls['isEndsOnDate'].setValue(false);
       this.form.controls['isEndsOnAfterNumberOfOccurrance'].setValue(false);
     }
+  }
+
+  SetDateTimeErrors() {
+    this.form.controls['startDate'].setErrors({ 'incorrect': true });
+    this.form.controls['endDate'].setErrors({ 'incorrect': true });
+    this.form.controls['startTime'].setErrors({ 'incorrect': true });
+    this.form.controls['endTime'].setErrors({ 'incorrect': true });
   }
 }

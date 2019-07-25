@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-recurring-component',
@@ -15,6 +16,7 @@ export class RecurringComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<RecurringComponent>,
     private _formBuilder: FormBuilder,
+    private notifier: NotifierService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.availability = data;
   }
@@ -32,9 +34,10 @@ export class RecurringComponent implements OnInit {
         isRepeat: [this.availability.isRepeat || true],
         repeatType: [this.availability.repeatType || 'week'],
         repeatValue: [this.availability.repeatValue || 1],
-        repeatOnWeekDays: [this.availability.repeatOnWeekDays || [new Date().getDay()]],
+        repeatOnWeekDays: [this.availability.repeatOnWeekDays, Validators.required],
         endsOnAfterNumberOfOccurrance: [this.availability.endsOnAfterNumberOfOccurrance || 10],
         endsOnUntilDate: [this.availability.endsOnUntilDate || new Date()],
+        endsOnStatusId: [this.availability.isEndsOnDate ? 1 : this.availability.isEndsOnAfterNumberOfOccurrance ? 2 : 1],
         isEndsOnDate: [this.availability.isEndsOnDate || true],
         isEndsOnAfterNumberOfOccurrance: [this.availability.isEndsOnAfterNumberOfOccurrance || false],
       }
@@ -47,6 +50,9 @@ export class RecurringComponent implements OnInit {
 
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
+    if (formGroup.value.repeatOnWeekDays.length <= 0) {
+      this.notifier.notify('error', 'Please select repeat on day.');
+    }
     if (!formGroup.invalid) {
       formGroup.value.availabilityStatusId = this.form.controls['availabilityStatusId'].setValue(3);
       this.dialogRef.close({ action: 'Submit', availability: formGroup.value });
@@ -62,6 +68,6 @@ export class RecurringComponent implements OnInit {
     else {
       this.form.controls['isEndsOnDate'].setValue(false);
       this.form.controls['isEndsOnAfterNumberOfOccurrance'].setValue(true);
-    }    
+    }
   }
 }

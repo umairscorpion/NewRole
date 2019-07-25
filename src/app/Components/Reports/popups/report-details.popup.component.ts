@@ -195,6 +195,16 @@ export class ReportDetailsComponent implements OnInit {
       });
     }
     else if (action === 'resend') {
+      if (this.reportDetail.statusId == 4) {
+        this.notifier.notify('error', 'Job has canceled, you cannot resend it.');
+        return;
+      }
+      else {
+        if (this.reportDetail.absenceResendCounter >= 3) {
+          this.notifier.notify('error', 'Resend limit reached.');
+          return false;
+        }
+      }
       let model = {
         absenceId: this.reportDetail.absenceId
       }
@@ -214,7 +224,7 @@ export class ReportDetailsComponent implements OnInit {
           this._dataContext.post('Communication/ResendJob', model).subscribe((response: any) => {
             if (response == "success") {
               this.dialogRef.close('Reload');
-              this.notifier.notify('success', 'Resend Successfully.');
+              this.notifier.notify('success', 'Resent Successfully.');
             }
           });
         }
@@ -353,7 +363,7 @@ export class ReportDetailsComponent implements OnInit {
           return false;
         }
         else {
-          this.notifier.notify('error', 'Unable to update, status set to unavailable. Please select different date and time');
+          this.notifier.notify('error', 'Unable to update, status set to unavailable. Please select different date and time.');
           this.absenceForm.controls['startDate'].setErrors({ 'incorrect': true });
           this.absenceForm.controls['endDate'].setErrors({ 'incorrect': true });
           this.absenceForm.controls['startTime'].setErrors({ 'incorrect': true });

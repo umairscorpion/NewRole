@@ -11,11 +11,11 @@ import { NotifierService } from 'angular-notifier';
 import swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-training-guides',
-  templateUrl: './training-guides.component.html',
-  styleUrls: ['./training-guides.component.css']
+  selector: 'app-school-files',
+  templateUrl: './school-files.component.html',
+  styleUrls: ['./school-files.component.css']
 })
-export class TrainingGuidesComponent implements OnInit {
+export class SchoolFilesComponent implements OnInit {
   LoginedUserId: any = 0;
   UserRoleId: number = this._userSession.getUserRoleId();
   UserLevelId: number = this._userSession.getUserLevelId();
@@ -77,13 +77,10 @@ export class TrainingGuidesComponent implements OnInit {
 
   getFiles(): void {
     let model = {
-      fileType: "Guides"
+      fileType: "School Files"
     }
     this._fileService.getFile(model).subscribe((respose: FileManager[]) => {
       this.Files = respose;
-      this.AdminGuide = respose.filter(t => t.fileType == 2);
-      this.StaffGuide = respose.filter(t => t.fileType == 3);
-      this.SubstituteGuide = respose.filter(t => t.fileType == 4);
     });
   }
 
@@ -92,24 +89,16 @@ export class TrainingGuidesComponent implements OnInit {
       this.notifier.notify('error', 'Please upload file.');
       return;
     }
-    if (fileType.value == null) {
-      this.notifier.notify('error', 'Please select user role.');
-      return;
-    }
     let model = {
       originalFileName: this.OriginalFileName,
       fileName: this.FileName,
       fileContentType: this.FileContentType,
       fileExtention: this.FileExtention,
-      fileType: fileType.value
+      fileType: 6
     }
     this._fileService.addFile('fileSystem/addFiles', model).subscribe((respose: any) => {
       this.Files = respose;
-      this.AdminGuide = respose.filter(t => t.fileType == 2);
-      this.StaffGuide = respose.filter(t => t.fileType == 3);
-      this.SubstituteGuide = respose.filter(t => t.fileType == 4);
       this.removeAttachedFile();
-      fileType.value = null;
     });
   }
 

@@ -199,6 +199,7 @@ import { SettingsService } from './Services/settings.service';
 import { RoundPipe } from './Shared/pipe/round.pipe';
 import { DatePipe } from '../../node_modules/@angular/common';
 import { UiSwitchModule } from 'ngx-ui-switch';
+import { SchoolFilesComponent } from './Components/SchoolFiles/school-files.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -396,7 +397,8 @@ const customNotifierOptions: NotifierOptions = {
         NavTopBarComponent,
         ResetPasswordComponent,
         EventAddComponent,
-        SplashScreenComponent
+        SplashScreenComponent,
+        SchoolFilesComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

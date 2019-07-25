@@ -100,7 +100,7 @@
                         <ng-container matColumnDef="AbsenceDate">
                             <mat-header-cell *matHeaderCellDef> Absence Date </mat-header-cell>
                             <mat-cell *matCellDef="let Absence">{{ Absence.startDate | date:'E, M/d/y' }}
-                            <br>
+                                <br>
                                 {{Absence.startTime | convertFrom24HourTo12HourFormat}}-{{Absence.endTime | convertFrom24HourTo12HourFormat}}
                             </mat-cell>
                         </ng-container>
@@ -142,19 +142,19 @@
                             <mat-cell *matCellDef="let Absence">
                                 {{Absence.substituteNotes ? Absence.substituteNotes: 'N/A'}} </mat-cell>
                         </ng-container>
-
                         <ng-container matColumnDef="Attachment">
                             <mat-header-cell *matHeaderCellDef> Attachment </mat-header-cell>
-                            <mat-cell *matCellDef="let Absence" style="cursor: pointer;">
+                            <mat-cell *matCellDef="let Absence">
                                 <div *ngIf="Absence.attachedFileName">
-                                    <i class="material-icons" #tooltip="matTooltip" (click)="ShowAttachment(Absence)" style="color:#333333"
-                                        matTooltip="View Attachment" matTooltipPosition="below">
+                                    <i class="material-icons" #tooltip="matTooltip" (click)="ShowAttachment(Absence)"
+                                        style="color:#333333; cursor: pointer;" matTooltip="View Attachment"
+                                        matTooltipPosition="below">
                                         attach_file
                                     </i>
                                 </div>
+                                <div *ngIf="!Absence.attachedFileName">N/A</div>
                             </mat-cell>
                         </ng-container>
-
                         <ng-container matColumnDef="Action">
                             <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                             <mat-cell *matCellDef="let Absence">

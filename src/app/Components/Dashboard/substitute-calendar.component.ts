@@ -56,19 +56,19 @@ export class SubstituteCalendarComponent implements OnInit {
         center: 'prev, title, next',
         right: 'agendaDay, month, basicWeek'
       },
+
       eventMouseover: function (data, event, view) {
         if (data.allDay) {
           this.tooltip = '<div class="tooltiptopicevent" style="min-width: 150px; min-height: 70px; width:auto; height:auto; border-color:#808080; border-style: solid; background:#E0E0E0; position:absolute; z-index:10001; padding:10px 10px 10px 10px; line-height: 200%;">' + data.description + '</br>' + 'Full Day' + '</div>';
         }
         else {
           if (data.id == -1) {
-            this.tooltip = '<div class="tooltiptopicevent" style="min-width: 150px; min-height: 70px; width:auto; height:auto; border-color:#808080; border-style: solid; background:#E0E0E0; position:absolute; z-index:10001; padding:10px 10px 10px 10px; line-height: 200%;">' + data.description + '</br>' + moment(data.start).format('hh:mm A') + ' - ' + moment(data.end).format('hh:mm A') + '</br>'  + data.organizationName + '</div>';
+            this.tooltip = '<div class="tooltiptopicevent" style="min-width: 150px; min-height: 70px; width:auto; height:auto; border-color:#808080; border-style: solid; background:#E0E0E0; position:absolute; z-index:10001; padding:10px 10px 10px 10px; line-height: 200%;">' + data.description + '</br>' + moment(data.start).format('hh:mm A') + ' - ' + moment(data.end).format('hh:mm A') + '</br>' + data.organizationName + '</div>';
           }
           else {
             this.tooltip = '<div class="tooltiptopicevent" style="min-width: 150px; min-height: 70px; width:auto; height:auto; border-color:#808080; border-style: solid; background:#E0E0E0; position:absolute; z-index:10001; padding:10px 10px 10px 10px; line-height: 200%;">' + data.description + '</br>' + moment(data.start).format('hh:mm A') + ' - ' + moment(data.end).format('hh:mm A') + '</div>';
           }
         }
-        
         $("body").append(this.tooltip);
         $(this).mouseover(function (e) {
           $(this).css('z-index', 10000);
@@ -78,16 +78,20 @@ export class SubstituteCalendarComponent implements OnInit {
           $('.tooltiptopicevent').css('left', e.pageX + 20);
         });
       },
+
       eventMouseout: function (data, event, view) {
         $(this).css('z-index', 8);
         $('.tooltiptopicevent').remove();
       },
+
       eventResizeStart: function () {
         this.tooltip.hide()
       },
+
       eventDragStart: function () {
         this.tooltip.hide()
       },
+
       defaultView: 'month',
       events: (start, end, timezone, callback) => {
         const model = {
@@ -101,13 +105,15 @@ export class SubstituteCalendarComponent implements OnInit {
           callback(data);
         });
       },
+
       eventRender: (event, element) => {
       },
+
       select: (start, end, jsEvent, view, resource) => {
         if (this.loginedUserRole !== 4) { // Substitute = 4
           return;
         }
-        if (end.isBefore(moment().add(1, 'hour').format()) || start.isBefore(moment().add(1, 'hour').format())) {
+        if (moment(start, 'YYYY-MM-DD').isSameOrBefore(moment().format('YYYY-MM-DD'))) {
           $('#calendar').fullCalendar('unselect');
           this.notifier.notify('error', 'You can not set unavailability in past dates !');
           return false;
@@ -125,16 +131,19 @@ export class SubstituteCalendarComponent implements OnInit {
           });
 
         dialogRef.afterClosed().subscribe(result => {
-          if (result) {          
+          if (result) {
             this.reloadCalendar();
             this.getSubstituteAvailibiltySummary();
           }
         });
       },
+
       eventDrop: event => {
       },
+
       eventResize: event => {
       },
+
       eventClick: event => {
         if (event.id == -1) {
           return false;
@@ -152,7 +161,7 @@ export class SubstituteCalendarComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
               if (result) {
                 console.log({ result });
-                if (result.action === 'Submit') {                
+                if (result.action === 'Submit') {
                   this.reloadCalendar();
                   this.getSubstituteAvailibiltySummary();
                 } else if (result.action === 'Delete') {
