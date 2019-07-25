@@ -28,7 +28,7 @@
           <div class="col-xs-6">
             <h5 mat-line>{{permission.displayName}}</h5>
           </div>
-          <div class="col-xs-4">
+          <div class="col-xs-6">
             <mat-radio-group>
               <mat-radio-button [value]="'true'" [checked]="permission.isChecked" (change)="permissionCheckedChanged(permission, $event)">Granted</mat-radio-button>&nbsp;
               <mat-radio-button [value]="'false'" [checked]="!permission.isChecked" (change)="permissionCheckedChanged(permission, $event)">Denied</mat-radio-button>

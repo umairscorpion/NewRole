@@ -8,7 +8,56 @@
     min-width: 300px !important;
   }
 
+  .example-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+  }
+
+  .example-header {
+    min-height: 64px;
+    padding: 8px 24px 0;
+  }
+  
 .mat-column-Approver {
     flex: 0 0 5% !important;
     min-width: 20px !important;
+}
+ .example-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.example-header {
+  min-height: 64px;
+  padding: 8px 24px 0;
+}
+
+ .mat-table {
+  overflow: auto;
+  max-height: 400px;
+}
+.mat-column-PhoneNumber {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+
+.mat-column-firstName {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+
+.mat-column-LastName {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+
+.mat-column-Position {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+.mat-column-Approver {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
 }

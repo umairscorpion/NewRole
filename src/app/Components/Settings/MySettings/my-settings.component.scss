@@ -23,10 +23,17 @@
 
 .school-div {
     padding: 10px;
-    padding-right: -272px;
+    // padding-right: -272px;
     width: 40%;
     margin-top: 15px;
 }
+
+@media(max-width:570px){
+    .changewidth{
+      width: 100%;
+    }
+
+  }
 
 .school-save-btn {
     text-align: center;
@@ -37,7 +44,7 @@
 .categories-save-btn {
     text-align: center;
     width: 85%;
-    margin-top: 50px;
+    // margin-top: 50px;
 }
 
 .notification-save-btn {

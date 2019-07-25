@@ -4,3 +4,10 @@
 
   .toggle.android { border-radius: 0px;}
   .toggle.android .toggle-handle { border-radius: 0px; }
+
+  @media(max-width:974px){
+    .changePadding{
+      padding-top: 50px;
+    }
+
+  }
