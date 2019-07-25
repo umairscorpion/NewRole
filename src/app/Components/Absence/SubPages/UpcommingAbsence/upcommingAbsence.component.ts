@@ -13,7 +13,8 @@ import { ReportDetailsComponent } from 'src/app/Components/Reports/popups/report
 
 @Component({
     selector: 'upcoming-absences',
-    templateUrl: 'upcommingAbsence.component.html'
+    templateUrl: 'upcommingAbsence.component.html',
+    styleUrls: ['upcommingAbsence.component.scss']
 })
 export class UpcommingAbsenceComponent implements OnInit {
     CurrentDate: Date = new Date;

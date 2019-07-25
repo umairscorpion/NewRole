@@ -1,0 +1,64 @@
+<style>
+    body { background-color: whitesmoke; }
+.dPage { background-color: whitesmoke; min-width: 100%; min-height: 100%; margin: 0px; padding: 100px 0px; box-sizing: border-box; }
+.dPage > div:nth-child(1) { width: 30%; min-width: 360px; max-width: 360px; box-sizing: border-box; margin: 0px auto; padding: 30px; border: 1px solid #5fb125; border: 1px solid #d2cece; background-color: white; float: none; border-radius: 10px; box-shadow: inset 0px 1px 48px 7px #E8E3E3, 5px 5px 5px 1px #DDDDDD; -webkit-box-shadow: inset 0px 1px 48px 7px #E8E3E3, 5px 5px 5px 1px #DDDDDD; -moz-box-shadow: inset 0px 1px 48px 7px #E8E3E3,5px 5px 5px 1px #DDDDDD; -o-box-shadow: inset 0px 1px 48px 7px #E8E3E3,5px 5px 5px 1px #DDDDDD; }
+.dPage > div:nth-child(1) > div { width: 100%; border: 0px solid blue; }
+.dPage > div:nth-child(1) > div > * { margin: 0px auto; padding: 0px; }
+.dPage > div:nth-child(1) > div > p { width: 100%; max-width: 240px; text-align: center; }
+.dPage > div:nth-child(1) > div:nth-child(1) { height: 82px; }
+.dPage > div:nth-child(1) > div:nth-child(1) > div { width: 82.278px; height: 70px; margin: 0px auto; padding: 0px; }
+.dPage > div:nth-child(1) > div:nth-child(1) > div > img { width: 82.278px; height: 70px; }
+.dPage > div:nth-child(1) > div:nth-child(2) { height: 36px; }
+.dPage > div:nth-child(1) > div:nth-child(3) { height: 61px; }
+.dPage > div:nth-child(1) > div:nth-child(4) { height: 1px; border: 1px solid #5fb124; max-width: 250px; margin: 10px auto; box-sizing: border-box; }
+.dPage > div:nth-child(1) > div:nth-child(5) { height: 41px; }
+#headingP { font-weight: 600; font-size: 1.4em; }
+@media (max-width: 530px) {
+    .dPage { margin-top: 150px; }
+}
+@media (min-width: 531px) AND (max-width: 767px) {
+    .dPage { margin-top: 110px; }
+}
+@media (min-width: 768px) AND (max-width: 991px) {
+    .dPage { margin-top: 110px; }
+}
+</style>
+<div class="dPage" *ngIf="!subscribed" id="dPage">
+    <div>
+        <div>
+            <div>
+                <img src="https://loginsubzz.com/Images/subscribe_mailbox.gif" />
+            </div>
+        </div>
+        <div>
+            <p id="headingP">You have unsubscribed successfully</p>
+        </div>
+        <div style="margin-top: 21px;">
+            <p>You will no longer receive email notifications from Subzz.com about Jobs</p>
+        </div>
+        <div></div>
+        <form runat="server">
+            <div>
+                <p>Accidentally unsubscribed?
+                    <a runat="server" style="cursor:pointer;" (click)="Subscribe()">Subscribe again</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="dPage" *ngIf="subscribed" id="dPage">
+        <div>
+            <div>
+                <div>
+                    <img src="https://loginsubzz.com/Images/logo-green.png"/>
+                </div>
+            </div>
+            <div>
+                <p id="headingPsss"> Welcome back!</p>
+            </div>
+            <div>
+                <p> You have opted back in to receive Subzz emails about tips and special offers on Subzz</p>
+            </div>
+            <div></div>
+        </div>
+</div>

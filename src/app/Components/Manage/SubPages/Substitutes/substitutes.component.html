@@ -46,7 +46,7 @@
               <ng-container matColumnDef="Active">
                 <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
                 <mat-cell *matCellDef="let Substitute">
-                  {{Substitute.lastActive == '0' ? 'Today' : Substitute.lastActive == null ? 'Not Yet Login' : Substitute.lastActive + ' days
+                  {{Substitute.lastActive == '0' ? 'Today' : Substitute.lastActive == null ? 'Not yet logged in' : Substitute.lastActive + ' days
                   ago' }}
                 </mat-cell>
               </ng-container>
@@ -97,7 +97,7 @@
     </mat-tab>
     <mat-tab label="Positions">
       <mat-card>
-        <position-table></position-table>
+        <position-table [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE_POSITIONS'"></position-table>
       </mat-card>
     </mat-tab>
     <mat-tab label="School Sub List">

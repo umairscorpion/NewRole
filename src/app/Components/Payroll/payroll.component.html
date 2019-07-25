@@ -1,12 +1,18 @@
+<style>
+.mat-table {
+    overflow: auto;
+    max-height: 400px;
+  }
+</style>
 <mat-card>
     <mat-card-content>
         <mat-card-title>Payroll</mat-card-title>
         <mat-tab-group (selectedTabChange)="onTabChanged($event)">
             <mat-tab label="Payroll Report">
-                <run-payroll></run-payroll>
+                <run-payroll [hideIfUnauthorized]="'ACCESS_PAYROLL'"></run-payroll>
             </mat-tab>
             <mat-tab label="Payroll Settings">
-                <div class="col-md-12 col-lg-12">
+                <div class="row col-md-12 col-lg-12">
                     <div class="row vertical-center">
                         <div class="col-md-5 col-lg-5">
                             Weekly Time Limits
@@ -17,7 +23,7 @@
                     </div>
                     <mat-divider></mat-divider>
                     <form (ngSubmit)="onUpdateweeklyLimitSetting(weeklyLimitSettings)" [formGroup]="weeklyLimitSettings">
-                        <div class="row vertical-center" style="min-height: 10vh !important;">
+                        <div class="row" style="min-height: 10vh !important; padding-top: 10px;">
                             <div class="col-md-5 col-lg-5">
                                 Current Weekly Limit: {{!weeklyLimitSettings.getRawValue().isWeeklyLimitApplicable ? weeklyLimitSettings.getRawValue().weeklyHourLimit:
                                 ''}} {{!weeklyLimitSettings.getRawValue().isWeeklyLimitApplicable ? 'hours per week': 'There
@@ -54,7 +60,7 @@
                 </div>
             </mat-tab>
             <mat-tab label="Payrates">
-                <payRate-details></payRate-details>
+                <payRate-details [hideIfUnauthorized]="'ACCESS_PAYRATES'"></payRate-details>
             </mat-tab>
         </mat-tab-group>
     </mat-card-content>

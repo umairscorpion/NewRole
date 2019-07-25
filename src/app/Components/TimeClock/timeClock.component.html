@@ -138,7 +138,7 @@
                 </div>
             </mat-tab>
             <mat-tab *ngIf="userRole != 4 && userRole != 3" label="Time Tracker">
-                <time-tracker></time-tracker>
+                <time-tracker [hideIfUnauthorized]="'VIEW_EDIT_TIME_TRACKER'"></time-tracker>
             </mat-tab>
         </mat-tab-group>
     </mat-card-content>

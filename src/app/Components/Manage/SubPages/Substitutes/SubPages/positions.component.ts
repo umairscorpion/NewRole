@@ -102,7 +102,13 @@ export class PositionsComponent implements OnInit {
         }).then(r => {
             if (r.value) {
                 this._districtService.delete('user/deletePosition/', id).subscribe((response: any) => {
-                this.notifier.notify('success', 'Deleted Successfully');
+                    if(response === 1){
+                        this.notifier.notify('success', 'Deleted Successfully');        
+                    }
+                    else{
+                        this.notifier.notify('error', 'User is added against this Position');
+                    }
+                
                 this.getpositions();
               },
                 error => this.msg = <any>error);

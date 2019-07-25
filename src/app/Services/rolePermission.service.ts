@@ -26,10 +26,10 @@ export class RolePermissionService extends RestService<RolePermission> {
     return `${environment.apiUrl}permissions`;
   }
 
-  rolePermissions(roleId: number): Observable<Role> {
+  rolePermissions(roleId: number, userId: string): Observable<Role> {
     return this.httpClient
       .get<Role>(
-        `${this.getUri()}/role/${roleId}`
+        `${this.getUri()}/role/${roleId}/${userId}`
       )
       .pipe(
         catchError(this.errorHandler.handleError),

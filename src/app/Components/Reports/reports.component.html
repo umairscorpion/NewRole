@@ -3,13 +3,13 @@
         <mat-card-title>Reports</mat-card-title>
         <mat-tab-group class="demo-tab-group" [selectedIndex]="selectedTab" (selectedTabChange)="onChangeTab($event)">
             <mat-tab label="Daily">
-                <daily-reports></daily-reports>
+                <daily-reports [hideIfUnauthorized]="'ACCESS_REPORTS'"></daily-reports>
             </mat-tab>
             <mat-tab label="Monthly">
-                <monthly-reports></monthly-reports>
+                <monthly-reports [hideIfUnauthorized]="'ACCESS_REPORTS'"></monthly-reports>
             </mat-tab>
             <mat-tab label="Activity">
-                <activity-reports></activity-reports>
+                <activity-reports [hideIfUnauthorized]="'ACCESS_REPORTS'"></activity-reports>
             </mat-tab>
         </mat-tab-group>
     </mat-card-content>

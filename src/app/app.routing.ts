@@ -68,8 +68,8 @@ import { AppLayoutComponent } from './Components/_layout/app-layout/app-layout.c
 import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-password.component';
 import { SharedCalendarComponent } from './Components/Calendar/shared-calendar.component';
 import { UserRoleType } from './Shared/enum';
+import { SubscriptionComponent } from './Components/User/Unsubscribed/unsubscribed.component';
 import { SchoolFilesComponent } from './Components/SchoolFiles/school-files.component';
-
 
 const appRoutes: Routes = [
     {
@@ -78,7 +78,8 @@ const appRoutes: Routes = [
         children: [
             { path: '', component: LoginComponent },
             { path: 'forgotPassword', component: ForgotPasswordComponent },
-            { path: 'resetPassword', component: ResetPasswordComponent }
+            { path: 'resetPassword', component: ResetPasswordComponent },
+            { path: 'unsubscribed', component: SubscriptionComponent }
         ]
     },
     {
@@ -511,7 +512,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: { roles: [UserRoleType.SuperAdmin] }
+                    permission: { roles: [UserRoleType.SuperAdmin, UserRoleType.DistrictAdmin] }
                 }
             },
             {
@@ -527,7 +528,7 @@ const appRoutes: Routes = [
                 }
             },
             {
-                path: 'role/permissions/:id', component: RolePermissionsComponent, canActivate: [AuthGuard],
+                path: 'role/permissions/:id/:userId', component: RolePermissionsComponent, canActivate: [AuthGuard],
                 data: {
                     path: '/role/permissions',
                     title: 'Permissions',
@@ -535,7 +536,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: { roles: [UserRoleType.SuperAdmin] }
+                    permission: { roles: [UserRoleType.SuperAdmin, UserRoleType.DistrictAdmin] }
                 }
             },
             {

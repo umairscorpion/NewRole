@@ -9,6 +9,7 @@ import { FileService } from '../../../../Services/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from 'src/app/Service/user.service';
 import { environment } from 'src/environments/environment';
+import { RoleService } from '../../../../Services/role.service';
 
 @Component({
     templateUrl: 'addEmployees.component.html',
@@ -20,6 +21,7 @@ export class AddEmployeesComponent implements OnInit {
     profilePicture: any;
     private notifier: NotifierService;
     userTypes: any;
+    roles: any;
     Districts: any;
     Organizations: any;
     TeachingLevels: any;
@@ -40,11 +42,13 @@ export class AddEmployeesComponent implements OnInit {
         private _userSession: UserSession,
         private fileService: FileService,
         private sanitizer: DomSanitizer,
-        private userService: UserService) {
+        private userService: UserService,
+        private roleService: RoleService,) {
         this.notifier = notifier;
     }
 
     ngOnInit(): void {
+        this.loadData();
         this.employeeForm = this.fb.group({
             FirstName: ['', Validators.required],
             LastName: ['', Validators.required],
@@ -57,6 +61,7 @@ export class AddEmployeesComponent implements OnInit {
             IsSubscribedSMS: ['1', Validators.required],
             Gender: ['M', Validators.required],
             District: ['', Validators.required],
+            role: ['', Validators.required],
             OrganizationId: [''],
             SecondarySchools: [],
             EmailId: ['', [Validators.required, Validators.email]],
@@ -114,6 +119,10 @@ export class AddEmployeesComponent implements OnInit {
             }
         });
     }
+    
+    loadData() {
+        this.roleService.get('roles').subscribe(roles => { this.roles = roles; });
+      }
 
     getImage(imageName: string) {
         if (imageName && imageName.length > 0) {
@@ -265,6 +274,8 @@ export class AddEmployeesComponent implements OnInit {
                 if (result) {
                     this.notifier.notify('error', 'This email address belongs to another user. Please try with other one.');
                 }
+                // form.value.UserTypeId === 2 && this.showOrganization == true && typeof form.getRawValue().OrganizationId != 'undefined' && form.getRawValue().OrganizationId ? 2 :
+                //             form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? 1 : 3
                 else {
                     let model = {
                         UserId: this.userIdForUpdate,
@@ -274,8 +285,7 @@ export class AddEmployeesComponent implements OnInit {
                         //IF USER TYPE IS 2 i.e ADMIN AND SHOW ORGANIZTION IS TRUE THAN ITS ORGANIZATION ADMIN
                         //IF USER TYPE IS 2 i.e ADMIN AND SHOW DISTRICT IS TRUE THAN ITS DISTRICT ADMIN
                         //IF BOTH SCENARIOS ARE FALSE THAN ITS EMPLOYEE ADMIN
-                        RoleId: form.value.UserTypeId === 2 && this.showOrganization == true && typeof form.getRawValue().OrganizationId != 'undefined' && form.getRawValue().OrganizationId ? 2 :
-                            form.value.UserTypeId === 2 && this.showDistrict == true && typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? 1 : 3,
+                        RoleId: form.value.role,
                         // IF USER TYPE IS TEACHER
                         TeachingLevel: form.value.UserTypeId === 1 ? form.value.TeachingLevel : 0,
                         specialityTypeId: form.value.UserTypeId === 1 ? form.value.Speciality : 0,

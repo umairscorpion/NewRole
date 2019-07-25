@@ -11,7 +11,8 @@ import swal from 'sweetalert2';
 
 @Component({
     selector: 'past-absences',
-    templateUrl: 'pastAbsence.component.html'
+    templateUrl: 'pastAbsence.component.html',
+    styleUrls: ['pastAbsence.component.scss']
 })
 export class PastAbsenceComponent implements OnInit {
     loginUserRole: number;

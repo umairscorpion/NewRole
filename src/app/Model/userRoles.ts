@@ -15,6 +15,7 @@ export class UserRole extends Entity {
 export class Role extends Entity {
   role_Id: number;
   name: string;
+  userId: string;
   permissionsCategories: Array<PermissionCategory>;
 }
 export class RoleSummary extends Entity {

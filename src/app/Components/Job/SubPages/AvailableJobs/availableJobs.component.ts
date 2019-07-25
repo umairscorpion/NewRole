@@ -62,9 +62,29 @@ export class AvailableJobsComponent implements OnInit {
         this.notifier = notifier;
     }
 
+    ngOnInit(): void {
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params.jobId && params.ac == 2) {
+                this.DeclineAbsence(params.jobId)
+            }
+        })
+        this.FilterForm = this._formBuilder.group({
+            FilterStartDate: ['', Validators.required],
+            FilterEndDate: ['', Validators.required],
+            DistrictId: [{ disabled: true }, Validators.required],
+            OrganizationId: ['-1', Validators.required],
+            Requested: [false]
+        });
+        this.GetMyJobs();
+        this.GetDistricts();
+        this.GetOrganizations(this._userSession.getUserDistrictId());
+        this.GetAvailableJobs();
+    }
+
     ngAfterViewInit() {
         this.AvailableJobs.sort = this.sort;
         this.AvailableJobs.paginator = this.paginator;
+        this.GetAvailableJobs();
     }
 
     GetAvailableJobs() {
@@ -85,25 +105,6 @@ export class AvailableJobsComponent implements OnInit {
                 this.AvailableCountEvent.emit(this.AvailableJobCount);
             },
                 error => this.msg = <any>error);
-    }
-
-    ngOnInit(): void {
-        this.activatedRoute.queryParams.subscribe((params: any) => {
-            if (params.jobId && params.ac == 2) {
-                this.DeclineAbsence(params.jobId)
-            }
-        })
-        this.FilterForm = this._formBuilder.group({
-            FilterStartDate: ['', Validators.required],
-            FilterEndDate: ['', Validators.required],
-            DistrictId: [{ disabled: true }, Validators.required],
-            OrganizationId: ['-1', Validators.required],
-            Requested: [false]
-        });
-        this.GetMyJobs();
-        this.GetDistricts();
-        this.GetOrganizations(this._userSession.getUserDistrictId());
-        this.GetAvailableJobs();
     }
 
     GetOrganizations(DistrictId: number): void {

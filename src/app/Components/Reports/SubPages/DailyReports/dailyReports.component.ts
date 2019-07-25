@@ -14,12 +14,14 @@ import { AuditFilter } from '../../../../Model/auditLog';
 import { AuditLogService } from '../../../../Services/audit_logs/audit-log.service';
 import { Workbook } from 'exceljs';
 import { DatePipe } from '@angular/common';
+import { TimeFormatPipe } from '../../../../Shared/pipe/time.pipe';
 import { ExcelSheet } from '../../../../Model/excelSheet';
 import { Jsonp } from '../../../../../../node_modules/@angular/http';
 
 @Component({
     selector: 'daily-reports',
-    templateUrl: 'dailyReports.component.html'
+    templateUrl: 'dailyReports.component.html',
+    providers: [TimeFormatPipe]
 })
 export class DailyReportsComponent implements OnInit, AfterViewInit {
     @ViewChildren('chartTotal') chartTotal: ElementRef;
@@ -60,7 +62,8 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
         private sanitizer: DomSanitizer,
         private excelService: ExcelService,
         private auditLogService: AuditLogService,
-        private datePipe: DatePipe) {
+        private datePipe: DatePipe,
+        private timeFormatPipe: TimeFormatPipe) {
     }
 
     ngOnInit(): void {
@@ -94,7 +97,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
         });
         if ($event.actionName == "print") {
             const title = 'Report';
-            const header = ["Employee Name", "Absence Id", "Reason", "Date", "Time", "District", "Status", "Substitute", "Notes", "School"]
+            const header = ["Last Name", "First Name", "Job Id", "Reason", "Date", "Time", "Status", "Substitute", "Notes", "District", "School"]
             let workbook = new Workbook();
             let worksheet = workbook.addWorksheet('Report');
             let titleRow = worksheet.addRow([title]);
@@ -187,9 +190,12 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
 
     objToArray(report: ReportDetail) {
         var result = [];
-        result.push(report.employeeName, report.absenceId, report.reason, report.startDate + " - " + report.endDate,
-            report.startTime + "-" + report.endTime,
-            report.districtName, report.statusTitle, report.substituteName, report.notes, report.schoolName)
+        result.push(report.employeeName, report.employeeName,
+         report.confirmationNumber, report.reason,  moment(report.startDate).format('MM/DD/YYYY')
+            + " - " + moment(report.endDate).format('MM/DD/YYYY'),
+            this.timeFormatPipe.transform(report.startTime) + "-" + this.timeFormatPipe.transform(report.endTime),
+             report.statusTitle, report.substituteName,
+            report.districtName, report.notes, report.schoolName)
         return result;
     }
 }

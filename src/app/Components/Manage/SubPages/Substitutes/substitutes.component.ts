@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Inject } from '@angular/core';
+import { Component, ViewChild, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { IDistrict } from '../../../../Model/Manage/district';
 import { DistrictService } from '../../../../Service/Manage/district.service';
