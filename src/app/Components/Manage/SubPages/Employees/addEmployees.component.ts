@@ -105,7 +105,8 @@ export class AddEmployeesComponent implements OnInit {
                         OrganizationId: data[0].organizationId ? data[0].organizationId : '',
                         SecondarySchools: data[0].secondarySchools,
                         PhoneNumber: data[0].phoneNumber,
-                        IsActive: data[0].isActive
+                        IsActive: data[0].isActive,
+                        role: data[0].roleId
                     }
                     this.getImage(data[0].profilePicture);
                     this.employeeForm.setValue(EmployeeModel);
@@ -192,12 +193,14 @@ export class AddEmployeesComponent implements OnInit {
 
     OnchangeWorkLocation(event: any) {
         if (+event === 2) {
+            this.employeeForm.get('role').setValue(2);
             this.employeeForm.controls["OrganizationId"].setValidators([Validators.required]);
             this.employeeForm.controls['OrganizationId'].updateValueAndValidity();
             this.showOrganization = true;
             this.showDistrict = false;
         }
         else {
+            this.employeeForm.get('role').setValue(1);
             this.employeeForm.controls['OrganizationId'].clearValidators();
             this.employeeForm.controls["District"].setValidators([Validators.required]);
             this.employeeForm.controls['District'].updateValueAndValidity();
