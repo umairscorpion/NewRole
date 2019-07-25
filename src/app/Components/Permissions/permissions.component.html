@@ -18,22 +18,22 @@
             </div>
           </div>
         </div>
-        <div>
+        <div class="row col-md-12 col-lg-12">
           <ngx-datatable class="material" [rows]="rowsUsers" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="0" [rowHeight]="50"
             [selectionType]="'checkbox'" [selected]="selectedUsers" (select)="onUserSelect($event)" [sorts]="[{ prop: 'userName', dir: 'asc' }]">
             <ngx-datatable-column [width]="30" [headerCheckboxable]="true" [checkboxable]="true" cellClass="middle">
             </ngx-datatable-column>
-            <ngx-datatable-column name="User name" prop="userName" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column name="User name" prop="userName" [flexGrow]="1" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">{{ value }}</div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Email address" prop="email" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column name="Email address" prop="email" [flexGrow]="1" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">{{ value }}</div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Role" [width]="50" prop="roleName" [flexGrow]="2" cellClass="middle ellipsis" [draggable]="false">
+            <ngx-datatable-column name="Role" [width]="50" prop="roleName" [flexGrow]="1" cellClass="middle ellipsis" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">{{ value }}</div>
               </ng-template>
@@ -74,12 +74,12 @@
             [selectionType]="'checkbox'" [selected]="selectedRoles" (select)="onRoleSelect($event)" [sorts]="[{ prop: 'name', dir: 'asc' }]">
             <ngx-datatable-column [width]="30" [headerCheckboxable]="true" [checkboxable]="true" cellClass="middle">
             </ngx-datatable-column>
-            <ngx-datatable-column name="Role name" prop="name" [flexGrow]="1" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column name="Role name" prop="name" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">{{ value }}</div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Users" prop="usersCount" [flexGrow]="1" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column name="Users" prop="usersCount" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">{{ value }}</div>
               </ng-template>

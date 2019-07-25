@@ -105,7 +105,8 @@
                             </form>
                         </mat-tab>
                         <mat-tab *ngIf='isSubstitute' label="School Settings">
-                            <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 school-div">
+                            <div class="row col-md-12 col-lg-12 col-xs-12">
+                            <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 school-div changewidth">
                                 <div class="col-md-8 heading-div">
                                     <p>
                                         <b> Select Schools against which you want to get notifications.</b>
@@ -148,10 +149,10 @@
                                     <button style="background-color: #04c0be; color: white;" mat-raised-button
                                         (click)="SavePreferredSchoolSettings(EnabledSchools)">Save</button>
                                 </div> -->
+                            </div>
                         </mat-tab>
                         <mat-tab *ngIf='isSubstitute' label="Categories Settings">
-
-                            <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 categories-div">
+                            <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 categories-div changewidth">
                                 <div class="col-md-8" style="height:565px; width: 100%; margin-top: 10px;">
                                     <!-- <mat-selection-list #Category>
                                         <mat-list-option *ngFor="let category of Categories" [value]="category.id"
@@ -291,15 +292,14 @@
 
                         </mat-tab>
                         <mat-tab label="Notification Settings">
-                            <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 notification-div">
-                                <div class="col-md-8 heading-div">
-                                    <p>
-                                        <b> Select event against which you want to get notifications.</b>
-                                    </p>
-                                </div>
-                                <div class="col-md-8" style="width: 100%; margin-top: 10px;">
-                                    <table mat-table style="width: 100%" [dataSource]="notificationEvents">
-
+                            <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 notification-div changewidth">
+                                    <div class="col-md-8 heading-div">
+                                        <p>
+                                            <b> Select event against which you want to get notifications.</b>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-8" style="width: 100%; margin-top: 10px;">
+                                        <table mat-table style="width: 100%" [dataSource]="notificationEvents">
                                         <ng-container matColumnDef="event">
                                             <th mat-header-cell *matHeaderCellDef> Event </th>
                                             <td mat-cell *matCellDef="let row"> {{row.eventName}} </td>

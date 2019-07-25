@@ -20,7 +20,7 @@
                                             <mat-radio-button style="padding-left: 10px;" color="primary" value="3">Find a Sub</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
-                                    <div class="col-md-6 col-lg-6">
+                                    <div class="col-md-6 col-lg-6 ">
                                         <mat-form-field class="col-md-10 col-lg-10" *ngIf='absenceFirstFormGroup.value.selfEmployeeVacancy == "2"'>
                                             <input type="text" placeholder="Search Employee Name" aria-label="Number" (input)="SearchEmployees($event.target.value)"
                                                 matInput formControlName="EmployeeId" [matAutocomplete]="auto">
@@ -33,10 +33,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row changePadding">
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6">
-                                        <mat-form-field class="col-md-10 col-lg-10">
+                                        <mat-form-field class="col-md-10 col-lg-10 ">
                                             <input matInput [max]="absenceFirstFormGroup.value.AbsenceEndDate" [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
                                                 [matDatepicker]="AbsenceStartDatePicker" placeholder="Start Date" formControlName="AbsenceStartDate"
                                                 (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate);SearchAvailableSubstitutes('a')">

@@ -20,9 +20,6 @@
       <div class="avatar-wrapper" *ngIf="reportDetail.callingPage != 'Absence'">
         <img class="profile-pic" [src]="getImage(reportDetail.employeeProfilePicUrl)" width="150" height="150" />
       </div>
-      <div>
-        <h4></h4>
-      </div>
       <div class="absence-summary-title p-2 mt-2">Absence Summary</div>
       <br>
       <table *ngIf="menuAction == 'view' || menuAction == 'delete' || menuAction == 'resend'" class="report-details-table" cellpadding="3"

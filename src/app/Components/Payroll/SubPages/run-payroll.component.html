@@ -48,79 +48,79 @@
             </div>
         </div>
     </form>
-    <table id="htmlForPrint" mat-table [dataSource]="runPayRollDataSource" class="mat-elevation-z8">
+    <mat-table id="htmlForPrint"  [dataSource]="runPayRollDataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="Date">
-            <th mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let report"> {{report.startDate | date:'mediumDate'}} </td>
+            <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+            <mat-cell *matCellDef="let report"> {{report.startDate | date:'mediumDate'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Employee">
-            <th mat-header-cell *matHeaderCellDef> Employee </th>
-            <td mat-cell *matCellDef="let report"> {{report.employeeName}} </td>
+            <mat-header-cell *matHeaderCellDef> Employee </mat-header-cell>
+            <mat-cell *matCellDef="let report"> {{report.employeeName}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Location">
-            <th mat-header-cell *matHeaderCellDef> Location </th>
-            <td mat-cell *matCellDef="let report"> {{ report.schoolName ? report.schoolName : report.districtName}} </td>
+            <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+            <mat-cell *matCellDef="let report"> {{ report.schoolName ? report.schoolName : report.districtName}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Reason">
-            <th mat-header-cell *matHeaderCellDef> Reason </th>
-            <td mat-cell *matCellDef="let report"> {{report.reason}} </td>
+            <mat-header-cell *matHeaderCellDef> Reason </mat-header-cell>
+            <mat-cell *matCellDef="let report"> {{report.reason}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Time">
-            <th mat-header-cell *matHeaderCellDef> Time </th>
-            <td mat-cell *matCellDef="let report"> {{report.startTime | convertFrom24HourTo12HourFormat}}- {{report.endTime | convertFrom24HourTo12HourFormat}}
-            </td>
+            <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+            <mat-cell *matCellDef="let report"> {{report.startTime | convertFrom24HourTo12HourFormat}}- {{report.endTime | convertFrom24HourTo12HourFormat}}
+            </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Hours">
-            <th mat-header-cell *matHeaderCellDef> Hours </th>
-            <td mat-cell *matCellDef="let report"> {{ report.dailyHours }} </td>
+            <mat-header-cell *matHeaderCellDef> Hours </mat-header-cell>
+            <mat-cell *matCellDef="let report"> {{ report.dailyHours }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Notes">
-            <th mat-header-cell *matHeaderCellDef> Notes </th>
-            <td mat-cell *matCellDef="let report"> {{report.notes}} </td>
+            <mat-header-cell *matHeaderCellDef> Notes </mat-header-cell>
+            <mat-cell *matCellDef="let report"> {{report.notes}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Substitute">
-            <th mat-header-cell *matHeaderCellDef> Substitute </th>
-            <td mat-cell *matCellDef="let report"> {{report.substituteName}} </td>
+            <mat-header-cell *matHeaderCellDef> Substitute </mat-header-cell>
+            <mat-cell *matCellDef="let report"> {{report.substituteName}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Rate">
-            <th mat-header-cell *matHeaderCellDef> Rate </th>
-            <td mat-cell *matCellDef="let report"> $ {{ report.payRate }} </td>
+            <mat-header-cell *matHeaderCellDef> Rate </mat-header-cell>
+            <mat-cell *matCellDef="let report"> $ {{ report.payRate }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Additional">
-            <th mat-header-cell *matHeaderCellDef> Additional </th>
-            <td mat-cell *matCellDef="let report"> </td>
+            <mat-header-cell *matHeaderCellDef> Additional </mat-header-cell>
+            <mat-cell *matCellDef="let report"> </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Gross">
-            <th mat-header-cell *matHeaderCellDef> Gross Pay </th>
-            <td mat-cell *matCellDef="let report"> $ {{ report.payRate * report.dailyHours }} </td>
+            <mat-header-cell *matHeaderCellDef> Gross Pay </mat-header-cell>
+            <mat-cell *matCellDef="let report"> $ {{ report.payRate * report.dailyHours }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>
+            <mat-header-cell *matHeaderCellDef>
                 <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
                     [aria-label]="checkboxLabel()">
                 </mat-checkbox>
                 Approve All
-            </th>
-            <td mat-cell *matCellDef="let row">
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
                 <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
                     [aria-label]="checkboxLabel(row)">
                 </mat-checkbox>
-            </td>
+            </mat-cell>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
-        </tr>
-    </table>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+        </mat-row>
+    </mat-table>
 </div>

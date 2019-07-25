@@ -1,8 +1,18 @@
+.employeeForm-table {
+  text-align: left;
+  font-size: 12px;
+}
+
+::ng-deep .mat-column-action {
+  flex: 0 0 15% !important;
+  min-width: 300px !important;
+}
 
   .example-container {
     display: flex;
     flex-direction: column;
     min-width: 300px;
+    
   }
 
   .example-header {
@@ -15,11 +25,11 @@
     width: 100%;
   }
 
-  .mat-table {
+   .mat-table {
     overflow: auto;
     max-height: 400px;
   }
-  
+
   .vertical-center {  
     min-height: 5vh;
     display: flex;
