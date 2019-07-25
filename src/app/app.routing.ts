@@ -68,6 +68,7 @@ import { AppLayoutComponent } from './Components/_layout/app-layout/app-layout.c
 import { ResetPasswordComponent } from './Components/User/ResetPassword/reset-password.component';
 import { SharedCalendarComponent } from './Components/Calendar/shared-calendar.component';
 import { UserRoleType } from './Shared/enum';
+import { SubscriptionComponent } from './Components/User/Unsubscribed/unsubscribed.component';
 
 
 const appRoutes: Routes = [
@@ -77,7 +78,8 @@ const appRoutes: Routes = [
         children: [
             { path: '', component: LoginComponent },
             { path: 'forgotPassword', component: ForgotPasswordComponent },
-            { path: 'resetPassword', component: ResetPasswordComponent }
+            { path: 'resetPassword', component: ResetPasswordComponent },
+            { path: 'unsubscribed', component: SubscriptionComponent }
         ]
     },
     {

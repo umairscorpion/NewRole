@@ -209,14 +209,18 @@
     
                                         </div>
                                         <div class="col-md-6 col-lg-6">
-                                            <div class="col-md-12 col-lg-12">
-                                                Requires Certified Sub?
-                                                <ui-switch [checked]="true" style="color: white" (valueChange)="onchangeOnlyCertified(absenceFirstFormGroup.value.onlyCertified)"></ui-switch>
+                                            <div class="col-md-6 col-lg-6">
+                                                Requires Certified sub?
                                             </div>
-                                            <div class="col-md-12 col-lg-12">
+                                            <div class="col-md-6 col-lg-6">
+                                                    <ui-switch [checked]="true" style="color: white" (valueChange)="onchangeOnlyCertified(absenceFirstFormGroup.value.onlyCertified)"></ui-switch>
+                                                </div>
+                                            <div class="col-md-6 col-lg-6">
                                                 Only notify subject specialist?
-                                                <ui-switch [checked]="false" style="color: white" (valueChange)="onchangeOnlySpecialist(absenceFirstFormGroup.value.onlySubjectSpecialist)"></ui-switch>
                                             </div>
+                                            <div class="col-md-6 col-lg-6">
+                                                    <ui-switch [checked]="false" style="color: white" (valueChange)="onchangeOnlySpecialist(absenceFirstFormGroup.value.onlySubjectSpecialist)"></ui-switch>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
