@@ -42,4 +42,41 @@
     background:  rgba(209,196,233,.3);
     border-left: 4px solid #15192F;
   }
+
+  .mat-table {
+    overflow: auto;
+    max-height: 400px;
+  }
+  .mat-column-Date {
+    flex: 0 0 5% !important;
+    min-width: 100px !important;
+  }
+  
+  .mat-column-Clockin {
+    flex: 0 0 5% !important;
+    min-width: 80px !important;
+  }
+  
+  .mat-column-Clockout {
+    flex: 0 0 5% !important;
+    min-width: 80px !important;
+  }
+  
+  .mat-column-activity {
+    flex: 0 0 5% !important;
+    min-width: 80px !important;
+  }
+  .mat-column-Length {
+    flex: 0 0 5% !important;
+    min-width: 80px !important;
+  }
+
+  .mat-column-Break {
+    flex: 0 0 5% !important;
+    min-width: 80px !important;
+  }
+  .mat-column-Status {
+    flex: 0 0 5% !important;
+    min-width: 100px !important;
+  }
  

@@ -7,7 +7,8 @@ import swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
 @Component({
-  templateUrl: 'district.component.html'
+  templateUrl: 'district.component.html',
+  styleUrls: ['district.component.scss']
 })
 export class DistrictsComponent {
   displayedColumns = ['DistrictName', 'DistrictAddress', 'City', 'DistrictZipCode', 'action'];

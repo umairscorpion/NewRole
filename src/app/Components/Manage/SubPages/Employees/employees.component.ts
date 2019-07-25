@@ -17,11 +17,12 @@ import { User } from '../../../../Model/user';
 import swal from 'sweetalert2';
 
 @Component({
-  templateUrl: 'employees.component.html'
+  templateUrl: 'employees.component.html',
+  styleUrls: ['employee.component.css']
 })
 export class EmployeesComponent implements OnInit {
   private notifier: NotifierService;
-  displayedColumns = ['firstName', 'LastName', 'Email', 'PhoneNumber', 'location', 'Role', 'Approver', 'action'];
+  displayedColumns = ['firstName', 'LastName', 'Email', 'PhoneNumber', 'location', 'Role', 'action'];
   DataSourceEmployeesObj: DataSourceEmployees | null;
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;

@@ -1,0 +1,19 @@
+.mat-table {
+    overflow: auto;
+    max-height: 400px;
+  }
+
+.mat-column-Title {
+    flex: 0 0 5% !important;
+    min-width: 300px !important;
+  }
+  
+  .mat-column-Visibility {
+    flex: 0 0 5% !important;
+    min-width: 300px !important;
+  }
+  
+  .mat-column-action {
+    flex: 0 0 5% !important;
+    min-width: 300px !important;
+  }

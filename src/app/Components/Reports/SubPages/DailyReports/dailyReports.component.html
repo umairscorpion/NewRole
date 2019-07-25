@@ -74,7 +74,7 @@
     <mat-tab-group>
       <mat-tab label="Filled">
         <div class="m-30">
-          <ngx-datatable class="material" [rows]="filledAbsenceDetails" [columnMode]="'standard'" [headerHeight]="50"
+          <ngx-datatable class="material" style="overflow: auto;" [rows]="filledAbsenceDetails" [columnMode]="'standard'" [headerHeight]="50"
             [footerHeight]="50" [rowHeight]="'auto'" [limit]="8">
             <ngx-datatable-column [width]="260" name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle"
               [draggable]="false">
@@ -137,7 +137,7 @@
       </mat-tab>
       <mat-tab label="UnFilled">
         <div class="m-30">
-          <ngx-datatable id="dailyReports" class="material" [rows]="unFilledAbsenceDetails" [columnMode]="'standard'"
+          <ngx-datatable id="dailyReports" style="overflow: auto;" class="material" [rows]="unFilledAbsenceDetails" [columnMode]="'standard'"
             [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="8">
             <ngx-datatable-column [width]="260" name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle"
               [draggable]="false">
@@ -190,7 +190,7 @@
       </mat-tab>
       <mat-tab label="No Sub Req">
         <div class="m-30">
-          <ngx-datatable class="material" [rows]="noSubReqAbsenceDetails" [columnMode]="'standard'" [headerHeight]="50"
+          <ngx-datatable class="material" style="overflow: auto;" [rows]="noSubReqAbsenceDetails" [columnMode]="'standard'" [headerHeight]="50"
             [footerHeight]="50" [rowHeight]="'auto'" [limit]="8">
             <ngx-datatable-column [width]="260" name="Employee" prop="employeeName" [flexGrow]="2" cellClass="middle"
               [draggable]="false">

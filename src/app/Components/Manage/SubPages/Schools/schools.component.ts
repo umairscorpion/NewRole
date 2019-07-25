@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 import swal from 'sweetalert2';
 
 @Component({
-  templateUrl: 'schools.component.html'
+  templateUrl: 'schools.component.html',
+  styleUrls: ['school.component.scss']
 })
 export class SchoolsComponent implements OnInit {
   private notifier: NotifierService;

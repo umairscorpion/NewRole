@@ -8,3 +8,24 @@
   overflow: auto;
   max-height: 400px;
 }
+.mat-column-LeaveTypeName {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+
+.mat-column-Allowance {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+.mat-column-Approval {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+.mat-column-Visible {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}
+.mat-column-action {
+  flex: 0 0 5% !important;
+  min-width: 150px !important;
+}

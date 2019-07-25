@@ -15,17 +15,11 @@
     ::ng-deep .mat-tab-body-content {
         overflow: hidden !important;
     }
-
-    .mat-table {
-        overflow: auto;
-        max-height: 400px;
-    }
 </style>
 <!-- <h4>Available Jobs ({{AvailableJobs.data && AvailableJobs.data.length > 0 ? AvailableJobs.data.length : 0 }})</h4> -->
 <mat-card>
-    <div style="margin-top:30px;" class="row">
-        <div class="row">
-            <div class="col-md-12 col-lg-12">
+    <div style="margin-top:30px;">
+            <div class="row col-md-12 col-lg-12">
                 <form [formGroup]="FilterForm" (ngSubmit)="SearchAvailableJobs(FilterForm)">
                     <mat-form-field class="col-md-2 col-lg-2">
                         <input matInput [min]="CurrentDate" [max]="FilterForm.value.FilterEndDate"
@@ -69,9 +63,8 @@
                             type="submit">Search</button>
                     </div>
                 </form>
-            </div>
         </div>
-        <div class="col-md-12 col-lg-12">
+        <div class="row col-md-12 col-lg-12">
             <div class="row">
                 <div class="col-md-1" style="margin-bottom:8px;">
                     <button type="button" mat-raised-button class="btn"
@@ -93,8 +86,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row example-container mat-elevation-z8">
-                <div class="example-header">
+            <div class="row col-md-12 col-lg-12">
+                <div class="example-container mat-elevation-z8">
                     <mat-table *ngIf='this.AvailableJobs.data.length > 0' #table [dataSource]="AvailableJobs" matSort>
                         <!-- Position Column -->
                         <ng-container matColumnDef="AbsenceDate">
@@ -102,12 +95,6 @@
                             <mat-cell *matCellDef="let Absence">{{ Absence.startDate | date:'E, M/d/y' }}
                             <br>
                                 {{Absence.startTime | convertFrom24HourTo12HourFormat}}-{{Absence.endTime | convertFrom24HourTo12HourFormat}}
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="JobId">
-                            <mat-header-cell *matHeaderCellDef> Job ID </mat-header-cell>
-                            <mat-cell *matCellDef="let Absence">
-                                {{Absence.confirmationNumber}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="JobId">
