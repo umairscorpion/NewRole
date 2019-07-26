@@ -4,7 +4,7 @@
     <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
       <mat-sidenav [ngClass]="{'col-md-2': isOpen , '': !isOpen}" opened="{{isOpen}}" (keydown.escape)="toggle()" [mode]="mobileQuery.matches ? 'over' : 'side'"
         [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-        <mat-nav-list *ngIf='userTemplate && userTemplate.length'>
+        <mat-nav-list *ngIf='userTemplate && userTemplate.length' (click)="UpdateTab()">
           <a mat-list-item [routerLinkActive]="['active']" routerLink="/{{userTempplateObj.stateMachine}}" *ngFor="let userTempplateObj of userTemplate">{{userTempplateObj.name}}</a>
         </mat-nav-list>
         <ng-container *ngIf="userRole == 3 && componentname == 'absence'">

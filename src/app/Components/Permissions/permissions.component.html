@@ -8,7 +8,7 @@
       <button class="btn btn-danger" type="button" (click)="removeUsers()">Remove</button>
     </section> -->
     <br>
-    <section>
+    <section [hideIfUnauthorized]="'MANAGE_PERMISSIONS'">
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="col-sm-4 no-pad-left">

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostBinding, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 import { UserService } from '../../../Service/user.service';
 import { SideNavService } from '../../SideNav/sideNav.service';
@@ -8,6 +8,7 @@ import { UserSession } from '../../../Services/userSession.service';
 import { CommunicationService } from '../../../Services/communication.service';
 import { DataContext } from '../../../Services/dataContext.service';
 import { LeaveBalance } from '../../../Model/leaveBalance';
+import { absenceComponent } from '../../Absence/absence.component';
 
 @Component({
   selector: 'app-app-layout',
@@ -15,6 +16,7 @@ import { LeaveBalance } from '../../../Model/leaveBalance';
   styleUrls: ['./app-layout.component.css']
 })
 export class AppLayoutComponent implements OnInit {
+  @ViewChild(absenceComponent) private abComp: absenceComponent;
   parentResourceType: number = 0;
   employeeLeaveBalance: LeaveBalance[] = Array<LeaveBalance>();
   @HostBinding('class.is-open')
@@ -72,6 +74,12 @@ export class AppLayoutComponent implements OnInit {
       this.userTemplate = data;
     },
       error => this.msg = <any>error);
+  }
+
+  UpdateTab() {
+    if (this.userRole === 3) {
+      this._communicationService.RefreshTabSelection();
+    }
   }
 
   getEmployeeBalance() {

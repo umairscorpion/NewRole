@@ -124,6 +124,9 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
                 let result = this.objToArray(obj);
                 worksheet.addRow(result);
             });
+            worksheet.columns.forEach(column => {
+                column.width = 20;
+            });
             workbook.xlsx.writeBuffer().then((data) => {
                 this.excelService.saveAsExcelFile(data, 'Report.xlsx');
             });

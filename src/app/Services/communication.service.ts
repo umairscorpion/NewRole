@@ -8,6 +8,7 @@ export class CommunicationService {
     isOpen = false;
     @Output() AbsenceDetail: EventEmitter<boolean> = new EventEmitter();
     @Output() updateLeftSidePanel: EventEmitter<boolean> = new EventEmitter();
+    @Output() refreshTabSelection: EventEmitter<boolean> = new EventEmitter();
 
     ViewAbsenceDetail(AbsenceDetail: any) {
         this.AbsenceDetail.emit(AbsenceDetail);
@@ -15,5 +16,9 @@ export class CommunicationService {
 
     UpdatePanel(config: any) {
         this.updateLeftSidePanel.emit(config);
+    }
+
+    RefreshTabSelection() {
+        this.refreshTabSelection.emit();
     }
 }

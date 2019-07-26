@@ -16,6 +16,7 @@ export class absenceComponent {
     @ViewChild(UpcommingAbsenceComponent) private getUpcomingAbsences: UpcommingAbsenceComponent;
     @ViewChild(CreateAbsenceComponent) private createAbsenceComponent: CreateAbsenceComponent;
     @Output() refreshEmployeeBalance: EventEmitter<any> = new EventEmitter();
+    selectedTab: number = 0;
     employeeLeaveBalance: any;
     sideNavMenu: any;
     msg: string;
@@ -45,14 +46,22 @@ export class absenceComponent {
         this._communicationService.AbsenceDetail.subscribe((AbsenceDetail: any) => {
             this.AbsenceDetail(AbsenceDetail);
         });
+        this._communicationService.refreshTabSelection.subscribe((AbsenceDetail: any) => {
+            this.selectedTab = 0;
+        });
     }
 
     onTabChange(tabIndex: any) {
         if (tabIndex.index == 1) {
+            this.selectedTab = 1;
             this.getUpcomingAbsences.GetAbsences();
         }
          else if (tabIndex.index == 0) {
+            this.selectedTab = 0;
             this.createAbsenceComponent.GetCreatedAbsencesOfEmployee(this._userSession.getUserId());
+        }
+        else {
+            this.selectedTab = 2;
         }
     }
 

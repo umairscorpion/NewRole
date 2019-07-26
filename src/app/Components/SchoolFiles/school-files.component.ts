@@ -84,7 +84,7 @@ export class SchoolFilesComponent implements OnInit {
     });
   }
 
-  AddFile(fileType: any) {
+  AddFile() {
     if (this.OriginalFileName == null) {
       this.notifier.notify('error', 'Please upload file.');
       return;
