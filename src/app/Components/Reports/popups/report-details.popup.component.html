@@ -7,12 +7,12 @@
         type="button" mat-raised-button class="btn btn-default" (click)="performAction('release')">Release</button>
         <button *ngIf="reportDetail.callingPage != 'Absence'" [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired" 
         type="button" mat-raised-button class="btn btn-default" (click)="performAction('assign')">Assign</button>
-        <button [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired || forDisableResendButton" 
+        <button *ngIf="reportDetail.callingPage != 'Absence'" [disabled]="reportDetail.statusId == 2 || !reportDetail.substituteRequired || forDisableResendButton" 
         type="button" mat-raised-button class="btn btn-default" (click)="performAction('resend')">Resend</button>
       </div>
       <div class="col-md-4 pl-0" style="text-align: right">
         <button *ngIf="reportDetail.callingPage != 'Absence'" type="button" mat-raised-button class="btn btn-warning" (click)="performAction('delete')">Delete</button>
-        <button [hideIfUnauthorized]="'EDIT_STAFF_ABSENCES'" type="button" mat-raised-button class="btn btn-info" (click)="performAction('edit')">Edit</button>
+        <button type="button" mat-raised-button class="btn btn-info" (click)="performAction('edit')">Edit</button>
       </div>
     </mat-dialog-actions>
     <hr>
@@ -135,12 +135,10 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field class="col-md-4">
-              <input matInput type="time" placeholder="Start Time" formControlName="startTime" 
-              (keyup)="SearchAvailableSubstitutes('a')" (change)="SearchAvailableSubstitutes('a')">
+              <input matInput type="time" placeholder="Start Time" formControlName="startTime" (keyup)="SearchAvailableSubstitutes('a')">
             </mat-form-field>
             <mat-form-field class="col-md-4">
-              <input matInput type="time" placeholder="End Time" formControlName="endTime" 
-              (keyup)="SearchAvailableSubstitutes('a')" (change)="SearchAvailableSubstitutes('a')">
+              <input matInput type="time" placeholder="End Time" formControlName="endTime" (keyup)="SearchAvailableSubstitutes('a')">
             </mat-form-field>
           </td>
         </tr>

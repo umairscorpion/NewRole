@@ -4,6 +4,7 @@ import { DataContext } from '../../../../Services/dataContext.service';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
+import { UserSession } from '../../../../Services/userSession.service';
 
 @Component({
   templateUrl: 'schools.component.html',
@@ -16,17 +17,21 @@ export class SchoolsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   msg: string;
-
+  Districts: any;
+  UserRole: number = this._userSession.getUserRoleId();
+  
   constructor(
     private router: Router,
     private _dataContext: DataContext,
     public dialog: MatDialog,
-    notifier: NotifierService) {
+    notifier: NotifierService,
+    private _userSession: UserSession,) {
     this.notifier = notifier;
   }
 
   ngOnInit(): void {
     this.GetSchools();
+    this.GetDistricts();
   }
 
   ngAfterViewInit() {
@@ -69,6 +74,19 @@ export class SchoolsComponent implements OnInit {
       });
     },
       error => <any>error);
+  }
+  GetDistricts(): void{
+    this._dataContext.get('district/getDistricts').subscribe((data: any) => {
+      this.Districts = data;
+  },
+      error => <any>error);
+  }
+  onChangeDistrict(districtId: any) {
+    this._dataContext.get('school/getSchools').subscribe((data: any) => {
+      this.dataSource = data;
+      this.dataSource = data.filter(t => t.schoolDistrictId == districtId);
+  },
+      error => this.msg = <any>error);
   }
 
   deleteSchool(SelectedRow: any) {
