@@ -7,4 +7,5 @@ export class PermissionCategory extends Entity {
   description: string;
   permissions: RolePermission[];
   isChecked = false;
+  isHided = true;
 }
