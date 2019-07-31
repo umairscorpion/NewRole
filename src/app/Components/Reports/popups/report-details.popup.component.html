@@ -51,7 +51,9 @@
         </tr>
         <tr>
           <td>Status:</td>
-          <td *ngIf="reportDetail.absenceType != 2 && reportDetail.substituteRequired">{{reportDetail.statusTitle}}</td>
+          <td *ngIf="reportDetail.absenceType != 2 && reportDetail.substituteRequired">
+            {{reportDetail.statusId == 2 ? reportDetail.statusTitle + ' ' + '(' + reportDetail.acceptedVia + ')' : reportDetail.statusTitle}}
+          </td>
           <td *ngIf="reportDetail.absenceType == 2 && reportDetail.substituteRequired">Assigned</td>
           <td *ngIf="!reportDetail.substituteRequired">N/A</td>
         </tr>
@@ -150,7 +152,9 @@
         </tr>
         <tr>
           <td>Status:</td>
-          <td *ngIf="reportDetail.absenceType != 2 && reportDetail.substituteRequired">{{reportDetail.statusTitle}}</td>
+          <td *ngIf="reportDetail.absenceType != 2 && reportDetail.substituteRequired">
+            {{reportDetail.statusId == 2 ? reportDetail.statusTitle + ' ' + '(' + reportDetail.acceptedVia + ')' : reportDetail.statusTitle}}
+          </td>
           <td *ngIf="reportDetail.absenceType == 2 && reportDetail.substituteRequired">Assigned</td>
           <td *ngIf="!reportDetail.substituteRequired">N/A</td>
         </tr>

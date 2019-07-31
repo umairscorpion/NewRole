@@ -621,7 +621,7 @@ export class HomeComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
-    onApproveClick(leaveRequestId: number, absenceId: string, confirmationNumber:string) {
+    onApproveClick(leaveRequestId: number, absenceId: string, confirmationNumber: string) {
         let leaveStatusModel = {
             LeaveRequestId: leaveRequestId,
             IsApproved: 1,
@@ -652,7 +652,7 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    onDenyClick(leaveRequestId: number, absenceId: string, confirmationNumber:string) {
+    onDenyClick(leaveRequestId: number, absenceId: string, confirmationNumber: string) {
         let leaveStatusModel = {
             leaveRequestId: leaveRequestId,
             isApproved: 0,

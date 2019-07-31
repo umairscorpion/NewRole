@@ -89,6 +89,16 @@ $sides: (top, bottom, left, right);
   }
  }
 
+ .school-files-dialog {
+  width: 40vw;
+  min-height: 550px;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 0;
+  }
+ }
+
  .position-details-dialog {
   width: 38vw;
   height: 650px;
