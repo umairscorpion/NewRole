@@ -9,12 +9,17 @@ import { UserEditComponent } from '../User/userEdit/userEdit.component';
 import { MatDialog } from '@angular/material';
 import swal from 'sweetalert2';
 import { UserSession } from '../../Services/userSession.service';
+import { DataContext } from '../../Services/dataContext.service';
+import { FormControl } from '../../../../node_modules/@angular/forms';
 
 @Component({
     templateUrl: 'permissions.component.html',
     styleUrls: ['permissions.component.scss']
 })
 export class PermissionsComponent implements OnInit {
+    districtFormControl = new FormControl('');
+    roleId: number = this._userSession.getUserRoleId();
+    Districts: any;
     userTemplate: any;
     users = Array<UserSummary>();
     rowsUsers = Array<UserSummary>();
@@ -32,6 +37,7 @@ export class PermissionsComponent implements OnInit {
     constructor(
         private userService: UsersService,
         private roleService: RoleService,
+        private _dataContext: DataContext,
         private _userService: UserService,
         private _userSession: UserSession,
         media: MediaMatcher,
@@ -44,13 +50,25 @@ export class PermissionsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loadUsers();
+        this.GetDistricts();
+        this.loadUsers(0);
         this.loadRoles();
         this.LoadUserResources();
     }
 
-    loadUsers() {
-        this.userService.getSummaryList().subscribe((users: UserSummary[]) => {
+    GetDistricts(): void {
+        this._dataContext.get('district/getDistricts').subscribe((data: any) => {
+            this.Districts = data;
+        },
+            error => <any>error);
+    }
+
+    onChangeDistrict(id: number) {
+        this.loadUsers(id);
+    }
+
+    loadUsers(districtId: number) {
+        this.userService.getSummaryList(districtId).subscribe((users: UserSummary[]) => {
             this.users = users;
             this.rowsUsers = [...users];
         });
@@ -118,12 +136,12 @@ export class PermissionsComponent implements OnInit {
             if (result && result.user) {
                 if (result.user.userId && result.user.userId.length > 0) {
                     this.userService.update(result.user).subscribe((data: any) => {
-                        this.loadUsers();
+                        this.loadUsers(0);
                     },
                         error => this.msg = <any>error);
                 } else {
                     this.userService.create(result.user).subscribe((data: any) => {
-                        this.loadUsers();
+                        this.loadUsers(0);
                     },
                         error => this.msg = <any>error);
                 }
@@ -140,12 +158,12 @@ export class PermissionsComponent implements OnInit {
             if (result && result.user) {
                 if (result.user.userId && result.user.userId.length > 0) {
                     this.userService.update(result.user).subscribe((data: any) => {
-                        this.loadUsers();
+                        this.loadUsers(0);
                     },
                         error => this.msg = <any>error);
                 } else {
                     this.userService.create(result.user).subscribe((data: any) => {
-                        this.loadUsers();
+                        this.loadUsers(0);
                     },
                         error => this.msg = <any>error);
                 }
@@ -171,7 +189,7 @@ export class PermissionsComponent implements OnInit {
                     const selectedIds = this.selectedUsers.map((v, k) => {
                         return v.userId;
                     });
-                    this.userService.deleteAll(selectedIds).subscribe(t => { this.loadUsers(); });
+                    this.userService.deleteAll(selectedIds).subscribe(t => { this.loadUsers(0); });
                 }
             });
         }

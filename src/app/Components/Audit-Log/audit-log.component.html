@@ -1,5 +1,5 @@
 <mat-card>
-  <div class="row">
+  <div class="row" [hideIfUnauthorized]="'ACCESS_AUDIT_LOGS'">
     <div class="col-md-12 col-lg-12">
       <mat-card-title>Audit Log</mat-card-title>
       <form [formGroup]="auditLogFilter">

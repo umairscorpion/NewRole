@@ -15,7 +15,7 @@ export class SubscriptionComponent implements OnInit {
     resetPasswordForm: FormGroup;
     email: string;
     activationKey: string;
-    subscribed: boolean = false;
+    subscribed: boolean = true;
     public resetPassAttempt: boolean;
 
     constructor(
@@ -41,8 +41,8 @@ export class SubscriptionComponent implements OnInit {
             email: this.email,
             isSubscribedEmail: 1
         }
-        this._dataContext.post('user/updateSubscription', user).subscribe((data: any) => {
-            this.notifier.notify('sucess', 'Subscribed Successfully');
+        this._dataContext.post('auth/updateSubscription', user).subscribe((data: any) => {
+            this.notifier.notify('success', 'Subscribed Successfully');
             this.subscribed = false;
         });
     }
@@ -53,8 +53,8 @@ export class SubscriptionComponent implements OnInit {
             email: email || this.email,
             isSubscribedEmail: 0
         }
-        this._dataContext.post('user/updateSubscription', user).subscribe((data: any) => {
-            this.notifier.notify('sucess', 'UnSubscribed Successfully');
+        this._dataContext.post('auth/updateSubscription', user).subscribe((data: any) => {
+            this.notifier.notify('success', 'UnSubscribed Successfully');
             this.subscribed = true;
         });
     }

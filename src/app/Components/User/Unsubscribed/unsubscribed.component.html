@@ -23,7 +23,7 @@
     .dPage { margin-top: 110px; }
 }
 </style>
-<div class="dPage" *ngIf="!subscribed" id="dPage">
+<div class="dPage" *ngIf="subscribed == true" id="dPage">
     <div>
         <div>
             <div>
@@ -46,7 +46,7 @@
         </form>
     </div>
 </div>
-<div class="dPage" *ngIf="subscribed" id="dPage">
+<div class="dPage" *ngIf="subscribed == false" id="dPage">
         <div>
             <div>
                 <div>
