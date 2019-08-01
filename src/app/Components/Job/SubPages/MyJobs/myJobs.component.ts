@@ -24,7 +24,7 @@ export class MyJobsComponent implements OnInit {
     UpcommingJobs = new MatTableDataSource();
     msg: string;
     currentDate: Date = new Date();
-    displayedColumns = ['AbsenceDate','JobId', 'Posted', 'Location', 'Employee', 'Status', 'Action'];
+    displayedColumns = ['AbsenceDate', 'JobId', 'Posted', 'Location', 'Employee', 'Status', 'Action'];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
@@ -48,20 +48,20 @@ export class MyJobsComponent implements OnInit {
         let EndDate = new Date();
         EndDate.setDate(this.currentDate.getDate() + 30);
         let model = {
-             StartDate: this.CurrentDate.toISOString(),
-             EndDate: EndDate.toISOString(),
-             SubstituteId: this._userSession.getUserId(),
-             DistrictId: this._userSession.getUserDistrictId(),
-             Status: 2,
+            StartDate: this.CurrentDate.toISOString(),
+            EndDate: EndDate.toISOString(),
+            SubstituteId: this._userSession.getUserId(),
+            DistrictId: this._userSession.getUserDistrictId(),
+            Status: 2,
         }
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
         this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
-                this.UpcommingJobs.data = data;
-                this.UpcomingJobCount = data.length
-                this.UpcomingCountEvent.emit(this.UpcomingJobCount)
-            },
-                error => this.msg = <any>error);
+            this.UpcommingJobs.data = data;
+            this.UpcomingJobCount = data.length
+            this.UpcomingCountEvent.emit(this.UpcomingJobCount)
+        },
+            error => this.msg = <any>error);
     }
 
     ReleaseJob(SelectedRow: any, StatusId: number) {
@@ -186,14 +186,14 @@ export class MyJobsComponent implements OnInit {
             DistrictId: this._userSession.getUserDistrictId(),
             Status: 2,
             OrganizationId: SearchFilter.value.OrganizationId
-       }
+        }
         if (this.FilterForm.valid) {
             this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
-                    this.UpcommingJobs.data = data;
-                    this.UpcomingJobCount = data.length
-                    this.UpcomingCountEvent.emit(this.UpcomingJobCount)
-                },
-                    error => this.msg = <any>error);
+                this.UpcommingJobs.data = data;
+                this.UpcomingJobCount = data.length
+                this.UpcomingCountEvent.emit(this.UpcomingJobCount)
+            },
+                error => this.msg = <any>error);
         }
     }
 
