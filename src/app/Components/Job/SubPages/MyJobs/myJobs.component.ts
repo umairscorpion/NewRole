@@ -147,7 +147,7 @@ export class MyJobsComponent implements OnInit {
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe((params: any) => {
             if (params.jobId && params.ac == 1) {
-                this.AcceptJob(params.jobId)
+                this.AcceptJob(params.jobId, 'Email');
             }
         })
         this.FilterForm = this._formBuilder.group({
@@ -202,10 +202,10 @@ export class MyJobsComponent implements OnInit {
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
     }
 
-    AcceptJob(jobNo: number) {
+    AcceptJob(jobNo: number, via: string) {
         let confirmResult = confirm('Are you sure you want to Accept this Job?');
         if (confirmResult) {
-            this._dataContext.get('Job/acceptJob/' + jobNo + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+            this._dataContext.get('Job/acceptJob/' + jobNo + "/" + this._userSession.getUserId() + "/" + via).subscribe((response: any) => {
                 this.NotifyResponse(response as string);
                 this.GetUpcommingJobs();
             },

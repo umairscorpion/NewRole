@@ -1,15 +1,18 @@
 <style>
-.mat-table {
-    overflow: auto;
-    max-height: 400px;
-  }
+    .mat-table {
+        overflow: auto;
+        max-height: 400px;
+    }
 </style>
 <mat-card>
     <mat-card-content>
         <mat-card-title>Payroll</mat-card-title>
         <mat-tab-group (selectedTabChange)="onTabChanged($event)">
             <mat-tab label="Payroll Report">
-                <run-payroll [hideIfUnauthorized]="'ACCESS_PAYROLL'"></run-payroll>
+                <run-payroll #ref="hideIfUnauthorized" [hideIfUnauthorized]="'ACCESS_PAYROLL'"></run-payroll>
+                <div class="row" *ngIf="!ref.hide" style="margin-top: 30px;text-align: center;">
+                    <div class="alert-warning m-20 p-20">You haven't been granted permissions to this module.</div>
+                </div>
             </mat-tab>
             <mat-tab label="Payroll Settings">
                 <div class="row col-md-12 col-lg-12">
@@ -60,7 +63,10 @@
                 </div>
             </mat-tab>
             <mat-tab label="Payrates">
-                <payRate-details [hideIfUnauthorized]="'ACCESS_PAYRATES'"></payRate-details>
+                <payRate-details #reference="hideIfUnauthorized" [hideIfUnauthorized]="'ACCESS_PAYRATES'"></payRate-details>
+                <div class="row" *ngIf="!reference.hide" style="margin-top: 30px;text-align: center;">
+                        <div class="alert-warning m-20 p-20">You haven't been granted permissions to this module.</div>
+                </div>
             </mat-tab>
         </mat-tab-group>
     </mat-card-content>

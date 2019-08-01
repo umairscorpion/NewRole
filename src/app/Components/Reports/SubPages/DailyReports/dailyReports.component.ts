@@ -125,7 +125,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
                 worksheet.addRow(result);
             });
             worksheet.columns.forEach(column => {
-                column.width = 20;
+                column.width = 22;
             });
             workbook.xlsx.writeBuffer().then((data) => {
                 this.excelService.saveAsExcelFile(data, 'Report.xlsx');
@@ -198,7 +198,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
             + " - " + moment(report.endDate).format('MM/DD/YYYY'),
             this.timeFormatPipe.transform(report.startTime) + "-" + this.timeFormatPipe.transform(report.endTime),
              report.statusTitle, report.substituteName,
-            report.districtName, report.notes, report.schoolName)
+            report.notes, report.districtName, report.schoolName)
         return result;
     }
 }
