@@ -45,9 +45,8 @@
                     <td class="col-md-2">Address</td>
                     <td>
                         <mat-form-field hintLabel="Min 7 and Max 50 characters." class="col-md-4">
-                            <textarea matInput #address minlength="7" maxlength="50" placeholder="Address"
-                                formControlName="Address" matTextareaAutosize matAutosizeMinRows="2"
-                                matAutosizeMaxRows="5"></textarea>
+                            <textarea matInput #address minlength="7" maxlength="50" placeholder="Address" formControlName="Address" matTextareaAutosize
+                                matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>
                             <mat-hint align="end">{{address.value?.length || 0}}/50</mat-hint>
                             <mat-error *ngIf="schoolForm.controls['Address'].hasError('required')">
                                 Address is required.
@@ -59,8 +58,7 @@
                     <td class="col-md-2">City</td>
                     <td>
                         <mat-form-field hintLabel="Min 2 and Max 30 characters." class="col-md-4">
-                            <input matInput #city minlength="2" maxlength="30" placeholder="City"
-                                formControlName="City">
+                            <input matInput #city minlength="2" maxlength="30" placeholder="City" formControlName="City">
                             <mat-hint align="end">{{city.value?.length || 0}}/30</mat-hint>
                             <mat-error *ngIf="schoolForm.controls['City'].hasError('required')">
                                 City is required.
@@ -72,8 +70,7 @@
                     <td class="col-md-2">Zip Code</td>
                     <td>
                         <mat-form-field hintLabel="Min 3 and Max 6 characters." class="col-md-4">
-                            <input matInput #zipCode minlength="3" maxlength="6" placeholder="Zip Code"
-                                formControlName="ZipCode">
+                            <input matInput #zipCode minlength="3" maxlength="6" placeholder="Zip Code" formControlName="ZipCode">
                             <mat-hint align="end">{{zipCode.value?.length || 0}}/6</mat-hint>
                             <mat-error *ngIf="schoolForm.controls['ZipCode'].hasError('pattern')">
                                 Only numbers allowed
@@ -88,8 +85,8 @@
                     <td class="col-md-2">Phone Number</td>
                     <td>
                         <mat-form-field hintLabel="Min 7 and Max 11 characters." class="col-md-4">
-                            <input matInput #phone minlength="7" maxlength="11" placeholder="Phone No"
-                                formControlName="PhoneNo">
+                            <span matPrefix>+1 &nbsp;</span>
+                            <input matInput #phone minlength="7" maxlength="11" placeholder="Phone No" formControlName="PhoneNo">
                             <mat-hint align="end">{{phone.value?.length || 0}}/11</mat-hint>
                             <mat-error *ngIf="schoolForm.controls['PhoneNo'].hasError('pattern')">
                                 Only numbers allowed
@@ -123,12 +120,10 @@
                             <input matInput type="time" placeholder="Start Time" formControlName="StartTime">
                         </mat-form-field>
                         <mat-form-field class="col-md-2">
-                            <input matInput type="time" placeholder="1st Half Day EndTime"
-                                formControlName="firstHalfEndTime">
+                            <input matInput type="time" placeholder="1st Half Day EndTime" formControlName="firstHalfEndTime">
                         </mat-form-field>
                         <mat-form-field class="col-md-2">
-                            <input matInput type="time" placeholder="2nt Half Day StartTime"
-                                formControlName="SecondHalfStartTime">
+                            <input matInput type="time" placeholder="2nt Half Day StartTime" formControlName="SecondHalfStartTime">
                         </mat-form-field>
                         <mat-form-field class="col-md-2">
                             <input matInput type="time" placeholder="End Time" formControlName="EndTime">
@@ -137,11 +132,9 @@
                 </tr>
                 <tr>
                     <td colspan="2" class="content-center" style="padding-top: 20px">
-                        <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 10px;"
-                            type="submit">{{SchoolIdForUpdate ? 'Update': 'Add School to Database'}}</button>
+                        <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 10px;" type="submit">{{SchoolIdForUpdate ? 'Update': 'Add School to Database'}}</button>
                         <a routerLink="../../schools">
-                            <button mat-raised-button type="button"
-                                style="background-color: #74a4a7; color: white; margin-left: 5px">Back</button>
+                            <button mat-raised-button type="button" style="background-color: #74a4a7; color: white; margin-left: 5px">Back</button>
                         </a>
                     </td>
                 </tr>

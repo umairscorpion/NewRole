@@ -75,7 +75,7 @@ export class AddSchoolComponent implements OnInit {
                         SecondHalfStartTime: data[0].school2ndHalfStart,
                         EndTime: data[0].schoolEndTime,
                         TimeZone: data[0].schoolTimeZone,
-                        PhoneNo: data[0].schoolPhone,
+                        PhoneNo: this.getPhoneNumber(data[0].schoolPhone),
                         releaseJobTime: data[0].releaseJobTime,
                         notifyOthersTime: data[0].notifyOthersTime,
                         dailyAbenceLimit: data[0].dailyAbenceLimit,
@@ -88,6 +88,11 @@ export class AddSchoolComponent implements OnInit {
                     error => <any>error);
             }
         });
+    }
+
+    getPhoneNumber(phoneNumber: string): string {
+        phoneNumber = phoneNumber.includes('+1') ? phoneNumber.split('+1')[1] : phoneNumber;
+        return phoneNumber;
     }
 
     GetDistricts(): void {
@@ -119,7 +124,7 @@ export class AddSchoolComponent implements OnInit {
                     School2ndHalfStart: form.value.SecondHalfStartTime,
                     SchoolEndTime: form.value.EndTime,
                     SchoolTimeZone: form.value.TimeZone,
-                    SchoolPhone: form.value.PhoneNo,
+                    SchoolPhone: '+1' + form.value.PhoneNo,
                     releaseJobTime: form.value.releaseJobTime,
                     notifyOthersTime: form.value.notifyOthersTime,
                     dailyAbenceLimit: form.value.dailyAbenceLimit,
