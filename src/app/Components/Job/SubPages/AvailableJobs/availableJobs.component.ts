@@ -164,7 +164,7 @@ export class AvailableJobsComponent implements OnInit {
             this.GetAvailableJobs();
         }
         else if (Message == "Accepted") {
-            this.notifier.notify('error', 'Job Already Accepted.');
+            this.notifier.notify('error', 'Job is no longer available.');
             this.GetAvailableJobs();
         }
         else if (Message == "Conflict") {

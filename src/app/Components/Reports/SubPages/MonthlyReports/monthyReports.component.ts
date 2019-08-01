@@ -17,7 +17,7 @@ import { Workbook } from 'exceljs';
 import { TimeFormatPipe } from '../../../../Shared/pipe/time.pipe';
 
 @Component({
-    selector:'monthly-reports',
+    selector: 'monthly-reports',
     templateUrl: 'monthlyReports.component.html',
     providers: [TimeFormatPipe]
 })
@@ -129,12 +129,12 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
                 worksheet.addRow(result);
             });
             worksheet.columns.forEach(column => {
-                column.width = 20;
+                column.width = 22;
             });
             workbook.xlsx.writeBuffer().then((data) => {
                 this.excelService.saveAsExcelFile(data, 'Report.xlsx');
             });
-        }      
+        }
     }
 
     bindDetails(details: ReportDetail[]) {
@@ -176,7 +176,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
         this.auditLogService.insertAbsencesLogView(model).subscribe((result: any) => {
             this.insertAbsencesLogView = result;
         });
-        
+
         const dialogEdit = this.dialogRef.open(
             ReportDetailsComponent,
             {
@@ -192,19 +192,19 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     getImage(imageName: string) {
-        if (imageName && imageName.length  > 0) {
-            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);         
+        if (imageName && imageName.length > 0) {
+            return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
     }
-    
+
     objToArray(report: ReportDetail) {
         var result = [];
         result.push(report.employeeLastName, report.employeeFirstName,
-         report.confirmationNumber, report.reason,  moment(report.startDate).format('MM/DD/YYYY')
+            report.confirmationNumber, report.reason, moment(report.startDate).format('MM/DD/YYYY')
             + " - " + moment(report.endDate).format('MM/DD/YYYY'),
             this.timeFormatPipe.transform(report.startTime) + "-" + this.timeFormatPipe.transform(report.endTime),
-             report.statusTitle, report.substituteName,
-            report.districtName, report.notes, report.schoolName)
+            report.statusTitle, report.substituteName,
+            report.notes, report.districtName, report.schoolName)
         return result;
     }
 }

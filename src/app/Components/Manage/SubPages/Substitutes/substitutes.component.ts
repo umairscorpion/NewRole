@@ -33,6 +33,8 @@ export class SubstitutesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   Employees: any
   msg: string;
+  Districts: any;
+  UserRole: number = this._userSession.getUserRoleId();
 
   constructor(
     private router: Router,
@@ -51,6 +53,7 @@ export class SubstitutesComponent implements OnInit {
     this.intializeForms();
     this.GetSustitutes();
     this.GetPositions();
+    this.GetDistricts();
   }
 
   ngAfterViewInit() {
@@ -179,6 +182,21 @@ export class SubstitutesComponent implements OnInit {
       this.positions = data;
     },
       error => <any>error);
+  }
+  GetDistricts(): void{
+    this._dataContext.get('district/getDistricts').subscribe((data: any) => {
+      this.Districts = data;
+  },
+      error => <any>error);
+  }
+  onChangeDistrict(districtId: any) {
+    let RoleId = 4;
+    let OrgId = -1;
+    this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + districtId).subscribe((data: any) => {
+      this.substituteDataSource.data = data;
+      this.substituteDataSource = data.filter((t => t.districtId == districtId));
+    },
+        error => this.msg = <any>error);
   }
 
   onTabChanged(tab: any) {

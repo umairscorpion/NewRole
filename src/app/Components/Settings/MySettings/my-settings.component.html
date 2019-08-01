@@ -305,7 +305,7 @@
                                         </p>
                                     </div>
                                     <div class="col-md-8" style="width: 100%; margin-top: 10px;">
-                                        <table mat-table style="width: 100%" [dataSource]="notificationEvents">
+                                        <table mat-table style="width: 100%" [dataSource]="notificationEvents" *ngIf='UserRole ==4'>
                                         <ng-container matColumnDef="event">
                                             <th mat-header-cell *matHeaderCellDef> Event </th>
                                             <td mat-cell *matCellDef="let row"> {{row.eventName}} </td>
@@ -344,6 +344,31 @@
                                         </ng-container>
                                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    </table>
+                                    <table mat-table style="width: 100%" [dataSource]="notificationEvents" *ngIf='UserRole != 4'>
+                                        <ng-container matColumnDef="event">
+                                            <th mat-header-cell *matHeaderCellDef> Event </th>
+                                            <td mat-cell *matCellDef="let row"> {{row.eventName}} </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="email">
+                                            <th style="padding-left: 70px;" mat-header-cell *matHeaderCellDef>
+                                                <span class="HeaderAlignment">
+                                                    <i class="material-icons">
+                                                        email
+                                                    </i>
+                                                    <span style="padding-top:5px ">Email Alert</span>
+                                                </span>
+                                            </th>
+                                            <td mat-cell style="padding-left: 100px;"
+                                                *matCellDef="let row ;let i = index;">
+                                                <mat-checkbox color="primary" (change)="onChangeEmail(row)"
+                                                    [checked]="row.emailAlert">
+                                                </mat-checkbox>
+                                            </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumnsforEmploye"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumnsforEmploye;"></tr>
                                     </table>
                                 </div>
                             </div>

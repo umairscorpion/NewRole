@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card #ref="hideIfUnauthorized" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">
     <mat-card-title>
         {{userIdForUpdate ? 'Edit Staff': 'Add Staff'}}
     </mat-card-title>
@@ -103,7 +103,8 @@
                             <mat-form-field class="col-md-7">
                                 <mat-select placeholder="Subzz Role" formControlName="role" required>
                                     <mat-option>--</mat-option>
-                                    <mat-option *ngFor="let role of roles" [disabled]="(employeeForm.value.WorkLocaion == 1 && role.roleId == 2) || (employeeForm.value.WorkLocaion == 2 && role.roleId == 1) || (role.roleId == 4 || role.roleId == 5)" [value]="role.roleId">
+                                    <mat-option *ngFor="let role of roles" [disabled]="(employeeForm.value.WorkLocaion == 1 && role.roleId == 2) || (employeeForm.value.WorkLocaion == 2 && role.roleId == 1) || (role.roleId == 4 || role.roleId == 5)"
+                                        [value]="role.roleId">
                                         {{role.roleName}}
                                     </mat-option>
                                 </mat-select>
@@ -183,7 +184,7 @@
                             </mat-radio-group>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td class="col-md-3">Text Alerts</td>
                         <td>
                             <mat-radio-group formControlName="IsSubscribedSMS" #radioGroup="matRadioGroup" class="col-md-7">
@@ -193,7 +194,7 @@
                                 </mat-radio-button>
                             </mat-radio-group>
                         </td>
-                    </tr>
+                    </tr> -->
                 </table>
                 <div class="col-md-4" style="margin-top: 10px;">
                     <div>
@@ -220,3 +221,6 @@
         </form>
     </mat-card-content>
 </mat-card>
+<div class="row" *ngIf="!ref.hide" style="margin-top: 30px;text-align: center;">
+    <div class="alert-warning m-20 p-20">You haven't been granted permissions to this module.</div>
+</div>

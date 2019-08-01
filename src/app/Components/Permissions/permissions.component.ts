@@ -17,7 +17,7 @@ import { FormControl } from '../../../../node_modules/@angular/forms';
     styleUrls: ['permissions.component.scss']
 })
 export class PermissionsComponent implements OnInit {
-    districtFormControl = new FormControl('');
+    districtFormControl = new FormControl('0');
     roleId: number = this._userSession.getUserRoleId();
     Districts: any;
     userTemplate: any;

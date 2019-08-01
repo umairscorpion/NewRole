@@ -81,6 +81,10 @@ export class LoginComponent implements OnInit {
         this.msg = "";
         if (this.loginFrm.valid) {
             this._userService.userAuthentication(environment.apiUrl, formData.value).subscribe((data: any) => {
+                if(data == 'notactive'){
+                    this.notifier.notify('error','Account inactivated. Contact your Subzz administrator');
+                    return;
+                }
                 localStorage.setItem('userToken', data.token);
                 this.GetUserClaims();
                 // let promise = Promise.resolve(this.GetUserClaims());
