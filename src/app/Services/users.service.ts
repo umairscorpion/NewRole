@@ -24,9 +24,9 @@ export class UsersService extends RestService<User> {
     return `${environment.apiUrl}user`;
   }
 
-  getSummaryList() {
+  getSummaryList(districtId: number) {
     return this.httpClient
-      .get<UserSummary[]>(`${this.getUri()}/list/summary`)
+      .get<UserSummary[]>(`${this.getUri()}/list/summary/${districtId}`)
       .pipe(catchError(this.errorHandler.handleError),
         map((response: UserSummary[]) => {
           return response.map(item => this.getInstance().deserialize(item));

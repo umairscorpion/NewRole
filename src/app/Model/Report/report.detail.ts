@@ -44,4 +44,5 @@ export class ReportDetail extends Entity {
   absenceResendCounter: number;
   employeeFirstName: string;
   employeeLastName: string;
+  acceptedVia: string;
 }

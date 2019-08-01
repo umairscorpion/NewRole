@@ -46,6 +46,9 @@ export class RecurringComponent implements OnInit {
 
   onClose() {
     this.dialogRef.close();
+    if (this.availability.availabilityId <= 0) {
+      this.form.controls['availabilityStatusId'].setValue(1);
+    }
   }
 
   onSubmit(formGroup: FormGroup) {

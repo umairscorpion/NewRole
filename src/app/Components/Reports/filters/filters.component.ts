@@ -32,6 +32,8 @@ export class ReportFiltersComponent implements OnInit {
   userTypes: any;
   submitted = false;
   Organizations: any;
+  msg: any;
+  UserRoleId: any;
 
   constructor(
     private fb: FormBuilder,
@@ -51,6 +53,7 @@ export class ReportFiltersComponent implements OnInit {
     this.loadData();
     this.GetUserTypes();
     this.GetOrganiations();
+    this.UserRoleId = this._userSession.getUserRoleId();
   }
 
   initReportFilters() {
@@ -64,6 +67,10 @@ export class ReportFiltersComponent implements OnInit {
   loadData() {
     this.dataContext.get('district/getDistricts').subscribe((data: any) => {
       this.districts = data;
+      if (this._userSession.getUserRoleId() != 5) {
+        this.reportFilterForm.get('districtId').setValue(this._userSession.getUserDistrictId());
+        this.reportFilterForm.controls['districtId'].disable();
+      }
     },
       error => <any>error);
     let districtId = this._userSession.getUserDistrictId();
@@ -77,6 +84,7 @@ export class ReportFiltersComponent implements OnInit {
   GetOrganiations(): void {
     this.dataContext.get('school/getSchools').subscribe((data: any) => {
       this.Organizations = data;
+      this.Organizations = data.filter(t => t.schoolDistrictId == this._userSession.getUserDistrictId());
       if (this._userSession.getUserRoleId() == 2) {
         this.reportFilterForm.get('locationId').setValue(this._userSession.getUserOrganizationId());
         this.reportFilterForm.controls['locationId'].disable();
@@ -84,10 +92,20 @@ export class ReportFiltersComponent implements OnInit {
     });
   }
 
+  onChangeDistrict(districtId: any) {
+    this.dataContext.get('school/getSchools').subscribe((data: any) => {
+      this.Organizations = data;
+      this.Organizations = data.filter(t => t.schoolDistrictId == districtId);
+      this.reportFilterForm.controls['locationId'].setValue('');
+    },
+      error => this.msg = <any>error);
+  }
+
   onReset() {
-    this.reportFilterForm.controls['jobNumber'].setValue('');
+    this.reportFilterForm.controls['confirmationNumber'].setValue('');
     this.reportFilterForm.controls['absenceTypeId'].setValue(0);
     this.reportFilterForm.controls['districtId'].setValue(0);
+    this.reportFilterForm.controls['locationId'].setValue('');
     this.reportFilterForm.controls['reasonId'].setValue(0);
     this.reportFilterForm.controls['employeeName'].setValue('');
     this.reportFilterForm.controls['month'].setValue(0);
@@ -105,9 +123,9 @@ export class ReportFiltersComponent implements OnInit {
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
     if (!formGroup.invalid) {
-      if (formGroup.value.reasonId != 0) {
-        formGroup.get('reasonId').setValue(formGroup.value.reasonId);
-      }
+      // if (formGroup.value.reasonId != 0) {
+      //   formGroup.get('reasonId').setValue(formGroup.value.reasonId);
+      // }
       if (this.componentName == "daily") {
         formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
         formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));

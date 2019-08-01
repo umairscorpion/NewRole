@@ -15,11 +15,14 @@ import { DatePipe } from '../../../../../node_modules/@angular/common';
 import { Workbook } from 'exceljs';
 import { ExcelService } from '../../../Services/excel.service';
 import { Excell } from '../../../Services/excell';
+import * as moment from 'moment';
+import { TimeFormatPipe } from '../../../Shared/pipe/time.pipe';
 
 @Component({
     selector: 'run-payroll',
     templateUrl: 'run-payroll.component.html',
-    styleUrls: ['run-payroll.component.scss']
+    styleUrls: ['run-payroll.component.scss'],
+    providers: [TimeFormatPipe]
 })
 export class RunPayroll implements OnInit {
     allAbsencesInCurrentState: ReportDetail[] = Array<ReportDetail>();
@@ -47,7 +50,8 @@ export class RunPayroll implements OnInit {
         private fb: FormBuilder,
         private excelService: ExcelService,
         private datePipe: DatePipe,
-        private eess:Excell) {
+        private eess:Excell,
+        private timeFormatPipe: TimeFormatPipe) {
         this.notifier = notifier;
         const first = this.curr.getDate() - (this.curr.getDay() - 1);
         const last = first + 4;
@@ -127,6 +131,9 @@ export class RunPayroll implements OnInit {
                 let result = this.objToArray(obj);
                 worksheet.addRow(result);
             });
+            worksheet.columns.forEach(column => {
+                column.width = 22;
+            });
             workbook.xlsx.writeBuffer().then((data) => {
                 this.excelService.saveAsExcelFile(data, 'PayRollReport');
             });
@@ -202,8 +209,9 @@ export class RunPayroll implements OnInit {
     }
     objToArray(report: ReportDetail) {
         var result = [];
-        result.push(report.employeeName, report.absenceId, report.reason, report.startDate + " - " + report.endDate,
-            report.startTime + "-" + report.endTime,
+        result.push(report.employeeName, report.absenceId, report.reason, moment(report.startDate).format('MM/DD/YYYY') 
+            + " - " + moment(report.endDate).format('MM/DD/YYYY'),
+            this.timeFormatPipe.transform(report.startTime) + "-" + this.timeFormatPipe.transform(report.endTime),
             report.districtName, report.statusTitle, report.substituteName, report.notes,
             report.payRate, report.dailyHours, report.schoolName)
         return result;

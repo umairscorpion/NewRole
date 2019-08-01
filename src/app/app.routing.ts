@@ -110,7 +110,7 @@ const appRoutes: Routes = [
                     permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee] }
                 },
                 children: [{
-                    path: '', redirectTo: 'createAbsence', pathMatch: 'full',
+                    path: '', redirectTo: 'createAbsence', pathMatch: 'full', canActivateChild: [ AuthGuard ],
                     data: {
                         path: '/absence',
                         title: 'Absence',
@@ -172,7 +172,7 @@ const appRoutes: Routes = [
                 ]
             },
             {
-                path: 'manage', component: ManageComponent, canActivate: [AuthGuard],
+                path: 'manage', component: ManageComponent, canActivateChild: [AuthGuard],
                 data: {
                     path: '/manage',
                     title: 'Manage',
@@ -219,7 +219,7 @@ const appRoutes: Routes = [
                     }
                 },
                 {
-                    path: 'districts', component: DistrictsComponent,
+                    path: 'districts', component: DistrictsComponent, canActivateChild: [AuthGuard],
                     data: {
                         path: '/manage/districts',
                         title: 'Districts',
@@ -231,7 +231,7 @@ const appRoutes: Routes = [
                     }
                 },
                 {
-                    path: 'district/addDistrict', component: AddDistrictComponent,
+                    path: 'district/addDistrict', component: AddDistrictComponent, canActivateChild: [AuthGuard],
                     data: {
                         path: '/manage/district/addDistrict',
                         title: 'Add District',
@@ -327,7 +327,7 @@ const appRoutes: Routes = [
                     }
                 },
                 {
-                    path: 'schools', component: SchoolsComponent,
+                    path: 'schools', component: SchoolsComponent, canActivateChild: [ AuthGuard ],
                     data: {
                         path: '/manage/schools',
                         title: 'Schools',
@@ -339,7 +339,7 @@ const appRoutes: Routes = [
                     }
                 },
                 {
-                    path: 'schools/AddSchool', component: AddSchoolComponent,
+                    path: 'schools/AddSchool', component: AddSchoolComponent, canActivateChild: [ AuthGuard ],
                     data: {
                         path: '/manage/schools/AddSchool',
                         title: 'Add School',
@@ -536,7 +536,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: { roles: [UserRoleType.SuperAdmin, UserRoleType.DistrictAdmin] }
+                    permission: { roles: [UserRoleType.SuperAdmin] }
                 }
             },
             {

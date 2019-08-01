@@ -287,6 +287,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     //Search Available Substitutes
     SearchAvailableSubstitutes(SearchedText: string): void {
+        if (this.absenceFirstFormGroup.value.AbsenceType != 2 && this.absenceFirstFormGroup.value.AbsenceType != 3) {
+            return;
+        }
         if (this.absenceFirstFormGroup.value.AbsenceStartDate && this.absenceFirstFormGroup.value.AbsenceEndDate) {
             let filter = {
                 districtId: this._userSession.getUserDistrictId(),
@@ -300,7 +303,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.availableSubstitutes = this.availableSubstitutes.map((users: any) => users.filter((val: User) => val.firstName.toLowerCase().includes(SearchedText.toLowerCase())));
         }
         else {
-            this.notifier.notify('error', 'Select Date First to search substitutes');
+            this.notifier.notify('error', 'Please Select Date First');
         }
     }
 
@@ -549,26 +552,26 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 districtId: this._userSession.getUserDistrictId(),
                 year: new Date().getFullYear(),
                 userId: this._userSession.getUserId()
-              }
-              this._dataContext.post('Leave/getLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
-                    response = response.filter(leaveBalance => leaveBalance.leaveTypeId === FirstAbsenceForm.value.Reason.leaveTypeId)
-                    if (response.length > 0) {
-                        if (response[0].isAllowNegativeAllowance) {
+            }
+            this._dataContext.post('Leave/getLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
+                response = response.filter(leaveBalance => leaveBalance.leaveTypeId === FirstAbsenceForm.value.Reason.leaveTypeId)
+                if (response.length > 0) {
+                    if (response[0].isAllowNegativeAllowance) {
+                        this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+                    }
+                    else {
+                        if (response[0].balance - 1 >= 0) {
                             this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
                         }
                         else {
-                            if (response[0].balance - 1 >= 0) {
-                                this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
-                            }
-                            else {
-                                this.notifier.notify('error', 'Exceeded Limit.');
-                            }
+                            this.notifier.notify('error', 'Exceeded Limit.');
                         }
                     }
-                    else {
-                        this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
-                    }
-              });
+                }
+                else {
+                    this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+                }
+            });
         }
         else {
             this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
@@ -622,7 +625,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 FirstAbsenceForm.value.AbsenceEndDate as Date, AbsenceModel.StartTime as string, AbsenceModel.EndTime as string)) {
                 this._dataContext.post('Absence/CreateAbsence', AbsenceModel).subscribe((respose: any) => {
                     if (respose != "error") {
-                        this.notifier.notify('success', 'Absence Created Successfully. Confirmation Number: ' + respose  +'');
+                        this.notifier.notify('success', 'Absence Created Successfully. Confirmation Number: ' + respose + '');
                         this.response = 1;
                         this.resetForm(stepper);
                         if (this._userSession.getUserRoleId() === 3) this.refreshBalance.next();
