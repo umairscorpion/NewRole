@@ -20,6 +20,7 @@ export class ReportFilter {
   deleteAbsenceReason: string;
   District: number;
   userId: string;
+  confirmationNumber: string;
   static CreateFilterFormGroup(fb: FormBuilder) {
     return fb.group({
       userId: [''],
@@ -38,6 +39,7 @@ export class ReportFilter {
       District: [0],
       absencePosition: [0],
       reportTitle: [''],
+      confirmationNumber: ['']
     });
   }
   static initial() {
@@ -59,6 +61,7 @@ export class ReportFilter {
     filters.District = 0;
     filters.absencePosition = 0;
     filters.reportTitle = '';
+    filters.confirmationNumber = '';
     return filters;
   }
 }

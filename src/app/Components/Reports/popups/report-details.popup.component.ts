@@ -250,7 +250,7 @@ export class ReportDetailsComponent implements OnInit {
         this._dataContext.UpdateAbsenceStatusAndSub('Absence/updateAbseceStatusAndSub', this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId(), formGroup.value.substituteId.userId, this.reportDetail.substituteRequired).subscribe((response: any) => {
           if (response == "success") {
             this.dialogRef.close('Reload');
-            this.notifier.notify('success', 'Assign Successfully.');
+            this.notifier.notify('success', 'Assigned Successfully.');
           }
           if (response == "error") {
             this.dialogRef.close('Reload');
