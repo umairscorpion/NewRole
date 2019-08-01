@@ -24,18 +24,33 @@
 </style>  -->
 <mat-card>
   <mat-card-title>Staff</mat-card-title>
-  <div>
-      <div class="row col-md-12 col-lg-12" style="text-align: right">
+  <div class="row" *ngIf='UserRole == 5'>
+    <div class="col-md-2 col-lg-2">
+      <mat-select placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let district of Districts" [value]="district.districtId">
+            {{district.districtName}}
+        </mat-option>
+    </mat-select>
+    </div>  
+    <div class="col-md-10 col-lg-10" style="text-align: right">
         <a routerLink="/manage/employees/addemployee">
-          <button mat-raised-button style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
+          <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 30px;" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
         </a>
       </div>
+      
   </div>
+    <div class="col-md-12 col-lg-12" style="text-align: right" *ngIf='UserRole != 5'>
+        <a routerLink="/manage/employees/addemployee">
+          <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 14px;" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
+        </a>
+      </div>
     <div class="row col-md-12 col-lg-12">
       <div class="example-container mat-elevation-z8">
         <div class="row example-header">
           <div class="col-md-3">
             <mat-form-field>
+                <mat-icon matPrefix >search</mat-icon>
               <input matInput #inputName [(ngModel)]="employeeName" placeholder="Search Employee">
             </mat-form-field>
           </div>

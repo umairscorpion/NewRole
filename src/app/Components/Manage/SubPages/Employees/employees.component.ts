@@ -33,7 +33,9 @@ export class EmployeesComponent implements OnInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   msg: string;
-
+  Districts: any;
+  UserRole: number = this._userSession.getUserRoleId();
+  
   constructor(
     private router: Router,
     private _userSession: UserSession,
@@ -45,29 +47,30 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit(): void {
     this.DataSourceEmployeesObj = new DataSourceEmployees(this._dataContext, this._userSession);
-
+    this.GetDistricts();
+    this.GetStaff();
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          return this.DataSourceEmployeesObj!.getRepoIssues(
-            this.sort.active, this.sort.direction, this.paginator.pageIndex);
-        }),
-        map((data: any) => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          this.isRateLimitReached = false;
-          this.resultsLength = data.length;
-          return data;
-        }),
-        catchError(() => {
-          this.isLoadingResults = false;
-          return observableOf([]);
-        })
-      ).subscribe((data: any) => this.dataSource.data = data);
+    // merge(this.sort.sortChange, this.paginator.page)
+    //   .pipe(
+    //     startWith({}),
+    //     switchMap(() => {
+    //       this.isLoadingResults = true;
+    //       return this.DataSourceEmployeesObj!.getRepoIssues(
+    //         this.sort.active, this.sort.direction, this.paginator.pageIndex);
+    //     }),
+    //     map((data: any) => {
+    //       // Flip flag to show that loading has finished.
+    //       this.isLoadingResults = false;
+    //       this.isRateLimitReached = false;
+    //       this.resultsLength = data.length;
+    //       return data;
+    //     }),
+    //     catchError(() => {
+    //       this.isLoadingResults = false;
+    //       return observableOf([]);
+    //     })
+    //   ).subscribe((data: any) => this.dataSource.data = data);
 
     this.dataSource.filterPredicate = (data: any, filtersJson: string) => {
       const matchFilter = [];
@@ -202,7 +205,33 @@ export class EmployeesComponent implements OnInit {
     },
       error => this.msg = <any>error);
   }
+GetDistricts(): void{
+  this._dataContext.get('district/getDistricts').subscribe((data: any) => {
+    this.Districts = data;
+},
+    error => <any>error);
+}
+onChangeDistrict(districtId: any) {
+  let RoleId = 3;
+  let OrgId = this._userSession.getUserOrganizationId();
+  this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + districtId).subscribe((data: any) => {
+      this.dataSource.data = data;
+      this.dataSource = data.filter((t => t.districtId == districtId));
+  },
+      error => this.msg = <any>error);
+}
 
+GetStaff(): void {
+  let RoleId = 3;
+  let OrgId = this._userSession.getUserOrganizationId();
+  let DistrictId = this._userSession.getUserDistrictId();
+  this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId).subscribe((data: any) => {
+    this.dataSource.data = data;
+    // this.lastActiveDaysTemp = moment(data.lastActive).format('YYYY-MM-DD');
+    // this.lastActiveDays = Math.abs(this.currentDate.diff(this.lastActiveDaysTemp, 'days'));
+  },
+    error => this.msg = <any>error);
+}
   resetPassword(userdId: string) {
     let model = {
       userId: userdId,
@@ -226,4 +255,5 @@ export class DataSourceEmployees {
     let DistrictId = this._UserSession.getUserDistrictId();
     return this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId);
   }
+ 
 }
