@@ -24,7 +24,7 @@ export class MyJobsComponent implements OnInit {
     UpcommingJobs = new MatTableDataSource();
     msg: string;
     currentDate: Date = new Date();
-    displayedColumns = ['AbsenceDate','JobId', 'Posted', 'Location', 'Employee', 'Status', 'Action'];
+    displayedColumns = ['AbsenceDate', 'JobId', 'Posted', 'Location', 'Employee', 'Status', 'Action'];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
@@ -48,20 +48,20 @@ export class MyJobsComponent implements OnInit {
         let EndDate = new Date();
         EndDate.setDate(this.currentDate.getDate() + 30);
         let model = {
-             StartDate: this.CurrentDate.toISOString(),
-             EndDate: EndDate.toISOString(),
-             SubstituteId: this._userSession.getUserId(),
-             DistrictId: this._userSession.getUserDistrictId(),
-             Status: 2,
+            StartDate: this.CurrentDate.toISOString(),
+            EndDate: EndDate.toISOString(),
+            SubstituteId: this._userSession.getUserId(),
+            DistrictId: this._userSession.getUserDistrictId(),
+            Status: 2,
         }
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
         this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
-                this.UpcommingJobs.data = data;
-                this.UpcomingJobCount = data.length
-                this.UpcomingCountEvent.emit(this.UpcomingJobCount)
-            },
-                error => this.msg = <any>error);
+            this.UpcommingJobs.data = data;
+            this.UpcomingJobCount = data.length
+            this.UpcomingCountEvent.emit(this.UpcomingJobCount)
+        },
+            error => this.msg = <any>error);
     }
 
     ReleaseJob(SelectedRow: any, StatusId: number) {
@@ -147,7 +147,7 @@ export class MyJobsComponent implements OnInit {
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe((params: any) => {
             if (params.jobId && params.ac == 1) {
-                this.AcceptJob(params.jobId)
+                this.AcceptJob(params.jobId, 'Email');
             }
         })
         this.FilterForm = this._formBuilder.group({
@@ -186,14 +186,14 @@ export class MyJobsComponent implements OnInit {
             DistrictId: this._userSession.getUserDistrictId(),
             Status: 2,
             OrganizationId: SearchFilter.value.OrganizationId
-       }
+        }
         if (this.FilterForm.valid) {
             this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
-                    this.UpcommingJobs.data = data;
-                    this.UpcomingJobCount = data.length
-                    this.UpcomingCountEvent.emit(this.UpcomingJobCount)
-                },
-                    error => this.msg = <any>error);
+                this.UpcommingJobs.data = data;
+                this.UpcomingJobCount = data.length
+                this.UpcomingCountEvent.emit(this.UpcomingJobCount)
+            },
+                error => this.msg = <any>error);
         }
     }
 
@@ -202,10 +202,10 @@ export class MyJobsComponent implements OnInit {
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
     }
 
-    AcceptJob(jobNo: number) {
+    AcceptJob(jobNo: number, via: string) {
         let confirmResult = confirm('Are you sure you want to Accept this Job?');
         if (confirmResult) {
-            this._dataContext.get('Job/acceptJob/' + jobNo + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+            this._dataContext.get('Job/acceptJob/' + jobNo + "/" + this._userSession.getUserId() + "/" + via).subscribe((response: any) => {
                 this.NotifyResponse(response as string);
                 this.GetUpcommingJobs();
             },
