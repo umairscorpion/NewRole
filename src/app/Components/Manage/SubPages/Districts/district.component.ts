@@ -69,38 +69,28 @@ export class DistrictsComponent {
       error => <any>error);
   }
 
-  // deleteDistrict(SelectedRow: any) {
-  //   var confirmResult = confirm('Are you sure you want to delete ' + SelectedRow.DistrictName + ' District?');
-  //   if (confirmResult) {
-  //     this._districtService.delete('district/', SelectedRow.districtId).subscribe((data: any) => {
-  //       this.GetDistricts();
-  //     },
-  //       error => this.msg = <any>error);
-  //   }
-  // }
-
   deleteDistrict(SelectedRow: any) {
-    
+
     swal.fire({
-        title: 'Delete',
-        text:
-            'Are you sure, you want to delete the selected District?',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonClass: 'btn btn-danger',
-        cancelButtonClass: 'btn btn-success',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        buttonsStyling: false
+      title: 'Delete',
+      text:
+        'Are you sure, you want to delete the selected District?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-danger',
+      cancelButtonClass: 'btn btn-success',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      buttonsStyling: false
     }).then(r => {
-        if (r.value) {
-          this._districtService.delete('district/', SelectedRow.districtId).subscribe((data: any) => {
-            this.GetDistricts();
-          },
-            error => this.msg = <any>error);
-        }
+      if (r.value) {
+        this._districtService.delete('district/', SelectedRow.districtId).subscribe((data: any) => {
+          this.GetDistricts();
+        },
+          error => this.msg = <any>error);
+      }
     });
-}
+  }
 }
 
 

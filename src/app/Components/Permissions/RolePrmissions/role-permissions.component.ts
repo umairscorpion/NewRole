@@ -77,6 +77,10 @@ export class RolePermissionsComponent implements OnInit {
     permission.isChecked = !permission.isChecked;
   }
 
+  permisionVisibilityChanged(permission) {
+    permission.isHided = !permission.isHided;
+  }
+
   loadPermissions(id, userId) {
     if (id) {
       if (userId == "undefined") {

@@ -3,6 +3,8 @@ import { DataContext } from '../../../../Services/dataContext.service';
 import { SchoolSubList } from '../../../../Model/SchoolSubList';
 import { MatSelectionList } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
+import { UserSession } from 'src/app/Services/userSession.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'school-sub-list',
@@ -16,6 +18,8 @@ export class SchoolSubListComponent implements OnInit {
     showSubstitutes: boolean
     private notifier: NotifierService;
     msg: string;
+    Districts: any;
+    subListForm: FormGroup;
     schoolSubList: SchoolSubList[] = Array<SchoolSubList>();
     selectedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
     blockedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
@@ -23,11 +27,18 @@ export class SchoolSubListComponent implements OnInit {
 
     constructor(
         private dataContext: DataContext,
-        notifier: NotifierService) {
+        notifier: NotifierService,
+        private _userSession: UserSession,
+        private fb: FormBuilder) {
         this.notifier = notifier;
     }
 
     ngOnInit(): void {
+        this.subListForm = this.fb.group({
+            SearchSub: [''],
+            DistrictId: [''],
+        });
+        this.GetDistricts();
         this.getSustitutes();
         this.getBlockedSustitutes();
     }
@@ -36,7 +47,10 @@ export class SchoolSubListComponent implements OnInit {
     }
 
     getSustitutes(): void {
-        this.dataContext.get('user/schoolSubList').subscribe((data: any[]) => {
+        let model = {
+            DistrictId: this._userSession.getUserDistrictId()
+        }
+        this.dataContext.post('user/schoolSubList', model).subscribe((data: any[]) => {
             this.schoolSubList = data;
             this.selectedSchoolSubList = data.filter(t => t.isAdded);
         },
@@ -44,16 +58,21 @@ export class SchoolSubListComponent implements OnInit {
     }
 
     getBlockedSustitutes(): void {
-        this.dataContext.get('user/blockedSchoolSubList').subscribe((data: any[]) => {
+        let model = {
+            DistrictId: this._userSession.getUserDistrictId()
+        }
+        this.dataContext.post('user/blockedSchoolSubList', model).subscribe((data: any[]) => {
             this.blockedSchoolSubList = data;
             this.selectedBlockedSchoolSubList = data.filter(t => t.isAdded);
         },
             error => this.msg = <any>error);
     }
 
-    SearchSubstitute(query: string) {
-        this.getSustitutes();
-        this.dataContext.get('user/schoolSubList').subscribe((data: any[]) => {
+    SearchSubstitute(districtId: any, query: string) {
+        let model = {
+            DistrictId: districtId.value
+        }
+        this.dataContext.post('user/schoolSubList', model).subscribe((data: any[]) => {
             this.schoolSubList = data;
             this.selectedSchoolSubList = data.filter(t => t.isAdded);
             this.schoolSubList = this.schoolSubList.filter((val: SchoolSubList) => val.substituteName.toLowerCase().includes(query.toLowerCase()))
@@ -61,9 +80,11 @@ export class SchoolSubListComponent implements OnInit {
             error => this.msg = <any>error);
     }
 
-    SearchBlockedSubstitute(query: string) {
-        this.getSustitutes();
-        this.dataContext.get('user/blockedSchoolSubList').subscribe((data: any[]) => {
+    SearchBlockedSubstitute(districtId: any, query: string) {
+        let model = {
+            DistrictId: districtId.value
+        }
+        this.dataContext.post('user/blockedSchoolSubList', model).subscribe((data: any[]) => {
             this.blockedSchoolSubList = data;
             this.selectedBlockedSchoolSubList = data.filter(t => t.isAdded);
             this.blockedSchoolSubList = this.blockedSchoolSubList.filter((val: SchoolSubList) => val.substituteName.toLowerCase().includes(query.toLowerCase()))
@@ -133,5 +154,16 @@ export class SchoolSubListComponent implements OnInit {
             this.notifier.notify('success', 'update Successfully');
         },
             error => this.msg = <any>error);
+    }
+
+    GetDistricts(): void {
+        this.dataContext.get('district/getDistricts').subscribe((data: any) => {
+            this.Districts = data;
+            if (this._userSession.getUserRoleId() == 1) {
+                this.subListForm.get('DistrictId').setValue(this._userSession.getUserDistrictId());
+                this.subListForm.controls['DistrictId'].disable();
+            }
+        },
+            error => <any>error);
     }
 }

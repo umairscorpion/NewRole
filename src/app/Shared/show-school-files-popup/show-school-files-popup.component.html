@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4 style="background: #F5F5F5; margin-top: 0px" mat-subheader>
+      Files
+      <mat-icon class="cursor-pointer" title="Close" style="margin-left: 515px" (click)="onClose()">clear</mat-icon>
+    </h4>
+  </div>
+  <div class="row" style="margin-left: 5px" *ngFor="let file of data">
+    <div class="col-lg-12 col-md-12">
+      <div style="margin-top: 10px">
+        <mat-form-field class="col-md-6 col-lg-6">
+          <input disabled="true" matInput [(ngModel)]="file.originalFileName" placeholder="File Name">
+        </mat-form-field>
+      </div>
+      <div class="col-md-2 col-lg-2" style="margin-top: 10px; text-align: right">
+        <a style="cursor: pointer;margin-left: 5px" #tooltip="matTooltip" matTooltip="View File"
+          matTooltipPosition="below">
+          <i class="material-icons" (click)="ViewFile(file)">visibility</i>
+        </a>
+        <a style="cursor: pointer;margin-left: 5px" #tooltip="matTooltip" matTooltip="Download File"
+          matTooltipPosition="below">
+          <i class="material-icons" (click)="DownloadFile(file)">get_app</i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
