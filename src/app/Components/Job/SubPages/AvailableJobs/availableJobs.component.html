@@ -16,53 +16,51 @@
         overflow: hidden !important;
     }
 </style>
-<!-- <h4>Available Jobs ({{AvailableJobs.data && AvailableJobs.data.length > 0 ? AvailableJobs.data.length : 0 }})</h4> -->
 <mat-card>
     <div style="margin-top:30px;">
-            <div class="row col-md-12 col-lg-12">
-                <form [formGroup]="FilterForm" (ngSubmit)="SearchAvailableJobs(FilterForm)">
-                    <mat-form-field class="col-md-2 col-lg-2">
-                        <input matInput [min]="CurrentDate" [max]="FilterForm.value.FilterEndDate"
-                            [matDatepicker]="StartDatePicker" placeholder="Start Date"
-                            formControlName="FilterStartDate">
-                        <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker #StartDatePicker></mat-datepicker>
-                    </mat-form-field>
-                    <mat-form-field class="col-md-2 col-lg-2">
-                        <input matInput
-                            [min]="FilterForm.value.FilterStartDate ? FilterForm.value.FilterStartDate: CurrentDate"
-                            [matDatepicker]="EndDatePicker" placeholder="End Date" formControlName="FilterEndDate">
-                        <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker #EndDatePicker></mat-datepicker>
-                    </mat-form-field>
-                    <mat-form-field class="col-md-2 col-lg-2">
-                        <mat-select placeholder="District" formControlName="DistrictId">
-                            <mat-option *ngFor="let district of Districts" [value]="district.districtId">
-                                {{district.districtName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="col-md-2 col-lg-2">
-                        <mat-select placeholder="School" formControlName="OrganizationId">
-                            <mat-option value="-1">
-                                <b>All Schools</b>
-                            </mat-option>
-                            <mat-option *ngFor="let organization of Organizations" [value]="organization.schoolId">
-                                {{organization.schoolName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <section class="col-md-2 col-lg-2">
-                        Filter
-                        <br>
-                        <mat-checkbox color="primary" formControlName="Requested">I'm Requested(0)</mat-checkbox>
-                    </section>
+        <div class="row col-md-12 col-lg-12">
+            <form [formGroup]="FilterForm" (ngSubmit)="SearchAvailableJobs(FilterForm)">
+                <mat-form-field class="col-md-2 col-lg-2">
+                    <input matInput [min]="CurrentDate" [max]="FilterForm.value.FilterEndDate"
+                        [matDatepicker]="StartDatePicker" placeholder="Start Date" formControlName="FilterStartDate">
+                    <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #StartDatePicker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="col-md-2 col-lg-2">
+                    <input matInput
+                        [min]="FilterForm.value.FilterStartDate ? FilterForm.value.FilterStartDate: CurrentDate"
+                        [matDatepicker]="EndDatePicker" placeholder="End Date" formControlName="FilterEndDate">
+                    <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #EndDatePicker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="col-md-2 col-lg-2">
+                    <mat-select placeholder="District" formControlName="DistrictId">
+                        <mat-option *ngFor="let district of Districts" [value]="district.districtId">
+                            {{district.districtName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-md-2 col-lg-2">
+                    <mat-select placeholder="School" formControlName="OrganizationId">
+                        <mat-option value="-1">
+                            <b>All Schools</b>
+                        </mat-option>
+                        <mat-option *ngFor="let organization of Organizations" [value]="organization.schoolId">
+                            {{organization.schoolName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <section class="col-md-2 col-lg-2">
+                    Filter
+                    <br>
+                    <mat-checkbox color="primary" formControlName="Requested">I'm Requested(0)</mat-checkbox>
+                </section>
 
-                    <div class="col-md-2 col-lg-2" style="padding-top: 10px">
-                        <button mat-raised-button class="btn btn-success" style="background: #3CCCD1; color: white;"
-                            type="submit">Search</button>
-                    </div>
-                </form>
+                <div class="col-md-2 col-lg-2" style="padding-top: 10px">
+                    <button mat-raised-button class="btn btn-success" style="background: #3CCCD1; color: white;"
+                        type="submit">Search</button>
+                </div>
+            </form>
         </div>
         <div class="row col-md-12 col-lg-12">
             <div class="row">
@@ -133,7 +131,8 @@
                         <ng-container matColumnDef="Notes">
                             <mat-header-cell *matHeaderCellDef> Notes </mat-header-cell>
                             <mat-cell *matCellDef="let Absence">
-                                {{Absence.substituteNotes ? Absence.substituteNotes: 'N/A'}} </mat-cell>
+                                {{Absence.substituteNotes ? Absence.substituteNotes: 'N/A'}}
+                            </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Attachment">
                             <mat-header-cell *matHeaderCellDef> Attachment </mat-header-cell>
@@ -145,7 +144,13 @@
                                         attach_file
                                     </i>
                                 </div>
-                                <div *ngIf="!Absence.attachedFileName">N/A</div>
+                                <div *ngIf="this.Files.length > 0">
+                                    <i class="material-icons" #tooltip="matTooltip" (click)="ShowSchoolFiles()"
+                                        style="color:#333333; cursor: pointer;" matTooltip="Files"
+                                        matTooltipPosition="below">
+                                        description
+                                    </i>
+                                </div>
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Action">

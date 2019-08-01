@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { CommunicationService } from '../../../../Services/communication.service';
@@ -13,12 +13,15 @@ import * as moment from 'moment';
 import swal from 'sweetalert2';
 import { ActivatedRoute } from '../../../../../../node_modules/@angular/router';
 import { AvailabilityService } from 'src/app/Services/availability.service';
+import { ShowSchoolFilesPopupComponent } from 'src/app/Shared/show-school-files-popup/show-school-files-popup.component';
+import { FileService } from 'src/app/Services/file.service';
+import { FileManager } from 'src/app/Model/FileSystem/fileManager.detail';
 
 @Component({
     selector: 'available-jobs',
     templateUrl: 'availableJobs.component.html',
     styleUrls: ['availableJobs.component.scss']
-    
+
 })
 export class AvailableJobsComponent implements OnInit {
     coloringAbsences = (d: Date) => {
@@ -43,12 +46,13 @@ export class AvailableJobsComponent implements OnInit {
     private notifier: NotifierService;
     msg: string;
     currentDate: Date = new Date();
-    displayedColumns = ['AbsenceDate','JobId', 'Posted', 'Location', 'Employee', 'Notes', 'Attachment', 'Action'];
+    displayedColumns = ['AbsenceDate', 'JobId', 'Posted', 'Location', 'Employee', 'Notes', 'Attachment', 'Action'];
     AvailableJobs = new MatTableDataSource();
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
     iamRequested: boolean;
+    Files: any;
 
     constructor(
         private _dataContext: DataContext,
@@ -58,7 +62,9 @@ export class AvailableJobsComponent implements OnInit {
         private sanitizer: DomSanitizer,
         notifier: NotifierService,
         private activatedRoute: ActivatedRoute,
-        private availabilityService: AvailabilityService, ) {
+        private availabilityService: AvailabilityService,
+        private dialogRef: MatDialog,
+        private _fileService: FileService) {
         this.notifier = notifier;
     }
 
@@ -79,6 +85,7 @@ export class AvailableJobsComponent implements OnInit {
         this.GetDistricts();
         this.GetOrganizations(this._userSession.getUserDistrictId());
         this.GetAvailableJobs();
+        this.getSchoolFiles();
     }
 
     ngAfterViewInit() {
@@ -96,15 +103,15 @@ export class AvailableJobsComponent implements OnInit {
             SubstituteId: this._userSession.getUserId(),
             DistrictId: this._userSession.getUserDistrictId(),
             Status: 1,
-       }
+        }
         this.FilterForm.get('FilterStartDate').setValue(this.CurrentDate);
         this.FilterForm.get('FilterEndDate').setValue(EndDate);
         this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: Absence[]) => {
-                this.AvailableJobs.data = data;
-                this.AvailableJobCount = data.length;
-                this.AvailableCountEvent.emit(this.AvailableJobCount);
-            },
-                error => this.msg = <any>error);
+            this.AvailableJobs.data = data;
+            this.AvailableJobCount = data.length;
+            this.AvailableCountEvent.emit(this.AvailableJobCount);
+        },
+            error => this.msg = <any>error);
     }
 
     GetOrganizations(DistrictId: number): void {
@@ -132,14 +139,14 @@ export class AvailableJobsComponent implements OnInit {
             Status: 1,
             OrganizationId: SearchFilter.value.OrganizationId,
             Requested: SearchFilter.value.Requested
-       }
+        }
         if (this.FilterForm.valid) {
             this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
-                    this.AvailableJobs.data = data;
-                    this.AvailableJobCount = data.length;
-                    this.AvailableCountEvent.emit(this.AvailableJobCount)
-                },
-                    error => this.msg = <any>error);
+                this.AvailableJobs.data = data;
+                this.AvailableJobCount = data.length;
+                this.AvailableCountEvent.emit(this.AvailableJobCount)
+            },
+                error => this.msg = <any>error);
         }
     }
 
@@ -157,7 +164,7 @@ export class AvailableJobsComponent implements OnInit {
             this.GetAvailableJobs();
         }
         else if (Message == "Accepted") {
-            this.notifier.notify('error', 'Job Already Accepted.');
+            this.notifier.notify('error', 'Job is no longer available.');
             this.GetAvailableJobs();
         }
         else if (Message == "Conflict") {
@@ -173,7 +180,7 @@ export class AvailableJobsComponent implements OnInit {
             this.GetAvailableJobs();
         }
         else {
-            this.notifier.notify('error', 'Problem Occured While Process you Request.Please Try Again Later.');
+            this.notifier.notify('error', 'Problem Occured While Process your Request. Please Try Again Later.');
         }
     }
 
@@ -214,11 +221,11 @@ export class AvailableJobsComponent implements OnInit {
             SubstituteId: this._userSession.getUserId(),
             DistrictId: this._userSession.getUserDistrictId(),
             Status: 2,
-       }
+        }
         this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
-                this.myJobs = data;
-            },
-                error => this.msg = <any>error);
+            this.myJobs = data;
+        },
+            error => this.msg = <any>error);
     }
 
     getImage(imageName: string) {
@@ -323,6 +330,27 @@ export class AvailableJobsComponent implements OnInit {
                 },
                     error => this.msg = <any>error);
             }
+        });
+    }
+
+    getSchoolFiles(): void {
+        let model = {
+            fileType: "School Files"
+        }
+        this._fileService.getFile(model).subscribe((respose: FileManager[]) => {
+            this.Files = respose;
+
+        });
+    }
+
+    ShowSchoolFiles() {
+        const dialogEdit = this.dialogRef.open(
+            ShowSchoolFilesPopupComponent, {
+                panelClass: 'school-files-dialog',
+                data: this.Files
+            }
+        );
+        dialogEdit.afterClosed().subscribe(result => {
         });
     }
 }

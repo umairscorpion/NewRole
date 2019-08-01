@@ -201,6 +201,7 @@ import { DatePipe } from '../../node_modules/@angular/common';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SubscriptionComponent } from './Components/User/Unsubscribed/unsubscribed.component';
 import { SchoolFilesComponent } from './Components/SchoolFiles/school-files.component';
+import { ShowSchoolFilesPopupComponent } from './Shared/show-school-files-popup/show-school-files-popup.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -400,7 +401,8 @@ const customNotifierOptions: NotifierOptions = {
         EventAddComponent,
         SplashScreenComponent,
         SubscriptionComponent,
-        SchoolFilesComponent
+        SchoolFilesComponent,
+        ShowSchoolFilesPopupComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -423,7 +425,8 @@ const customNotifierOptions: NotifierOptions = {
         ShowAttachmentPopupComponent,
         UserEditComponent,
         EventAddComponent,
-        SplashScreenComponent
+        SplashScreenComponent,
+        ShowSchoolFilesPopupComponent
     ],
     providers: [
         DatePipe,

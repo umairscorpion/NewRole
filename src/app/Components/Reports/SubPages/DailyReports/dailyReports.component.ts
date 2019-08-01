@@ -194,7 +194,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
     objToArray(report: ReportDetail) {
         var result = [];
         result.push(report.employeeLastName, report.employeeFirstName,
-         report.confirmationNumber, report.reason,  moment(report.startDate).format('MM/DD/YYYY')
+            report.confirmationNumber, report.reason, moment(report.startDate).format('MM/DD/YYYY')
             + " - " + moment(report.endDate).format('MM/DD/YYYY'),
             this.timeFormatPipe.transform(report.startTime) + "-" + this.timeFormatPipe.transform(report.endTime),
              report.statusTitle, report.substituteName,

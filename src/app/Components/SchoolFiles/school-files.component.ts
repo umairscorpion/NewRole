@@ -107,7 +107,7 @@ export class SchoolFilesComponent implements OnInit {
       fileName: file.fileName,
       fileContentType: file.fileContentType,
       fileExtention: file.fileExtention,
-      fileType: "Guides"
+      fileType: "School Files"
     }
     swal.fire({
       title: 'Delete',

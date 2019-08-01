@@ -16,7 +16,8 @@
                                             (change)="onChangeAbsenceFor(absenceFirstFormGroup.value.selfEmployeeVacancy)"
                                             style="padding-left: 13px;">
                                             <mat-radio-button color="primary" value="1" checked>Self</mat-radio-button>
-                                            <mat-radio-button [hideIfUnauthorized]="'CREATE_STAFF_ABSENCES'" style="padding-left: 10px;" color="primary" value="2">
+                                            <mat-radio-button [hideIfUnauthorized]="'CREATE_STAFF_ABSENCES'"
+                                                style="padding-left: 10px;" color="primary" value="2">
                                                 Employee</mat-radio-button>
                                             <mat-radio-button style="padding-left: 10px;" color="primary" value="3">Find
                                                 a Sub</mat-radio-button>
@@ -82,7 +83,7 @@
                                             </mat-select>
                                             <mat-hint style="color: red"
                                                 *ngIf='isApprovalNeeded && loginedUserRole === 3' align="start">This
-                                                Reason Requires Approval From Admin</mat-hint>
+                                                absence reason requires approval. The system will submit the approval request when you confirm the absence.</mat-hint>
                                         </mat-form-field>
                                     </div>
                                     <div class="col-md-2 col-lg-2">
@@ -99,12 +100,10 @@
                                     <div *ngIf='absenceFirstFormGroup.value.Duration != "5"' class="col-md-4 col-lg-4">
                                         <mat-form-field class="col-md-5 col-lg-5">
                                             <input matInput type="time" placeholder="Start Time"
-                                                (keyup)="SearchAvailableSubstitutes(a)"
                                                 (change)="SearchAvailableSubstitutes(a)" formControlName="StartTime">
                                         </mat-form-field>
                                         <mat-form-field class="col-md-5 col-lg-5">
                                             <input matInput type="time" placeholder="End Time"
-                                                (keyup)="SearchAvailableSubstitutes(a)"
                                                 (change)="SearchAvailableSubstitutes(a)" formControlName="EndTime">
                                         </mat-form-field>
                                     </div>
@@ -251,7 +250,7 @@
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <div class="col-md-6 col-lg-6">
-                                                Requires Certified sub?
+                                            Requires Certified sub?
                                         </div>
                                         <div class="col-md-6 col-lg-6">
                                             <ui-switch [checked]="true" style="color: white"
@@ -458,7 +457,8 @@
                 <div style="text-align: right">
                     <button mat-button type="button" style="background-color:#dfdede;margin-right: 10px"
                         (click)="goBackToPreviousForm(stepper)">Back</button>
-                    <button type="button" style="padding-left: 10px; background-color: #04c0be;" mat-raised-button color="primary"
+                    <button type="button" style="padding-left: 10px; background-color: #04c0be;" mat-raised-button
+                        color="primary"
                         (click)="createAbsenceSubmission(absenceFirstFormGroup,absenceSecondFormGroup,stepper)">
                         {{ absenceFirstFormGroup.value.AbsenceType == '2' ? 'Create And Assign' : absenceSecondFormGroup.value.AbsenceType
                         == '3' ? 'Post to Preferred' : 'Create Absence' }}

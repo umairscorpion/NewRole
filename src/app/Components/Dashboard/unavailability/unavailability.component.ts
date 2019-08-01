@@ -47,7 +47,7 @@ export class UnAvailabilityComponent implements OnInit {
         isRepeat: [this.availability.isRepeat || false],
         repeatType: [this.availability.repeatType || 'week'],
         repeatValue: [this.availability.repeatValue || 0],
-        repeatOnWeekDays: [this.availability.repeatOnWeekDay || [new Date().getDay().toString()], Validators.required],
+        repeatOnWeekDays: [this.availability.repeatOnWeekDay ? [this.availability.repeatOnWeekDay.toString()] : [new Date().getDay().toString()]],
         endsOnAfterNumberOfOccurrance: [this.availability.endsOnAfterNumberOfOccurrance || 0],
         endsOnUntilDate: [this.availability.endsOnUntilDate || new Date()],
         endsOnStatusId: [this.availability.isEndsOnDate ? 1 : this.availability.isEndsOnAfterNumberOfOccurrance ? 2 : 1],
@@ -121,15 +121,15 @@ export class UnAvailabilityComponent implements OnInit {
             this.SetDateTimeErrors();
             return false;
           }
-          else if (data == 'overlap') {
-            this.notifier.notify('error', 'Status set to unavailable. Please select different date and time.');
-            this.SetDateTimeErrors();
-            return false;
-          }
-          else {
+          else if (data == 'success') {
             this.notifier.notify('success', 'Updated Successfully');
             this.dialogRef.close({ action: 'Submit' });
             this.submitted = false;
+          }
+          else {
+            this.notifier.notify('error', 'Problem Occured While Process your Request. Please Try Again Later.');
+            this.SetDateTimeErrors();
+            return false;
           }
         });
       }
@@ -155,15 +155,15 @@ export class UnAvailabilityComponent implements OnInit {
             this.SetDateTimeErrors();
             return false;
           }
-          else if (data == 'overlap') {
-            this.notifier.notify('error', 'Status set to unavailable. Please select different date and time.');
-            this.SetDateTimeErrors();
-            return false;
-          }
-          else {
+          else if (data == 'success') {
             this.notifier.notify('success', 'Added Successfully');
             this.dialogRef.close({ action: 'Submit' });
             this.submitted = false;
+          }
+          else {
+            this.notifier.notify('error', 'Problem Occured While Process your Request. Please Try Again Later.');
+            this.SetDateTimeErrors();
+            return false;
           }
         });
       }

@@ -39,6 +39,7 @@ export class MySettingComponent implements OnInit {
     BlockedSubstitutes: Array<any> = [];
     UserRole: number = this._userSession.getUserRoleId();
     displayedColumns: string[] = ['event', 'email', 'text'];
+    displayedColumnsforEmploye: string[] = ['event', 'email'];
     notificationEvents = new MatTableDataSource();
     displayedColumnsForCategories: string[] = ['category', 'notification'];
     categoriesForNotification = new MatTableDataSource();

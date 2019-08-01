@@ -1,7 +1,6 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatPaginator } from '@angular/material';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { DistrictService } from '../../../../../Service/Manage/district.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserSession } from '../../../../../Services/userSession.service';
 import { NotifierService } from 'angular-notifier';
 import { DataContext } from '../../../../../Services/dataContext.service';

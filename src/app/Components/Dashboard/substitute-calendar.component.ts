@@ -166,6 +166,7 @@ export class SubstituteCalendarComponent implements OnInit {
                   this.getSubstituteAvailibiltySummary();
                 } else if (result.action === 'Delete') {
                   this.availabilityService.delete('availability/', result.id).subscribe(t => {
+                    this.notifier.notify('success', 'Deleted Successfully');
                     this.reloadCalendar();
                     this.getSubstituteAvailibiltySummary();
                   });
