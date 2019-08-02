@@ -8,9 +8,8 @@
     }
 </style>
 <mat-card>
-    <mat-card-title>
-        {{SchoolIdForUpdate ? 'Edit School': 'Add School'}}
-    </mat-card-title>
+    <mat-card-title>{{SchoolIdForUpdate ? 'Edit School': 'Add School'}}</mat-card-title>
+    <hr>
     <mat-card-content>
         <form (ngSubmit)="onSubmit(schoolForm)" [formGroup]="schoolForm">
             <table class="row col-md-offset-1 schoolForm-table">

@@ -43,7 +43,7 @@ export class AddEmployeesComponent implements OnInit {
         private fileService: FileService,
         private sanitizer: DomSanitizer,
         private userService: UserService,
-        private roleService: RoleService,) {
+        private roleService: RoleService, ) {
         this.notifier = notifier;
     }
 
@@ -120,10 +120,10 @@ export class AddEmployeesComponent implements OnInit {
             }
         });
     }
-    
+
     loadData() {
         this.roleService.get('roles').subscribe(roles => { this.roles = roles; });
-      }
+    }
 
     getImage(imageName: string) {
         if (imageName && imageName.length > 0) {

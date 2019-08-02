@@ -151,6 +151,7 @@
                                         description
                                     </i>
                                 </div>
+                                <div *ngIf="!Absence.attachedFileName && this.Files.length == 0">N/A</div>
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Action">

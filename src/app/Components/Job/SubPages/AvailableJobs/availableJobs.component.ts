@@ -257,7 +257,7 @@ export class AvailableJobsComponent implements OnInit {
                     swal.fire({
                         title: 'Accept',
                         text:
-                            'Are you sure you want to Accept this Job?',
+                            'Are you sure you want to Accept this Job ?',
                         type: 'warning',
                         showCancelButton: true,
                         confirmButtonClass: 'btn btn-danger',
@@ -282,7 +282,7 @@ export class AvailableJobsComponent implements OnInit {
                     swal.fire({
                         title: 'Accept',
                         text:
-                            'Are you sure you want to Accept this Job?',
+                            'Are you sure you want to Accept this Job ?',
                         type: 'warning',
                         showCancelButton: true,
                         confirmButtonClass: 'btn btn-danger',
@@ -292,7 +292,7 @@ export class AvailableJobsComponent implements OnInit {
                         buttonsStyling: false
                     }).then(r => {
                         if (r.value) {
-                            this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "WebApp").subscribe((response: any) => {
+                            this._dataContext.get('Job/acceptJob/' + SelectedRow.absenceId + "/" + this._userSession.getUserId() + "/" + "Web").subscribe((response: any) => {
                                 this.NotifyResponse(response as string);
                                 this.GetAvailableJobs()
                                 this.upcomingJobs.GetUpcommingJobs();

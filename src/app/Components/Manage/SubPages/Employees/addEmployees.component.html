@@ -1,7 +1,6 @@
 <mat-card #ref="hideIfUnauthorized" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">
-    <mat-card-title>
-        {{userIdForUpdate ? 'Edit Staff': 'Add Staff'}}
-    </mat-card-title>
+    <mat-card-title>{{userIdForUpdate ? 'Edit Staff': 'Add Staff'}}</mat-card-title>
+    <hr>
     <mat-card-content>
         <form (ngSubmit)="onSubmitEmployeeForm(employeeForm)" [formGroup]="employeeForm">
             <div class="row">
@@ -32,7 +31,8 @@
                         <td class="col-md-3">District</td>
                         <td>
                             <mat-form-field class="col-md-7">
-                                <mat-select placeholder="District" formControlName="District" (selectionChange)="onChangeDistrict($event.value)">
+                                <mat-select placeholder="District" formControlName="District"
+                                    (selectionChange)="onChangeDistrict($event.value)">
                                     <mat-option>--</mat-option>
                                     <mat-option *ngFor="let district of Districts" [value]="district.districtId">
                                         {{district.districtName}}
@@ -48,7 +48,8 @@
                         <td class="col-md-3">Position</td>
                         <td>
                             <mat-form-field class="col-md-7">
-                                <mat-select placeholder="Position" (selectionChange)="onChangeEmployeeType($event.value)" formControlName="UserTypeId">
+                                <mat-select placeholder="Position"
+                                    (selectionChange)="onChangeEmployeeType($event.value)" formControlName="UserTypeId">
                                     <mat-option>--</mat-option>
                                     <mat-option *ngFor="let userType of userTypes" [value]="userType.id">
                                         {{userType.title}}
@@ -89,7 +90,8 @@
                     <tr>
                         <td class="col-md-3">Work Location</td>
                         <td>
-                            <mat-radio-group (change)="OnchangeWorkLocation($event.value)" formControlName="WorkLocaion" class="col-md-7">
+                            <mat-radio-group (change)="OnchangeWorkLocation($event.value)" formControlName="WorkLocaion"
+                                class="col-md-7">
                                 <mat-radio-button color="primary" value="1" style="margin-right: 22px">District Level
                                 </mat-radio-button>
                                 <br>
@@ -103,7 +105,8 @@
                             <mat-form-field class="col-md-7">
                                 <mat-select placeholder="Subzz Role" formControlName="role" required>
                                     <mat-option>--</mat-option>
-                                    <mat-option *ngFor="let role of roles" [disabled]="(employeeForm.value.WorkLocaion == 1 && role.roleId == 2) || (employeeForm.value.WorkLocaion == 2 && role.roleId == 1) || (role.roleId == 4 || role.roleId == 5)"
+                                    <mat-option *ngFor="let role of roles"
+                                        [disabled]="(employeeForm.value.WorkLocaion == 1 && role.roleId == 2) || (employeeForm.value.WorkLocaion == 2 && role.roleId == 1) || (role.roleId == 4 || role.roleId == 5)"
                                         [value]="role.roleId">
                                         {{role.roleName}}
                                     </mat-option>
@@ -120,7 +123,8 @@
                             <mat-form-field class="col-md-7">
                                 <mat-select placeholder="Primary School" formControlName="OrganizationId" required>
                                     <mat-option>--</mat-option>
-                                    <mat-option (click)="onSelectPrimarySchool(Organization.schoolId)" *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
+                                    <mat-option (click)="onSelectPrimarySchool(Organization.schoolId)"
+                                        *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
                                         {{Organization.schoolName}}
                                     </mat-option>
                                 </mat-select>
@@ -130,15 +134,19 @@
                             </mat-form-field>
                         </td>
                     </tr>
-                    <tr *ngIf='(employeeForm.value.WorkLocaion == "2") && (employeeForm.value.UserTypeId == 2 || employeeForm.value.UserTypeId == 3 || employeeForm.value.UserTypeId == 4)'>
+                    <tr
+                        *ngIf='(employeeForm.value.WorkLocaion == "2") && (employeeForm.value.UserTypeId == 2 || employeeForm.value.UserTypeId == 3 || employeeForm.value.UserTypeId == 4)'>
                         <td class="col-md-3">Can also access the schools</td>
                         <td>
                             <mat-form-field class="col-md-7">
-                                <mat-select placeholder="Can also access the schools" formControlName="SecondarySchools" multiple>
+                                <mat-select placeholder="Can also access the schools" formControlName="SecondarySchools"
+                                    multiple>
                                     <mat-option-select-all></mat-option-select-all>
-                                    <mat-option *ngFor="let organization of Organizations" [disabled]="employeeForm.value.OrganizationId === organization.schoolId"
+                                    <mat-option *ngFor="let organization of Organizations"
+                                        [disabled]="employeeForm.value.OrganizationId === organization.schoolId"
                                         [value]="organization.schoolId">
-                                        {{organization.schoolName}} {{employeeForm.value.OrganizationId === organization.schoolId ? '(Primary School)': ''}}
+                                        {{organization.schoolName}}
+                                        {{employeeForm.value.OrganizationId === organization.schoolId ? '(Primary School)': ''}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -148,7 +156,8 @@
                         <td class="col-md-3">Mobile Number</td>
                         <td>
                             <mat-form-field hintLabel="Min 7 and Max 11 characters" class="col-md-7">
-                                <input matInput #mobile minlength="7" maxlength="11" formControlName="PhoneNumber" placeholder="Mobile Number">
+                                <input matInput #mobile minlength="7" maxlength="11" formControlName="PhoneNumber"
+                                    placeholder="Mobile Number">
                                 <mat-hint align="end">{{mobile.value?.length || 0}}/11</mat-hint>
                                 <mat-error *ngIf="employeeForm.controls['PhoneNumber'].hasError('pattern')">
                                     Only numbers allowed.
@@ -163,7 +172,8 @@
                         <td class="col-md-3">Work Email Address</td>
                         <td>
                             <mat-form-field class="col-md-7">
-                                <input matInput type="email" autocomplete="off" placeholder="Email" formControlName="EmailId">
+                                <input matInput type="email" autocomplete="off" placeholder="Email"
+                                    formControlName="EmailId">
                                 <mat-error *ngIf="employeeForm.controls['EmailId'].hasError('email')">
                                     Not a valid email.
                                 </mat-error>
@@ -176,7 +186,8 @@
                     <tr>
                         <td class="col-md-3">Email Alerts</td>
                         <td>
-                            <mat-radio-group formControlName="IsSubscribedEmail" #radioGroup="matRadioGroup" class="col-md-7">
+                            <mat-radio-group formControlName="IsSubscribedEmail" #radioGroup="matRadioGroup"
+                                class="col-md-7">
                                 <mat-radio-button color="primary" value="1" style="margin-right: 10px">Yes
                                 </mat-radio-button>
                                 <mat-radio-button color="primary" value="0">No
@@ -204,8 +215,10 @@
                         <img [src]="profilePicture" width="150" height="150">
                     </div>
                     <div style="padding-top: 5px">
-                        <input type="file" id="UploadButton" style="display: none;" (change)="onSelectProfileImage($event)">
-                        <button mat-button type="button" matTooltip="Upload Image" (click)="uploadClick()" style="color:white; background-color: #04c0be; padding: 0px 7px;">
+                        <input type="file" id="UploadButton" style="display: none;"
+                            (change)="onSelectProfileImage($event)">
+                        <button mat-button type="button" matTooltip="Upload Image" (click)="uploadClick()"
+                            style="color:white; background-color: #04c0be; padding: 0px 7px;">
                             Upload
                             <i class="material-icons">add</i>
                         </button>
@@ -214,9 +227,11 @@
             </div>
             <div class="row col-md-offset-1" style="padding-top: 30px">
                 <a routerLink="./../../employees">
-                    <button mat-raised-button type="button" style="background-color: #74a4a7; color: white;">Back</button>
+                    <button mat-raised-button type="button"
+                        style="background-color: #74a4a7; color: white;">Back</button>
                 </a>
-                <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px" type="submit">{{userIdForUpdate ? 'Update': 'Add Staff to Database'}}</button>
+                <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px"
+                    type="submit">{{userIdForUpdate ? 'Update': 'Add Staff to Database'}}</button>
             </div>
         </form>
     </mat-card-content>
