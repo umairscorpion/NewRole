@@ -64,6 +64,10 @@ export class LeavesComponent implements OnInit {
         this.getAllowances();
     }
 
+    onTabChange(tab: any) {
+        this.selectedTab = tab;
+    }
+
     GetLeaveTypes(): void {
         let districtId = this.userSession.getUserDistrictId();
         let organizationId = this.userSession.getUserOrganizationId() ? this.userSession.getUserOrganizationId() : '-1';

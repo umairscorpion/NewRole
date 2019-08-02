@@ -49,6 +49,7 @@ export class ReportsComponent implements OnInit {
     }
 
     onChangeTab(tab: any) {
+        this.selectedTab = tab.index;
     }
 
     ngAfterViewInit(): void {

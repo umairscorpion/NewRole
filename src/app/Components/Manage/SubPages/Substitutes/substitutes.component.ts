@@ -35,6 +35,7 @@ export class SubstitutesComponent implements OnInit {
   msg: string;
   Districts: any;
   UserRole: number = this._userSession.getUserRoleId();
+  selectedTab: any = 0;
 
   constructor(
     private router: Router,
@@ -200,6 +201,7 @@ export class SubstitutesComponent implements OnInit {
   }
 
   onTabChanged(tab: any) {
+    this.selectedTab = tab.index;
   }
 
   getSettings() {

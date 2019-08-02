@@ -227,7 +227,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
+                        permission: { roles: [UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -239,7 +239,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
+                        permission: { roles: [UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -299,7 +299,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -323,7 +323,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
