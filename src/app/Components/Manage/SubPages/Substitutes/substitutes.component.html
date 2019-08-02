@@ -4,33 +4,33 @@
     <mat-tab label="Substitutes">
       <mat-card>
         <div class="row" *ngIf='UserRole == 5'>
-        <div class="col-md-2 col-lg-2" >
+          <mat-form-field appearance="outline" class="col-md-3">
+            <mat-label>Select District</mat-label>
             <mat-select placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
-                <mat-option>--</mat-option>
-                <mat-option *ngFor="let district of Districts" [value]="district.districtId">
-                    {{district.districtName}}
-                </mat-option>
+              <mat-option *ngFor="let district of Districts" [value]="district.districtId">
+                {{district.districtName}}
+              </mat-option>
             </mat-select>
+          </mat-form-field>
+          <div style="text-align: right">
+            <a routerLink="/manage/substitutes/addSubstitute">
+              <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 30px;"
+                [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
+            </a>
+          </div>
         </div>
-        <div class="col-md-10 col-lg-10" style="text-align: right">
+        <div class="col-md-12 col-lg-12" style="text-align: right" *ngIf='UserRole != 5'>
           <a routerLink="/manage/substitutes/addSubstitute">
-            <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 30px;"
+            <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 14px;"
               [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
           </a>
         </div>
-      </div>
-      <div class="col-md-12 col-lg-12" style="text-align: right" *ngIf='UserRole != 5'>
-        <a routerLink="/manage/substitutes/addSubstitute">
-          <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 14px;"
-            [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
-        </a>
-      </div>
         <div class="row col-md-12 col-lg-12">
           <div class="example-container mat-elevation-z8">
-            <div class="example-header col-md-3 col-lg-3">
-                
-              <mat-form-field>
-                  <mat-icon matPrefix >search</mat-icon><input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Substitutes">
+            <div class="row example-header">
+              <mat-form-field class="col-md-12 col-lg-12">
+                <mat-icon matPrefix>search</mat-icon><input matInput (keyup)="applyFilter($event.target.value)"
+                  placeholder="Search Substitutes">
               </mat-form-field>
             </div>
             <mat-table #table [dataSource]="substituteDataSource" matSort>
@@ -88,19 +88,23 @@
                     matTooltipPosition="below">
                     <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
                   </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Reset Password"
+                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                    [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Reset Password"
                     (click)="resetPassword(row.userId)" matTooltipPosition="below">
                     <span class="fa-passwd-reset fa-stack">
                       <i class="fa fa-undo fa-stack-2x"></i>
                       <i class="fa fa-lock fa-stack-1x"></i>
                     </span>
                   </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Resend Welcome Letter" matTooltipPosition="below">
+                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                    [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Resend Welcome Letter"
+                    matTooltipPosition="below">
                     <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
                   </a>
                   <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
                     [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'" matTooltipPosition="above"
-                    [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" color=""></mat-slide-toggle>
+                    [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)"
+                    [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" color=""></mat-slide-toggle>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>

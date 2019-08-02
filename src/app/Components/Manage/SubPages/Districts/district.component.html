@@ -4,17 +4,20 @@
     <div class="row">
       <div class="col-md-12 col-lg-12" style="text-align: right">
         <a routerLink="/manage/district/addDistrict"> <button mat-raised-button
-            style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_DISTRICT'">Add
-            Districts</button></a>
+            style="background: #3CCCD1; color: white;" [hideIfUnauthorized]="'ADD_DISTRICT'">
+            Add Districts
+          </button>
+        </a>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12 col-lg-12">
       <div class="example-container mat-elevation-z8">
-        <div class="example-header  col-md-3 col-lg-3">
-          <mat-form-field>
-              <mat-icon matPrefix >search</mat-icon><input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search District">
+        <div class="row example-header">
+          <mat-form-field class="col-md-12 col-lg-12">
+            <mat-icon matPrefix>search</mat-icon><input matInput (keyup)="applyFilter($event.target.value)"
+              placeholder="Search District">
           </mat-form-field>
         </div>
         <mat-table #table [dataSource]="dataSource" matSort>

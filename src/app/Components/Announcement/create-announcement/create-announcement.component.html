@@ -1,0 +1,72 @@
+<mat-card>
+  <mat-card-title>New Announcement</mat-card-title>
+  <hr>
+  <mat-card-content>
+    <form (ngSubmit)="onSubmit(form)" [formGroup]="form">
+      <div class="col-md-offset-1">
+        <div class="row">
+          <mat-form-field class="col-md-6">
+            <mat-label>Recipients</mat-label>
+            <mat-select matNativeControl placeholder="Recipients" formControlName="recipients">
+              <mat-option [value]="1">All Employees</mat-option>
+              <mat-option [value]="2">Teachers</mat-option>
+              <mat-option [value]="3">Substitutes</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col-md-6">
+            <mat-label>Title</mat-label>
+            <input matInput placeholder="Title" formControlName="title">
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="outline" class="col-md-6">
+            <mat-label>Message</mat-label>
+            <textarea matInput placeholder="Message" style="height: 100px;" formControlName="message"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="row col-md-12">
+          <mat-checkbox color="primary" formControlName="scheduleAnnouncement">Schedule Announcement</mat-checkbox>
+        </div>
+        <div class="row col-md-12">
+          <mat-checkbox color="primary" formControlName="showOn">Show On</mat-checkbox>
+        </div>
+        <div class="row">
+          <mat-form-field class="col-md-3">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="showOnDatePicker" placeholder="Choose a date" formControlName="showOnDate">
+            <mat-datepicker-toggle matSuffix [for]="showOnDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #showOnDatePicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="col-md-3">
+            <mat-label>Time</mat-label>
+            <input matInput type="time" placeholder="Time" formControlName="showOnTime">
+          </mat-form-field>
+        </div>
+        <div class="row col-md-12">
+          <mat-checkbox color="primary" formControlName="hideOn">Hide On</mat-checkbox>
+        </div>
+        <div class="row">
+          <mat-form-field class="col-md-3">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="hideOnDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="col-md-3">
+            <mat-label>Time</mat-label>
+            <input matInput type="time" placeholder="Time" formControlName="hideOnTime">
+          </mat-form-field>
+        </div>
+        <div class="row col-md-12">
+          <button type="button" mat-raised-button style="background-color: #74a4a7; color: white;"
+            (click)="onClose()">Cancel</button>
+          <button type="submit" mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px">
+            Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

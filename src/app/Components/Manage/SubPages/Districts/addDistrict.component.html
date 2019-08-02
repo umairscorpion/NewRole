@@ -1,5 +1,6 @@
 <mat-card>
     <mat-card-title>{{districtIdForUpdate ? 'Edit District': 'Add District'}}</mat-card-title>
+    <hr>
     <mat-card-content>
         <form (ngSubmit)="onSubmit(districtForm)" [formGroup]="districtForm">
             <table class="row col-md-offset-1 districtForm-table">
@@ -138,7 +139,8 @@
                 </tr>
                 <tr>
                     <td colspan="2" class="content-center" style="padding-top: 20px">
-                        <button mat-raised-button type="submit" style="background-color: #04c0be; color: white; margin-left: 10px;">
+                        <button mat-raised-button type="submit"
+                            style="background-color: #04c0be; color: white; margin-left: 10px;">
                             {{districtIdForUpdate ? 'Update': 'Add District to Database'}}
                         </button>
                         <a routerLink="/manage/districts">

@@ -70,7 +70,7 @@ export class SchoolSubListComponent implements OnInit {
 
     SearchSubstitute(districtId: any, query: string) {
         let model = {
-            DistrictId: districtId.value
+            DistrictId: districtId.value ? districtId.value : this._userSession.getUserDistrictId()
         }
         this.dataContext.post('user/schoolSubList', model).subscribe((data: any[]) => {
             this.schoolSubList = data;
@@ -82,7 +82,7 @@ export class SchoolSubListComponent implements OnInit {
 
     SearchBlockedSubstitute(districtId: any, query: string) {
         let model = {
-            DistrictId: districtId.value
+            DistrictId: districtId.value ? districtId.value : this._userSession.getUserDistrictId()
         }
         this.dataContext.post('user/blockedSchoolSubList', model).subscribe((data: any[]) => {
             this.blockedSchoolSubList = data;
