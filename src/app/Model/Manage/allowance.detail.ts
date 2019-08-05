@@ -11,4 +11,5 @@ export interface Allowance {
     expirationEndDate: Date | string;
     isExpired: boolean;
     isExpiredAtEndOfYear: boolean;
+    districtName:string;
 }

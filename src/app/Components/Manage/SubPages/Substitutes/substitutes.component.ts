@@ -13,6 +13,7 @@ import * as moment from 'moment';
 import { User } from '../../../../Model/user';
 import swal from 'sweetalert2';
 import { environment } from '../../../../../environments/environment';
+import { PopupDialogForNotificationSettings } from './SubPages/popups/notification-settings.popup';
 
 @Component({
   templateUrl: 'substitutes.component.html',
@@ -152,6 +153,14 @@ export class SubstitutesComponent implements OnInit {
       });
     },
       error => <any>error);
+  }
+
+  ViewSubstituteNotificationSettings(SelectedRow: any) {
+      this.dialog.open(PopupDialogForNotificationSettings, {
+        data: SelectedRow.userId,
+        height: '718px',
+        width: '650px',
+      });
   }
 
   sendWelcomeLetter(user: User) {

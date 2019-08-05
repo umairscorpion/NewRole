@@ -1,0 +1,106 @@
+.avatar-wrapper{
+    position: relative;
+    height: 120px;
+    width: 120px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 1px 1px 15px -5px black;
+    transition: all .3s ease;
+      .profile-pic {
+      height: 100%;
+          width: 100%;
+          transition: all .3s ease;
+          &:after{
+              font-family: FontAwesome;
+              content: "\f007";
+              top: 0; left: 0;
+              width: 100%;
+              height: 100%;
+              position: absolute;
+              font-size: 80px;
+              background: #ecf0f1;
+              color: #34495e;
+              text-align: center;
+          }
+      }
+  }
+  
+  .absence-summary-title {
+    color: #5e5e5e;
+    background: #f3f3f3;
+    padding: 10px !important;
+    border-top: solid 1px #e8e6e7;
+    border-bottom: solid 1px #e8e6e7;
+    font-size: 1.2em;
+    padding-left: 30px !important;
+  }
+  
+  .report-details-table tr {
+    td:first-child  {
+    vertical-align: middle;
+    text-align: left;
+    color: #ababab;
+    width: 20%;
+    font-size: 12px;
+    padding-left: 50px;
+    }
+    td:last-child  {
+      vertical-align: middle;
+      text-align: left;
+      color: #868686;
+      font-size: 12px;
+      }
+  }
+  .heading-div {
+    margin-top: 6px;
+    height: 26px;
+    background-color: rgba(209,196,233,.3);
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 40px;
+}
+
+.notification-div {
+    padding: 10px;
+    padding-right: -272px;
+    width: 45%;
+    margin-top: 15px;
+}
+
+.categories-div {
+    width: 80%;
+    margin-top: 30px;
+}
+
+.school-div {
+    padding: 10px;
+    // padding-right: -272px;
+    width: 40%;
+    margin-top: 15px;
+}
+
+@media(max-width:570px){
+    .changewidth{
+      width: 100%;
+    }
+
+  }
+
+.school-save-btn {
+    text-align: center;
+    // width: 75%;
+    margin-top: 20px;
+}
+
+.categories-save-btn {
+    text-align: center;
+    // width: 85%;
+    // margin-top: 50px;
+}
+
+.notification-save-btn {
+    text-align: center;
+    // width: 75%;
+    margin-top: 20px;
+}
