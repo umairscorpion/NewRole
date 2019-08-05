@@ -15,6 +15,7 @@ emailAlert: boolean;
 textAlert: boolean;
 eventName: string;
 substituteId: string;
+isSubscribedEmail: boolean
 
 //Grade Levels for Notifications
 gradeNotificationId: number;

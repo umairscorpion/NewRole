@@ -128,6 +128,9 @@
           <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
+        <div class="row mt-30" *ngIf="dataSource.length == 0">
+          <div class="alert-warning m-20 p-20">No data to display.</div>
+        </div>
         <mat-paginator [length]="resultsLength" [pageSize]="30">
         </mat-paginator>
       </div>

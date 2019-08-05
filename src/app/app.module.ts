@@ -163,6 +163,7 @@ import { SubstituteAvailabilityComponent } from './Components/Dashboard/substitu
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
 import { PositionComponent } from './Components/Manage/SubPages/Substitutes/SubPages/popups/position-detail.popup.component';
+import { PopupDialogForNotificationSettings } from './Components/Manage/SubPages/Substitutes/SubPages/popups/notification-settings.popup';
 import { PayRateComponent } from './Components/Manage/SubPages/Substitutes/SubPages/PayRate/payRate-detail.component';
 import { PayRollComponent } from './Components/Payroll/payroll.component';
 import { ExcelService } from './Services/excel.service';
@@ -402,7 +403,8 @@ const customNotifierOptions: NotifierOptions = {
         SplashScreenComponent,
         SubscriptionComponent,
         SchoolFilesComponent,
-        ShowSchoolFilesPopupComponent
+        ShowSchoolFilesPopupComponent,
+        PopupDialogForNotificationSettings
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -426,7 +428,8 @@ const customNotifierOptions: NotifierOptions = {
         UserEditComponent,
         EventAddComponent,
         SplashScreenComponent,
-        ShowSchoolFilesPopupComponent
+        ShowSchoolFilesPopupComponent,
+        PopupDialogForNotificationSettings
     ],
     providers: [
         DatePipe,

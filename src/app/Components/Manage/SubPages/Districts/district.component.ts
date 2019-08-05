@@ -1,16 +1,18 @@
-import { Component, ViewChild, Inject } from '@angular/core';
+import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { MatPaginator, MatTableDataSource, MatSort, MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { IDistrict } from '../../../../Model/Manage/district';
 import { DistrictService } from '../../../../Service/Manage/district.service';
 import { DataContext } from '../../../../Services/dataContext.service';
 import swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   templateUrl: 'district.component.html',
   styleUrls: ['district.component.scss']
 })
 export class DistrictsComponent {
+  private notifier: NotifierService;
   displayedColumns = ['DistrictName', 'DistrictAddress', 'City', 'DistrictZipCode', 'action'];
   District: IDistrict;
   dataSource = new MatTableDataSource();
@@ -22,7 +24,9 @@ export class DistrictsComponent {
     private router: Router,
     private _districtService: DistrictService,
     private _dataContext: DataContext,
+    notifier: NotifierService,
     public dialog: MatDialog) {
+      this.notifier = notifier;
   }
 
   ngOnInit(): void {
@@ -84,8 +88,19 @@ export class DistrictsComponent {
       buttonsStyling: false
     }).then(r => {
       if (r.value) {
-        this._districtService.delete('district/', SelectedRow.districtId).subscribe((data: any) => {
-          this.GetDistricts();
+        this._districtService.delete('district/', SelectedRow.districtId).subscribe((response: any) => {
+          if(response == 0){
+            this.notifier.notify('error', 'There is school against this District.');
+          }
+          else if(response == 1){
+            this.notifier.notify('error', 'There is user against this District.');
+          }
+          else{
+            this.notifier.notify('success','Deleted Successfully');
+            this.GetDistricts();
+            
+          }
+          
         },
           error => this.msg = <any>error);
       }

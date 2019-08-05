@@ -333,8 +333,12 @@ export class LeavesComponent implements OnInit {
         }).then(r => {
             if (r.value) {
                 this.absenceService.delete('District/deleteAllowance/', id).subscribe((response: any) => {
-                    this.notifier.notify('success', 'Deleted Successfully');
-                    this.getAllowances();
+                    if (response == 1) {
+                        this.notifier.notify('success', 'Deleted Successfully');
+                        this.getAllowances();
+                    } else {
+                        this.notifier.notify('error', 'There is Leave Type with this Allowance.');
+                    }
                 },
                     error => this.msg = <any>error);
             }
