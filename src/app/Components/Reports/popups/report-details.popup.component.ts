@@ -72,8 +72,9 @@ export class ReportDetailsComponent implements OnInit {
     let absenceStartDate = moment(this.reportDetail.startDate).format('MM/DD/YYYY');
     let currentDate = moment(this.currentDate).format('MM/DD/YYYY');
     let absenceStartTime = moment(this.reportDetail.startTime, 'h:mma');
+    let absenceEndTime = moment(this.reportDetail.endTime, 'h:mma');
     if (absenceStartDate <= currentDate) {
-      if (Time > absenceStartTime) {
+      if (Time > absenceEndTime) {
         this.forDisableResendButton = true;
       }
     }

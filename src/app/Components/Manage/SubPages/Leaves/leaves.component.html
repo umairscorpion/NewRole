@@ -225,7 +225,7 @@
       </mat-tab>
       <mat-tab label="Allowances">
         <div class="row col-lg-12">
-          <div class="ol-md-12 vertical-center">
+          <div class="col-md-12 vertical-center">
             <div class="col-lg-10 vertical-center">
               <span> Allowances </span>
             </div>
@@ -233,9 +233,12 @@
           <div class="col-md-12 col-lg-12">
             <mat-divider></mat-divider>
             <div style="height: 76px;" *ngFor="let allowance of allowances" class="row vertical-center">
-              <div class="col-md-9">
+              <div class="col-md-5">
                 {{allowance.title}}
                 <br> Yearly Allowance {{allowance.yearlyAllowance}}
+              </div>
+              <div class="col-md-4">
+                {{allowance.districtName}}
               </div>
               <div class="col-md-3" style="text-align: center">
                 <mat-slide-toggle #tooltip="matTooltip"

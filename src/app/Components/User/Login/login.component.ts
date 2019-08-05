@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
         if (this.loginFrm.valid) {
             this._userService.userAuthentication(environment.apiUrl, formData.value).subscribe((data: any) => {
                 if(data == 'notactive'){
-                    this.notifier.notify('error','Account inactivated. Contact your Subzz administrator');
+                    this.notifier.notify('error','Account inactivated. Contact your Subzz administrator.');
                     return;
                 }
                 localStorage.setItem('userToken', data.token);

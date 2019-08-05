@@ -1,4 +1,3 @@
-<!-- <h4>My Jobs ({{UpcommingJobs.data && UpcommingJobs.data.length > 0 ? UpcommingJobs.data.length : 0 }})</h4> -->
 <style>
   .mat-table {
     overflow: auto;
@@ -60,9 +59,9 @@
 
           <ng-container matColumnDef="JobId">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Job ID </mat-header-cell>
-            <mat-cell *matCellDef="let Absence"> 
+            <mat-cell *matCellDef="let Absence">
               {{Absence.confirmationNumber}}
-             </mat-cell>
+            </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="Posted">
@@ -85,7 +84,9 @@
 
           <ng-container matColumnDef="Status">
             <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-          <mat-cell *matCellDef="let Absence"> {{Absence.status == 2 && Absence.absenceScope === 2 ? 'Assigned' : Absence.absenceStatusDescription }} </mat-cell>
+            <mat-cell *matCellDef="let Absence">
+              {{Absence.status == 2 && Absence.absenceScope === 2 ? 'Assigned' : Absence.absenceStatusDescription }}
+            </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="Action">
@@ -98,6 +99,10 @@
               <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View"
                 matTooltipPosition="below">
                 <i class="material-icons" (click)="ShowJobDetail(Absence)">visibility</i>
+              </a>
+              <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Running Late"
+                matTooltipPosition="below">
+                <i class="material-icons" (click)="ShowJobDetail(Absence)">directions_run</i>
               </a>
             </mat-cell>
           </ng-container>

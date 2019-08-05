@@ -103,9 +103,14 @@ export class SchoolsComponent implements OnInit {
       buttonsStyling: false
     }).then(r => {
       if (r.value) {
-        this._dataContext.delete('school/', SelectedRow.schoolId).subscribe((data: any) => {
+        this._dataContext.delete('school/', SelectedRow.schoolId).subscribe((response: any) => {
+          if(response == 0){
+            this.notifier.notify('error', 'There is User against this school.');  
+          }
+          else{
           this.notifier.notify('success', 'Deleted Successfully.');
           this.GetSchools();
+          }
         },
           error => this.msg = <any>error);
       }
