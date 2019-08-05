@@ -69,7 +69,7 @@ export class AddDistrictComponent implements OnInit {
                         SecondHaifStartTime: data[0].district2ndHalfStart,
                         EndTime: data[0].districtEndTime,
                         TimeZone: data[0].districtTimeZone,
-                        PhoneNo: data[0].districtPhone,
+                        PhoneNo: this.getPhoneNumber(data[0].districtPhone),
                         IsActive: data[0].isActive
                     }
                     this.districtForm.setValue(DistrictModel);
@@ -83,6 +83,11 @@ export class AddDistrictComponent implements OnInit {
         });
     }
 
+    getPhoneNumber(phoneNumber: string): string {
+        phoneNumber = phoneNumber.includes('+1') ? phoneNumber.split('+1')[1] : phoneNumber;
+        return phoneNumber;
+    }
+    
     GetCountries(): void {
         this._districtService.getCountries('districtLookup/getCountries').subscribe((data: any) => {
             this.countries = data;
@@ -121,7 +126,7 @@ export class AddDistrictComponent implements OnInit {
                     District2ndHalfStart: form.value.SecondHaifStartTime,
                     DistrictEndTime: form.value.EndTime,
                     DistrictTimeZone: form.value.TimeZone,
-                    DistrictPhone: form.value.PhoneNo,
+                    DistrictPhone: '+1' + form.value.PhoneNo,
                     IsActive: form.value.IsActive
                 }
                 if (this.districtIdForUpdate > 0) {

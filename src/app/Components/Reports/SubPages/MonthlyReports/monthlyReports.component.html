@@ -87,7 +87,7 @@
     </div>
   </div>
   <div class="row">
-    <mat-tab-group [(selectedIndex)]="selectedTabIndex">
+    <mat-tab-group (selectedTabChange)="onTabChange($event.index)" [selectedIndex]="selectedTab">
       <mat-tab label="Filled">
         <div class="m-30">
           <ngx-datatable class="material" style="overflow: auto;" [rows]="filledAbsenceDetails" [headerHeight]="50" [footerHeight]="50"

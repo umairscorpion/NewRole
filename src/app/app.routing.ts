@@ -70,6 +70,7 @@ import { SharedCalendarComponent } from './Components/Calendar/shared-calendar.c
 import { UserRoleType } from './Shared/enum';
 import { SubscriptionComponent } from './Components/User/Unsubscribed/unsubscribed.component';
 import { SchoolFilesComponent } from './Components/SchoolFiles/school-files.component';
+import { CreateAnnouncementComponent } from './Components/Announcement/create-announcement/create-announcement.component';
 
 const appRoutes: Routes = [
     {
@@ -227,7 +228,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
+                        permission: { roles: [UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -239,7 +240,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
+                        permission: { roles: [UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -299,7 +300,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -323,7 +324,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin] }
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
                     }
                 },
                 {
@@ -616,6 +617,18 @@ const appRoutes: Routes = [
                 data: {
                     path: '/schoolFiles',
                     title: 'School Files',
+                    type: 'main',
+                    icontype: 'apps',
+                    collapse: 'components',
+                    ab: 'account_circle',
+                    permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SchoolAdmin, UserRoleType.SuperAdmin, UserRoleType.Employee, UserRoleType.Substitute] }
+                }
+            },
+            {
+                path: 'Announcement/CreateAnnouncement', component: CreateAnnouncementComponent, canActivate: [AuthGuard],
+                data: {
+                    path: '/Announcement/CreateAnnouncement',
+                    title: 'Create Announcements',
                     type: 'main',
                     icontype: 'apps',
                     collapse: 'components',

@@ -27,7 +27,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     @ViewChild('chartUnFilled') chartUnFilled: ElementRef;
     @ViewChild('chartNoSubReq') chartNoSubReq: ElementRef;
     context: CanvasRenderingContext2D;
-    selectedTabIndex: any = 0;
+    selectedTab: any ;
     currentDate: Date = new Date();
     msg: string;
     indLoading = false;
@@ -67,11 +67,15 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
+        this.onTabChange(0);
     }
 
     ngAfterViewInit(): void {
         this.loadReportSummary();
-        this.selectedTabIndex = 1;
+    }
+
+    onTabChange(tab: any) {
+        this.selectedTab = tab;
     }
 
     loadReportSummary() {
