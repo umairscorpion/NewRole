@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { DataContext } from 'src/app/Services/dataContext.service';
 
 @Component({
   selector: 'app-create-announcement',
@@ -12,7 +13,7 @@ export class CreateAnnouncementComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-  ) { }
+    private _dataContext: DataContext) { }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -42,5 +43,9 @@ export class CreateAnnouncementComponent implements OnInit {
       HideOnDate: form.value.hideOnDate,
       HideOnTime: form.value.hideOnTime,
     }
+    this._dataContext.post('announcement/insertAnnouncement', model).subscribe((data: any) => {
+
+    },
+      error => <any>error);
   }
 }
