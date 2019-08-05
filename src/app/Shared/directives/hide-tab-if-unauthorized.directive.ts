@@ -5,7 +5,7 @@ import { AuthorizationService } from '../../Services/authorization.service';
     selector: '[hideTabIfUnauthorized]'
 
 })
-export class HideIfUnauthorizedDirective implements AfterViewInit {
+export class HideTabIfUnauthorizedDirective implements AfterViewInit {
     @Input('hideTabIfUnauthorized')
     permission: string;
     hide: Boolean = true;

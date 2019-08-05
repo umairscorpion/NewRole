@@ -43,4 +43,10 @@ export class CreateAnnouncementComponent implements OnInit {
       HideOnTime: form.value.hideOnTime,
     }
   }
+
+  onSubmit(from: any) {
+  }
+
+  onClose() {
+  }
 }

@@ -104,7 +104,7 @@ export class RunPayroll implements OnInit {
 
     onExportingToCSV() {
         const title = 'Payroll Report';
-            const header = ["Employee Name", "Absence Id", "Reason", "Date", "Time", "District", "Status", "Substitute", "Notes", "Pay Rate", "Hours", "School"]
+            const header = ["Last Name", "First Name", "Job Id", "Reason", "Date", "Time", "School", "Status", "Substitute", "Notes", "Pay Rate", "Hours", "District"]
             let workbook = new Workbook();
             let worksheet = workbook.addWorksheet('Report');
             let titleRow = worksheet.addRow([title]);
@@ -209,11 +209,11 @@ export class RunPayroll implements OnInit {
     }
     objToArray(report: ReportDetail) {
         var result = [];
-        result.push(report.employeeName, report.absenceId, report.reason, moment(report.startDate).format('MM/DD/YYYY') 
+        result.push(report.employeeLastName, report.employeeFirstName, report.confirmationNumber, report.reason, moment(report.startDate).format('MM/DD/YYYY') 
             + " - " + moment(report.endDate).format('MM/DD/YYYY'),
             this.timeFormatPipe.transform(report.startTime) + "-" + this.timeFormatPipe.transform(report.endTime),
-            report.districtName, report.statusTitle, report.substituteName, report.notes,
-            report.payRate, report.dailyHours, report.schoolName)
+            report.schoolName, report.statusTitle, report.substituteName, report.notes,
+            report.payRate, report.dailyHours, report.districtName)
         return result;
     }
 }

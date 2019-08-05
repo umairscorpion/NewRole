@@ -33,10 +33,10 @@
                 <div *ngIf="userRole != 4" style="margin-top:20px" [hideIfUnauthorized]="'VIEW_SUBSTITUTE_AVAILABILITY'">
                     <a (click)="openSubstituteUnavailabilityCalendar()">Substitute Availability</a>
                 </div>
-                <div style="margin-top: 20px">
+                <div style="margin-top: 20px" [hideIfUnauthorized]="'ACCESS_WEEKLY_TIME_CLOCK'">
                     <a (click)="openTimeClockPage()">Time Clock</a>
                 </div>
-                <div style="margin-top: 20px" *ngIf="userRole === 1 || userRole === 2 || userRole === 5">
+                <div style="margin-top: 20px" [hideIfUnauthorized]="'VIEW_SHARED_CALENDAR'" *ngIf="userRole === 1 || userRole === 2 || userRole === 5">
                     <!-- District Admin, School Admin, SuperAdmin -->
                     <a (click)="openSharedCalendar()">Shared Calendar</a>
                 </div>

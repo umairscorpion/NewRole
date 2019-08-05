@@ -264,7 +264,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin, UserRoleType.SchoolAdmin] }
                     }
                 },
                 {
@@ -537,7 +537,7 @@ const appRoutes: Routes = [
                     icontype: 'apps',
                     collapse: 'components',
                     ab: 'account_circle',
-                    permission: { roles: [UserRoleType.SuperAdmin] }
+                    permission: { roles: [UserRoleType.SuperAdmin, UserRoleType.DistrictAdmin] }
                 }
             },
             {
