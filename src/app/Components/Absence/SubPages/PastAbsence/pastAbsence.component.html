@@ -1,6 +1,5 @@
 <style>
     /* Structure */
-
     .example-container {
         display: flex;
         flex-direction: column;
@@ -37,11 +36,11 @@
                     </ng-container>
 
                     <ng-container matColumnDef="JobId">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Job ID </mat-header-cell>
-                            <mat-cell *matCellDef="let Absence"> 
-                              {{Absence.confirmationNumber}} </mat-cell>
-                          </ng-container>
-                          
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Job ID </mat-header-cell>
+                        <mat-cell *matCellDef="let Absence">
+                            {{Absence.confirmationNumber}} </mat-cell>
+                    </ng-container>
+
                     <ng-container matColumnDef="Posted">
                         <mat-header-cell *matHeaderCellDef mat-sort-header> Posted </mat-header-cell>
                         <mat-cell *matCellDef="let Absence"> {{Absence.createdDate | date}}
@@ -58,7 +57,8 @@
 
                     <ng-container matColumnDef="Status">
                         <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-                        <mat-cell *matCellDef="let Absence"> {{!Absence.isApprovalRequired && Absence.status !== 4 ? 'Pending Approval' : Absence.status === 2 && Absence.durationType === 2 ? 'Assigned' : Absence.absenceStatusDescription}}
+                        <mat-cell *matCellDef="let Absence">
+                            {{!Absence.isApprovalRequired && Absence.status !== 4 ? 'Pending Approval' : Absence.status === 2 && !Absence.acceptedVia ? 'Assigned' : Absence.absenceStatusDescription}}
                         </mat-cell>
                     </ng-container>
 

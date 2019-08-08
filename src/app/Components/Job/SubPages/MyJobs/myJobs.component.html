@@ -85,7 +85,7 @@
           <ng-container matColumnDef="Status">
             <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
             <mat-cell *matCellDef="let Absence">
-              {{Absence.status == 2 && Absence.absenceScope === 2 ? 'Assigned' : Absence.absenceStatusDescription }}
+              {{Absence.status == 2 && !Absence.acceptedVia ? 'Assigned' : Absence.absenceStatusDescription }}
             </mat-cell>
           </ng-container>
 
@@ -100,10 +100,10 @@
                 matTooltipPosition="below">
                 <i class="material-icons" (click)="ShowJobDetail(Absence)">visibility</i>
               </a>
-              <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Running Late"
+              <!-- <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Running Late"
                 matTooltipPosition="below">
-                <i class="material-icons" (click)="ShowJobDetail(Absence)">directions_run</i>
-              </a>
+                <i class="material-icons" (click)="ShowRuningLate(Absence)">directions_run</i>
+              </a> -->
             </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>

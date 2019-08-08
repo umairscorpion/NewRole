@@ -38,7 +38,7 @@
                 <td>{{data.absenceReasonDescription}}</td>
             </tr>
             <tr>
-                <td>Absence Type:</td>
+                <td>Duration Type:</td>
                 <td>{{data.durationType == 1 ? 'Full Day' : data.durationType == 2 ? 'First Half' : data.durationType == 3 ?
                     'Second Half' : 'Custom Time'}}</td>
             </tr>
@@ -52,7 +52,8 @@
             </tr>
             <tr>
                 <td>Status:</td>
-                <td>{{data.absenceStatusDescription}}</td>
+                <td>{{data.status === 2 && !data.acceptedVia ? 'Assigned' : data.absenceStatusDescription}}
+                </td>
             </tr>
             <tr>
                 <td>Notes to Substitute:</td>

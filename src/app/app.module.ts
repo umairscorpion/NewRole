@@ -207,6 +207,7 @@ import { ShowSchoolFilesPopupComponent } from './Shared/show-school-files-popup/
 import { CreateAnnouncementComponent } from './Components/Announcement/create-announcement/create-announcement.component';
 import { HideTabIfUnauthorizedDirective } from './Shared/directives/hide-tab-if-unauthorized.directive';
 import { objectLengthPipe } from './Shared/pipe/objectLength.pipe';
+import { PopupDialogForRunningLate } from './Components/Job/popus/runningLate.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -412,7 +413,8 @@ const customNotifierOptions: NotifierOptions = {
         ShowSchoolFilesPopupComponent,
         PopupDialogForNotificationSettings,
         CreateAnnouncementComponent,
-        objectLengthPipe
+        objectLengthPipe,
+        PopupDialogForRunningLate
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -437,7 +439,8 @@ const customNotifierOptions: NotifierOptions = {
         EventAddComponent,
         SplashScreenComponent,
         ShowSchoolFilesPopupComponent,
-        PopupDialogForNotificationSettings
+        PopupDialogForNotificationSettings,
+        PopupDialogForRunningLate
     ],
     providers: [
         DatePipe,

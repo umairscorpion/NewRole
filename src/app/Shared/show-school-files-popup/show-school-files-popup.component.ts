@@ -38,9 +38,21 @@ export class ShowSchoolFilesPopupComponent implements OnInit {
         window.navigator.msSaveOrOpenBlob(newBlob);
         return;
       }
-      // To open in browser
-      const files = new Blob([blob], { type: fileData.attachedFileId });
-      window.open(URL.createObjectURL(files));
+      if (fileData.fileContentType == "text/plain") {
+        // To open in browser
+        const files = new Blob([blob], { type: fileData.fileContentType });
+        window.open(URL.createObjectURL(files));
+      }
+      else {
+        let data = window.URL.createObjectURL(newBlob);
+        let link = document.createElement('a');
+        link.href = data;
+        link.download = fileData.fileName;
+        link.click();
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+        }, 100);
+      }
     },
       error => this.msg = <any>error);
   }
@@ -53,9 +65,6 @@ export class ShowSchoolFilesPopupComponent implements OnInit {
         window.navigator.msSaveOrOpenBlob(newBlob);
         return;
       }
-      // To open in browser
-      // const files = new Blob([blob], { type: fileData.attachedFileId });
-      // window.open(URL.createObjectURL(files));
       // To Download
       let data = window.URL.createObjectURL(newBlob);
       let link = document.createElement('a');

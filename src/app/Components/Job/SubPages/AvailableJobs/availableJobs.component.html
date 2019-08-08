@@ -84,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row col-md-12 col-lg-12">
+            <div class="row">
                 <div class="example-container mat-elevation-z8">
                     <mat-table *ngIf='this.AvailableJobs.data.length > 0' #table [dataSource]="AvailableJobs" matSort>
                         <!-- Position Column -->
@@ -144,9 +144,9 @@
                                         attach_file
                                     </i>
                                 </div>
-                                <div *ngIf="this.Files.length > 0">
+                                <div *ngIf="Files.length > 0">
                                     <i class="material-icons" #tooltip="matTooltip" (click)="ShowSchoolFiles()"
-                                        style="color:#333333; cursor: pointer;" matTooltip="Files"
+                                        style="color:#333333; cursor: pointer;" matTooltip="School Files"
                                         matTooltipPosition="below">
                                         description
                                     </i>
