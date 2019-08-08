@@ -5,6 +5,7 @@ import { MatSelectionList } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { UserSession } from 'src/app/Services/userSession.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { SubstituteListCategory } from '../../../../Model/SubstituteListCategory';
 
 @Component({
     selector: 'school-sub-list',
@@ -17,6 +18,7 @@ export class SchoolSubListComponent implements OnInit {
     showBlockedSubstitutes: boolean;
     showSubstitutes: boolean
     private notifier: NotifierService;
+    currentPage: number = 1;
     msg: string;
     Districts: any;
     subListForm: FormGroup;
@@ -24,7 +26,7 @@ export class SchoolSubListComponent implements OnInit {
     selectedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
     blockedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
     selectedBlockedSchoolSubList: SchoolSubList[] = Array<SchoolSubList>();
-
+    substituteListCategory: SubstituteListCategory[] = Array<SubstituteListCategory>();
     constructor(
         private dataContext: DataContext,
         notifier: NotifierService,
@@ -41,6 +43,36 @@ export class SchoolSubListComponent implements OnInit {
         this.GetDistricts();
         this.getSustitutes();
         this.getBlockedSustitutes();
+        // this.getSubstituteCategoryAndList();
+    }
+
+    getSubstituteCategoryAndList() {
+        this.dataContext.getById('user/getSubstituteCategoryList', this._userSession.getUserDistrictId()).
+            subscribe((data: SubstituteListCategory[]) => {
+                this.substituteListCategory = data;
+            },
+                error => this.msg = <any>error);
+    }
+
+    saveSubstituteListByCategory(category: SubstituteListCategory) {
+        this.dataContext.post('user/updateSubstituteList', category).
+            subscribe((data: SubstituteListCategory[]) => {
+                this.notifier.notify('success', 'Updated Successfully')
+            },
+                error => this.msg = <any>error);
+    }
+
+    addOrRemoveSubstituteInCurrentCategory(sub: any, categoryId: number) {
+        this.substituteListCategory.filter(t => t.categoryId === categoryId)[0].substituteList.filter(us => us.userId == sub.userId)[0].isAdded =
+        !this.substituteListCategory.filter(t => t.categoryId === categoryId)[0].substituteList.filter(us => us.userId == sub.userId)[0].isAdded;
+    }
+
+    removeSubstituteInCurrentCategory() {
+        this.dataContext.getById('user/getSubstituteCategoryList', this._userSession.getUserDistrictId()).
+            subscribe((data: SubstituteListCategory[]) => {
+                this.substituteListCategory = data;
+            },
+                error => this.msg = <any>error);
     }
 
     onTabChanged(event: any) {
@@ -166,4 +198,6 @@ export class SchoolSubListComponent implements OnInit {
         },
             error => <any>error);
     }
+
+
 }

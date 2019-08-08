@@ -16,6 +16,7 @@ import { ChartsModule } from 'ng2-charts';
 import { BlockUIModule } from 'ng-block-ui';
 import { TagInputModule } from 'ngx-chips';
 import { NgxPrintModule } from 'ngx-print';
+import {NgxPaginationModule} from 'ngx-pagination';
 import { createCustomElement } from '@angular/elements';
 
 
@@ -205,6 +206,7 @@ import { SchoolFilesComponent } from './Components/SchoolFiles/school-files.comp
 import { ShowSchoolFilesPopupComponent } from './Shared/show-school-files-popup/show-school-files-popup.component';
 import { CreateAnnouncementComponent } from './Components/Announcement/create-announcement/create-announcement.component';
 import { HideTabIfUnauthorizedDirective } from './Shared/directives/hide-tab-if-unauthorized.directive';
+import { objectLengthPipe } from './Shared/pipe/objectLength.pipe';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -313,6 +315,7 @@ const customNotifierOptions: NotifierOptions = {
         NgSelectModule,
         SatDatepickerModule,
         SatNativeDateModule,
+        NgxPaginationModule
     ],
     declarations: [
         SiteLayoutComponent,
@@ -408,7 +411,8 @@ const customNotifierOptions: NotifierOptions = {
         SchoolFilesComponent,
         ShowSchoolFilesPopupComponent,
         PopupDialogForNotificationSettings,
-        CreateAnnouncementComponent
+        CreateAnnouncementComponent,
+        objectLengthPipe
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
