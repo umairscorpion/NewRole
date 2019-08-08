@@ -50,6 +50,11 @@
                 <mat-cell *matCellDef="let Substitute"> {{Substitute.userTypeDescription}} </mat-cell>
               </ng-container>
 
+              <ng-container matColumnDef="ClassificationStatus">
+                <mat-header-cell *matHeaderCellDef> Classification Status </mat-header-cell>
+                <mat-cell *matCellDef="let Substitute"> {{Substitute.isCertified ? 'Certified' : 'Classified'}} </mat-cell>
+              </ng-container>
+
               <ng-container matColumnDef="Email">
                 <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
                 <mat-cell *matCellDef="let Substitute"> {{Substitute.email}} </mat-cell>
@@ -81,7 +86,8 @@
                   </a>
                   <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Notification Settings"
                     matTooltipPosition="below">
-                    <i class="material-icons" (click)="ViewSubstituteNotificationSettings(row)">notification_important</i>
+                    <i class="material-icons"
+                      (click)="ViewSubstituteNotificationSettings(row)">notification_important</i>
                   </a>
                   <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute"
                     matTooltipPosition="below">

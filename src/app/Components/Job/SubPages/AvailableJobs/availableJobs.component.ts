@@ -21,7 +21,6 @@ import { FileManager } from 'src/app/Model/FileSystem/fileManager.detail';
     selector: 'available-jobs',
     templateUrl: 'availableJobs.component.html',
     styleUrls: ['availableJobs.component.scss']
-
 })
 export class AvailableJobsComponent implements OnInit {
     coloringAbsences = (d: Date) => {
@@ -52,7 +51,7 @@ export class AvailableJobsComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
     iamRequested: boolean;
-    Files: any;
+    Files = [];
 
     constructor(
         private _dataContext: DataContext,

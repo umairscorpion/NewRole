@@ -5,12 +5,6 @@ import { UserSession } from '../../../../Services/userSession.service';
 import { IEmployee } from '../../../../Model/Manage/employee';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { merge } from 'rxjs/observable/merge';
-import { of as observableOf } from 'rxjs/observable/of';
-import { catchError } from 'rxjs/operators/catchError';
-import { map } from 'rxjs/operators/map';
-import { startWith } from 'rxjs/operators/startWith';
-import { switchMap } from 'rxjs/operators/switchMap';
 import { NotifierService } from 'angular-notifier';
 import { PopupDialogForEmployeeDetail } from './popups/viewEmployee.popup.component';
 import { User } from '../../../../Model/user';
@@ -22,7 +16,7 @@ import swal from 'sweetalert2';
 })
 export class EmployeesComponent implements OnInit {
   private notifier: NotifierService;
-  displayedColumns = ['firstName', 'LastName', 'Email', 'PhoneNumber', 'location', 'Role', 'action'];
+  displayedColumns = ['firstName', 'LastName', 'Email', 'PhoneNumber', 'location', 'Role', 'ClassificationStatus', 'action'];
   DataSourceEmployeesObj: DataSourceEmployees | null;
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -35,7 +29,7 @@ export class EmployeesComponent implements OnInit {
   msg: string;
   Districts: any;
   UserRole: number = this._userSession.getUserRoleId();
-  
+
   constructor(
     private router: Router,
     private _userSession: UserSession,
@@ -205,33 +199,33 @@ export class EmployeesComponent implements OnInit {
     },
       error => this.msg = <any>error);
   }
-GetDistricts(): void{
-  this._dataContext.get('district/getDistricts').subscribe((data: any) => {
-    this.Districts = data;
-},
-    error => <any>error);
-}
-onChangeDistrict(districtId: any) {
-  let RoleId = 3;
-  let OrgId = this._userSession.getUserOrganizationId();
-  this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + districtId).subscribe((data: any) => {
+  GetDistricts(): void {
+    this._dataContext.get('district/getDistricts').subscribe((data: any) => {
+      this.Districts = data;
+    },
+      error => <any>error);
+  }
+  onChangeDistrict(districtId: any) {
+    let RoleId = 3;
+    let OrgId = this._userSession.getUserOrganizationId();
+    this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + districtId).subscribe((data: any) => {
       this.dataSource.data = data;
       this.dataSource = data.filter((t => t.districtId == districtId));
-  },
+    },
       error => this.msg = <any>error);
-}
+  }
 
-GetStaff(): void {
-  let RoleId = 3;
-  let OrgId = this._userSession.getUserOrganizationId();
-  let DistrictId = this._userSession.getUserDistrictId();
-  this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId).subscribe((data: any) => {
-    this.dataSource.data = data;
-    // this.lastActiveDaysTemp = moment(data.lastActive).format('YYYY-MM-DD');
-    // this.lastActiveDays = Math.abs(this.currentDate.diff(this.lastActiveDaysTemp, 'days'));
-  },
-    error => this.msg = <any>error);
-}
+  GetStaff(): void {
+    let RoleId = 3;
+    let OrgId = this._userSession.getUserOrganizationId();
+    let DistrictId = this._userSession.getUserDistrictId();
+    this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId).subscribe((data: any) => {
+      this.dataSource.data = data;
+      // this.lastActiveDaysTemp = moment(data.lastActive).format('YYYY-MM-DD');
+      // this.lastActiveDays = Math.abs(this.currentDate.diff(this.lastActiveDaysTemp, 'days'));
+    },
+      error => this.msg = <any>error);
+  }
   resetPassword(userdId: string) {
     let model = {
       userId: userdId,
@@ -255,5 +249,5 @@ export class DataSourceEmployees {
     let DistrictId = this._UserSession.getUserDistrictId();
     return this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId);
   }
- 
+
 }

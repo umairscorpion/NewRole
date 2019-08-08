@@ -26,30 +26,25 @@
 
 .mat-column-JobId {
   flex: 0 0 5% !important;
-  min-width: 90px !important;
+  min-width: 100px !important;
 }
 
 .mat-column-Posted {
     flex: 0 0 5% !important;
-    min-width: 150px !important;
+    min-width: 200px !important;
 }
 
 .mat-column-Location {
   flex: 0 0 5% !important;
-  min-width: 160px !important;
+  min-width: 200px !important;
 }
 
 .mat-column-Employee {
     flex: 0 0 5% !important;
-    min-width: 160px !important;
+    min-width: 180px !important;
 }
 
-.mat-column-Notes {
+.mat-column-Status {
   flex: 0 0 5% !important;
-  min-width: 140px !important;
-}
-
-.mat-column-Attachment {
-  flex: 0 0 5% !important;
-  min-width: 140px !important;
+  min-width: 180px !important;
 }

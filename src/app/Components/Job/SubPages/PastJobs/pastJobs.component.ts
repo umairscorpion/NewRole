@@ -8,7 +8,8 @@ import { NotifierService } from 'angular-notifier';
 
 @Component({
     selector: 'past-jobs',
-    templateUrl: 'pastJobs.component.html'
+    templateUrl: 'pastJobs.component.html',
+    styleUrls: ['pastJobs.component.scss']
 })
 export class PastJobsComponent implements OnInit {
     PastJobCount: any;

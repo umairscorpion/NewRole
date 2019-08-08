@@ -12,7 +12,8 @@ import { PopupDialogForRunningLate } from '../../popus/runningLate.component';
 
 @Component({
     selector: 'my-jobs',
-    templateUrl: 'myJobs.component.html'
+    templateUrl: 'myJobs.component.html',
+    styleUrls: ['myJobs.component.scss']
 })
 export class MyJobsComponent implements OnInit {
     UpcomingJobCount: any;

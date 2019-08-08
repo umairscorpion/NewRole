@@ -48,4 +48,5 @@ export class Absence extends Entity {
     onlySubjectSpecialist: boolean;
     runningLateId: number;
     runningLateTitle: number;
+    acceptedVia: string;
 }
