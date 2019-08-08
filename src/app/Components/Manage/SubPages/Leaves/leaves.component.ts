@@ -14,6 +14,8 @@ import { Allowance } from '../../../../Model/Manage/allowance.detail';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
 import swal from 'sweetalert2';
+import { DataContext } from 'src/app/Services/dataContext.service';
+
 
 @Component({
     templateUrl: 'leaves.component.html',
@@ -21,14 +23,18 @@ import swal from 'sweetalert2';
 })
 export class LeavesComponent implements OnInit {
     private notifier: NotifierService;
+    UserRole: number = this.userSession.getUserRoleId();
+    Districts: any;
     msg: string;
     tabClicked: number;
     selectedTab: number;
     allowances: Allowance[];
+    displayedColumnsforAllowances = ['AllowanceName', 'YearlyAllowance', 'CreatedDate', 'Action']
     displayedColumnsForLeaveTypes = ['LeaveTypeName', 'Allowance', 'Approval', 'Visible', 'CreatedDate', 'action'];
     displayedColumnsForLeaveRequests = ['select', 'CreatedDate', 'EmployeeName', 'Description', 'EndDate', 'EndTime', 'LeaveTypeName', 'Status'];
     selection = new SelectionModel<any>(true, []);
     dataSourceForLeaveTypes = new MatTableDataSource();
+    dataSourceForAllowances = new MatTableDataSource();
     leaveRequests: any;
     dataSourceForLeaveRequests = new MatTableDataSource();
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -47,6 +53,7 @@ export class LeavesComponent implements OnInit {
         notifier: NotifierService,
         private activatedRoute: ActivatedRoute,
         public dialog: MatDialog,
+        private _dataContext: DataContext,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer) {
         this.notifier = notifier;
@@ -54,6 +61,7 @@ export class LeavesComponent implements OnInit {
 
     ngOnInit(): void {
         this.GetLeaveTypes();
+        this.GetDistricts();
         this.activatedRoute.queryParams.subscribe((params: any) => {
             if (params.Tab) {
                 this.selectedTab = 1;
@@ -64,10 +72,28 @@ export class LeavesComponent implements OnInit {
         this.getAllowances();
     }
 
+    ngAfterViewInit() {
+        this.dataSourceForLeaveRequests.paginator = this.paginator;
+        this.dataSourceForLeaveRequests.sort = this.sort;
+    }
+
     onTabChange(tab: any) {
         this.selectedTab = tab;
     }
 
+    GetDistricts(): void{
+        this._dataContext.get('district/getDistricts').subscribe((data: any) => {
+          this.Districts = data;
+      },
+          error => <any>error);
+      }
+      onChangeDistrict(districtIdd: any) {
+        this._dataContext.getById('District/getAllowances', this.userSession.getUserDistrictId()).subscribe((data: any) => {
+          this.dataSourceForAllowances = data;
+          this.dataSourceForAllowances = data.filter(t => t.districtId == districtIdd);
+      },
+          error => this.msg = <any>error);
+      }
     GetLeaveTypes(): void {
         let districtId = this.userSession.getUserDistrictId();
         let organizationId = this.userSession.getUserOrganizationId() ? this.userSession.getUserOrganizationId() : '-1';
@@ -92,11 +118,6 @@ export class LeavesComponent implements OnInit {
         this.deniedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === true && t.isArchived === false);
         this.archivedApprovedLeaveRequests = leaveRequests.filter(t => t.isApproved === true && t.isDeniend === false && t.isArchived === true);
         this.archivedDeniedLeaveRequests = leaveRequests.filter(t => t.isApproved === false && t.isDeniend === true && t.isArchived === true);
-    }
-
-    ngAfterViewInit() {
-        this.dataSourceForLeaveRequests.paginator = this.paginator;
-        this.dataSourceForLeaveRequests.sort = this.sort;
     }
 
     isAllSelected() {
@@ -285,6 +306,7 @@ export class LeavesComponent implements OnInit {
     getAllowances() {
         this._districtService.getById('District/getAllowances', this.userSession.getUserDistrictId()).subscribe((allowances: Allowance[]) => {
             this.allowances = allowances;
+            this.dataSourceForAllowances.data = allowances;
         },
             (err: HttpErrorResponse) => {
             });

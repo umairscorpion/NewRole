@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommunicationService } from '../../../../Services/communication.service';
@@ -8,6 +8,7 @@ import { NotifierService } from 'angular-notifier';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import swal from 'sweetalert2';
+import { PopupDialogForRunningLate } from '../../popus/runningLate.component';
 
 @Component({
     selector: 'my-jobs',
@@ -34,6 +35,7 @@ export class MyJobsComponent implements OnInit {
         private _dataContext: DataContext,
         private _userSession: UserSession,
         private _formBuilder: FormBuilder,
+        public dialog: MatDialog,
         notifier: NotifierService,
         private _communicationService: CommunicationService,
         private activatedRoute: ActivatedRoute) {
@@ -201,6 +203,14 @@ export class MyJobsComponent implements OnInit {
     ShowJobDetail(AbsenceDetail: any) {
         AbsenceDetail.isShowAttachment = false;
         this._communicationService.ViewAbsenceDetail(AbsenceDetail);
+    }
+
+    ShowRuningLate(AbsenceDetail: any) {
+        this.dialog.open(PopupDialogForRunningLate, {
+            data:AbsenceDetail,
+            height: '410px',
+            width: '350px',
+          });
     }
 
     AcceptJob(jobNo: number, via: string) {
