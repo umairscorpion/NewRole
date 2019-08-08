@@ -35,13 +35,15 @@
     </mat-form-field>
     <div style="text-align: right">
       <a routerLink="/manage/employees/addemployee">
-        <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 30px;" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
+        <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 30px;"
+          [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
       </a>
     </div>
   </div>
   <div class="col-md-12 col-lg-12" style="text-align: right" *ngIf='UserRole != 5'>
     <a routerLink="/manage/employees/addemployee">
-      <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 14px;" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
+      <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 14px;"
+        [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
     </a>
   </div>
   <div class="row col-md-12 col-lg-12">
@@ -57,7 +59,8 @@
           </mat-form-field>
         </div>
         <div>
-          <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit" (click)="applyFilter(inputName, inputLoc)">Search</button>
+          <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit"
+            (click)="applyFilter(inputName, inputLoc)">Search</button>
         </div>
       </div>
       <mat-table #table [dataSource]="dataSource" matSort>
@@ -81,19 +84,28 @@
           <mat-header-cell *matHeaderCellDef> Phone No </mat-header-cell>
           <mat-cell *matCellDef="let iEmployee"> {{iEmployee.phoneNumber}} </mat-cell>
         </ng-container>
+
         <ng-container matColumnDef="location">
           <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
           <mat-cell *matCellDef="let iEmployee">
             {{iEmployee.organizationName ? iEmployee.organizationName: iEmployee.districtName}} </mat-cell>
         </ng-container>
+
         <ng-container matColumnDef="Role">
           <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
           <mat-cell *matCellDef="let iEmployee"> {{iEmployee.roleName}} </mat-cell>
         </ng-container>
+
         <!-- <ng-container matColumnDef="Approver">
             <mat-header-cell *matHeaderCellDef> Approver </mat-header-cell>
             <mat-cell *matCellDef="let iEmployee"> </mat-cell>
           </ng-container> -->
+
+        <ng-container matColumnDef="ClassificationStatus">
+          <mat-header-cell *matHeaderCellDef> Classification Status </mat-header-cell>
+          <mat-cell *matCellDef="let iEmployee"> {{iEmployee.isCertified ? 'Certified' : 'Classified'}} </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
           <mat-cell *matCellDef="let row">
@@ -101,27 +113,32 @@
               Send Welcome
             </a> -->
             <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Employee" matTooltipPosition="below">
-              <i class="material-icons" (click)="DeleteEmployee(row)" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">delete_sweep</i>
+              <i class="material-icons" (click)="DeleteEmployee(row)"
+                [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">delete_sweep</i>
             </a>
-            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Employee" matTooltipPosition="below">
+            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Employee"
+              matTooltipPosition="below">
               <i class="material-icons" (click)="EditEmployee(row)" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">edit</i>
             </a>
-            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
+            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail"
+              matTooltipPosition="below">
               <i class="material-icons" (click)="ViewEmployeeDetail(row)">visibility</i>
             </a>
-            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" matTooltip="Reset Password"
-              (click)="resetPassword(row.userId)" matTooltipPosition="below">
+            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+              [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" matTooltip="Reset Password" (click)="resetPassword(row.userId)"
+              matTooltipPosition="below">
               <span class="fa-passwd-reset fa-stack">
                 <i class="fa fa-undo fa-stack-2x"></i>
                 <i class="fa fa-lock fa-stack-1x"></i>
               </span>
             </a>
-            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" matTooltip="Resend Welcome Letter"
-              matTooltipPosition="below">
+            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+              [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" matTooltip="Resend Welcome Letter" matTooltipPosition="below">
               <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
             </a>
-            <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'"
-              matTooltipPosition="above" [checked]="row.isActive" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" (change)="UpdateEmployeeStatus(row)"
+            <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
+              [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'" matTooltipPosition="above"
+              [checked]="row.isActive" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" (change)="UpdateEmployeeStatus(row)"
               color=""></mat-slide-toggle>
           </mat-cell>
         </ng-container>

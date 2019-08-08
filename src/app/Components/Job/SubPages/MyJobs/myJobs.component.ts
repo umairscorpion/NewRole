@@ -11,7 +11,8 @@ import swal from 'sweetalert2';
 
 @Component({
     selector: 'my-jobs',
-    templateUrl: 'myJobs.component.html'
+    templateUrl: 'myJobs.component.html',
+    styleUrls: ['myJobs.component.scss']
 })
 export class MyJobsComponent implements OnInit {
     UpcomingJobCount: any;

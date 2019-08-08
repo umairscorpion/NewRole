@@ -20,6 +20,8 @@ import { SettingsService } from "src/app/Services/settings.service";
 import swal from 'sweetalert2';
 import { NotifierService } from "angular-notifier";
 import { DataContext } from "../../Services/dataContext.service";
+import { interval, Subscription } from 'rxjs';
+import { Announcement } from "../../Model/announcement";
 
 @Component({
     selector: 'Subzz-app-dashboard',
@@ -28,6 +30,7 @@ import { DataContext } from "../../Services/dataContext.service";
 })
 export class HomeComponent implements OnInit {
     private notifier: NotifierService;
+    private updateSubscription: Subscription;
     userId: string = this.userSession.getUserId();
     submittedLeaveRequests: LeaveRequest[] = Array<LeaveRequest>();
     absenceSummary: any;
@@ -74,6 +77,8 @@ export class HomeComponent implements OnInit {
     msg: string;
     UserName: string;
     isOpen = true;
+    Announcements: Announcement[] = Array<Announcement>();
+    Announcement: boolean = true;
 
     constructor(
         private router: Router,
@@ -141,6 +146,11 @@ export class HomeComponent implements OnInit {
             this.isOpen = isOpen;
         });
         this.LoadUserResources();
+        // this.GetAnnouncement();
+        // this.updateSubscription = interval(60000).subscribe(
+        //     (val) => {
+        //         this.GetAnnouncement()
+        //     });
     }
 
     LoadUserResources(): void {
@@ -689,6 +699,7 @@ export class HomeComponent implements OnInit {
 
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this._mobileQueryListener);
+        this.updateSubscription.unsubscribe();
     }
 
     getImage(imageName: string) {
@@ -700,4 +711,15 @@ export class HomeComponent implements OnInit {
     jumpToLeaveRequests() {
         this.router.navigate(['/manage/leave'], { queryParams: { Tab: 1 } })
     }
+
+    // GetAnnouncement() {
+    //     let model = {}
+    //     this.dataContext.post('announcement/getAnnouncement', model).subscribe((data: any) => {
+    //         this.Announcements = data;
+    //         // this.Announcements = data.filter(number => moment(number.hideOnTime, 'hh:mm A').isSameOrAfter(moment().format('hh:mm A')));
+    //         // this.Announcements = data.filter(number => moment(number.showOnDate, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')));
+    //         // this.Announcements = data.filter(number => moment(number.hideOnDate, 'hh:mm').isSameOrBefore(moment().format('hh:mm')));
+    //     },
+    //         error => <any>error);
+    // }
 }
