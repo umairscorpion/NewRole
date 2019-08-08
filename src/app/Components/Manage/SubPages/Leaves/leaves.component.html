@@ -1,3 +1,11 @@
+<style>
+.not-empty-select.mat-selected {
+  color: #448ac9 !important;
+}
+:host /deep/ .mat-select-value-text {
+  color: #448ac9 !important;
+}
+</style>
 <mat-card>
   <mat-card-content>
     <mat-card-title>Leave</mat-card-title>
@@ -224,7 +232,66 @@
         </mat-tab-group>
       </mat-tab>
       <mat-tab label="Allowances">
-        <div class="row col-lg-12">
+          <mat-card>
+              <div class="demo-tab-content">
+                
+                <div class="row">
+                  <div class="col-md-1">
+                      <h4>Allowances</h4>
+                  </div>
+                    <div *ngIf='UserRole == 5'>
+                        <mat-form-field appearance="outline" class="col-md-3">
+                          <mat-label>Select District</mat-label>
+                          <mat-select placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
+                            <mat-option class="not-empty-select" *ngFor="let district of Districts" [value]="district.districtId">
+                              {{district.districtName}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                </div>
+                <div class="row col-md-12 col-lg-12">
+                  <div class="example-container mat-elevation-z8">
+                    <mat-table #table [dataSource]="dataSourceForAllowances" matSort>
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="AllowanceName">
+                        <mat-header-cell *matHeaderCellDef> Allowance Name </mat-header-cell>
+                        <mat-cell *matCellDef="let allowance"> {{allowance.title}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="YearlyAllowance">
+                        <mat-header-cell *matHeaderCellDef> Yearly Allowance </mat-header-cell>
+                        <mat-cell *matCellDef="let allowance">{{allowance.yearlyAllowance}}
+                        </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="CreatedDate">
+                          <mat-header-cell *matHeaderCellDef> Beginning Date </mat-header-cell>
+                          <mat-cell *matCellDef="let allowance">{{allowance.createdDate | date}}
+                          </mat-cell>
+                        </ng-container>
+                      <ng-container matColumnDef="Action">
+                        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                        <mat-cell *matCellDef="let allowance">
+                            <mat-slide-toggle #tooltip="matTooltip"
+                            [matTooltip]="allowance.isEnalbled ? 'Click To Disable' : 'Click To Enable'" matTooltipPosition="left"
+                            [checked]="allowance.isEnalbled" (change)="updateAllowance(allowance)" color=""></mat-slide-toggle>
+                          <i class="material-icons" style="cursor: pointer;margin-left: 10px ; color:#448ac9"
+                            #tooltip="matTooltip" matTooltip="Edit Allowance" matTooltipPosition="below"
+                            (click)="editAllowance(allowance)" [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">edit</i>
+                          <!-- <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:#448ac9" #tooltip="matTooltip"
+                            matTooltip="Delete Allowance" matTooltipPosition="below" (click)="deleteAllowance(allowance.id)"
+                            [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">delete_sweep</i> -->
+                        </mat-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="displayedColumnsforAllowances; sticky: true"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumnsforAllowances;"></mat-row>
+                    </mat-table>
+                    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+                    </mat-paginator>
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+        <!-- <div class="row col-lg-12">
           <div class="col-md-12 vertical-center">
             <div class="col-lg-10 vertical-center">
               <span> Allowances </span>
@@ -253,7 +320,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </mat-tab>
       <mat-tab label="Employee Leave Balance">
         <mat-card>

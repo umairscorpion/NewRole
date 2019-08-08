@@ -155,7 +155,12 @@ export class MySettingComponent implements OnInit {
     onChangeCategory(event) {
         event.isNotificationSend = !event.isNotificationSend;
     }
-
+    onChangeNotification(event) {
+        event.isSubscribedEmail = !event.isSubscribedEmail;
+        this._dataContext.Patch('user/updateUserNotifications', event).subscribe((data: any) => {
+        },
+          error => this.msg = <any>error);
+    }
  onChangeGrade(event)
  {
     event.gradeNotification = !event.gradeNotification;
