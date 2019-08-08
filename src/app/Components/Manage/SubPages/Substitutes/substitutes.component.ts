@@ -20,7 +20,7 @@ import { PopupDialogForNotificationSettings } from './SubPages/popups/notificati
   styleUrls: ['substitutes.component.css']
 })
 export class SubstitutesComponent implements OnInit {
-  displayedColumns = ['FirstName', 'LastName', 'Position', 'Email', 'PhoneNumber', 'Active', 'action'];
+  displayedColumns = ['FirstName', 'LastName', 'Position', 'ClassificationStatus', 'Email', 'PhoneNumber', 'Active', 'action'];
   SubstituteDetail: any;
   private notifier: NotifierService;
   District: IDistrict;
@@ -156,11 +156,11 @@ export class SubstitutesComponent implements OnInit {
   }
 
   ViewSubstituteNotificationSettings(SelectedRow: any) {
-      this.dialog.open(PopupDialogForNotificationSettings, {
-        data: SelectedRow.userId,
-        height: '718px',
-        width: '650px',
-      });
+    this.dialog.open(PopupDialogForNotificationSettings, {
+      data: SelectedRow.userId,
+      height: '718px',
+      width: '650px',
+    });
   }
 
   sendWelcomeLetter(user: User) {
@@ -193,10 +193,10 @@ export class SubstitutesComponent implements OnInit {
     },
       error => <any>error);
   }
-  GetDistricts(): void{
+  GetDistricts(): void {
     this._dataContext.get('district/getDistricts').subscribe((data: any) => {
       this.Districts = data;
-  },
+    },
       error => <any>error);
   }
   onChangeDistrict(districtId: any) {
@@ -206,7 +206,7 @@ export class SubstitutesComponent implements OnInit {
       this.substituteDataSource.data = data;
       this.substituteDataSource = data.filter((t => t.districtId == districtId));
     },
-        error => this.msg = <any>error);
+      error => this.msg = <any>error);
   }
 
   onTabChanged(tab: any) {

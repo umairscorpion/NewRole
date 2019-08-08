@@ -15,7 +15,7 @@ export class SchoolSubListComponent implements OnInit {
     @ViewChild('subzz') selectionlist: MatSelectionList;
     @ViewChild('blockedsubzz') blockedselectionlist: MatSelectionList;
     showBlockedSubstitutes: boolean;
-    showSubstitutes: boolean
+    showSubstitutes: boolean;
     private notifier: NotifierService;
     msg: string;
     Districts: any;

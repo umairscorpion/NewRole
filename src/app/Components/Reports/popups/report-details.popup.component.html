@@ -26,7 +26,7 @@
       </div>
       <div class="absence-summary-title p-2 mt-2">Absence Summary</div>
       <br>
-      <table *ngIf="menuAction == 'view' || menuAction == 'delete' || menuAction == 'resend'"
+      <table *ngIf="menuAction == 'view' || menuAction == 'delete' || menuAction == 'resend' || menuAction == 'release'"
         class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
         <tr>
           <td>Job ID:</td>
@@ -153,7 +153,7 @@
         <tr>
           <td>Status:</td>
           <td *ngIf="reportDetail.absenceType != 2 && reportDetail.substituteRequired">
-            {{reportDetail.statusId == 2 ? reportDetail.acceptedVia ? reportDetail.statusTitle + ' ' + '(' + reportDetail.acceptedVia + ')' : reportDetail.statusTitle : reportDetail.statusTitle}}
+            {{reportDetail.statusId == 2 ? reportDetail.acceptedVia ? reportDetail.statusTitle + ' ' + '(' + reportDetail.acceptedVia + ')' : 'Assigned' : reportDetail.statusTitle}}
           </td>
           <td *ngIf="reportDetail.absenceType == 2 && reportDetail.substituteRequired">Assigned</td>
           <td *ngIf="!reportDetail.substituteRequired">N/A</td>

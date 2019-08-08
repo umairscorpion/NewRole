@@ -142,6 +142,7 @@ export class UpcommingAbsenceComponent implements OnInit {
         modeldata.originalFileName = absenceDetail.originalFileName;
         modeldata.employeeProfilePicUrl = absenceDetail.employeeProfilePicUrl;
         modeldata.absenceResendCounter = absenceDetail.absenceResendCounter;
+        modeldata.acceptedVia = absenceDetail.acceptedVia;
         modeldata.callingPage = 'Absence';
 
         const model = new AuditFilter();

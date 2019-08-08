@@ -46,4 +46,5 @@ export class Absence extends Entity {
     confirmationNumber: string;
     onlyCertified: boolean;
     onlySubjectSpecialist: boolean;
+    acceptedVia: string;
 }
