@@ -15,8 +15,8 @@
       <div class="col-md-4 pl-0" style="text-align: right">
         <button *ngIf="reportDetail.callingPage != 'Absence'" type="button" mat-raised-button class="btn btn-warning"
           (click)="performAction('delete')">Delete</button>
-        <button [hideIfUnauthorized]="'EDIT_STAFF_ABSENCES'" type="button" mat-raised-button class="btn btn-info"
-          (click)="performAction('edit')">Edit</button>
+        <button [disabled]="reportDetail.statusId == 4" [hideIfUnauthorized]="'EDIT_STAFF_ABSENCES'" type="button"
+          mat-raised-button class="btn btn-info" (click)="performAction('edit')">Edit</button>
       </div>
     </mat-dialog-actions>
     <hr>

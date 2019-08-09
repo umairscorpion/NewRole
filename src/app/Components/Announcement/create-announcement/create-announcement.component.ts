@@ -13,6 +13,8 @@ export class CreateAnnouncementComponent implements OnInit {
 
   form: FormGroup;
   Districts: any;
+  Organizations: any;
+  DistrictId: any;
 
   constructor(
     private fb: FormBuilder,
@@ -23,6 +25,7 @@ export class CreateAnnouncementComponent implements OnInit {
     this.form = this.fb.group({
       recipients: [1, Validators.required],
       districtId: [0, Validators.required],
+      organizationId: [''],
       title: ['', Validators.required],
       message: ['', Validators.required],
       scheduleAnnouncement: [{ value: 1, disabled: true }],
@@ -42,6 +45,7 @@ export class CreateAnnouncementComponent implements OnInit {
       let model = {
         Recipients: form.value.recipients,
         DistrictId: form.value.districtId,
+        OrganizationId: form.value.organizationId,
         Title: form.value.title,
         Message: form.value.message,
         ScheduleAnnouncement: 1,
@@ -67,9 +71,17 @@ export class CreateAnnouncementComponent implements OnInit {
       error => <any>error);
   }
 
+  GetOrganizationsByDistrictId(districtid: any) {
+    this.DistrictId = districtid;
+    this._dataContext.getById('School/getOrganizationsByDistrictId', this.DistrictId).subscribe((data) => {
+      this.Organizations = data;
+    });
+  }
+
   OnCancel() {
     this.form.controls['recipients'].setValue(1);
     this.form.controls['districtId'].setValue(0);
+    this.form.controls['organizationId'].setValue('');
     this.form.controls['title'].setValue('');
     this.form.controls['message'].setValue('');
     this.form.controls['scheduleAnnouncement'].setValue(1);

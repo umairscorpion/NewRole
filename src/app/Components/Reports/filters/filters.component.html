@@ -5,9 +5,11 @@
         <mat-panel-description>
           <div class="col-md-12 title-bar p-0">
             <div class="col-md-4 title p-0">
-              FILTER OPTIONS&nbsp;
-              <button type="button" mat-icon-button color="primary" (click)="expandPanel()" [disableRipple]="true">
-                <mat-icon>{{matIcon}}</mat-icon>
+              <button type="button" mat-icon-button (click)="expandPanel()" [disableRipple]="true">
+                <i class="material-icons">
+                  tune
+                </i>
+                Filters
               </button>
             </div>
             <div class="col-md-4 text-center pt-15">
@@ -19,7 +21,8 @@
               </mat-form-field>
             </div>
             <div class="col-md-4 text-right">
-              <button type="button" mat-raised-button class="btn btn-success" (click)="onPrintReport(reportFilterForm)">
+              <button type="button" mat-raised-button color="primary" class="btn btn-success"
+                (click)="onPrintReport(reportFilterForm)">
                 <i class="material-icons">
                   description
                 </i>
@@ -129,7 +132,8 @@
         </div>
         <div class="col-md-6">
           <mat-form-field class="w-90">
-            <mat-select formControlName="districtId" placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
+            <mat-select formControlName="districtId" placeholder="Select District"
+              (selectionChange)="onChangeDistrict($event.value)">
               <mat-option *ngFor="let District of districts" [value]="District.districtId">
                 {{District.districtName}}
               </mat-option>

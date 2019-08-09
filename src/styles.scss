@@ -99,6 +99,16 @@ $sides: (top, bottom, left, right);
   }
  }
 
+ .announcements-dialog {
+  width: 45vw;
+  height: 350px;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 0;
+  }
+ }
+
  .position-details-dialog {
   width: 38vw;
   height: 650px;

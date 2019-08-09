@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuditLogService } from '../../Services/audit_logs/audit-log.service';
 import { AuditFilter } from '../../Model/auditLog';
+import { moment } from 'fullcalendar';
 
 @Component({
     selector: 'app-audit-log',
@@ -35,8 +36,8 @@ export class AuditLogComponent implements OnInit {
 
     getAuditLog() {
         const model = new AuditFilter();
-        model.startDate = this.auditLogFilter.get('date').value['begin'];
-        model.endDate = this.auditLogFilter.get('date').value['end'];
+        model.startDate = moment(this.auditLogFilter.get('date').value['begin']).format('YYYY-MM-DD');
+        model.endDate = moment(this.auditLogFilter.get('date').value['end']).format('YYYY-MM-DD');
         model.searchByEmployeeName = this.auditLogFilter.get('searchEmployeeName').value;
         this.auditLogService.getAuditView(model).subscribe((availabilities: any) => {
             this.auditLog = availabilities;

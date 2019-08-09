@@ -89,7 +89,7 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="150" name="Job ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="160" name="Job ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['confirmationNumber'] }}</div>
               </ng-template>
@@ -104,7 +104,7 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="150" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="180" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" *ngIf="row['absenceType']!=2">
                   {{row['statusId'] == 2 ? row['acceptedVia'] ? row['statusTitle']  : 'Assigned' : row['statusTitle']}}
@@ -112,7 +112,7 @@
                 <div class="ellipsis" *ngIf="row['absenceType']==2">Assigned</div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="240" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="220" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="row">
                   <div class="col-md-1">
@@ -126,7 +126,7 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Actions" [width]="150" [sortable]="false" [draggable]="false"
+            <ngx-datatable-column name="Actions" [width]="140" [sortable]="false" [draggable]="false"
               [canAutoResize]="false">
               <ng-template let-rowIndex="rowIndex" let-id="value" let-row="row" ngx-datatable-cell-template>
                 <button type="button" mat-icon-button color="primary" [disableRipple]="true"
@@ -154,7 +154,7 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="150" name="Job ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="160" name="Job ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['confirmationNumber'] }}</div>
               </ng-template>
@@ -169,17 +169,17 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="150" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="180" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['statusTitle'] }}</div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="240" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="220" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 N/A
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Actions" [width]="150" [sortable]="false" [draggable]="false"
+            <ngx-datatable-column name="Actions" [width]="140" [sortable]="false" [draggable]="false"
               [canAutoResize]="false">
               <ng-template let-rowIndex="rowIndex" let-id="value" let-row="row" ngx-datatable-cell-template>
                 <button type="button" mat-icon-button color="primary" [disableRipple]="true"
@@ -207,7 +207,7 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="150" name="Job ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="160" name="Job ID" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">{{ row['confirmationNumber'] }}</div>
               </ng-template>
@@ -222,17 +222,17 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="150" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="180" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 N/A
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="240" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="220" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 No Sub Required
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Actions" [width]="150" [sortable]="false" [draggable]="false"
+            <ngx-datatable-column name="Actions" [width]="140" [sortable]="false" [draggable]="false"
               [canAutoResize]="false">
               <ng-template let-rowIndex="rowIndex" let-id="value" let-row="row" ngx-datatable-cell-template>
                 <button type="button" mat-icon-button color="primary" [disableRipple]="true"
