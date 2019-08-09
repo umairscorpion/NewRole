@@ -51,7 +51,7 @@ export class PermissionsComponent implements OnInit {
 
     ngOnInit(): void {
         this.GetDistricts();
-        this.loadUsers(0);
+        this.loadUsers(this._userSession.getUserDistrictId());
         this.loadRoles();
         this.LoadUserResources();
     }
@@ -59,6 +59,10 @@ export class PermissionsComponent implements OnInit {
     GetDistricts(): void {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
+            if (this._userSession.getUserRoleId() != 5) {
+                this.districtFormControl.setValue(this._userSession.getUserDistrictId());  
+                this.districtFormControl.disable();
+            }
         },
             error => <any>error);
     }
@@ -136,12 +140,12 @@ export class PermissionsComponent implements OnInit {
             if (result && result.user) {
                 if (result.user.userId && result.user.userId.length > 0) {
                     this.userService.update(result.user).subscribe((data: any) => {
-                        this.loadUsers(0);
+                        this.loadUsers(this._userSession.getUserDistrictId());
                     },
                         error => this.msg = <any>error);
                 } else {
                     this.userService.create(result.user).subscribe((data: any) => {
-                        this.loadUsers(0);
+                        this.loadUsers(this._userSession.getUserDistrictId());
                     },
                         error => this.msg = <any>error);
                 }
@@ -158,12 +162,12 @@ export class PermissionsComponent implements OnInit {
             if (result && result.user) {
                 if (result.user.userId && result.user.userId.length > 0) {
                     this.userService.update(result.user).subscribe((data: any) => {
-                        this.loadUsers(0);
+                        this.loadUsers(this._userSession.getUserDistrictId());
                     },
                         error => this.msg = <any>error);
                 } else {
                     this.userService.create(result.user).subscribe((data: any) => {
-                        this.loadUsers(0);
+                        this.loadUsers(this._userSession.getUserDistrictId());
                     },
                         error => this.msg = <any>error);
                 }
@@ -189,7 +193,7 @@ export class PermissionsComponent implements OnInit {
                     const selectedIds = this.selectedUsers.map((v, k) => {
                         return v.userId;
                     });
-                    this.userService.deleteAll(selectedIds).subscribe(t => { this.loadUsers(0); });
+                    this.userService.deleteAll(selectedIds).subscribe(t => { this.loadUsers(this._userSession.getUserDistrictId()); });
                 }
             });
         }

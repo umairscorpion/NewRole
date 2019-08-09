@@ -28,6 +28,7 @@ export class EmployeesComponent implements OnInit {
   isRateLimitReached = false;
   msg: string;
   Districts: any;
+  selectedDistrictIdForFilter: number = 0;
   UserRole: number = this._userSession.getUserRoleId();
 
   constructor(
@@ -69,15 +70,21 @@ export class EmployeesComponent implements OnInit {
     this.dataSource.filterPredicate = (data: any, filtersJson: string) => {
       const matchFilter = [];
       const filters = JSON.parse(filtersJson);
-
       const schoolTile = 'organizationName';
       const districtTitle = 'districtName';
       const nameTitle = 'firstName';
+      const disIdTitle = 'districtId';
       const sch = data[schoolTile] === null ? '' : data[schoolTile];
       const dis = data[districtTitle] === null ? '' : data[districtTitle];
       const name = data[nameTitle] === null ? '' : data[nameTitle];
-      matchFilter.push((sch.toLowerCase().includes(this.location.toLowerCase()) || dis.toLowerCase().includes(this.location.toLowerCase())) && (name.toLowerCase().includes(this.employeeName.toLowerCase())));
-      return matchFilter.every(Boolean);
+      const disId = data[disIdTitle] === null ? '' : data[disIdTitle];
+      matchFilter.push((sch.toLowerCase().includes(this.location.toLowerCase()) ||
+        dis.toLowerCase().includes(this.location.toLowerCase()))
+        && (name.toLowerCase().includes(this.employeeName.toLowerCase())) &&
+        (this.selectedDistrictIdForFilter > 0 &&
+          disId == this.selectedDistrictIdForFilter ? true : this.selectedDistrictIdForFilter > 0
+            && disId != this.selectedDistrictIdForFilter ? false : true));
+      return matchFilter.every(Boolean)
     };
   }
 
@@ -205,14 +212,18 @@ export class EmployeesComponent implements OnInit {
     },
       error => <any>error);
   }
+
   onChangeDistrict(districtId: any) {
-    let RoleId = 3;
-    let OrgId = this._userSession.getUserOrganizationId();
-    this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + districtId).subscribe((data: any) => {
-      this.dataSource.data = data;
-      this.dataSource = data.filter((t => t.districtId == districtId));
-    },
-      error => this.msg = <any>error);
+    this.selectedDistrictIdForFilter = districtId;
+    const tableFilters = [];
+    tableFilters.push({
+      id: 'districtId',
+      value: districtId
+    });
+    this.dataSource.filter = JSON.stringify(tableFilters);
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   GetStaff(): void {
