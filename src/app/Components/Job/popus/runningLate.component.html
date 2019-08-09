@@ -7,7 +7,7 @@
     <hr>
     <div class="row" *ngFor="let running of RunningLate">
         <div class="col-md-10"><h5>{{running.runningLateTitle}}</h5><br></div>
-        <div class="col-md-2"><a style="cursor: pointer; color: #52b57c" #tooltip="matTooltip" matTooltip="Send Message" matTooltipPosition="below"><i class="material-icons">send</i></a></div>
+        <div class="col-md-2"><a style="cursor: pointer; color: #52b57c" #tooltip="matTooltip" matTooltip="Send Message" matTooltipPosition="below"><i (click)="SendMessage(running.runningLateTitle)" class="material-icons">send</i></a></div>
         
     </div>   
 </div>
