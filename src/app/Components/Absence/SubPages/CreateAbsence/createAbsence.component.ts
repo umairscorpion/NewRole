@@ -7,7 +7,7 @@ import { DataContext } from '../../../../Services/dataContext.service';
 import { UserSession } from '../../../../Services/userSession.service';
 import { MatStepper } from '@angular/material/stepper';
 import { IEmployee } from '../../../../Model/Manage/employee';
-import { MatRadioChange, MatExpansionPanel } from '@angular/material';
+import { MatRadioChange, MatExpansionPanel, MatDialog } from '@angular/material';
 import { HttpClient, HttpResponse, HttpEventType } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { NotifierService } from 'angular-notifier';
@@ -19,6 +19,8 @@ import { AbsenceScope } from '../../../../Model/absenceScope';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Absence } from '../../../../Model/absence';
 import { LeaveBalance } from '../../../../Model/leaveBalance';
+import { Announcement } from 'src/app/Model/announcement';
+import { ShowAnnouncementPopupComponent } from 'src/app/Components/Announcement/show-announcement-popup/show-announcement-popup.component';
 
 @Component({
     selector: 'create-absence',
@@ -94,6 +96,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     NeedASub: boolean = false;
     response: number = 0;
     absenceTypes: AbsenceScope[] = Array<AbsenceScope>();
+    Announcements: Announcement[] = Array<Announcement>();
 
     constructor(
         private http: HttpClient,
@@ -103,7 +106,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         private _userSession: UserSession,
         private absenceService: AbsenceService,
         notifier: NotifierService,
-        private sanitizer: DomSanitizer) {
+        private sanitizer: DomSanitizer,
+        private dialogRef: MatDialog) {
         this.notifier = notifier;
     }
 
@@ -119,6 +123,10 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         // this.preferredSubPanel.expandedChange.subscribe((data) => {
         //     this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
         // });
+        // let UserRoleId = this._userSession.getUserRoleId();
+        // if (UserRoleId === 3) {
+        //     this.GetAndViewAnnouncement();
+        // }
     }
 
     GenerateForms(): void {
@@ -287,7 +295,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     //Search Available Substitutes
     SearchAvailableSubstitutes(SearchedText: string): void {
-        if (this.absenceFirstFormGroup.value.AbsenceType != 2 && this.absenceFirstFormGroup.value.AbsenceType != 3) {
+        if (this.absenceFirstFormGroup.value.AbsenceType != 2 && this.absenceFirstFormGroup.value.AbsenceType != 1) {
             return;
         }
         if (this.absenceFirstFormGroup.value.AbsenceStartDate && this.absenceFirstFormGroup.value.AbsenceEndDate) {
@@ -564,7 +572,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                             this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
                         }
                         else {
-                            this.notifier.notify('error', 'Exceeded Limit.');
+                            this.notifier.notify('error', 'Please select another absence reason.');
                         }
                     }
                 }
@@ -813,5 +821,22 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         if (imageName && imageName.length > 0) {
             return this.sanitizer.bypassSecurityTrustResourceUrl(environment.profileImageUrl + imageName);
         }
+    }
+
+    GetAndViewAnnouncement() {
+        let model = {}
+        this._dataContext.post('announcement/getAnnouncement', model).subscribe((data: any) => {
+            this.Announcements = data;
+            this.dialogRef.open(
+                ShowAnnouncementPopupComponent, {
+                    panelClass: 'announcements-dialog',
+                    data: this.Announcements
+                }
+            );
+            // this.Announcements = data.filter(number => moment(number.hideOnTime, 'hh:mm A').isSameOrAfter(moment().format('hh:mm A')));
+            // this.Announcements = data.filter(number => moment(number.showOnDate, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')));
+            // this.Announcements = data.filter(number => moment(number.hideOnDate, 'hh:mm').isSameOrBefore(moment().format('hh:mm')));
+        },
+            error => <any>error);
     }
 }

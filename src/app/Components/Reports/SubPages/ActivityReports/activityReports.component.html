@@ -27,7 +27,8 @@
         max-height: 500px;
     }
 
-    th,td {
+    th,
+    td {
         border: 1px solid #e9e3e3;
         width: 160px;
     }
@@ -55,7 +56,8 @@
         <div class="col-md-4">
         </div>
         <div class="col-md-2">
-            <button mat-raised-button class="btn btn-success" type="submit" (click)="onExportingToCSV()">
+            <button mat-raised-button color="primary" class="btn btn-success" type="submit"
+                (click)="onExportingToCSV()">
                 <i class="material-icons">
                     description
                 </i>
@@ -76,14 +78,13 @@
                     </div>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="'100'" name="Notified" [flexGrow]="2" cellClass="middle"
-                [draggable]="false" [frozenLeft]="true">
+            <ngx-datatable-column [width]="'100'" name="Notified" [flexGrow]="2" cellClass="middle" [draggable]="false"
+                [frozenLeft]="true">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis">11</div>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="'1520'" name="Events" [flexGrow]="2" cellClass="middle" 
-            [draggable]="false">
+            <ngx-datatable-column [width]="'1520'" name="Events" [flexGrow]="2" cellClass="middle" [draggable]="false">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div class="ellipsis" style="margin-left:25px">
                         <div class="row">
@@ -96,8 +97,8 @@
                                         <th *ngIf="row['accepted']  != null">Accepted</th>
                                         <th *ngIf="row['assigned']  != null">Assigned</th>
                                         <th *ngIf="row['released']  != null">Released</th>
-                                        <th *ngIf="row['denied']    != null">Denied</th>  
-                                        <th *ngIf="row['declined']  != null">Declined</th>                                     
+                                        <th *ngIf="row['denied']    != null">Denied</th>
+                                        <th *ngIf="row['declined']  != null">Declined</th>
                                         <th *ngIf="row['cancelled'] != null">Cancelled</th>
                                     </tr>
                                 </thead>
@@ -109,8 +110,8 @@
                                         <td *ngIf="row['accepted']  != null">{{ row['accepted']}}</td>
                                         <td *ngIf="row['assigned']  != null">{{ row['assigned']}}</td>
                                         <td *ngIf="row['released']  != null">{{ row['released']}}</td>
-                                        <td *ngIf="row['denied']    != null">{{ row['denied']}}</td>  
-                                        <td *ngIf="row['declined']  != null">{{ row['declined']}}</td>  
+                                        <td *ngIf="row['denied']    != null">{{ row['denied']}}</td>
+                                        <td *ngIf="row['declined']  != null">{{ row['declined']}}</td>
                                         <td *ngIf="row['cancelled'] != null">{{ row['cancelled']}}</td>
                                     </tr>
                                 </tbody>

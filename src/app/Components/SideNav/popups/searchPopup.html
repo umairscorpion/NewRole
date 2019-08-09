@@ -1,85 +1,89 @@
 <div class="row" style="background-color: rgba(209,196,233,.3);padding:20px">
-    <div class="row" style="padding-top:24px">
-        <div class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1" style="font-size: 20px"> Search your employee, substitutes and reports</div>
-    </div>
-    <form class="row">
-        <mat-form-field class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1">
-            <input type="tel" #inputName matInput placeholder="Search your employee, substitutes and reports">
-            
-        </mat-form-field>
-        <button style="margin-left: -50px;" mat-icon-button class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1" (click)="Search(inputName.value)">
-            <mat-icon matSuffix >search</mat-icon>
-        </button>
-    </form>
-    <div class="row">
-        <div class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1">
-            <div class="col-md-2 col-xs-2" style="padding-left: 0px">
-                <i style="font-size:75px" class="material-icons">
-                    image_search
-                </i>
-            </div>
-            <div *ngIf = "resultNotFindDiv">
-                    <p style="text-align: center; color: red">"No Results Found"</p>
-                </div>
-            <div class="col-md-10 col-xs-10" style="padding-top: 15px">
-                   Search for <b>employee</b>, <b>substitutes</b> or <b>reports</b> . <br> 
-                   Search by <b>name</b>, <b>Job#</b>, <b>date</b>(YYYY-MM-DD) and more.
-            </div>
-        </div>
-    </div>
-    
-    <div class="row" style="max-height:200px; overflow: auto;" *ngIf = "showSearchDiv" class="search-div">
-        <mat-table #table [dataSource]="dataSourceForUsers" matSort>
-            <!-- Position Column -->
-            <ng-container matColumnDef="firstName">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-              <mat-cell *matCellDef="let iEmployee" >{{iEmployee.firstName}}</mat-cell>
-            </ng-container>
-    
-            <ng-container matColumnDef="LastName">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-              <mat-cell *matCellDef="let iEmployee" >{{iEmployee.lastName}} </mat-cell>
-            </ng-container>
-    
-            <ng-container matColumnDef="Email">
-              <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-              <mat-cell *matCellDef="let iEmployee" >{{iEmployee.email}} </mat-cell>
-            </ng-container>
-    
-            <ng-container matColumnDef="Type">
-              <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
-              <mat-cell *matCellDef="let iEmployee" >{{iEmployee.roleId == 4 ? 'Substitute' : iEmployee.roleId == 3 ? 'Teacher' : 'Admin' }} </mat-cell>
-            </ng-container>
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-          </mat-table>
-    </div>
-    
-    <div class="row" style="max-height:200px; overflow: auto;" *ngIf = "showSearchReportDiv" class="search-div">
-            <mat-table #table [dataSource]="dataSourceForReport" matSort>
-                <!-- Position Column -->
-                <ng-container matColumnDef="employee">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Employee </mat-header-cell>
-                  <mat-cell *matCellDef="let iEmployee" >{{iEmployee.firstName}}</mat-cell>
-                </ng-container>
-        
-                <ng-container matColumnDef="jobNumber">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Job No </mat-header-cell>
-                  <mat-cell *matCellDef="let iEmployee" >{{iEmployee.jobNumber}} </mat-cell>
-                </ng-container>
-        
-                <ng-container matColumnDef="date">
-                  <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-                  <mat-cell *matCellDef="let iEmployee" >{{iEmployee.startDate | date}} </mat-cell>
-                </ng-container>
+  <div class="row" style="padding-top:24px">
+    <div class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1" style="font-size: 20px"> Search your employee,
+      substitutes and reports</div>
+  </div>
+  <form class="row">
+    <mat-form-field class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1">
+      <input type="tel" #inputName matInput placeholder="Search your employee, substitutes and reports">
 
-                <ng-container matColumnDef="link">
-                        <mat-header-cell *matHeaderCellDef> Link </mat-header-cell>
-                        <mat-cell *matCellDef="let iEmployee" ><a style="cursor: pointer" (click)="openDailyReportPage()">Open Reports</a> </mat-cell>
-                      </ng-container>
-                <mat-header-row *matHeaderRowDef="displayedColumnsForReports"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumnsForReports;"></mat-row>
-              </mat-table>
-        </div>
-    
+    </mat-form-field>
+    <button style="margin-left: -50px;" mat-icon-button class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1"
+      (click)="Search(inputName.value)">
+      <mat-icon matSuffix>search</mat-icon>
+    </button>
+  </form>
+  <div class="row">
+    <div class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1">
+      <div class="col-md-2 col-xs-2" style="padding-left: 0px">
+        <i style="font-size:75px" class="material-icons">
+          image_search
+        </i>
+      </div>
+      <div *ngIf="resultNotFindDiv">
+        <p style="text-align: center; color: red">"No Results Found"</p>
+      </div>
+      <div class="col-md-10 col-xs-10" style="padding-top: 15px">
+        Search for <b>employee</b>, <b>substitutes</b> or <b>reports</b> . <br>
+        Search by <b>name</b>, <b>Job#</b>, <b>date</b>(YYYY-MM-DD) and more.
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="max-height:200px; overflow: auto;" *ngIf="showSearchDiv" class="search-div">
+    <mat-table #table [dataSource]="dataSourceForUsers" matSort>
+      <!-- Position Column -->
+      <ng-container matColumnDef="firstName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+        <mat-cell *matCellDef="let iEmployee">{{iEmployee.firstName}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="LastName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+        <mat-cell *matCellDef="let iEmployee">{{iEmployee.lastName}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Email">
+        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+        <mat-cell *matCellDef="let iEmployee">{{iEmployee.email}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Type">
+        <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+        <mat-cell *matCellDef="let iEmployee">
+          {{iEmployee.roleId == 4 ? 'Substitute' : iEmployee.roleId == 3 ? 'Teacher' : 'Admin' }} </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+
+  <div class="row" style="max-height:200px; overflow: auto;" *ngIf="showSearchReportDiv" class="search-div">
+    <mat-table #table [dataSource]="dataSourceForReport" matSort>
+      <!-- Position Column -->
+      <ng-container matColumnDef="employee">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Employee </mat-header-cell>
+        <mat-cell *matCellDef="let iEmployee">{{iEmployee.firstName}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="jobNumber">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Job No </mat-header-cell>
+        <mat-cell *matCellDef="let iEmployee">{{iEmployee.jobNumber}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+        <mat-cell *matCellDef="let iEmployee">{{iEmployee.startDate | date}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="link">
+        <mat-header-cell *matHeaderCellDef> Link </mat-header-cell>
+        <mat-cell *matCellDef="let iEmployee"><a style="cursor: pointer" (click)="openDailyReportPage()">Open
+            Reports</a> </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumnsForReports"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumnsForReports;"></mat-row>
+    </mat-table>
+  </div>
+
 </div>
