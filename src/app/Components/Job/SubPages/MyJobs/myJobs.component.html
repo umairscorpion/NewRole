@@ -100,10 +100,10 @@
                 matTooltipPosition="below">
                 <i class="material-icons" (click)="ShowJobDetail(Absence)">visibility</i>
               </a>
-              <!-- <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Running Late"
+              <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Running Late"
                 matTooltipPosition="below">
-                <i class="material-icons" (click)="ShowRuningLate(Absence)">directions_run</i>
-              </a> -->
+                <i class="material-icons" (click)="ShowRuningLate(Absence.absenceId)">directions_run</i>
+              </a>
             </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>

@@ -22,6 +22,7 @@ import { NotifierService } from "angular-notifier";
 import { DataContext } from "../../Services/dataContext.service";
 import { interval, Subscription } from 'rxjs';
 import { Announcement } from "../../Model/announcement";
+import { ShowAnnouncementPopupComponent } from "../Announcement/show-announcement-popup/show-announcement-popup.component";
 
 @Component({
     selector: 'Subzz-app-dashboard',
@@ -146,11 +147,10 @@ export class HomeComponent implements OnInit {
             this.isOpen = isOpen;
         });
         this.LoadUserResources();
-        // this.GetAnnouncement();
-        // this.updateSubscription = interval(60000).subscribe(
-        //     (val) => {
-        //         this.GetAnnouncement()
-        //     });
+        // let UserRoleId = this.userSession.getUserRoleId();
+        // if (UserRoleId === 1 || UserRoleId === 2 || UserRoleId === 5) {
+        //     this.GetAndViewAnnouncement();
+        // }
     }
 
     LoadUserResources(): void {
@@ -711,14 +711,20 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['/manage/leave'], { queryParams: { Tab: 1 } })
     }
 
-    // GetAnnouncement() {
-    //     let model = {}
-    //     this.dataContext.post('announcement/getAnnouncement', model).subscribe((data: any) => {
-    //         this.Announcements = data;
-    //         // this.Announcements = data.filter(number => moment(number.hideOnTime, 'hh:mm A').isSameOrAfter(moment().format('hh:mm A')));
-    //         // this.Announcements = data.filter(number => moment(number.showOnDate, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')));
-    //         // this.Announcements = data.filter(number => moment(number.hideOnDate, 'hh:mm').isSameOrBefore(moment().format('hh:mm')));
-    //     },
-    //         error => <any>error);
-    // }
+    GetAndViewAnnouncement() {
+        let model = {}
+        this.dataContext.post('announcement/getAnnouncement', model).subscribe((data: any) => {
+            this.Announcements = data;
+            this.dialogRef.open(
+                ShowAnnouncementPopupComponent, {
+                    panelClass: 'announcements-dialog',
+                    data: this.Announcements
+                }
+            );
+            // this.Announcements = data.filter(number => moment(number.hideOnTime, 'hh:mm A').isSameOrAfter(moment().format('hh:mm A')));
+            // this.Announcements = data.filter(number => moment(number.showOnDate, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')));
+            // this.Announcements = data.filter(number => moment(number.hideOnDate, 'hh:mm').isSameOrBefore(moment().format('hh:mm')));
+        },
+            error => <any>error);
+    }
 }
