@@ -699,7 +699,6 @@ export class HomeComponent implements OnInit {
 
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this._mobileQueryListener);
-        this.updateSubscription.unsubscribe();
     }
 
     getImage(imageName: string) {
