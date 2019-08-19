@@ -29,6 +29,7 @@ export class EmployeesComponent implements OnInit {
   msg: string;
   Districts: any;
   UserRole: number = this._userSession.getUserRoleId();
+  districtIdForWelcome: any = 0;
 
   constructor(
     private router: Router,
@@ -207,12 +208,27 @@ export class EmployeesComponent implements OnInit {
   }
   onChangeDistrict(districtId: any) {
     let RoleId = 3;
+    this.districtIdForWelcome = districtId;
     let OrgId = this._userSession.getUserOrganizationId();
     this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + districtId).subscribe((data: any) => {
       this.dataSource.data = data;
       this.dataSource = data.filter((t => t.districtId == districtId));
     },
       error => this.msg = <any>error);
+  }
+  onSendAll(){
+    if(this.districtIdForWelcome == 0){
+      this.districtIdForWelcome = this._userSession.UserClaim.districtId;
+      if(this.districtIdForWelcome == 0)
+      {
+        this.notifier.notify('error', 'Please Select District First.');
+        return;
+      }
+    }
+    this._dataContext.get('user/sendWellcomeLetterToAll/' + this.districtIdForWelcome).subscribe((response : any) => {
+      this.notifier.notify('success', 'Email Sent Successfully.');
+    },
+      error => this.notifier.notify('error', 'Please Select District First'));
   }
 
   GetStaff(): void {

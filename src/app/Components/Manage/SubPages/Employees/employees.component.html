@@ -107,7 +107,13 @@
         </ng-container>
 
         <ng-container matColumnDef="action">
-          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef> Action 
+            <mat-select style="margin-left:100px; width: 15%; background-color:lightgray">
+              <mat-option style="margin: 5px; background-color: white;">
+                  <button mat-raised-button style="background-color: #3CCCD1; color: white; margin-left: 5px"
+                  (click) = "onSendAll()">Send All</button>
+              </mat-option>
+            </mat-select> </mat-header-cell>
           <mat-cell *matCellDef="let row">
             <!-- <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Send Welcome Letter" (click)="sendWelcomeLetter(row)" matTooltipPosition="below">
               Send Welcome

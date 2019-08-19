@@ -200,6 +200,8 @@
                 </a>
                 <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px"
                     type="submit">{{userIdForUpdate ? 'Update': 'Add Substitute to Database'}}</button>
+                    <button *ngIf = '!userIdForUpdate' mat-raised-button style="background-color: #25e8c8; color: white; margin-left: 5px"
+                    (click) = "InsertUser()">Add & Send Welcome Email</button>
             </div>
         </form>
     </mat-card-content>
