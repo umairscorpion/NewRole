@@ -89,15 +89,14 @@
                     <mat-table *ngIf='this.AvailableJobs.data.length > 0' #table [dataSource]="AvailableJobs" matSort>
                         <!-- Position Column -->
                         <ng-container matColumnDef="AbsenceDate">
-                            <mat-header-cell *matHeaderCellDef> Absence Date </mat-header-cell>
-                            <mat-cell *matCellDef="let Absence">
-                                {{ Absence.startDate | date:'E, M/d/y' }}
-                                <br *ngIf="Absence.startDate != Absence.endDate">
-                                {{Absence.startDate != Absence.endDate ? (Absence.endDate | date:'E, M/d/y') : ' ' }}
-                                <br>
-                                {{Absence.startTime | convertFrom24HourTo12HourFormat}}-{{Absence.endTime | convertFrom24HourTo12HourFormat}}
-                            </mat-cell>
-                        </ng-container>
+<mat-header-cell *matHeaderCellDef> Absence Date </mat-header-cell>
+<mat-cell *matCellDef="let Absence">{{ Absence.startDate | date:'E, M/d/y' }}
+<br>
+{{Absence.startDate != Absence.endDate ? (Absence.endDate | date:'E, M/d/y') : ' ' }}
+<br>
+{{Absence.startTime | convertFrom24HourTo12HourFormat}}-{{Absence.endTime | convertFrom24HourTo12HourFormat}}
+</mat-cell>
+</ng-container>
                         <ng-container matColumnDef="JobId">
                             <mat-header-cell *matHeaderCellDef> Job ID </mat-header-cell>
                             <mat-cell *matCellDef="let Absence">

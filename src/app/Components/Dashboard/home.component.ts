@@ -1,7 +1,7 @@
 ﻿import { Component, ChangeDetectorRef, HostBinding, OnInit } from "@angular/core";
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatTableDataSource, MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SideNavService } from '../SideNav/sideNav.service';
 import { Chart } from 'chart.js';
 import * as ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -94,7 +94,8 @@ export class HomeComponent implements OnInit {
         private dialogRef: MatDialog,
         private settingsService: SettingsService,
         notifier: NotifierService,
-        private dataContext: DataContext) {
+        private dataContext: DataContext,
+        private activatedRoute: ActivatedRoute) {
         this.notifier = notifier;
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -102,6 +103,17 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params.jobId && params.ac == 3) {
+                this.onApproveClick(0, params.jobId, 'NULL');
+            }
+            else if(params.jobId && params.ac == 4){
+                this.onDenyClick(0, params.jobId, 'NULL');
+            }
+            else
+            return;
+                
+        })
         this.absenceService.getSummary().subscribe((summary: any) => {
             this.bindAbsenceSummary(summary);
             this.bindAbsenceReason(summary);

@@ -14,7 +14,7 @@ import { AuthService, GoogleLoginProvider } from 'angular-6-social-login';
 })
 export class LoginComponent implements OnInit {
     JobId = 0;
-    action = 0; //For Accept i.e 1 And Reject i.e 2
+    action = 0; //For Accept i.e 1 And Reject i.e 2 //For Approve i.e 3 And Deny i.e 4 
     Date = new Date();
     private notifier: NotifierService;
     hide = true;
@@ -124,9 +124,10 @@ export class LoginComponent implements OnInit {
                 if (this.activatedRoute.queryParams && this.JobId > 0) {
                     if (this.action == 1) {
                         this.AcceptJob(this.JobId)
-                    } else {
+                    }
+                    else 
                         this.declineJob(this.JobId)
-                    }  
+                    
                 }
                 else {
                     this.router.navigate(['/viewjobs']
@@ -140,10 +141,24 @@ export class LoginComponent implements OnInit {
                 ).then(() => {
                 });
             }
-            else
-                this.router.navigate(['/home']
-                ).then(() => {
-                });
+            else {
+                if (this.activatedRoute.queryParams && this.JobId > 0) {
+                    if(this.action == 3 || this.action == 4){
+                        this.ApproveOrDenyLeave(this.JobId)
+                    }
+                    else{
+                        this.router.navigate(['/home']
+                        ).then(() => {
+                        });        
+                    }
+                      
+                }
+                else{
+                    this.router.navigate(['/home']
+                    ).then(() => {
+                    });
+                }
+            }
         });
     }
 
@@ -176,6 +191,10 @@ export class LoginComponent implements OnInit {
 
     declineJob(jobId: number) {
         this.router.navigate(['/viewjobs/availableJobs'], { queryParams: { jobId: jobId, ac: this.action } });
+    }
+
+    ApproveOrDenyLeave(jobId: number) {
+        this.router.navigate(['/home'], { queryParams: { jobId: jobId, ac: this.action  } });
     }
 
     // If Error occurred on login with Google
