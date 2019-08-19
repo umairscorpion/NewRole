@@ -1,4 +1,4 @@
-<form #form="ngForm" [formGroup]="reportFilterForm" (ngSubmit)="onSubmit(reportFilterForm)" novalidate>
+<form #form="ngForm" [formGroup]="reportFilterForm" (ngSubmit)="onSubmit(reportFilterForm)">
   <div class="report-filters">
     <mat-expansion-panel #myPanel [disabled]="true">
       <mat-expansion-panel-header class="header-panel">
@@ -38,8 +38,8 @@
         <div class="col-md-4 text-right">
           <label>Job Number:</label>
         </div>
-        <div class="col-md-6">
-          <mat-form-field class="w-90">
+        <div>
+          <mat-form-field class="col-md-5">
             <input matInput placeholder="Enter Job Confirmation Number" formControlName="confirmationNumber">
           </mat-form-field>
         </div>
@@ -48,8 +48,8 @@
         <div class="col-md-4 text-right">
           <label>From:</label>
         </div>
-        <div class="col-md-2">
-          <mat-form-field>
+        <div>
+          <mat-form-field class="col-md-2">
             <input matInput [matDatepicker]="StartDatePicker" placeholder="Start Date" formControlName="fromDate">
             <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
             <mat-datepicker [dateClass]="dateClass" #StartDatePicker></mat-datepicker>
@@ -58,8 +58,8 @@
         <div class="col-md-1 text-right">
           <label>To:</label>
         </div>
-        <div class="col-md-2">
-          <mat-form-field>
+        <div>
+          <mat-form-field class="col-md-2">
             <input matInput [matDatepicker]="EndDatePicker" placeholder="End Date" formControlName="toDate">
             <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
             <mat-datepicker [dateClass]="dateClass" #EndDatePicker></mat-datepicker>
@@ -70,16 +70,20 @@
         <div class="col-md-4 text-right">
           <label>Year:</label>
         </div>
-        <div class="col-md-2">
-          <mat-form-field>
-            <input matInput placeholder="Enter Year" formControlName="year">
+        <div>
+          <mat-form-field class="col-md-2">
+            <mat-select placeholder="Select Year" [(ngModel)]="year" formControlName="year">
+              <mat-option *ngFor="let year of years" [value]="year.value">
+                {{year.value}}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
         <div class="col-md-1 text-right">
           <label>Month:</label>
         </div>
-        <div class="col-md-2">
-          <mat-form-field>
+        <div>
+          <mat-form-field class="col-md-2">
             <mat-select placeholder="Select Month" formControlName="month">
               <mat-option value="1">January</mat-option>
               <mat-option value="2">February</mat-option>
@@ -101,8 +105,8 @@
         <div class="col-md-4 text-right">
           <label>Position:</label>
         </div>
-        <div class="col-md-6">
-          <mat-form-field class="w-90">
+        <div>
+          <mat-form-field class="col-md-5">
             <mat-select placeholder="Select Position" formControlName="absencePosition">
               <mat-option>--</mat-option>
               <mat-option *ngFor="let userType of userTypes" [value]="userType.id">
@@ -116,8 +120,8 @@
         <div class="col-md-4 text-right">
           <label>Absence Type:</label>
         </div>
-        <div class="col-md-6">
-          <mat-form-field class="w-90">
+        <div>
+          <mat-form-field class="col-md-5">
             <mat-select placeholder="Select Absence Type" formControlName="absenceTypeId">
               <mat-option value="1">Full Day</mat-option>
               <mat-option value="2">Half Day AM</mat-option>
@@ -126,12 +130,12 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="row" *ngIf="UserRoleId != 1">
+      <div class="row" *ngIf="UserRoleId == 5">
         <div class="col-md-4 text-right">
           <label>District:</label>
         </div>
-        <div class="col-md-6">
-          <mat-form-field class="w-90">
+        <div>
+          <mat-form-field class="col-md-5">
             <mat-select formControlName="districtId" placeholder="Select District"
               (selectionChange)="onChangeDistrict($event.value)">
               <mat-option *ngFor="let District of districts" [value]="District.districtId">
@@ -141,12 +145,12 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="UserRoleId != 2">
         <div class="col-md-4 text-right">
           <label>Location:</label>
         </div>
-        <div class="col-md-6">
-          <mat-form-field class="w-90">
+        <div>
+          <mat-form-field class="col-md-5">
             <mat-select formControlName="locationId" placeholder="Select Location">
               <mat-option *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
                 {{Organization.schoolName}}
@@ -159,8 +163,8 @@
         <div class="col-md-4 text-right">
           <label>Reason:</label>
         </div>
-        <div class="col-md-6">
-          <mat-form-field class="w-90">
+        <div>
+          <mat-form-field class="col-md-5">
             <mat-select placeholder="Select Reason" formControlName="reasonId">
               <mat-option *ngFor="let Leave of Leaves" [value]="Leave.leaveTypeId">
                 {{Leave.leaveTypeName}}
@@ -173,8 +177,8 @@
         <div class="col-md-4 text-right">
           <label>Employee Name:</label>
         </div>
-        <div class="col-md-6">
-          <mat-form-field class="w-90">
+        <div>
+          <mat-form-field class="col-md-5">
             <input matInput placeholder="Enter Employee Name" formControlName="employeeName">
           </mat-form-field>
         </div>
@@ -184,7 +188,8 @@
         </div>
         <div class="col-md-6">
           <button type="submit" mat-raised-button class="btn btn-success">View Reports</button>&nbsp;
-          <button type="button" mat-raised-button class="btn btn-danger" (click)=onReset()>Reset</button>
+          <button type="button" mat-raised-button class="btn btn-warning" (click)=onReset()>Reset</button>&nbsp;
+          <button type="button" mat-raised-button class="btn btn-danger" (click)=expandPanel()>Close Filter</button>
         </div>
       </div>
     </mat-expansion-panel>
