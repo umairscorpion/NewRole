@@ -17,6 +17,7 @@ import { RoleService } from '../../../../Services/role.service';
 })
 export class AddEmployeesComponent implements OnInit {
     userIdForUpdate: any = null;
+    sendWelcomeEmailId: any = null;
     profilePictureUrl: string
     profilePicture: any;
     private notifier: NotifierService;
@@ -277,6 +278,10 @@ export class AddEmployeesComponent implements OnInit {
 
     }
 
+    InsertUser(){
+        this.sendWelcomeEmailId = 1;
+    }
+
     onSubmitEmployeeForm(form: any) {
         this.msg = "";
         if (this.employeeForm.valid) {
@@ -321,6 +326,15 @@ export class AddEmployeesComponent implements OnInit {
                         this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
                             this.router.navigate(['/manage/employees']);
                             this.notifier.notify('success', 'Updated Successfully');
+                        },
+                            (err: HttpErrorResponse) => {
+                                this.notifier.notify('error', err.error.error_description);
+                            });
+                    }
+                    else if(this.sendWelcomeEmailId == 1){
+                        this._dataContext.post('user/insertUserAndSendWelcomeEmail', model).subscribe((data: any) => {
+                            this.router.navigate(['/manage/employees']);
+                            this.notifier.notify('success', 'Added Successfully');
                         },
                             (err: HttpErrorResponse) => {
                                 this.notifier.notify('error', err.error.error_description);

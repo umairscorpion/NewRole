@@ -4,8 +4,9 @@
       <div class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1">
         <div class="col-md-11" style="text-align: center; color: darkgray"><b>NEW ANNOUNCEMENT</b></div>
         <div class="col-md-1" style="text-align: right; color: red">
-          <mat-icon class="cursor-pointer" title="Dismiss">
-            clear</mat-icon>
+          <mat-icon class="cursor-pointer" title="Dismiss" (click)="onCloseDialog()">
+            clear
+          </mat-icon>
         </div>
       </div>
     </div>

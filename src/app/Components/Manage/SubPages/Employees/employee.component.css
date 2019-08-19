@@ -5,7 +5,7 @@
 
 ::ng-deep .mat-column-action {
     flex: 0 0 15% !important;
-    min-width: 300px !important;
+    min-width: 250px !important;
   }
 
   .example-container {
@@ -56,7 +56,7 @@
 
 .mat-column-PhoneNumber {
   flex: 0 0 5% !important;
-  min-width: 120px !important;
+  min-width: 110px !important;
 }
 
 .mat-column-location {
@@ -71,15 +71,10 @@
 
 .mat-column-ClassificationStatus {
   flex: 0 0 5% !important;
-  min-width: 140px !important;
+  min-width: 120px !important;
 }
 
 .mat-column-Approver {
   flex: 0 0 5% !important;
   min-width: 140px !important;
-}
-
-.mat-column-action {
-  flex: 0 0 5% !important;
-  min-width: 160px !important;
 }

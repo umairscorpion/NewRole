@@ -1,7 +1,7 @@
 ﻿import { Component, ChangeDetectorRef, HostBinding, OnInit } from "@angular/core";
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatTableDataSource, MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SideNavService } from '../SideNav/sideNav.service';
 import { Chart } from 'chart.js';
 import * as ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -78,8 +78,9 @@ export class HomeComponent implements OnInit {
     msg: string;
     UserName: string;
     isOpen = true;
+    // For Announcements
     Announcements: Announcement[] = Array<Announcement>();
-    Announcement: boolean = true;
+    IsAnnouncementViewed: boolean = false;
 
     constructor(
         private router: Router,
@@ -93,7 +94,8 @@ export class HomeComponent implements OnInit {
         private dialogRef: MatDialog,
         private settingsService: SettingsService,
         notifier: NotifierService,
-        private dataContext: DataContext) {
+        private dataContext: DataContext,
+        private activatedRoute: ActivatedRoute) {
         this.notifier = notifier;
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -101,6 +103,17 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params.jobId && params.ac == 3) {
+                this.onApproveClick(0, params.jobId, 'NULL');
+            }
+            else if(params.jobId && params.ac == 4){
+                this.onDenyClick(0, params.jobId, 'NULL');
+            }
+            else
+            return;
+                
+        })
         this.absenceService.getSummary().subscribe((summary: any) => {
             this.bindAbsenceSummary(summary);
             this.bindAbsenceReason(summary);
@@ -147,10 +160,10 @@ export class HomeComponent implements OnInit {
             this.isOpen = isOpen;
         });
         this.LoadUserResources();
-        // let UserRoleId = this.userSession.getUserRoleId();
-        // if (UserRoleId === 1 || UserRoleId === 2 || UserRoleId === 5) {
-        //     this.GetAndViewAnnouncement();
-        // }
+        let UserRoleId = this.userSession.getUserRoleId();
+        if (UserRoleId === 1 || UserRoleId === 2) {
+            this.GetAndViewAnnouncement();
+        }
     }
 
     LoadUserResources(): void {
@@ -712,18 +725,20 @@ export class HomeComponent implements OnInit {
     }
 
     GetAndViewAnnouncement() {
-        let model = {}
+        let model = {
+            DistrictId: this.userSession.getUserDistrictId(),
+            OrganizationId: this.userSession.getUserOrganizationId()
+        }
         this.dataContext.post('announcement/getAnnouncement', model).subscribe((data: any) => {
             this.Announcements = data;
-            this.dialogRef.open(
-                ShowAnnouncementPopupComponent, {
-                    panelClass: 'announcements-dialog',
-                    data: this.Announcements
-                }
-            );
-            // this.Announcements = data.filter(number => moment(number.hideOnTime, 'hh:mm A').isSameOrAfter(moment().format('hh:mm A')));
-            // this.Announcements = data.filter(number => moment(number.showOnDate, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')));
-            // this.Announcements = data.filter(number => moment(number.hideOnDate, 'hh:mm').isSameOrBefore(moment().format('hh:mm')));
+            if (data.length > 0) {
+                this.dialogRef.open(
+                    ShowAnnouncementPopupComponent, {
+                        panelClass: 'announcements-dialog',
+                        data: this.Announcements
+                    }
+                );
+            }
         },
             error => <any>error);
     }

@@ -4,6 +4,40 @@
       <mat-card-title>Audit Log</mat-card-title>
       <form [formGroup]="auditLogFilter">
         <div class="row">
+          <div *ngIf="loginedUserRole == 5">
+            <mat-form-field class="col-md-2">
+              <mat-label>Select District</mat-label>
+              <mat-select formControlName="districtId">
+                <mat-option [value]="0">All</mat-option>
+                <mat-option *ngFor="let district of Districts" [value]="district.districtId"
+                  (onSelectionChange)="GetOrganizationsByDistrictId(district.districtId)">
+                  {{district.districtName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="loginedUserRole == 5">
+            <mat-form-field class="col-md-2" *ngIf="auditLogFilter.value.districtId != 0">
+              <mat-label>Select School</mat-label>
+              <mat-select formControlName="organizationId">
+                <mat-option [value]="0">All</mat-option>
+                <mat-option *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
+                  {{Organization.schoolName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="loginedUserRole == 1">
+            <mat-form-field class="col-md-2">
+              <mat-label>Select School</mat-label>
+              <mat-select formControlName="organizationId">
+                <mat-option [value]="0">All</mat-option>
+                <mat-option *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
+                  {{Organization.schoolName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
           <div>
             <mat-form-field class="col-md-2">
               <input matInput placeholder="Search Employee Name" formControlName="searchEmployeeName">
@@ -25,8 +59,8 @@
       </form>
       <div class="row">
         <div class="col-md-12 col-lg-12">
-          <ngx-datatable class="material" style="overflow: auto;" [rows]="auditLog" [columnMode]="'standard'" [headerHeight]="40"
-            [footerHeight]="50" [rowHeight]="'auto'" [limit]="9">
+          <ngx-datatable class="material" style="overflow: auto;" [rows]="auditLog" [columnMode]="'standard'"
+            [headerHeight]="40" [footerHeight]="50" [rowHeight]="'auto'" [limit]="9">
             <ngx-datatable-column [width]="300" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
@@ -42,7 +76,15 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="640" name="Event" prop="event" [flexGrow]="2" cellClass="middle"
+            <ngx-datatable-column [width]="300" name="Organization" [flexGrow]="2" cellClass="middle"
+            [draggable]="false">
+            <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+              <div class="ellipsis">
+                <span>{{!row['organizationName'] && !row['districtName'] ? 'N/A' : row['organizationName'] ? row['organizationName'] : row['districtName']}}</span>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+            <ngx-datatable-column [width]="340" name="Event" prop="event" [flexGrow]="2" cellClass="middle"
               [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">

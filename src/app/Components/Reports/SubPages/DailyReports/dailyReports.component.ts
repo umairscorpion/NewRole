@@ -15,8 +15,6 @@ import { AuditLogService } from '../../../../Services/audit_logs/audit-log.servi
 import { Workbook } from 'exceljs';
 import { DatePipe } from '@angular/common';
 import { TimeFormatPipe } from '../../../../Shared/pipe/time.pipe';
-import { ExcelSheet } from '../../../../Model/excelSheet';
-import { Jsonp } from '../../../../../../node_modules/@angular/http';
 
 @Component({
     selector: 'daily-reports',

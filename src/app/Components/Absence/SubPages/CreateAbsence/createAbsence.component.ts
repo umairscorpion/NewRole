@@ -98,7 +98,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     NeedASub: boolean = false;
     response: number = 0;
     absenceTypes: AbsenceScope[] = Array<AbsenceScope>();
+    // For Announcements
     Announcements: Announcement[] = Array<Announcement>();
+    IsAnnouncementViewed: boolean = false;
 
     constructor(
         private http: HttpClient,
@@ -125,10 +127,10 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         // this.preferredSubPanel.expandedChange.subscribe((data) => {
         //     this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
         // });
-        // let UserRoleId = this._userSession.getUserRoleId();
-        // if (UserRoleId === 3) {
-        //     this.GetAndViewAnnouncement();
-        // }
+        let UserRoleId = this._userSession.getUserRoleId();
+        if (UserRoleId === 3) {
+            this.GetAndViewAnnouncement();
+        }
     }
 
     GenerateForms(): void {
@@ -859,18 +861,20 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
 
     GetAndViewAnnouncement() {
-        let model = {}
+        let model = {
+            DistrictId: this._userSession.getUserDistrictId(),
+            OrganizationId: this._userSession.getUserOrganizationId()
+        }
         this._dataContext.post('announcement/getAnnouncement', model).subscribe((data: any) => {
             this.Announcements = data;
-            this.dialogRef.open(
-                ShowAnnouncementPopupComponent, {
-                    panelClass: 'announcements-dialog',
-                    data: this.Announcements
-                }
-            );
-            // this.Announcements = data.filter(number => moment(number.hideOnTime, 'hh:mm A').isSameOrAfter(moment().format('hh:mm A')));
-            // this.Announcements = data.filter(number => moment(number.showOnDate, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')));
-            // this.Announcements = data.filter(number => moment(number.hideOnDate, 'hh:mm').isSameOrBefore(moment().format('hh:mm')));
+            if (data.length > 0) {
+                this.dialogRef.open(
+                    ShowAnnouncementPopupComponent, {
+                        panelClass: 'announcements-dialog',
+                        data: this.Announcements
+                    }
+                );
+            }
         },
             error => <any>error);
     }
