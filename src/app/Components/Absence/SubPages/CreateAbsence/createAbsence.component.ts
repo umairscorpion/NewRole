@@ -67,6 +67,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     AttachedFileName: string;
     CompletedPercentage: number;
     SuccessMessage: boolean;
+    TeachingLevels: any;
+    teachingSubjects: any;
     isLinear = true;
     absenceFirstFormGroup: FormGroup;
     absenceSecondFormGroup: FormGroup;
@@ -154,6 +156,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             AbsenceStartDate: ['', Validators.required],
             AbsenceEndDate: ['', Validators.required],
             PositionId: [''],
+            Grade: [''],
+            Subject: [''],
             AbsenceType: [Validators.required],
             Substitutes: [[]],
             onlyCertified: [true],
@@ -390,6 +394,10 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls["EmployeeId"].setValidators([Validators.required]);
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
             this.absenceFirstFormGroup.controls['OrganizationId'].disable();
+            this.absenceFirstFormGroup.controls['Grade'].clearValidators();
+            this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Subject'].clearValidators();
+            this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
         }
         else if (+event == 3) {
             this.absenceFirstFormGroup.get('AbsenceType').setValue(4);
@@ -403,6 +411,12 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             }
             this.absenceFirstFormGroup.controls['EmployeeId'].clearValidators();
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
+            this.GetTeachingLevels();
+            this.GetTeachingSubjects();
+            this.absenceFirstFormGroup.controls["Grade"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls["Subject"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
         }
         else {
             if (this.loginedUserLevel == 1) {
@@ -414,6 +428,10 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls['PositionId'].updateValueAndValidity();
             this.absenceFirstFormGroup.controls['EmployeeId'].clearValidators();
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Grade'].clearValidators();
+            this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Subject'].clearValidators();
+            this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
         }
     }
 
@@ -552,6 +570,21 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             error => <any>error);
     }
 
+    //GET SUBJECTS IN CASE OF NEED A SUB
+    GetTeachingSubjects(): void {
+        this._dataContext.get('lookup/teachingSubjects').subscribe((data: any) => {
+            this.teachingSubjects = data;
+        },
+            error => this.msg = <any>error);
+    }
+    //GET GRADES IN CASE OF NEED A SUB
+    GetTeachingLevels(): void {
+        this._dataContext.get('lookup/getTeachingLevels').subscribe((data: any) => {
+            this.TeachingLevels = data;
+        },
+            error => this.msg = <any>error);
+    }
+
     //ON CREATING ABSENCE CLICK
     createAbsenceSubmission(FirstAbsenceForm: any, SecondAbsenceForm: any, stepper: MatStepper) {
         if (this._userSession.getUserRoleId() === 3) {
@@ -626,7 +659,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime + this.ContactSubTime,
                 isApprovalRequired: this.isApprovalNeeded && this.loginedUserRole === 3 ? 0 : 1,
                 onlyCertified: FirstAbsenceForm.value.onlyCertified,
-                onlySubjectSpecialist: FirstAbsenceForm.value.onlySubjectSpecialist
+                onlySubjectSpecialist: FirstAbsenceForm.value.onlySubjectSpecialist,
+                TeachingLevelId: this.NeedASub ? FirstAbsenceForm.value.Grade: 0,
+                SpecialityTypeId: this.NeedASub ? FirstAbsenceForm.value.Subject: 0
             }
 
             if (!this.CheckDataAndTimeOverlape(FirstAbsenceForm.value.AbsenceStartDate as Date,

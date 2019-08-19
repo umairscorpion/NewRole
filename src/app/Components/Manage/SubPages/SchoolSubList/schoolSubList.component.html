@@ -1,9 +1,12 @@
 <div>
     <form [formGroup]="subListForm">
         <mat-tab-group (selectedTabChange)="onTabChanged($event)">
-            <!-- <mat-tab label="School List">
+            <mat-tab label="School List">
+                <div>
+                    <button mat-raised-button style="background: rgb(145, 172, 174); color: white;" (click)="addnewList()">Add New List</button>
+                </div>
                 <div *ngIf="substituteListCategory && substituteListCategory.length > 0">
-                    <div *ngFor="let subCategory of substituteListCategory | paginate: { itemsPerPage: 1, currentPage: p }">
+                    <div *ngFor="let subCategory of substituteListCategory | paginate: { itemsPerPage: 1, currentPage: currentPage }">
                         <div class="col-md-12">
                             <div class="row shaded-border" style="padding-top: 10px">
                                 <div class="col-md-6" style="border-right:1px solid #ccc">
@@ -15,7 +18,7 @@
                                     <div class="row">
                                         <mat-selection-list>
                                             <mat-list-option checkboxPosition="before" (click)="addOrRemoveSubstituteInCurrentCategory(sub, subCategory.categoryId);"
-                                             *ngFor="let sub of subCategory.substituteList" [value]="sub" [selected]="sub.isAdded">
+                                                *ngFor="let sub of subCategory.substituteList" [value]="sub" [selected]="sub.isAdded">
                                                 {{sub.userName}}
                                             </mat-list-option>
                                         </mat-selection-list>
@@ -32,15 +35,15 @@
                                             <div *ngIf='substitute.isAdded'>
                                                 <div class="col-md-10">{{substitute.userName}}</div>
                                                 <div class="col-md-2">
-                                                    <mat-icon style="cursor: pointer;" (click)="addOrRemoveSubstituteInCurrentCategory(substitute, subCategory.categoryId);" #tooltip="matTooltip" matTooltip="Remove Substitute"
-                                                        matTooltipPosition="left">cancel</mat-icon>
+                                                    <mat-icon style="cursor: pointer;" (click)="addOrRemoveSubstituteInCurrentCategory(substitute, subCategory.categoryId);"
+                                                        #tooltip="matTooltip" matTooltip="Remove Substitute" matTooltipPosition="left">cancel</mat-icon>
                                                 </div>
                                             </div>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                    <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
                                 </div>
                                 <hr class="col-md-12">
                                 <div class="col-md-6" style="padding-top: 10px">
@@ -50,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-            </mat-tab> -->
+            </mat-tab>
             <mat-tab label="Substitute List">
                 <div class="col-md-12">
                     <div class="row" style="text-align:right !important; padding-top: 10px; padding-bottom: 10px">

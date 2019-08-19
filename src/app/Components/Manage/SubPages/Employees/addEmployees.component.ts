@@ -212,6 +212,17 @@ export class AddEmployeesComponent implements OnInit {
 
     //ON CHANGING EMPLOYEE TYPE
     onChangeEmployeeType(value: any) {
+        if (value == 1) {
+            this.employeeForm.controls["TeachingLevel"].setValidators([Validators.required]);
+            this.employeeForm.controls["Speciality"].setValidators([Validators.required]);
+            this.employeeForm.controls['TeachingLevel'].updateValueAndValidity();
+            this.employeeForm.controls['Speciality'].updateValueAndValidity();
+        } else {
+            this.employeeForm.controls['TeachingLevel'].clearValidators();
+            this.employeeForm.controls['Speciality'].clearValidators();
+            this.employeeForm.controls['TeachingLevel'].updateValueAndValidity();
+            this.employeeForm.controls['Speciality'].updateValueAndValidity();
+        }
         if (value !== 2 || value !== 3 || value !== 4) {
             this.employeeForm.get('SecondarySchools').setValue([]);
             // this.employeeForm.controls["TeachingLevel"].setValidators([Validators.required]);

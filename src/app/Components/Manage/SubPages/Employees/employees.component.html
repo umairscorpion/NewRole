@@ -70,7 +70,7 @@
           <mat-cell *matCellDef="let iEmployee"> {{iEmployee.firstName}} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="LastName">
+        <ng-container matColumnDef="lastName">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
           <mat-cell *matCellDef="let iEmployee"> {{iEmployee.lastName}} </mat-cell>
         </ng-container>
@@ -85,8 +85,8 @@
           <mat-cell *matCellDef="let iEmployee"> {{iEmployee.phoneNumber}} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="location">
-          <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+        <ng-container matColumnDef="districtName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Location </mat-header-cell>
           <mat-cell *matCellDef="let iEmployee">
             {{iEmployee.organizationName ? iEmployee.organizationName: iEmployee.districtName}} </mat-cell>
         </ng-container>
@@ -101,8 +101,8 @@
             <mat-cell *matCellDef="let iEmployee"> </mat-cell>
           </ng-container> -->
 
-        <ng-container matColumnDef="ClassificationStatus">
-          <mat-header-cell *matHeaderCellDef> Classification </mat-header-cell>
+        <ng-container matColumnDef="isCertified">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Classification </mat-header-cell>
           <mat-cell *matCellDef="let iEmployee"> {{iEmployee.isCertified ? 'Certified' : 'Classified'}} </mat-cell>
         </ng-container>
 

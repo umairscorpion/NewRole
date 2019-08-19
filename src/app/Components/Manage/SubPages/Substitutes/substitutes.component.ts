@@ -20,8 +20,9 @@ import { PopupDialogForNotificationSettings } from './SubPages/popups/notificati
   styleUrls: ['substitutes.component.css']
 })
 export class SubstitutesComponent implements OnInit {
-  displayedColumns = ['FirstName', 'LastName', 'Position', 'ClassificationStatus', 'Email', 'PhoneNumber', 'Active', 'action'];
+  displayedColumns = ['firstName', 'lastName', 'Position', 'isCertified', 'Email', 'PhoneNumber', 'Active', 'action'];
   SubstituteDetail: any;
+  substituteName: string = '';
   private notifier: NotifierService;
   District: IDistrict;
   positions: any;
@@ -31,7 +32,7 @@ export class SubstitutesComponent implements OnInit {
   lastActiveDaysTemp: any;
   lastActiveDays: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort) sortt: MatSort;
   Employees: any
   msg: string;
   Districts: any;
@@ -56,12 +57,20 @@ export class SubstitutesComponent implements OnInit {
     this.GetSustitutes();
     this.GetPositions();
     this.GetDistricts();
+    this.substituteDataSource.filterPredicate = (data: any, filtersJson: string) => {
+      const matchFilter = [];
+      const nameTitle = 'firstName';
+      const name = data[nameTitle] === null ? '' : data[nameTitle];
+      matchFilter.push(name.toLowerCase().includes(this.substituteName.toLowerCase()));
+      return matchFilter.every(Boolean)
+    };
   }
 
   ngAfterViewInit() {
-    this.substituteDataSource.sort = this.sort;
+    this.substituteDataSource.sort = this.sortt;
     this.substituteDataSource.paginator = this.paginator;
   }
+
 
   intializeForms() {
     this.weeklyLimitSettings = this.fb.group({
@@ -82,10 +91,17 @@ export class SubstitutesComponent implements OnInit {
       error => this.msg = <any>error);
   }
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase();
-    this.substituteDataSource.filter = filterValue;
+  applyFilter(employeeName: any) {
+    const tableFilters = [];
+    tableFilters.push({
+      id: 'firstName',
+      value: employeeName.value
+    });
+
+    this.substituteDataSource.filter = JSON.stringify(tableFilters);
+    if (this.substituteDataSource.paginator) {
+      this.substituteDataSource.paginator.firstPage();
+    }
   }
 
   DeleteSubstitute(SelectedRow: any) {

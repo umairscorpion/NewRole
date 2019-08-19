@@ -6,6 +6,7 @@ import { NotifierService } from 'angular-notifier';
 import { UserSession } from 'src/app/Services/userSession.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SubstituteListCategory } from '../../../../Model/SubstituteListCategory';
+import { SubstituteList } from '../../../../Model/SubstituteList';
 
 @Component({
     selector: 'school-sub-list',
@@ -18,7 +19,7 @@ export class SchoolSubListComponent implements OnInit {
     showBlockedSubstitutes: boolean;
     showSubstitutes: boolean;
     private notifier: NotifierService;
-    currentPage: number = 1;
+    currentPage: number = 2;
     msg: string;
     Districts: any;
     subListForm: FormGroup;
@@ -43,7 +44,7 @@ export class SchoolSubListComponent implements OnInit {
         this.GetDistricts();
         this.getSustitutes();
         this.getBlockedSustitutes();
-        // this.getSubstituteCategoryAndList();
+        this.getSubstituteCategoryAndList();
     }
 
     getSubstituteCategoryAndList() {
@@ -52,6 +53,14 @@ export class SchoolSubListComponent implements OnInit {
                 this.substituteListCategory = data;
             },
                 error => this.msg = <any>error);
+    }
+
+    addnewList() {
+        // let newCategory = new SubstituteListCategory();
+        // newCategory.categoryId = 0;
+        // newCategory.substituteList.push = this.schoolSubList;
+        // this.substituteListCategory.push(new SubstituteListCategory());
+        // this.currentPage = this.substituteListCategory.length;
     }
 
     saveSubstituteListByCategory(category: SubstituteListCategory) {
