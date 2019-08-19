@@ -16,6 +16,8 @@ import { AvailabilityService } from 'src/app/Services/availability.service';
 import { ShowSchoolFilesPopupComponent } from 'src/app/Shared/show-school-files-popup/show-school-files-popup.component';
 import { FileService } from 'src/app/Services/file.service';
 import { FileManager } from 'src/app/Model/FileSystem/fileManager.detail';
+import { ShowAnnouncementPopupComponent } from 'src/app/Components/Announcement/show-announcement-popup/show-announcement-popup.component';
+import { Announcement } from 'src/app/Model/announcement';
 
 @Component({
     selector: 'available-jobs',
@@ -52,6 +54,9 @@ export class AvailableJobsComponent implements OnInit {
     FileStream: any;
     iamRequested: boolean;
     Files = [];
+    // For Announcements
+    Announcements: Announcement[] = Array<Announcement>();
+    IsAnnouncementViewed: boolean = false;
 
     constructor(
         private _dataContext: DataContext,
@@ -81,6 +86,10 @@ export class AvailableJobsComponent implements OnInit {
             Requested: [false]
         });
         this.GetMyJobs();
+        let UserRoleId = this._userSession.getUserRoleId();
+        if (UserRoleId === 4) {
+            this.GetAndViewAnnouncement();
+        }
         this.GetDistricts();
         this.GetOrganizations(this._userSession.getUserDistrictId());
         this.GetAvailableJobs();
@@ -351,5 +360,24 @@ export class AvailableJobsComponent implements OnInit {
         );
         dialogEdit.afterClosed().subscribe(result => {
         });
+    }
+
+    GetAndViewAnnouncement() {
+        let model = {
+            DistrictId: this._userSession.getUserDistrictId(),
+            OrganizationId: this._userSession.getUserOrganizationId()
+        }
+        this._dataContext.post('announcement/getAnnouncement', model).subscribe((data: any) => {
+            this.Announcements = data;
+            if (data.length > 0) {
+                this.dialogRef.open(
+                    ShowAnnouncementPopupComponent, {
+                        panelClass: 'announcements-dialog',
+                        data: this.Announcements
+                    }
+                );
+            }
+        },
+            error => <any>error);
     }
 }

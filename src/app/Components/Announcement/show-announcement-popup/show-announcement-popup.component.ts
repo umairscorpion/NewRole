@@ -9,9 +9,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 export class ShowAnnouncementPopupComponent implements OnInit {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public Announcements: any) { }
+    @Inject(MAT_DIALOG_DATA) public Announcements: any,
+    private _dialogRef: MatDialogRef<ShowAnnouncementPopupComponent>) { }
 
   ngOnInit() {
   }
 
+  onCloseDialog() {
+    this._dialogRef.close();
+  }
 }
