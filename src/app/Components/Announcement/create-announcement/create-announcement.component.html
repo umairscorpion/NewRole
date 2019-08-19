@@ -8,7 +8,7 @@
           <mat-form-field class="col-md-6">
             <mat-label>Select District</mat-label>
             <mat-select formControlName="districtId">
-              <mat-option [value]="0">All</mat-option>
+              <mat-option [value]="0" (onSelectionChange)="SetOrganizations()">All</mat-option>
               <mat-option *ngFor="let district of Districts" [value]="district.districtId"
                 (onSelectionChange)="GetOrganizationsByDistrictId(district.districtId)">
                 {{district.districtName}}
@@ -19,7 +19,7 @@
         <div class="row" *ngIf="form.value.districtId != 0">
           <mat-form-field class="col-md-6">
             <mat-label>Select School</mat-label>
-            <mat-select formControlName="organizationId">
+            <mat-select formControlName="organizationId" (selectionChange)="SetRecipients()">
               <mat-option *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
                 {{Organization.schoolName}}
               </mat-option>
@@ -33,7 +33,7 @@
               <mat-option [value]="1">All Users</mat-option>
               <mat-option [value]="2">Administrators</mat-option>
               <mat-option [value]="3">Employees</mat-option>
-              <mat-option [value]="4">Substitutes</mat-option>
+              <mat-option [value]="4" [disabled]="form.value.organizationId.length > 0">Substitutes</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

@@ -18,6 +18,7 @@ export class ReportFilter {
   employeeName: string;
   OrganizationId: string;
   deleteAbsenceReason: string;
+  date: string = moment().format('dddd, MM/DD/YYYY');
   District: number;
   userId: string;
   confirmationNumber: string;
@@ -25,8 +26,8 @@ export class ReportFilter {
     return fb.group({
       userId: [''],
       locationId: [''],
-      fromDate: [moment(new Date()).format('YYYY-MM-DD')],
-      toDate: [moment(new Date()).format('YYYY-MM-DD')],
+      fromDate: [new Date()],
+      toDate: [new Date()],
       jobNumber: [''],
       absenceTypeId: [0],
       districtId: [0],
@@ -44,8 +45,8 @@ export class ReportFilter {
   }
   static initial() {
     const filters = new ReportFilter();
-    filters.fromDate = moment(new Date()).format('YYYY-MM-DD');
-    filters.toDate = moment(new Date()).format('YYYY-MM-DD');
+    filters.fromDate = moment().format('YYYY-MM-DD');
+    filters.toDate = moment().format('YYYY-MM-DD');
     filters.jobNumber = '';
     filters.employeeTypeId = 0;
     filters.absenceTypeId = 0;
