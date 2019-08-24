@@ -48,21 +48,24 @@
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Personal">
-                    <mat-header-cell *matHeaderCellDef> Personal Leave </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef> Sick Leave </mat-header-cell>
                     <mat-cell *matCellDef="let LeaveType">
-                            {{LeaveType.personal ? LeaveType.personal: 'Not Created any Leave'}}
+                            <!-- {{LeaveType.personal ? LeaveType.personal: 'Not Created any Leave'}} -->
+                            {{LeaveType.firstColumn}}
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Sick">
-                    <mat-header-cell *matHeaderCellDef> Sick Leave </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef> Personal Leave </mat-header-cell>
                     <mat-cell *matCellDef="let LeaveType">
-                            {{LeaveType.sick ? LeaveType.sick: 'Not Created any Leave'}}
+                            <!-- {{LeaveType.sick ? LeaveType.sick: 'Not Created any Leave'}} -->
+                            {{LeaveType.secondColumn}}
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Vacation">
                     <mat-header-cell *matHeaderCellDef> Vacation Leave </mat-header-cell>
                     <mat-cell *matCellDef="let LeaveType">
-                            {{LeaveType.vacation ? LeaveType.vacation: 'Not Created any Leave'}}
+                            <!-- {{LeaveType.vacation ? LeaveType.vacation: 'Not Created any Leave'}} -->
+                            {{LeaveType.thirdColumn}}
                     </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumnsForLeaveRequests; sticky: true"></mat-header-row>

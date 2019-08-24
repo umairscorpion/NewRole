@@ -45,4 +45,5 @@ export class ReportDetail extends Entity {
   employeeFirstName: string;
   employeeLastName: string;
   acceptedVia: string;
+  jobId: string;
 }

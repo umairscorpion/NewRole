@@ -98,7 +98,7 @@ export class AppLayoutComponent implements OnInit {
       year: new Date().getFullYear(),
       userId: this.userSession.getUserId()
     }
-    this.dataContext.post('Leave/getEmployeeLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
+    this.dataContext.post('Leave/getLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
       this.employeeLeaveBalance = response;
     })
   }

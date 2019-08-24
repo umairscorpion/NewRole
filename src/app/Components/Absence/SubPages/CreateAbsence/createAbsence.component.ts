@@ -645,31 +645,54 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     //ON CREATING ABSENCE CLICK
     createAbsenceSubmission(FirstAbsenceForm: any, SecondAbsenceForm: any, stepper: MatStepper) {
         if (this._userSession.getUserRoleId() === 3) {
+            // let filter = {
+            //     organizationId: this._userSession.getUserOrganizationId(),
+            //     districtId: this._userSession.getUserDistrictId(),
+            //     year: new Date().getFullYear(),
+            //     userId: this._userSession.getUserId()
+            // }
             let filter = {
-                organizationId: this._userSession.getUserOrganizationId(),
-                districtId: this._userSession.getUserDistrictId(),
-                year: new Date().getFullYear(),
-                userId: this._userSession.getUserId()
+                userId: this._userSession.getUserId(),
+                allowanceType: FirstAbsenceForm.value.Reason.allowanceType,
+                absenceStartDate: new Date(FirstAbsenceForm.value.AbsenceStartDate),
+                absenceEndDate: new Date(FirstAbsenceForm.value.AbsenceEndDate)
             }
-            this._dataContext.post('Leave/getLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
-                response = response.filter(leaveBalance => leaveBalance.leaveTypeId === FirstAbsenceForm.value.Reason.leaveTypeId)
-                if (response.length > 0) {
-                    if (response[0].isAllowNegativeAllowance) {
-                        this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+            if(FirstAbsenceForm.value.Reason.allowanceType != 0){
+                var minusbalance = (FirstAbsenceForm.value.endDate - FirstAbsenceForm.value.startDate ) + 1;
+                var userId =  this._userSession.getUserId();
+                this._dataContext.post('Absence/checkNegativeAllowance/',filter).subscribe((response: any) => {
+                    if(response == "success")
+                    {
+                        this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper); 
                     }
                     else {
-                        if (response[0].balance - 1 >= 0) {
-                            this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
-                        }
-                        else {
-                            this.notifier.notify('error', 'Please select another absence reason.');
-                        }
+                        this.notifier.notify('error', 'Please select another absence reason. Please check your leave balance');
                     }
-                }
-                else {
-                    this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
-                }
-            });
+                },
+                    error => this.msg = <any>error);
+            }
+            else {
+                this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+            }
+            // this._dataContext.post('Leave/getLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
+            //     response = response.filter(leaveBalance => leaveBalance.leaveTypeId === FirstAbsenceForm.value.Reason.leaveTypeId)
+            //     if (response.length > 0) {
+            //         if (response[0].isAllowNegativeAllowance) {
+            //             this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+            //         }
+            //         else {
+            //             if (response[0].balance - 1 >= 0) {
+            //                 this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+            //             }
+            //             else {
+            //                 this.notifier.notify('error', 'Please select another absence reason.');
+            //             }
+            //         }
+            //     }
+            //     else {
+            //         this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
+            //     }
+            // });
         }
         else {
             this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);

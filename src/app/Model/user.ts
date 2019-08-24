@@ -48,6 +48,8 @@ export class User extends Entity {
     searchType: number;
     reportType: number;
     password: string;
+    isWelcomeEmailSend: string;
+    jobId: string;
 }
 
 export class UserSummary extends Entity {

@@ -12,16 +12,14 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+        </div>
+        <div class="row">
           <div style="text-align: right">
             <a routerLink="/manage/substitutes/addSubstitute">
-              <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 30px;" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
+              <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 44px;"
+                [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
             </a>
           </div>
-        </div>
-        <div class="col-md-12 col-lg-12" style="text-align: right" *ngIf='UserRole != 5'>
-          <a routerLink="/manage/substitutes/addSubstitute">
-            <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 14px;" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
-          </a>
         </div>
         <div class="row col-md-12 col-lg-12">
           <div class="example-container mat-elevation-z8">
@@ -77,7 +75,14 @@
               </ng-container>
 
               <ng-container matColumnDef="action">
-                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> Action
+                  <mat-select style="margin-left:139px; width: 10%; border:2px solid gray">
+                    <mat-option style="margin: 5px; background-color: white;">
+                      <button mat-raised-button style="background-color: #3CCCD1; color: white; margin-left: 5px"
+                        (click)="onSendAll()">Send All</button>
+                    </mat-option>
+                  </mat-select>
+                </mat-header-cell>
                 <mat-cell *matCellDef="let row">
                   <!-- <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Send Welcome Letter" (click)="sendWelcomeLetter(row)" matTooltipPosition="below">
                     Send Welcome
@@ -101,6 +106,22 @@
                       <i class="fa fa-lock fa-stack-1x"></i>
                     </span>
                   </a>
+<<<<<<< HEAD
+                  <a style="cursor: pointer;margin-left: 10px" *ngIf = 'row.isWelcomeEmailSend == null' #tooltip="matTooltip"
+                    [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Resend Welcome Letter"
+                    matTooltipPosition="below">
+                    <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
+                  </a>
+                  <a style="cursor: pointer;margin-left: 10px" *ngIf='row.isWelcomeEmailSend != null'
+                    #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Welcome Letter Sent"
+                    matTooltipPosition="below">
+                    <i class="material-icons" (click)="ResendWelcomeLetter(row)">how_to_reg</i>
+                  </a>
+                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
+                    [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'" matTooltipPosition="above"
+                    [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)"
+                    [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" color=""></mat-slide-toggle>
+=======
                   <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Resend Welcome Letter"
                     matTooltipPosition="below">
                     <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
@@ -108,6 +129,7 @@
                   <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'"
                     matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'"
                     color=""></mat-slide-toggle>
+>>>>>>> f4228ff806dfc5cb80d0b183b19e6ff15d35c6de
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>

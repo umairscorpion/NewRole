@@ -1,8 +1,7 @@
 <mat-card>
   <mat-card-title>Schools</mat-card-title>
   <div>
-    <div class="row">
-      <div *ngIf='UserRole == 5'>
+    <div *ngIf='UserRole == 5' class="row">
         <mat-form-field appearance="outline" class="col-md-3">
           <mat-label>Select District</mat-label>
           <mat-select placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
@@ -11,10 +10,11 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
+    </div>
+    <div class="row">
       <div style="text-align: right">
         <a routerLink="./AddSchool" [hideIfUnauthorized]="'ADD_SCHOOL'">
-          <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 30px;">Add
+          <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 15px;">Add
             Schools</button></a>
       </div>
     </div>

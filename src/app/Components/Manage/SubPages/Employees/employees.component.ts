@@ -31,6 +31,7 @@ export class EmployeesComponent implements OnInit {
   selectedDistrictIdForFilter: number = 0;
   UserRole: number = this._userSession.getUserRoleId();
   districtIdForWelcome: any = 0;
+  userRole: any;
 
   constructor(
     private router: Router,
@@ -179,6 +180,9 @@ export class EmployeesComponent implements OnInit {
       if (r.value) {
         this._dataContext.post('user/resendWelcomeLetter', user).subscribe((data: any) => {
           this.notifier.notify('success', 'Sent Successfully');
+          setTimeout(() => {
+            this.GetStaff();
+          }, 2500);
         },
           error => this.msg = <any>error);
       }
@@ -204,6 +208,7 @@ export class EmployeesComponent implements OnInit {
     }
     this._dataContext.post('Communication/sendWellcomeLetter', user).subscribe(result => {
       this.notifier.notify('success', 'Email Send Successfully.');
+      this.GetStaff();
     },
       error => this.msg = <any>error);
   }
@@ -216,6 +221,7 @@ export class EmployeesComponent implements OnInit {
 
   onChangeDistrict(districtId: any) {
     this.selectedDistrictIdForFilter = districtId;
+    this.districtIdForWelcome = districtId;
     const tableFilters = [];
     tableFilters.push({
       id: 'districtId',
@@ -227,6 +233,7 @@ export class EmployeesComponent implements OnInit {
     }
   }
   onSendAll(){
+    this.userRole = 3;
     if(this.districtIdForWelcome == 0){
       this.districtIdForWelcome = this._userSession.UserClaim.districtId;
       if(this.districtIdForWelcome == 0)
@@ -235,8 +242,11 @@ export class EmployeesComponent implements OnInit {
         return;
       }
     }
-    this._dataContext.get('user/sendWellcomeLetterToAll/' + this.districtIdForWelcome).subscribe((response : any) => {
+    this._dataContext.get('user/sendWellcomeLetterToAll/' + this.districtIdForWelcome + '/' + this.userRole).subscribe((response : any) => {
       this.notifier.notify('success', 'Email Sent Successfully.');
+      setTimeout(() => {
+        this.GetStaff();
+      }, 5000);
     },
       error => this.notifier.notify('error', 'Please Select District First'));
   }

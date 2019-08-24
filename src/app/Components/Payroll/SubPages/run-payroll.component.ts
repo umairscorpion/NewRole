@@ -39,7 +39,7 @@ export class RunPayroll implements OnInit {
     Employees: any
     msg: string;
     curr: Date = new Date;
-    displayedColumns: string[] = ['Date', 'Employee', 'Location', 'Reason', 'Time', 'Hours', 'Notes', 'Substitute', 'Rate', 'Additional', 'Gross', 'action'];
+    displayedColumns: string[] = ['Date','JobId', 'Employee', 'Location', 'Reason', 'Time', 'Hours', 'Notes', 'Substitute', 'Rate', 'Additional', 'Gross', 'action'];
     selection = new SelectionModel<ReportDetail>(true, []);
 
     constructor(
