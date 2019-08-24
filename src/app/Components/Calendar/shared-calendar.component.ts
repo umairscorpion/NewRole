@@ -34,10 +34,10 @@ export class SharedCalendarComponent implements OnInit {
     private _dataContext: DataContext,
     private dialogRef: MatDialog,
     private fb: FormBuilder) {
-      this.FilterForm = fb.group({
-        organizationId: [0]
-      });
-     }
+    this.FilterForm = fb.group({
+      organizationId: ['']
+    });
+  }
 
   ngOnInit() {
     this.loginedUserRole = this._userSession.getUserRoleId();
@@ -56,14 +56,14 @@ export class SharedCalendarComponent implements OnInit {
     let districtId = this._userSession.getUserLevelId() === 4 ? 0 : this._userSession.getUserDistrictId();
     let organizationId = this._userSession.getUserLevelId() === 4 ? '' : this._userSession.getUserOrganizationId();
     let model = {
-      startDate, endDate, userId, districtId, organizationId : this.FilterForm.value.organizationId == 0 ? '' : this.FilterForm.value.organizationId
+      startDate, endDate, userId, districtId, organizationId: this.FilterForm.value.organizationId == 0 ? '' : this.FilterForm.value.organizationId
     }
     this.absenceService.CalendarView('Absence/views/calendar', model).subscribe(
       (data: any) => {
         console.log({ absences: data });
         this.containerEl.fullCalendar('refetchResources');
-          this.containerEl.fullCalendar('removeEvents');
-          this.containerEl.fullCalendar('renderEvents', data, true);
+        this.containerEl.fullCalendar('removeEvents');
+        this.containerEl.fullCalendar('renderEvents', data, true);
       });
   }
 
@@ -164,11 +164,23 @@ export class SharedCalendarComponent implements OnInit {
   }
 
   GetOrganizations(DistrictId: number): void {
-    this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
+    this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any[]) => {
       this.Organizations = data;
       if (this._userSession.getUserRoleId() == 2) {
-        this.FilterForm.get('organizationId').setValue(this._userSession.getUserOrganizationId());
-        this.FilterForm.controls['organizationId'].disable();
+        let schools = this._userSession.getUserLocations();
+        if (schools.length > 1) {
+          this.Organizations = data.filter(
+            function (e) {
+              return this.indexOf(e.schoolId) >= 0;
+            },
+            schools
+          );
+          this.FilterForm.get('organizationId').setValue(this.Organizations[0].schoolId);
+        }
+        else {
+          this.FilterForm.get('organizationId').setValue(this._userSession.getUserOrganizationId());
+          this.FilterForm.controls['organizationId'].disable();
+        }
       }
     },
       error => <any>error);

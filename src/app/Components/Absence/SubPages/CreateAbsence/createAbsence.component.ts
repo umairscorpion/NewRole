@@ -57,7 +57,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
     // var for Preferred Sub 
     ContactSub: string = '1';
-    ContactSubTime: number = null;
     DisableContactSubTimeAccess: boolean = true;
     isApprovalNeeded: boolean = false;
     PreferredSubstitutes: any;
@@ -171,7 +170,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             AbsenceType: [Validators.required],
             Substitutes: [[]],
             onlyCertified: [true],
-            onlySubjectSpecialist: [false]
+            onlySubjectSpecialist: [false],
+            ContactSubTime: ['10'],
         });
 
         this.absenceSecondFormGroup = this._formBuilder.group({
@@ -447,10 +447,18 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
             this.GetTeachingLevels();
             this.GetTeachingSubjects();
-            this.absenceFirstFormGroup.controls["Grade"].setValidators([Validators.required]);
-            this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
-            this.absenceFirstFormGroup.controls["Subject"].setValidators([Validators.required]);
-            this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
+            if (this.absenceFirstFormGroup.controls['PositionId'].value == 1) {
+                this.absenceFirstFormGroup.controls["Grade"].setValidators([Validators.required]);
+                this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+                this.absenceFirstFormGroup.controls["Subject"].setValidators([Validators.required]);
+                this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
+            }
+            else {
+                this.absenceFirstFormGroup.controls['Grade'].clearValidators();
+                this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+                this.absenceFirstFormGroup.controls['Subject'].clearValidators();
+                this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
+            }
         }
         else {
             if (this.loginedUserLevel == 1) {
@@ -462,6 +470,20 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls['PositionId'].updateValueAndValidity();
             this.absenceFirstFormGroup.controls['EmployeeId'].clearValidators();
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Grade'].clearValidators();
+            this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Subject'].clearValidators();
+            this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
+        }
+    }
+    //On change position in case of Find A Sub
+    OnchangePosition(id: number) {
+        if (id == 1) {
+            this.absenceFirstFormGroup.controls["Grade"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls["Subject"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
+        } else {
             this.absenceFirstFormGroup.controls['Grade'].clearValidators();
             this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
             this.absenceFirstFormGroup.controls['Subject'].clearValidators();
@@ -690,13 +712,13 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 FileExtention: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileExtention : 'N/A',
                 SubstituteId: FirstAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 2 ? Substitutes :
                     FirstAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 1 ? Substitutes : '-1',
-                Interval: this.ContactSub == "1" ? 0 : this.ContactSubTime,
-                TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime + this.ContactSubTime,
+                Interval: this.ContactSub == "1" ? 0 : FirstAbsenceForm.value.ContactSubTime,
+                TotalInterval: this.ContactSub == "1" ? 0 : (this.PreferredSubstitutes.length - 1) * (+FirstAbsenceForm.value.ContactSubTime) + 10, //Send All to After 10 mins
                 isApprovalRequired: this.isApprovalNeeded && this.loginedUserRole === 3 ? 0 : 1,
                 onlyCertified: FirstAbsenceForm.value.onlyCertified,
                 onlySubjectSpecialist: FirstAbsenceForm.value.onlySubjectSpecialist,
-                TeachingLevelId: this.NeedASub ? FirstAbsenceForm.value.Grade : 0,
-                SpecialityTypeId: this.NeedASub ? FirstAbsenceForm.value.Subject : 0
+                TeachingLevelId: this.NeedASub && FirstAbsenceForm.value.Grade ? FirstAbsenceForm.value.Grade : 0,
+                SpecialityTypeId: this.NeedASub && FirstAbsenceForm.value.Subject ? FirstAbsenceForm.value.Subject : 0
             }
 
             if (!this.CheckDataAndTimeOverlape(FirstAbsenceForm.value.AbsenceStartDate as Date,
@@ -757,11 +779,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     OnchangeContactSubOption(): void {
         if (this.ContactSub == "1") {
-            this.ContactSubTime = null;
             this.DisableContactSubTimeAccess = true;
         }
         else {
-            this.ContactSubTime = 10;
             this.DisableContactSubTimeAccess = false;
         }
     }

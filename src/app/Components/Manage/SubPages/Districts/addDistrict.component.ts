@@ -40,7 +40,7 @@ export class AddDistrictComponent implements OnInit {
             City: ['', Validators.required],
             Address: ['', Validators.required],
             ZipCode: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
-            Country: ['', Validators.required],
+            Country: [[], Validators.required],
             State: ['', Validators.required],
             StartTime: ['', Validators.required],
             firstHalfEndTime: ['', Validators.required],
@@ -52,6 +52,9 @@ export class AddDistrictComponent implements OnInit {
         });
         this.GetCountries();
         this.GetTimeZone();
+    }
+
+    ngAfterViewInit() {
         this.route.queryParams.subscribe((params: any) => {
             if (params['Id']) {
                 let DistrictId = params.Id;
@@ -69,25 +72,25 @@ export class AddDistrictComponent implements OnInit {
                         SecondHaifStartTime: data[0].district2ndHalfStart,
                         EndTime: data[0].districtEndTime,
                         TimeZone: data[0].districtTimeZone,
-                        PhoneNo: this.getPhoneNumber(data[0].districtPhone),
+                        PhoneNo: this.getPhoneNumber(data[0].districtPhone, data[0].counrtyCode),
                         IsActive: data[0].isActive
                     }
                     this.districtForm.setValue(DistrictModel);
                     this.states = this._districtService.getStatesByCountryId('districtLookup/getStateByCountryId', data[0].countryId);
                     this.districtForm.get('State').setValue(data[0].districtStateId);
                     this.districtIdForUpdate = DistrictId;
-                    this.countryCode = data.countryCode;
+                    this.countryCode = data[0].counrtyCode;
                 },
                     error => <any>error);
             }
         });
     }
 
-    getPhoneNumber(phoneNumber: string): string {
-        phoneNumber = phoneNumber.includes('+1') ? phoneNumber.split('+1')[1] : phoneNumber;
+    getPhoneNumber(phoneNumber: string, counrtyCode: string): string {
+        phoneNumber = phoneNumber.includes(counrtyCode) ? phoneNumber.split(counrtyCode)[1] : phoneNumber;
         return phoneNumber;
     }
-    
+
     GetCountries(): void {
         this._districtService.getCountries('districtLookup/getCountries').subscribe((data: any) => {
             this.countries = data;
@@ -102,7 +105,7 @@ export class AddDistrictComponent implements OnInit {
             error => <any>error);
     }
 
-    onChange(countryId: any) {      
+    onChange(countryId: any) {
         this.states = this._districtService.getStatesByCountryId('districtLookup/getStateByCountryId', countryId);
     }
 
@@ -126,7 +129,7 @@ export class AddDistrictComponent implements OnInit {
                     District2ndHalfStart: form.value.SecondHaifStartTime,
                     DistrictEndTime: form.value.EndTime,
                     DistrictTimeZone: form.value.TimeZone,
-                    DistrictPhone: '+1' + form.value.PhoneNo,
+                    DistrictPhone: this.countryCode + form.value.PhoneNo,
                     IsActive: form.value.IsActive
                 }
                 if (this.districtIdForUpdate > 0) {
@@ -160,7 +163,7 @@ export class AddDistrictComponent implements OnInit {
             this.districtForm.get('firstHalfEndTime').setValue(null);
             this.districtForm.get('SecondHaifStartTime').setValue(null);
         }
-        if (district.StartTime > district.SecondHaifStartTime ) {
+        if (district.StartTime > district.SecondHaifStartTime) {
             this.districtForm.get('StartTime').setValue(null);
             this.districtForm.get('SecondHaifStartTime').setValue(null);
         }
