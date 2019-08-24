@@ -64,7 +64,9 @@
             class="right-styledoughnut" [colors]="absenceSummaryColors"
             [labels]="['Filled', 'UnFilled', 'No Sub Required']" [options]="chartOptions"></canvas>
           <div class="donut-inner-for-fill-rate">
-            <h5>{{reportSummary.filled / reportSummary.totalCount * 100 | number:'1.0-1'}}%</h5>
+            <h5>
+              {{(reportSummary.filled / (reportSummary.unfilled + reportSummary.filled)) * 100 | number:'1.0-1'}}%
+            </h5>
           </div>
           <div class="report-summary-donut-fillrate">Fill Rate</div>
         </td>
@@ -106,10 +108,9 @@
             </ngx-datatable-column>
             <ngx-datatable-column [width]="180" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                <div class="ellipsis" *ngIf="row['absenceType']!=2">
+                <div class="ellipsis">
                   {{row['statusId'] == 2 ? row['acceptedVia'] ? row['statusTitle']  : 'Assigned' : row['statusTitle']}}
                 </div>
-                <div class="ellipsis" *ngIf="row['absenceType']==2">Assigned</div>
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column [width]="220" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">
@@ -171,7 +172,10 @@
             </ngx-datatable-column>
             <ngx-datatable-column [width]="180" name="Status" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                <div class="ellipsis">{{ row['statusTitle'] }}</div>
+                <div class="ellipsis">
+                  {{row['statusId'] == 2 ? row['acceptedVia'] ? row['statusTitle']  : 'Assigned' : row['statusTitle']}}
+
+                </div>
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column [width]="220" name="Substitute" [flexGrow]="2" cellClass="middle" [draggable]="false">

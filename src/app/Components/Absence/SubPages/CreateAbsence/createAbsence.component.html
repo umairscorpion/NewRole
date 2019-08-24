@@ -12,20 +12,26 @@
                             <div class="row" style="height:56.56px;" *ngIf='loginedUserRole != 3'>
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6" style="margin-top:16px">
-                                        <mat-radio-group formControlName="selfEmployeeVacancy" (change)="onChangeAbsenceFor(absenceFirstFormGroup.value.selfEmployeeVacancy)"
+                                        <mat-radio-group formControlName="selfEmployeeVacancy"
+                                            (change)="onChangeAbsenceFor(absenceFirstFormGroup.value.selfEmployeeVacancy)"
                                             style="padding-left: 13px;">
                                             <mat-radio-button color="primary" value="1" checked>Self</mat-radio-button>
-                                            <mat-radio-button [hideIfUnauthorized]="'CREATE_STAFF_ABSENCES'" style="padding-left: 10px;" color="primary" value="2">
+                                            <mat-radio-button [hideIfUnauthorized]="'CREATE_STAFF_ABSENCES'"
+                                                style="padding-left: 10px;" color="primary" value="2">
                                                 Employee</mat-radio-button>
-                                            <mat-radio-button style="padding-left: 10px;" color="primary" value="3">Find a Sub</mat-radio-button>
+                                            <mat-radio-button style="padding-left: 10px;" color="primary" value="3">Find
+                                                a Sub</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
                                     <div class="col-md-6 col-lg-6 ">
-                                        <mat-form-field class="col-md-10 col-lg-10" *ngIf='absenceFirstFormGroup.value.selfEmployeeVacancy == "2"'>
-                                            <input type="text" placeholder="Search Employee Name" aria-label="Number" (input)="SearchEmployees($event.target.value)"
-                                                matInput formControlName="EmployeeId" [matAutocomplete]="auto">
+                                        <mat-form-field class="col-md-10 col-lg-10"
+                                            *ngIf='absenceFirstFormGroup.value.selfEmployeeVacancy == "2"'>
+                                            <input type="text" placeholder="Search Employee Name" aria-label="Number"
+                                                (input)="SearchEmployees($event.target.value)" matInput
+                                                formControlName="EmployeeId" [matAutocomplete]="auto">
                                             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
-                                                <mat-option (onSelectionChange)="employeeSelection(employee)" *ngFor="let employee of Employees | async" [value]="employee">
+                                                <mat-option (onSelectionChange)="employeeSelection(employee)"
+                                                    *ngFor="let employee of Employees | async" [value]="employee">
                                                     {{employee.firstName}}
                                                 </mat-option>
                                             </mat-autocomplete>
@@ -37,9 +43,12 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10 ">
-                                            <input matInput [max]="absenceFirstFormGroup.value.AbsenceEndDate" [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
-                                                [matDatepicker]="AbsenceStartDatePicker" placeholder="Start Date" formControlName="AbsenceStartDate"
-                                                (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate);SearchAvailableSubstitutes('a')">
+                                            <input matInput [max]="absenceFirstFormGroup.value.AbsenceEndDate"
+                                                [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
+                                                [matDatepicker]="AbsenceStartDatePicker" placeholder="Start Date"
+                                                formControlName="AbsenceStartDate"
+                                                (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate)"
+                                                (dateInput)="OnDateAndTimeChange()">
                                             <mat-datepicker-toggle matSuffix [for]="AbsenceStartDatePicker">
                                             </mat-datepicker-toggle>
                                             <mat-datepicker [dateClass]="dateClass" #AbsenceStartDatePicker>
@@ -48,10 +57,12 @@
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
-                                            <input matInput [min]="absenceFirstFormGroup.value.AbsenceStartDate" [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
-                                                [matDatepicker]="AbsenceEndDatePicker" placeholder="End Date" formControlName="AbsenceEndDate"
+                                            <input matInput [min]="absenceFirstFormGroup.value.AbsenceStartDate"
+                                                [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
+                                                [matDatepicker]="AbsenceEndDatePicker" placeholder="End Date"
+                                                formControlName="AbsenceEndDate"
                                                 (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate)"
-                                                (dateInput)="SearchAvailableSubstitutes('a')">
+                                                (dateInput)="OnDateAndTimeChange()">
                                             <mat-datepicker-toggle matSuffix [for]="AbsenceEndDatePicker">
                                             </mat-datepicker-toggle>
                                             <mat-datepicker [dateClass]="dateClass" #AbsenceEndDatePicker>
@@ -64,18 +75,24 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
-                                            <mat-select placeholder="Reason" (selectionChange)="onChangeReason($event.value)" formControlName="Reason">
+                                            <mat-select placeholder="Reason"
+                                                (selectionChange)="onChangeReason($event.value)"
+                                                formControlName="Reason">
                                                 <mat-option *ngFor="let Leave of Leaves" [value]="Leave">
                                                     {{Leave.leaveTypeName}}
                                                 </mat-option>
                                             </mat-select>
-                                            <mat-hint style="color: red" *ngIf='isApprovalNeeded && loginedUserRole === 3' align="start">This absence reason requires approval. The system will submit the approval request
+                                            <mat-hint style="color: red"
+                                                *ngIf='isApprovalNeeded && loginedUserRole === 3' align="start">This
+                                                absence reason requires approval. The system will submit the approval
+                                                request
                                                 when you confirm the absence.</mat-hint>
                                         </mat-form-field>
                                     </div>
                                     <div class="col-md-2 col-lg-2">
                                         <mat-form-field class="col-md-12 col-lg-12">
-                                            <mat-select placeholder="Duration" formControlName="Duration" (selectionChange)="onChangeDurationForAbsence($event.value)">
+                                            <mat-select placeholder="Duration" formControlName="Duration"
+                                                (selectionChange)="onChangeDurationForAbsence($event.value)">
                                                 <mat-option value="1">Full Day</mat-option>
                                                 <mat-option value="2">Half Day AM</mat-option>
                                                 <mat-option value="3">Half Day PM</mat-option>
@@ -85,10 +102,12 @@
                                     </div>
                                     <div *ngIf='absenceFirstFormGroup.value.Duration != "5"' class="col-md-4 col-lg-4">
                                         <mat-form-field class="col-md-5 col-lg-5">
-                                            <input matInput type="time" placeholder="Start Time" (change)="SearchAvailableSubstitutes(a)" formControlName="StartTime">
+                                            <input matInput type="time" placeholder="Start Time"
+                                                (change)="OnDateAndTimeChange()" formControlName="StartTime">
                                         </mat-form-field>
                                         <mat-form-field class="col-md-5 col-lg-5">
-                                            <input matInput type="time" placeholder="End Time" (change)="SearchAvailableSubstitutes(a)" formControlName="EndTime">
+                                            <input matInput type="time" placeholder="End Time"
+                                                (change)="OnDateAndTimeChange()" formControlName="EndTime">
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf='absenceFirstFormGroup.value.Duration == "5"' class="col-md-4 col-lg-4">
@@ -99,10 +118,14 @@
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
-                                    <div *ngIf='(((AbsenceForUserLevel === 1) && loginedUserRole === 5) && NeedASub)' class="col-md-6 col-lg-6">
+                                    <div *ngIf='(((AbsenceForUserLevel === 1) && loginedUserRole === 5) && NeedASub)'
+                                        class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
-                                            <mat-select placeholder="District" (selectionChange)="OnChangeDistrict(absenceFirstFormGroup.value.Location)" formControlName="Location">
-                                                <mat-option *ngFor="let district of Districts" [value]="district.districtId">
+                                            <mat-select placeholder="District"
+                                                (selectionChange)="OnChangeDistrict(absenceFirstFormGroup.value.Location)"
+                                                formControlName="Location">
+                                                <mat-option *ngFor="let district of Districts"
+                                                    [value]="district.districtId">
                                                     {{district.districtName}}
                                                 </mat-option>
                                             </mat-select>
@@ -110,10 +133,12 @@
                                     </div>
                                     <div *ngIf='NeedASub' class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
-                                            <mat-select placeholder="School Location" (selectionChange)="OnchangeOrganization(absenceFirstFormGroup.value.OrganizationId)"
+                                            <mat-select placeholder="School Location"
+                                                (selectionChange)="OnchangeOrganization(absenceFirstFormGroup.value.OrganizationId)"
                                                 formControlName="OrganizationId">
                                                 <mat-option>--</mat-option>
-                                                <mat-option *ngFor="let organization of Organizations" [value]="organization.schoolId">
+                                                <mat-option *ngFor="let organization of Organizations"
+                                                    [value]="organization.schoolId">
                                                     {{organization.schoolName}}
                                                 </mat-option>
                                             </mat-select>
@@ -131,7 +156,8 @@
                                         <mat-form-field class="col-md-3">
                                             <mat-select placeholder="Grade" formControlName="Grade">
                                                 <mat-option>--</mat-option>
-                                                <mat-option *ngFor="let teachingLevel of TeachingLevels" [value]="teachingLevel.id">
+                                                <mat-option *ngFor="let teachingLevel of TeachingLevels"
+                                                    [value]="teachingLevel.id">
                                                     {{teachingLevel.title}}
                                                 </mat-option>
                                             </mat-select>
@@ -139,7 +165,8 @@
                                         <mat-form-field class="col-md-3">
                                             <mat-select placeholder="Subject" formControlName="Subject">
                                                 <mat-option>--</mat-option>
-                                                <mat-option *ngFor="let subject of teachingSubjects" [value]="subject.id">
+                                                <mat-option *ngFor="let subject of teachingSubjects"
+                                                    [value]="subject.id">
                                                     {{subject.title}}
                                                 </mat-option>
                                             </mat-select>
@@ -154,9 +181,11 @@
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
-                                            <mat-select placeholder="Select Substitute Preference" (selectionChange)="OnchangeAbsenceScope(absenceFirstFormGroup.value.AbsenceType)"
+                                            <mat-select placeholder="Select Substitute Preference"
+                                                (selectionChange)="OnchangeAbsenceScope(absenceFirstFormGroup.value.AbsenceType)"
                                                 formControlName="AbsenceType">
-                                                <mat-option *ngFor="let type of absenceTypes" [value]="type.absenceType" [disabled]="(type.absenceType == 5 || type.absenceType == 1 
+                                                <mat-option *ngFor="let type of absenceTypes" [value]="type.absenceType"
+                                                    [disabled]="(type.absenceType == 5 || type.absenceType == 1 
                                                      || type.absenceType == 3) && (NeedASub)">
                                                     {{type.title}}
                                                 </mat-option>
@@ -169,51 +198,66 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6">
                                     </div>
-                                    <div class="col-md-6 col-lg-6" *ngIf='absenceFirstFormGroup.value.AbsenceType === 1 || absenceFirstFormGroup.value.AbsenceType === 2'>
-                                        <div style="border-radius: 19px !important" class="col-md-10 col-lg-10 mat-elevation-z8">
-                                            <tag-input [placeholder]="''" [identifyBy]="'userId'" [displayBy]="'firstName'" [secondaryPlaceholder]="'Search substitute'"
-                                                (input)="SearchAvailableSubstitutes($event.target.value)" formControlName="Substitutes">
+                                    <div class="col-md-6 col-lg-6"
+                                        *ngIf='absenceFirstFormGroup.value.AbsenceType === 1 || absenceFirstFormGroup.value.AbsenceType === 2'>
+                                        <div style="border-radius: 19px !important"
+                                            class="col-md-10 col-lg-10 mat-elevation-z8">
+                                            <tag-input [placeholder]="''" [identifyBy]="'userId'"
+                                                [displayBy]="'firstName'" [secondaryPlaceholder]="'Search substitute'"
+                                                (input)="SearchAvailableSubstitutes($event.target.value)"
+                                                formControlName="Substitutes">
                                             </tag-input>
-                                            <mat-option *ngFor="let substitute of availableSubstitutes | async" (click)="SelectSubstituteForDirectAssign(substitute)"
+                                            <mat-option *ngFor="let substitute of availableSubstitutes | async"
+                                                (click)="SelectSubstituteForDirectAssign(substitute)"
                                                 style="padding: 0px !important;">
                                                 <div class="col-md-6 col-lg-6">
-                                                    <img class="img-circle" [src]="getImage(substitute.profilePicture)" width="25" height="25"> {{substitute.firstName}}
+                                                    <img class="img-circle" [src]="getImage(substitute.profilePicture)"
+                                                        width="25" height="25"> {{substitute.firstName}}
                                                 </div>
                                                 <div style="color: darkblue" class="col-md-2 col-lg-2">
                                                     <b>Select</b>
                                                 </div>
                                                 <div class="col-md-4 col-lg-4">
-                                                    <button mat-raised-button type="button" style="background-color:lightgreen; color:white">{{substitute.isActive ? 'Available' : 'Inactivated'}}</button>
+                                                    <button mat-raised-button type="button"
+                                                        style="background-color:lightgreen; color:white">{{substitute.isActive ? 'Available' : 'Inactivated'}}</button>
                                                 </div>
                                             </mat-option>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-6" [hidden]='checkAbsenceScope()'>
-                                        <div style="border-radius: 19px !important" class="col-md-10 col-lg-10 mat-elevation-z8">
+                                        <div style="border-radius: 19px !important"
+                                            class="col-md-10 col-lg-10 mat-elevation-z8">
                                             <div class="col-md-12 col-lg-12" style="padding-top: 5px;">
                                                 <div class="row">
                                                     <div class="col-md-4" style="padding-top: 14px">
                                                         My Favorites
                                                     </div>
                                                     <mat-form-field class="col-md-4">
-                                                        <mat-select [(value)]="ContactSub" (selectionChange)="OnchangeContactSubOption()" placeholder="Contact Substitutes">
+                                                        <mat-select [(value)]="ContactSub"
+                                                            (selectionChange)="OnchangeContactSubOption()"
+                                                            placeholder="Contact Substitutes">
                                                             <mat-option value="1">All At Once</mat-option>
                                                             <mat-option value="2">One By One</mat-option>
                                                         </mat-select>
                                                     </mat-form-field>
                                                     <mat-form-field class="col-md-4">
                                                         <input matInput type="number" min="0" [disabled]="DisableContactSubTimeAccess" placeholder="Wait Time" formControlName="ContactSubTime">
+                                                            [disabled]="DisableContactSubTimeAccess"
+                                                            placeholder="Wait Time" [(value)]="ContactSubTime">
                                                         <span matSuffix>min</span>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
                                             <mat-divider></mat-divider>
-                                            <div class="row" style="padding-bottom: 10px;padding-top: 10px" *ngFor="let Sub of PreferredSubstitutes">
+                                            <div class="row" style="padding-bottom: 10px;padding-top: 10px"
+                                                *ngFor="let Sub of PreferredSubstitutes">
                                                 <div class="col-md-8 col-lg-8">
-                                                    <img class="img-circle" [src]="getImage(Sub.profilePicture)" width="25" height="25"> {{Sub.firstName}}
+                                                    <img class="img-circle" [src]="getImage(Sub.profilePicture)"
+                                                        width="25" height="25"> {{Sub.firstName}}
                                                 </div>
                                                 <div class="col-md-4 col-lg-4">
-                                                    <button mat-raised-button type="button" style="background-color:lightgreen; color:white">Available</button>
+                                                    <button mat-raised-button type="button"
+                                                        style="background-color:lightgreen; color:white">Available</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -230,14 +274,16 @@
                                             Job requires Certified substitute?
                                         </div>
                                         <div class="col-md-4 col-lg-4">
-                                            <ui-switch [checked]="true" style="color: white" (valueChange)="onchangeOnlyCertified(absenceFirstFormGroup.value.onlyCertified)">
+                                            <ui-switch [checked]="true" style="color: white"
+                                                (valueChange)="onchangeOnlyCertified(absenceFirstFormGroup.value.onlyCertified)">
                                             </ui-switch>
                                         </div>
                                         <div class="col-md-8 col-lg-8">
                                             Match substitute by subject I teach?
                                         </div>
                                         <div class="col-md-4 col-lg-4">
-                                            <ui-switch [checked]="false" style="color: white" (valueChange)="onchangeOnlySpecialist(absenceFirstFormGroup.value.onlySubjectSpecialist)">
+                                            <ui-switch [checked]="false" style="color: white"
+                                                (valueChange)="onchangeOnlySpecialist(absenceFirstFormGroup.value.onlySubjectSpecialist)">
                                             </ui-switch>
                                         </div>
                                     </div>
@@ -289,7 +335,8 @@
                         </div>
                     </div>
                     <div class="row" style="text-align: right">
-                        <button mat-raised-button type="button" color="primary" style="background-color:#04c0be" (click)="goToNextForm(stepper)">Next</button>
+                        <button mat-raised-button type="button" color="primary" style="background-color:#04c0be"
+                            (click)="goToNextForm(stepper)">Next</button>
                     </div>
                 </form>
             </mat-step>
@@ -302,15 +349,18 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10" hintLabel="Max 50 characters">
-                                            <textarea matInput #inputPayRoll maxlength="50" placeholder="Payroll Notes" formControlName="PayRollNotes" matTextareaAutosize
+                                            <textarea matInput #inputPayRoll maxlength="50" placeholder="Payroll Notes"
+                                                formControlName="PayRollNotes" matTextareaAutosize
                                                 matAutosizeMinRows="1" matAutosizeMaxRows="5"></textarea>
                                             <mat-hint align="end">{{inputPayRoll.value?.length || 0}}/50</mat-hint>
                                         </mat-form-field>
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10" hintLabel="Max 50 characters">
-                                            <textarea matInput #inputNotes maxlength="50" placeholder="Notes to substitute" formControlName="NotesToSubstitute" matTextareaAutosize
-                                                matAutosizeMinRows="1" matAutosizeMaxRows="5"></textarea>
+                                            <textarea matInput #inputNotes maxlength="50"
+                                                placeholder="Notes to substitute" formControlName="NotesToSubstitute"
+                                                matTextareaAutosize matAutosizeMinRows="1"
+                                                matAutosizeMaxRows="5"></textarea>
                                             <mat-hint align="end">{{inputNotes.value?.length || 0}}/50</mat-hint>
                                         </mat-form-field>
                                     </div>
@@ -324,19 +374,23 @@
                                             <mat-icon style="color: #8fc903;">file_upload</mat-icon>
                                             {{OriginalFileNameForDisplay}}
                                         </button>
-                                        <i *ngIf='OriginalFileName' style="cursor: pointer;" class="material-icons" #tooltip="matTooltip" matTooltip="Remove Attachment"
+                                        <i *ngIf='OriginalFileName' style="cursor: pointer;" class="material-icons"
+                                            #tooltip="matTooltip" matTooltip="Remove Attachment"
                                             matTooltipPosition="right" (click)="removeAttachedFile()">
                                             cancel
                                         </i>
-                                        <input type="file" id="UploadButton" (change)="upload($event.target.files)" style="display: none" />
+                                        <input type="file" id="UploadButton" (change)="upload($event.target.files)"
+                                            style="display: none" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row" style="text-align: right">
-                        <button mat-button type="button" style="background-color:#dfdede;margin-right: 10px" (click)="goBackToPreviousForm(stepper)">Back</button>
-                        <button mat-raised-button type="button" color="primary" style="background-color:#04c0be" (click)="goToNextForm(stepper)">Next</button>
+                        <button mat-button type="button" style="background-color:#dfdede;margin-right: 10px"
+                            (click)="goBackToPreviousForm(stepper)">Back</button>
+                        <button mat-raised-button type="button" color="primary" style="background-color:#04c0be"
+                            (click)="goToNextForm(stepper)">Next</button>
                     </div>
                 </form>
             </mat-step>
@@ -368,7 +422,8 @@
                                     <b>Time:</b>
                                 </div>
                                 <div class="col-md-6">
-                                    {{absenceFirstFormGroup.getRawValue().StartTime | convertFrom24HourTo12HourFormat}} - {{absenceFirstFormGroup.getRawValue().EndTime
+                                    {{absenceFirstFormGroup.getRawValue().StartTime | convertFrom24HourTo12HourFormat}}
+                                    - {{absenceFirstFormGroup.getRawValue().EndTime
                                     | convertFrom24HourTo12HourFormat}}
                                 </div>
                             </div>
@@ -378,7 +433,8 @@
                                 </div>
                                 <div class="col-md-6">{{absenceFirstFormGroup.value.Reason.leaveTypeName}}</div>
                             </div>
-                            <div class="row" *ngIf="absenceFirstFormGroup.value.AbsenceType === 2 && absenceFirstFormGroup.value.Substitutes.length > 0">
+                            <div class="row"
+                                *ngIf="absenceFirstFormGroup.value.AbsenceType === 2 && absenceFirstFormGroup.value.Substitutes.length > 0">
                                 <div class="col-md-6">
                                     <b>Substitute:</b>
                                 </div>
@@ -406,7 +462,8 @@
                                     <b>Attachment:</b>
                                 </div>
                                 <div class="col-md-6" *ngIf="OriginalFileName">
-                                    <button mat-button type="button" color="warn" (click)="downloadAttachment()" matTooltip="Download Attachment">
+                                    <button mat-button type="button" color="warn" (click)="downloadAttachment()"
+                                        matTooltip="Download Attachment">
                                         <i class="material-icons">get_app</i>
                                         {{OriginalFileNameForDisplay}}
                                     </button>
@@ -419,8 +476,11 @@
                     </div>
                 </div>
                 <div style="text-align: right">
-                    <button mat-button type="button" style="background-color:#dfdede;margin-right: 10px" (click)="goBackToPreviousForm(stepper)">Back</button>
-                    <button type="button" style="padding-left: 10px; background-color: #04c0be;" mat-raised-button color="primary" (click)="createAbsenceSubmission(absenceFirstFormGroup,absenceSecondFormGroup,stepper)">
+                    <button mat-button type="button" style="background-color:#dfdede;margin-right: 10px"
+                        (click)="goBackToPreviousForm(stepper)">Back</button>
+                    <button type="button" style="padding-left: 10px; background-color: #04c0be;" mat-raised-button
+                        color="primary"
+                        (click)="createAbsenceSubmission(absenceFirstFormGroup,absenceSecondFormGroup,stepper)">
                         {{ absenceFirstFormGroup.value.AbsenceType == '2' ? 'Create And Assign' : absenceSecondFormGroup.value.AbsenceType == '3'
                         ? 'Post to Preferred' : 'Create Absence' }}
                     </button>

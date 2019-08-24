@@ -23,11 +23,14 @@ export class ReportFilter {
   userId: string;
   confirmationNumber: string;
   static CreateFilterFormGroup(fb: FormBuilder) {
+    const date = new Date();
     return fb.group({
       userId: [''],
       locationId: [''],
       fromDate: [new Date()],
       toDate: [new Date()],
+      monthlyFromDate: [new Date(date.getFullYear(), date.getMonth(), 1)],
+      monthlyToDate: [new Date(date.getFullYear(), date.getMonth() + 1, 0)],
       jobNumber: [''],
       absenceTypeId: [0],
       districtId: [0],

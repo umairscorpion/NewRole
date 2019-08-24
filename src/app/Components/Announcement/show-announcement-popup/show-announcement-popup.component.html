@@ -1,29 +1,34 @@
-<div style="background-color: rgba(209,196,233,.3); padding: 15px; margin: 10px">
+<div style="background-color: rgba(209,196,233,.3); padding: 13px; margin: -13px; overflow-y: hidden;">
   <mat-card>
-    <div class="row">
-      <div class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1">
-        <div class="col-md-11" style="text-align: center; color: darkgray"><b>NEW ANNOUNCEMENT</b></div>
-        <div class="col-md-1" style="text-align: right; color: red">
-          <mat-icon class="cursor-pointer" title="Dismiss" (click)="onCloseDialog()">
-            clear
-          </mat-icon>
-        </div>
+    <div class="row heading-div">
+      <div class="col-md-11" style="text-align: center; color: darkgray">
+        <b>NEW ANNOUNCEMENT</b>
+      </div>
+      <div class="col-md-1">
+        <mat-icon style="color: red" class="cursor-pointer" title="Dismiss" (click)="onCloseDialog()">
+          clear
+        </mat-icon>
       </div>
     </div>
     <hr>
-    <div class="row">
+    <div class="row" style="overflow-y: auto; height: 205px">
       <table style="text-align: center" *ngFor="let announcement of Announcements" cellpadding="3" cellspacing="3"
         width="100%">
         <tr>
           <td><b>{{announcement.title}}</b></td>
         </tr>
         <tr style="text-align: left">
-          <td>
+          <td class="textMessage-div">
             <b>Message :</b> {{announcement.message}}
           </td>
         </tr>
         <hr>
       </table>
     </div>
+    <!-- <div class="row heading-div">
+      <div class="col-md-12" style="color: darkgray">
+        <mat-checkbox color="primary" formControlName="hideOn">Never Seen Again</mat-checkbox>
+      </div>
+    </div> -->
   </mat-card>
 </div>

@@ -77,6 +77,12 @@ export class AvailableJobsComponent implements OnInit {
             if (params.jobId && params.ac == 2) {
                 this.DeclineAbsence(params.jobId)
             }
+            else if (params.announcement) {
+                let UserRoleId = this._userSession.getUserRoleId();
+                if (UserRoleId === 4) {
+                    this.GetAndViewAnnouncement();
+                }
+            }
         })
         this.FilterForm = this._formBuilder.group({
             FilterStartDate: ['', Validators.required],
@@ -86,10 +92,6 @@ export class AvailableJobsComponent implements OnInit {
             Requested: [false]
         });
         this.GetMyJobs();
-        let UserRoleId = this._userSession.getUserRoleId();
-        if (UserRoleId === 4) {
-            this.GetAndViewAnnouncement();
-        }
         this.GetDistricts();
         this.GetOrganizations(this._userSession.getUserDistrictId());
         this.GetAvailableJobs();
@@ -247,8 +249,6 @@ export class AvailableJobsComponent implements OnInit {
         let currentDate = moment().format('YYYY MM DD');
         let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
         let endtime = moment(SelectedRow.endTime, 'h:mma');
-        // let endtime = moment(endtimetemp).format('h:mma');
-
         let model = {
             startDate: moment(SelectedRow.startDate).format('YYYY-MM-DD'),
             endDate: moment(SelectedRow.endDate).format('YYYY-MM-DD'),
