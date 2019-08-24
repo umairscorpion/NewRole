@@ -8,5 +8,6 @@ export class SubstituteListCategory {
     createdDate: Date | string;
     modifiedDate: Date | string;
     isDeleted: boolean;
+    timeToSendNotification: string;
     substituteList: SubstituteList[];
 }

@@ -54,6 +54,7 @@ import {
     MatTooltipModule,
     MatDialogRef
 } from '@angular/material';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 //Routing Authentication
 import { AuthGuard } from './Authentication/auth.guard';
 
@@ -317,7 +318,8 @@ const customNotifierOptions: NotifierOptions = {
         NgSelectModule,
         SatDatepickerModule,
         SatNativeDateModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        DragDropModule
     ],
     declarations: [
         SiteLayoutComponent,

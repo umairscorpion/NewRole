@@ -121,7 +121,7 @@
                                     </div>
                                     <div *ngIf='NeedASub' class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-4 col-lg-4">
-                                            <mat-select placeholder="Position" formControlName="PositionId">
+                                            <mat-select placeholder="Position" (selectionChange)="OnchangePosition(absenceFirstFormGroup.value.PositionId)" formControlName="PositionId">
                                                 <mat-option>--</mat-option>
                                                 <mat-option *ngFor="let position of positions" [value]="position.id">
                                                     {{position.title}}
@@ -202,7 +202,7 @@
                                                         </mat-select>
                                                     </mat-form-field>
                                                     <mat-form-field class="col-md-4">
-                                                        <input matInput type="number" min="0" [disabled]="DisableContactSubTimeAccess" placeholder="Wait Time" [(value)]="ContactSubTime">
+                                                        <input matInput type="number" min="0" [disabled]="DisableContactSubTimeAccess" placeholder="Wait Time" formControlName="ContactSubTime">
                                                         <span matSuffix>min</span>
                                                     </mat-form-field>
                                                 </div>

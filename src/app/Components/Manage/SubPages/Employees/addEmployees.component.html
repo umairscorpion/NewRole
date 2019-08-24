@@ -34,7 +34,8 @@
                                 <mat-select placeholder="District" formControlName="District"
                                     (selectionChange)="onChangeDistrict($event.value)">
                                     <mat-option>--</mat-option>
-                                    <mat-option *ngFor="let district of Districts" [value]="district.districtId">
+                                    <mat-option *ngFor="let district of Districts" (click)="setCountryCode(district.counrtyCode)"
+                                     [value]="district.districtId">
                                         {{district.districtName}}
                                     </mat-option>
                                 </mat-select>
@@ -134,8 +135,7 @@
                             </mat-form-field>
                         </td>
                     </tr>
-                    <tr
-                        *ngIf='(employeeForm.value.WorkLocaion == "2") && (employeeForm.value.UserTypeId == 2 || employeeForm.value.UserTypeId == 3 || employeeForm.value.UserTypeId == 4)'>
+                    <tr *ngIf='employeeForm.value.role == 2'>
                         <td class="col-md-3">Can also access the schools</td>
                         <td>
                             <mat-form-field class="col-md-7">
@@ -156,6 +156,7 @@
                         <td class="col-md-3">Mobile Number</td>
                         <td>
                             <mat-form-field hintLabel="Min 7 and Max 11 characters" class="col-md-7">
+                                    <span matPrefix>{{countryCode}} &nbsp;</span>
                                 <input matInput #mobile minlength="7" maxlength="11" formControlName="PhoneNumber"
                                     placeholder="Mobile Number">
                                 <mat-hint align="end">{{mobile.value?.length || 0}}/11</mat-hint>

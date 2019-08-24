@@ -91,10 +91,10 @@
                     <td class="col-md-2">Phone Number</td>
                     <td>
                         <mat-form-field hintLabel="Min 7 and Max 11 characters." class="col-md-4">
-                            <span matPrefix>+1 &nbsp;</span>
-                            <input matInput #input minlength="7" maxlength="11" placeholder="Phone No" formControlName="PhoneNo">
+                            <span matPrefix>{{countryCode}} &nbsp;</span>
+                            <input matInput #input minlength="7" maxlength="15" placeholder="Phone No" formControlName="PhoneNo">
                             <!-- <span matPrefix>{{countryCode}}</span> -->
-                            <mat-hint align="end">{{input.value?.length || 0}}/11</mat-hint>
+                            <mat-hint align="end">{{input.value?.length || 0}}/15</mat-hint>
                             <mat-error *ngIf="districtForm.controls['PhoneNo'].hasError('pattern')">
                                 Only numbers allowed
                             </mat-error>

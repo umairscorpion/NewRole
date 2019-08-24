@@ -11,8 +11,17 @@
                             <div class="row shaded-border" style="padding-top: 10px">
                                 <div class="col-md-6" style="border-right:1px solid #ccc">
                                     <div class="row" style="padding-bottom: 10px; padding-top: 10px">
-                                        <div class="col-md-6">
-                                            <b>List Name</b>: {{subCategory.title}}
+                                        <div class="col-md-10">
+                                            <div class="col-md-4">
+                                                <b>List Name</b>:
+                                            </div>
+                                            <div class="col-md-8" *ngIf="subCategory.categoryId > 0">{{subCategory.title}}</div>
+                                            <div class="col-md-8" *ngIf="subCategory.categoryId == 0">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Enter List Name</mat-label>
+                                                    <input [(ngModel)]="subCategory.title" [ngModelOptions]="{standalone: true}" autocomplete="off" matInput placeholder="Enter List Name">
+                                                </mat-form-field>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -25,6 +34,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
+                                    <div class="col-md-12" style="padding-bottom: 50px"> 
+                                        <div class="col-md-10">{{subCategory.title}}</div>
+                                        <div class="col-md-2"></div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="col-md-10">Selected</div>
                                         <div class="col-md-2">{{subCategory.substituteList | objectLength:subCategory.substituteList}}</div>
