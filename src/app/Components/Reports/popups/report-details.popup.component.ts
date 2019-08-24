@@ -345,6 +345,12 @@ export class ReportDetailsComponent implements OnInit {
         formGroup.get('status').setValue('2');
         formGroup.get('substituteRequired').setValue(1);
       }
+      else if(formGroup.value.substituteId && formGroup.value.substituteId.length >= 10) {
+        formGroup.get('substituteId').setValue(formGroup.value.substituteId);
+      }
+      else {
+        formGroup.get('substituteId').setValue('-1');
+      }
       let AbsenceModel = {
         employeeId: formGroup.value.employeeId,
         absenceId: formGroup.value.absenceId,

@@ -108,3 +108,7 @@
     color: rgba(0, 0, 0, 0.61);
     overflow-x: hidden;
   }
+
+  h5 {
+    font-size: 17px;
+  }
