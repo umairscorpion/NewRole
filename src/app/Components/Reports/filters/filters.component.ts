@@ -12,6 +12,7 @@ import { NotifierService } from 'angular-notifier';
 import { ReportService } from '../../../Services/report.service';
 import { DailyReportsComponent } from '../SubPages/DailyReports/dailyReports.component';
 import { PopupForCancelAbsencesComponent } from '../popups/cancel-absence.popup.component';
+import { Years } from '../../Manage/SubPages/Leaves/LeaveBalance/leave-balance.component';
 
 @Component({
   selector: 'app-report-filters',
@@ -34,6 +35,7 @@ export class ReportFiltersComponent implements OnInit {
   Organizations: any;
   msg: any;
   UserRoleId: any;
+  years: Years[] = Array<Years>();
 
   constructor(
     private fb: FormBuilder,
@@ -50,6 +52,11 @@ export class ReportFiltersComponent implements OnInit {
     this.myPanel.expandedChange.subscribe((data) => {
       this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
     });
+
+    for (let i = 0; i < 5; i++) {
+      this.years.push(new Years(new Date().getFullYear() + i));
+    }
+
     this.loadData();
     this.GetUserTypes();
     this.GetOrganiations();
@@ -123,17 +130,14 @@ export class ReportFiltersComponent implements OnInit {
   onSubmit(formGroup: FormGroup) {
     this.submitted = true;
     if (!formGroup.invalid) {
-      // if (formGroup.value.reasonId != 0) {
-      //   formGroup.get('reasonId').setValue(formGroup.value.reasonId);
-      // }
       if (this.componentName == "daily") {
         formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
         formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
         formGroup.get('reportTitle').setValue('D');
       }
       else {
-        formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
-        formGroup.get('toDate').setValue(moment(formGroup.get('toDate').value).format('YYYY-MM-DD'));
+        formGroup.get('fromDate').setValue(moment(formGroup.get('monthlyFromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('toDate').setValue(moment(formGroup.get('monthlyToDate').value).format('YYYY-MM-DD'));
         formGroup.get('reportTitle').setValue('M');
       }
       const action = {
@@ -173,8 +177,16 @@ export class ReportFiltersComponent implements OnInit {
       if (formGroup.value.reasonId != 0) {
         formGroup.get('reasonId').setValue(formGroup.value.reasonId);
       }
-      formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
-      formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+      if (this.componentName == "daily") {
+        formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('reportTitle').setValue('D');
+      }
+      else {
+        formGroup.get('fromDate').setValue(moment(formGroup.get('monthlyFromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('toDate').setValue(moment(formGroup.get('monthlyToDate').value).format('YYYY-MM-DD'));
+        formGroup.get('reportTitle').setValue('M');
+      }
       const action = {
         actionName: 'print',
         formValue: formGroup.value

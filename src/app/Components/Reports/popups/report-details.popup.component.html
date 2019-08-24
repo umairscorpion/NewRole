@@ -51,10 +51,9 @@
         </tr>
         <tr>
           <td>Status:</td>
-          <td *ngIf="reportDetail.absenceType != 2 && reportDetail.substituteRequired">
+          <td *ngIf="reportDetail.substituteRequired">
             {{reportDetail.statusId == 2 ? reportDetail.acceptedVia ? reportDetail.statusTitle + ' ' + '(' + reportDetail.acceptedVia + ')' : 'Assigned' : reportDetail.statusTitle}}
           </td>
-          <td *ngIf="reportDetail.absenceType == 2 && reportDetail.substituteRequired">Assigned</td>
           <td *ngIf="!reportDetail.substituteRequired">N/A</td>
         </tr>
         <tr *ngIf='reportDetail.substituteId != -1'>
@@ -111,7 +110,7 @@
             <mat-form-field>
               <input matInput [matDatepicker]="StartDatePicker" placeholder="Start Date" formControlName="startDate"
                 (dateChange)="SetEndDateValue(absenceForm.value.startDate,absenceForm.value.endDate)"
-                (dateInput)="SearchAvailableSubstitutes('a')">
+                (dateInput)="OnDateAndTimeChange()">
               <mat-datepicker-toggle matSuffix [for]="StartDatePicker"></mat-datepicker-toggle>
               <mat-datepicker [dateClass]="dateClass" #StartDatePicker></mat-datepicker>
             </mat-form-field>
@@ -122,7 +121,7 @@
           <td>
             <mat-form-field>
               <input matInput [min]="absenceForm.value.startDate" [matDatepicker]="EndDatePicker" placeholder="End Date"
-                formControlName="endDate" (dateInput)="SearchAvailableSubstitutes('a')">
+                formControlName="endDate" (dateInput)="OnDateAndTimeChange()">
               <mat-datepicker-toggle matSuffix [for]="EndDatePicker"></mat-datepicker-toggle>
               <mat-datepicker [dateClass]="dateClass" #EndDatePicker></mat-datepicker>
             </mat-form-field>
@@ -142,20 +141,19 @@
             </mat-form-field>
             <mat-form-field class="col-md-4">
               <input matInput type="time" placeholder="Start Time" formControlName="startTime"
-                (change)="SearchAvailableSubstitutes('a')">
+                (change)="OnDateAndTimeChange()">
             </mat-form-field>
             <mat-form-field class="col-md-4">
               <input matInput type="time" placeholder="End Time" formControlName="endTime"
-                (change)="SearchAvailableSubstitutes('a')">
+                (change)="OnDateAndTimeChange()">
             </mat-form-field>
           </td>
         </tr>
         <tr>
           <td>Status:</td>
-          <td *ngIf="reportDetail.absenceType != 2 && reportDetail.substituteRequired">
+          <td *ngIf="reportDetail.substituteRequired">
             {{reportDetail.statusId == 2 ? reportDetail.acceptedVia ? reportDetail.statusTitle + ' ' + '(' + reportDetail.acceptedVia + ')' : 'Assigned' : reportDetail.statusTitle}}
           </td>
-          <td *ngIf="reportDetail.absenceType == 2 && reportDetail.substituteRequired">Assigned</td>
           <td *ngIf="!reportDetail.substituteRequired">N/A</td>
         </tr>
         <tr *ngIf="reportDetail.substituteRequired">

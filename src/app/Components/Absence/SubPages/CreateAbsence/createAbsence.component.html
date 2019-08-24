@@ -47,7 +47,8 @@
                                                 [matDatepickerFilter]="SelectionFilterForAlreadyCreatedAbsences"
                                                 [matDatepicker]="AbsenceStartDatePicker" placeholder="Start Date"
                                                 formControlName="AbsenceStartDate"
-                                                (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate);SearchAvailableSubstitutes('a')">
+                                                (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate)"
+                                                (dateInput)="OnDateAndTimeChange()">
                                             <mat-datepicker-toggle matSuffix [for]="AbsenceStartDatePicker">
                                             </mat-datepicker-toggle>
                                             <mat-datepicker [dateClass]="dateClass" #AbsenceStartDatePicker>
@@ -61,7 +62,7 @@
                                                 [matDatepicker]="AbsenceEndDatePicker" placeholder="End Date"
                                                 formControlName="AbsenceEndDate"
                                                 (dateChange)="SetEndDateValue(absenceFirstFormGroup.value.AbsenceStartDate,absenceFirstFormGroup.value.AbsenceEndDate)"
-                                                (dateInput)="SearchAvailableSubstitutes('a')">
+                                                (dateInput)="OnDateAndTimeChange()">
                                             <mat-datepicker-toggle matSuffix [for]="AbsenceEndDatePicker">
                                             </mat-datepicker-toggle>
                                             <mat-datepicker [dateClass]="dateClass" #AbsenceEndDatePicker>
@@ -83,7 +84,9 @@
                                             </mat-select>
                                             <mat-hint style="color: red"
                                                 *ngIf='isApprovalNeeded && loginedUserRole === 3' align="start">This
-                                                absence reason requires approval. The system will submit the approval request when you confirm the absence.</mat-hint>
+                                                absence reason requires approval. The system will submit the approval
+                                                request
+                                                when you confirm the absence.</mat-hint>
                                         </mat-form-field>
                                     </div>
                                     <div class="col-md-2 col-lg-2">
@@ -100,11 +103,11 @@
                                     <div *ngIf='absenceFirstFormGroup.value.Duration != "5"' class="col-md-4 col-lg-4">
                                         <mat-form-field class="col-md-5 col-lg-5">
                                             <input matInput type="time" placeholder="Start Time"
-                                                (change)="SearchAvailableSubstitutes(a)" formControlName="StartTime">
+                                                (change)="OnDateAndTimeChange()" formControlName="StartTime">
                                         </mat-form-field>
                                         <mat-form-field class="col-md-5 col-lg-5">
                                             <input matInput type="time" placeholder="End Time"
-                                                (change)="SearchAvailableSubstitutes(a)" formControlName="EndTime">
+                                                (change)="OnDateAndTimeChange()" formControlName="EndTime">
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf='absenceFirstFormGroup.value.Duration == "5"' class="col-md-4 col-lg-4">
@@ -142,11 +145,29 @@
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf='NeedASub' class="col-md-6 col-lg-6">
-                                        <mat-form-field class="col-md-10 col-lg-10">
-                                            <mat-select placeholder="Position" formControlName="PositionId">
+                                        <mat-form-field class="col-md-4 col-lg-4">
+                                            <mat-select placeholder="Position" (selectionChange)="OnchangePosition(absenceFirstFormGroup.value.PositionId)" formControlName="PositionId">
                                                 <mat-option>--</mat-option>
                                                 <mat-option *ngFor="let position of positions" [value]="position.id">
                                                     {{position.title}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field class="col-md-3">
+                                            <mat-select placeholder="Grade" formControlName="Grade">
+                                                <mat-option>--</mat-option>
+                                                <mat-option *ngFor="let teachingLevel of TeachingLevels"
+                                                    [value]="teachingLevel.id">
+                                                    {{teachingLevel.title}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field class="col-md-3">
+                                            <mat-select placeholder="Subject" formControlName="Subject">
+                                                <mat-option>--</mat-option>
+                                                <mat-option *ngFor="let subject of teachingSubjects"
+                                                    [value]="subject.id">
+                                                    {{subject.title}}
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
@@ -220,7 +241,7 @@
                                                         </mat-select>
                                                     </mat-form-field>
                                                     <mat-form-field class="col-md-4">
-                                                        <input matInput type="number" min="0"
+                                                        <input matInput type="number" min="0" [disabled]="DisableContactSubTimeAccess" placeholder="Wait Time" formControlName="ContactSubTime">
                                                             [disabled]="DisableContactSubTimeAccess"
                                                             placeholder="Wait Time" [(value)]="ContactSubTime">
                                                         <span matSuffix>min</span>
@@ -460,8 +481,8 @@
                     <button type="button" style="padding-left: 10px; background-color: #04c0be;" mat-raised-button
                         color="primary"
                         (click)="createAbsenceSubmission(absenceFirstFormGroup,absenceSecondFormGroup,stepper)">
-                        {{ absenceFirstFormGroup.value.AbsenceType == '2' ? 'Create And Assign' : absenceSecondFormGroup.value.AbsenceType
-                        == '3' ? 'Post to Preferred' : 'Create Absence' }}
+                        {{ absenceFirstFormGroup.value.AbsenceType == '2' ? 'Create And Assign' : absenceSecondFormGroup.value.AbsenceType == '3'
+                        ? 'Post to Preferred' : 'Create Absence' }}
                     </button>
                 </div>
             </mat-step>

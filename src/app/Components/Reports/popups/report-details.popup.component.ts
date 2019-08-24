@@ -291,6 +291,29 @@ export class ReportDetailsComponent implements OnInit {
     }
   }
 
+  OnDateAndTimeChange(): void {
+    if (this.reportDetail.startDate && this.reportDetail.endDate) {
+      if(this.reportDetail.statusId != 2) {
+        this.absenceForm.get('substituteId').setValue(this.reportDetail.substituteId);
+        this.absenceForm.controls['substituteId'].clearValidators();
+        this.absenceForm.controls['substituteId'].updateValueAndValidity();
+      }
+      let filter = {
+        districtId: this._userSession.getUserDistrictId(),
+        employeeId: this.EmployeeIdForAbsence,
+        startDate: this.absenceForm.value.startDate ? moment(this.absenceForm.value.startDate).format('MM/DD/YYYY') : moment(this.reportDetail.startDate).format('MM/DD/YYYY'),
+        endDate: this.absenceForm.value.endDate ? moment(this.absenceForm.value.endDate).format('MM/DD/YYYY') : moment(this.reportDetail.endDate).format('MM/DD/YYYY'),
+        startTime: this.absenceForm.getRawValue().startTime ? this.absenceForm.getRawValue().startTime : this.reportDetail.startTime,
+        endTime: this.absenceForm.getRawValue().endTime ? this.absenceForm.getRawValue().endTime : this.reportDetail.endTime
+      }
+      this.availableSubstitutes = this.http.post<User[]>(environment.apiUrl + 'user/getAvailableSubstitutes', filter);
+    }
+
+    else {
+      this.notifier.notify('error', 'Select Date First to search substitutes');
+    }
+  }
+
   //CHANGE OF SELECTED Substutute FOR WHICH WE ASSIGN ABSENCE
   substututeSelection(SubstututesDetail: any) {
     if (!SubstututesDetail.isActive) {
@@ -317,13 +340,8 @@ export class ReportDetailsComponent implements OnInit {
         formGroup.get('fileContentType').setValue(this.AttachedFileType);
         formGroup.get('originalFileName').setValue(this.FileName);
       }
-      if (formGroup.value.substituteId && formGroup.value.substituteId.length >= 10) {
-        if (formGroup.value.status == 2) {
-          formGroup.get('substituteId').setValue(formGroup.value.substituteId);
-        }
-        else {
-          formGroup.get('substituteId').setValue(formGroup.value.substituteId.userId);
-        }
+      if (formGroup.value.substituteId.userId && formGroup.value.substituteId.userId.length >= 10) {
+        formGroup.get('substituteId').setValue(formGroup.value.substituteId.userId);
         formGroup.get('status').setValue('2');
         formGroup.get('substituteRequired').setValue(1);
       }

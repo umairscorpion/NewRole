@@ -58,4 +58,8 @@ export class UserSession {
     getUserRoleDesciption(): string {
         return this.UserClaim.userRoleDesciption as string;
     }
+
+    getUserLocations(): string[] {
+        return this.UserClaim.secondarySchools;
+    }
 }

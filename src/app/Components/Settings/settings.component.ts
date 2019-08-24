@@ -7,6 +7,9 @@ import { User } from '../../Model/user';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Organization } from '../../Model/organization';
 import { AbsenceScope } from '../../Model/absenceScope';
+import { SubstituteListCategory } from '../../Model/SubstituteListCategory';
+import swal from 'sweetalert2';
+import { CdkDragDrop, moveItemInArray } from '../../../../node_modules/@angular/cdk/drag-drop';
 
 @Component({
     templateUrl: 'settings.component.html',
@@ -19,6 +22,7 @@ export class SettingComponent implements OnInit {
     accessibilityOfOrganizationDropdown: boolean = false;
     organizations: Organization[] = Array<Organization>();
     UserClaim: any = JSON.parse(localStorage.getItem('userClaims'));
+    substituteListCategory: SubstituteListCategory[] = Array<SubstituteListCategory>();
     TimeCustomDelay: string;
     isSubstitute: boolean = false;
     msg: string;
@@ -53,6 +57,7 @@ export class SettingComponent implements OnInit {
         this.ManageDefultValuesAgainstDifferentUserRoles();
         this.generateForms();
         this.GetOrganizations(this._userSession.getUserDistrictId());
+        this.getSubstituteCategoryAndList();
     }
 
     generateForms(): void {
@@ -217,5 +222,48 @@ export class SettingComponent implements OnInit {
 
     absenceVisibilityChanged(absecetype, $event) {
         absecetype.visibility = !absecetype.visibility;
+    }
+
+    getSubstituteCategoryAndList() {
+        this._dataContext.getById('user/getSubstituteCategory', this._userSession.getUserDistrictId()).
+            subscribe((data: SubstituteListCategory[]) => {
+                this.substituteListCategory = data;
+            },
+                error => this.msg = <any>error);
+    }
+
+    deleteCategory(index, categoryId: number) {
+        swal.fire({
+            title: 'Delete',
+            text:
+                'Are you sure, you want to delete list?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-success',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            buttonsStyling: false
+        }).then(r => {
+            if (r.value) {
+                this._dataContext.delete('user/deleteSubstituteCategory/', categoryId).
+                    subscribe((response: any) => {
+                        this.substituteListCategory.splice(index, 1);
+                        this.notifier.notify('success', 'Deleted Successfully.');
+                    },
+                        error => this.notifier.notify('error', <any>error));
+            }
+        });
+    }
+    
+    OnchangeTimeAgainstCategory(category: SubstituteListCategory) {
+        this._dataContext.post('user/UpdateSubstituteCategoryById', category).
+            subscribe((data: SubstituteListCategory[]) => {
+            },
+                error => this.msg = <any>error);
+    }
+
+    drop(event: CdkDragDrop<string[]>) {
+        moveItemInArray(this.substituteListCategory, event.previousIndex, event.currentIndex);
     }
 }

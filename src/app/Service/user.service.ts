@@ -57,6 +57,12 @@ export class UserService {
         return this._http.post(environment.apiUrl + url, model, { headers: reqHeader });
     }
 
+    updateUserStatus(url: string, model: any): Observable<any> {
+        model = JSON.stringify(model);
+        var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json', 'No-Auth': 'True' });
+        return this._http.post(environment.apiUrl + url, model, { headers: reqHeader });
+    }
+
     get(url: string): Observable<any> {
         return this._http.get(environment.apiUrl + url);
     }

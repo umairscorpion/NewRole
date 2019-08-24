@@ -16,7 +16,7 @@ import swal from 'sweetalert2';
 })
 export class EmployeesComponent implements OnInit {
   private notifier: NotifierService;
-  displayedColumns = ['firstName', 'LastName', 'Email', 'PhoneNumber', 'location', 'Role', 'ClassificationStatus', 'action'];
+  displayedColumns = ['firstName', 'lastName', 'Email', 'PhoneNumber', 'districtName', 'Role', 'isCertified', 'action'];
   DataSourceEmployeesObj: DataSourceEmployees | null;
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;

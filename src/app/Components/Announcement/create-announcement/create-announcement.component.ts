@@ -78,6 +78,15 @@ export class CreateAnnouncementComponent implements OnInit {
     });
   }
 
+  SetOrganizations() {
+    this.form.controls['organizationId'].setValue('');
+    this.form.controls['recipients'].setValue(1);
+  }
+
+  SetRecipients() {
+    this.form.controls['recipients'].setValue(1);
+  }
+
   OnCancel() {
     this.form.controls['recipients'].setValue(1);
     this.form.controls['districtId'].setValue(0);

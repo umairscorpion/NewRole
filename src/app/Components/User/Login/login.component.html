@@ -8,20 +8,22 @@
                     <input matInput placeholder="Email" formControlName="userName" required>
                     <mat-error *ngIf="isFieldInvalid('userName')">
                         Please enter your email
-                    </mat-error>    
+                    </mat-error>
                 </mat-form-field>
                 <mat-form-field class="full-width-input">
-                    <input matInput placeholder="Password" formControlName="password" required [type]="hide ? 'password' : 'text'">
-                    <mat-icon style="cursor: pointer;" matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                    <input matInput placeholder="Password" formControlName="password" required
+                        [type]="hide ? 'password' : 'text'">
+                    <mat-icon style="cursor: pointer;" matSuffix (click)="hide = !hide">
+                        {{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
                     <mat-error *ngIf="isFieldInvalid('userName')">
                         Please inform your password
                     </mat-error>
                 </mat-form-field>
                 <a routerLink="forgotPassword"><b>Forget password?</b></a><br>
                 <button mat-raised-button color="primary">Login</button>
-               <div style="padding-top: 10px">or</div>
+                <div style="padding-top: 10px">or</div>
                 <a class="btn btn-block btn-social btn-google" (click)="loginWithGoogle()">
-                        <span class="fa fa-google"></span> Sign in with Google
+                    <span class="fa fa-google"></span> Sign in with Google
                 </a>
             </form>
         </mat-card-content>

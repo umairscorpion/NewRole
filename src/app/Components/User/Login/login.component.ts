@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
     hide = true;
     msg: string;
     loginFrm: FormGroup;
+    email: any;
     private formSubmitAttempt: boolean;
 
     constructor(
@@ -40,28 +41,52 @@ export class LoginComponent implements OnInit {
             password: ['', Validators.required]
         });
         this.activatedRoute.queryParams.subscribe((params: any) => {
-            if (params.pa && params.email && params.job) {
-                localStorage.removeItem('userToken');
-                localStorage.removeItem('userClaims');
-                this.JobId = params.job;
-                this.action = params.ac;
+            this.action = params.ac;
+            this.email = params.email;
+            if (this.action == 5) {
                 let model = {
-                    userName: params.email,
-                    password: params.pa
+                    ForUserVerification: 1,
+                    IsCertified: 1,
+                    Email: this.email
                 }
-                this.loginFrm.setValue(model);
-                this.onSubmit(this.loginFrm);
+                this._userService.updateUserStatus('auth/updateUserStatus', model).subscribe((data: any) => {
+                    localStorage.removeItem('userToken');
+                    localStorage.removeItem('userClaims');
+                    let model = {
+                        userName: params.email,
+                        password: params.pa
+                    }
+                    this.loginFrm.setValue(model);
+                    this.onSubmit(this.loginFrm);
+                },
+                    error => this.msg = <any>error);
             }
-            else if (params.pa && params.email) {
-                localStorage.removeItem('userToken');
-                localStorage.removeItem('userClaims');
-                let model = {
-                    userName: params.email,
-                    password: params.pa
+            else {
+                if (params.pa && params.email && params.job) {
+                    localStorage.removeItem('userToken');
+                    localStorage.removeItem('userClaims');
+                    this.JobId = params.job;
+                    this.action = params.ac;
+                    let model = {
+                        userName: params.email,
+                        password: params.pa
+                    }
+
+                    this.loginFrm.setValue(model);
+                    this.onSubmit(this.loginFrm);
                 }
-                this.loginFrm.setValue(model);
-                this.onSubmit(this.loginFrm);
+                else if (params.pa && params.email) {
+                    localStorage.removeItem('userToken');
+                    localStorage.removeItem('userClaims');
+                    let model = {
+                        userName: params.email,
+                        password: params.pa
+                    }
+                    this.loginFrm.setValue(model);
+                    this.onSubmit(this.loginFrm);
+                }
             }
+
         })
     }
 
@@ -81,10 +106,6 @@ export class LoginComponent implements OnInit {
         this.msg = "";
         if (this.loginFrm.valid) {
             this._userService.userAuthentication(environment.apiUrl, formData.value).subscribe((data: any) => {
-                if(data == 'notactive'){
-                    this.notifier.notify('error','Account inactivated. Contact your Subzz administrator.');
-                    return;
-                }
                 localStorage.setItem('userToken', data.token);
                 this.GetUserClaims();
                 // let promise = Promise.resolve(this.GetUserClaims());
@@ -94,7 +115,17 @@ export class LoginComponent implements OnInit {
                 // }));
             },
                 (err: HttpErrorResponse) => {
-                    this.notifier.notify('error', err.statusText.toLowerCase() == "ok" || err.statusText.toLowerCase() == "unauthorized" ? "Invalid email or password": "Invalid email or password");
+                    if (err.error == 'NotCertified') {
+                        this.notifier.notify('error', 'Please verify your account from welcome email.');
+                        return;
+                    }
+                    else if (err.error == 'notactive') {
+                        this.notifier.notify('error', 'Account inactivated. Contact your Subzz administrator.');
+                        return;
+                    }
+                    else {
+                        this.notifier.notify('error', err.statusText.toLowerCase() == "ok" || err.statusText.toLowerCase() == "unauthorized" ? "Invalid email or password" : "Invalid email or password");
+                    }
                 });
         }
         this.formSubmitAttempt = true;
@@ -123,38 +154,34 @@ export class LoginComponent implements OnInit {
             if (data.roleId == 4) { // For Substitute
                 if (this.activatedRoute.queryParams && this.JobId > 0) {
                     if (this.action == 1) {
-                        this.AcceptJob(this.JobId)
+                        this.AcceptJob(this.JobId);
                     }
-                    else 
-                        this.declineJob(this.JobId)
-                    
+                    else
+                        this.declineJob(this.JobId);
                 }
                 else {
-                    this.router.navigate(['/viewjobs']
+                    this.router.navigate(['/viewjobs'], { queryParams: { announcement: true } }
                     ).then(() => {
                     });
                 }
             }
-
             else if (data.roleId == 3) { //For Employee
-                this.router.navigate(['/absence']
+                this.router.navigate(['/absence'], { queryParams: { announcement: true } }
                 ).then(() => {
                 });
             }
             else {
                 if (this.activatedRoute.queryParams && this.JobId > 0) {
-                    if(this.action == 3 || this.action == 4){
+                    if (this.action == 3 || this.action == 4) {
                         this.ApproveOrDenyLeave(this.JobId)
                     }
-                    else{
-                        this.router.navigate(['/home']
-                        ).then(() => {
-                        });        
+                    else {
+                        this.router.navigate(['/home']).then(() => {
+                        });
                     }
-                      
                 }
-                else{
-                    this.router.navigate(['/home']
+                else {
+                    this.router.navigate(['/home'], { queryParams: { announcement: true } }
                     ).then(() => {
                     });
                 }
@@ -194,7 +221,7 @@ export class LoginComponent implements OnInit {
     }
 
     ApproveOrDenyLeave(jobId: number) {
-        this.router.navigate(['/home'], { queryParams: { jobId: jobId, ac: this.action  } });
+        this.router.navigate(['/home'], { queryParams: { jobId: jobId, ac: this.action } });
     }
 
     // If Error occurred on login with Google

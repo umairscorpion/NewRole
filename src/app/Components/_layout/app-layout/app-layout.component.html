@@ -1,3 +1,8 @@
+<style>
+  h5 {
+    font-size: 17px;
+  }
+</style>
 <div class="example-container">
   <div [class.example-is-mobile]="mobileQuery.matches">
     <Subzz-app-SideNav></Subzz-app-SideNav>
@@ -22,10 +27,10 @@
                 <h4>Sick</h4>
               </div>
               <div class="col-md-6">
-                <h4 style="text-align:center">{{empLeave.sick? empLeave.sick: 'N/A'}}</h4>
+                <h5 style="text-align:center">{{empLeave.sick? empLeave.sick: 'N/A'}}</h5>
               </div>
               <div class="col-md-6" style="text-align:left">
-                <h4>Vacation</h4>
+                <h5>Vacation</h5>
               </div>
               <div class="col-md-6">
                 <h4 style="text-align:center">{{empLeave.vacation? empLeave.vacation: 'N/A'}}</h4>

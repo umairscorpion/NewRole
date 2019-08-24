@@ -90,8 +90,9 @@
                         <!-- Position Column -->
                         <ng-container matColumnDef="AbsenceDate">
                             <mat-header-cell *matHeaderCellDef> Absence Date </mat-header-cell>
-                            <mat-cell *matCellDef="let Absence">{{ Absence.startDate | date:'E, M/d/y' }}
-                                <br>
+                            <mat-cell *matCellDef="let Absence">
+                                {{ Absence.startDate | date:'E, M/d/y' }}
+                                <br *ngIf="Absence.startDate != Absence.endDate">
                                 {{Absence.startDate != Absence.endDate ? (Absence.endDate | date:'E, M/d/y') : ' ' }}
                                 <br>
                                 {{Absence.startTime | convertFrom24HourTo12HourFormat}}-{{Absence.endTime | convertFrom24HourTo12HourFormat}}

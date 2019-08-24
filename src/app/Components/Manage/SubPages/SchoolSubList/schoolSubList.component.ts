@@ -6,6 +6,7 @@ import { NotifierService } from 'angular-notifier';
 import { UserSession } from 'src/app/Services/userSession.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SubstituteListCategory } from '../../../../Model/SubstituteListCategory';
+import { SubstituteList } from '../../../../Model/SubstituteList';
 
 @Component({
     selector: 'school-sub-list',
@@ -43,7 +44,7 @@ export class SchoolSubListComponent implements OnInit {
         this.GetDistricts();
         this.getSustitutes();
         this.getBlockedSustitutes();
-        // this.getSubstituteCategoryAndList();
+        this.getSubstituteCategoryAndList();
     }
 
     getSubstituteCategoryAndList() {
@@ -54,17 +55,38 @@ export class SchoolSubListComponent implements OnInit {
                 error => this.msg = <any>error);
     }
 
+    addnewList() {
+        if (this.substituteListCategory.length >= 5) {
+            this.notifier.notify('error', 'Limit Reached! You can add only five substitute lists');
+            return;
+        }
+        let newCategory = new SubstituteListCategory();
+        newCategory.categoryId = 0;
+        newCategory.title = '';
+        newCategory.districtId = this._userSession.getUserDistrictId();
+        this.dataContext.get('user/getSubstituteListForNewList').
+            subscribe((data: SubstituteList[]) => {
+                newCategory.substituteList = data;
+                this.substituteListCategory.push(newCategory);
+                this.currentPage = this.substituteListCategory.length;
+            },
+                error => this.msg = <any>error);
+    }
+
     saveSubstituteListByCategory(category: SubstituteListCategory) {
         this.dataContext.post('user/updateSubstituteList', category).
             subscribe((data: SubstituteListCategory[]) => {
-                this.notifier.notify('success', 'Updated Successfully')
+                this.getSubstituteCategoryAndList();
+                this.notifier.notify('success', 'Updated Successfully');
             },
                 error => this.msg = <any>error);
     }
 
     addOrRemoveSubstituteInCurrentCategory(sub: any, categoryId: number) {
-        this.substituteListCategory.filter(t => t.categoryId === categoryId)[0].substituteList.filter(us => us.userId == sub.userId)[0].isAdded =
-        !this.substituteListCategory.filter(t => t.categoryId === categoryId)[0].substituteList.filter(us => us.userId == sub.userId)[0].isAdded;
+        this.substituteListCategory.filter(t => t.categoryId === categoryId)[0].
+        substituteList.filter(us => us.userId == sub.userId)[0].isAdded =
+            !this.substituteListCategory.filter(t => t.categoryId === categoryId)[0].
+            substituteList.filter(us => us.userId == sub.userId)[0].isAdded;
     }
 
     removeSubstituteInCurrentCategory() {

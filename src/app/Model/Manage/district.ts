@@ -14,4 +14,5 @@ export interface IDistrict {
     DistrictPhone:number,
     DistrictEmployees: number ,
     DistrictSubstitutes:number
+    counrtyCode: string;
 }

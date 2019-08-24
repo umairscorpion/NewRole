@@ -27,7 +27,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     @ViewChild('chartUnFilled') chartUnFilled: ElementRef;
     @ViewChild('chartNoSubReq') chartNoSubReq: ElementRef;
     context: CanvasRenderingContext2D;
-    selectedTab: any ;
+    selectedTab: any;
     currentDate: Date = new Date();
     msg: string;
     indLoading = false;

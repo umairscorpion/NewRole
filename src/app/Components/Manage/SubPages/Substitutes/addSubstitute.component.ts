@@ -32,6 +32,7 @@ export class AddSubstituteComponent implements OnInit {
     @ViewChild('modal') modal: ModalComponent;
     msg: string;
     substituteForm: FormGroup;
+    countryCode: string;
 
     constructor(
         private router: Router,
@@ -86,7 +87,7 @@ export class AddSubstituteComponent implements OnInit {
                         Email: data[0].email,
                         TeachingLevel: data[0].teachingLevel,
                         Speciality: data[0].speciality ? data[0].speciality : '',
-                        PhoneNumber: data[0].phoneNumber,
+                        PhoneNumber: this.getPhoneNumber(data[0].phoneNumber, data[0].counrtyCode),
                         PayRate: data[0].payRate as string,
                         HourLimit: data[0].hourLimit,
                         IsActive: data[0].isActive
@@ -94,6 +95,7 @@ export class AddSubstituteComponent implements OnInit {
                     this.getImage(data[0].profilePicture);
                     this.substituteForm.setValue(SubstituteModel);
                     this.userIdForUpdate = SubstituteId;
+                    this.countryCode = data[0].counrtyCode
                 },
                     error => <any>error);
             }
@@ -101,6 +103,11 @@ export class AddSubstituteComponent implements OnInit {
                 this.profilePicture = 'assets/Images/noimage.png';
             }
         });
+    }
+
+    getPhoneNumber(phoneNumber: string, counrtyCode: string): string {
+        phoneNumber = phoneNumber.includes(counrtyCode) ? phoneNumber.split(counrtyCode)[1] : phoneNumber;
+        return phoneNumber;
     }
 
     getpositions(): void {
@@ -125,10 +132,16 @@ export class AddSubstituteComponent implements OnInit {
             error => <any>error);
     }
 
+    setCountryCode(countryCode) {
+        this.countryCode = countryCode;
+    }
+
     GetDistricts(): void {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
             if (this._userSession.getUserLevelId() != 4) {
+                const dist = this.Districts.filter(dis => dis.districtId == this._userSession.getUserDistrictId());
+                this.countryCode = dist[0].counrtyCode;
                 this.substituteForm.get('District').setValue(this._userSession.getUserDistrictId());
                 this.substituteForm.controls['District'].disable();
             }
@@ -218,7 +231,7 @@ export class AddSubstituteComponent implements OnInit {
                         IsSubscribedSMS: form.value.IsSubscribedSMS == '1' ? true : false,
                         DistrictId: form.getRawValue().District,
                         Email: form.value.Email,
-                        PhoneNumber: form.value.PhoneNumber,
+                        PhoneNumber: this.countryCode + form.value.PhoneNumber,
                         ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
                         PayRate: form.value.PayRate,
                         HourLimit: form.value.HourLimit,

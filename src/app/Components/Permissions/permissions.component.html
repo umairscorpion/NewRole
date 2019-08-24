@@ -31,7 +31,6 @@
                 <mat-label>Select District</mat-label>
                 <mat-select type="text" [formControl]="districtFormControl"
                   (selectionChange)="onChangeDistrict($event.value)">
-                  <mat-option value="0">All</mat-option>
                   <mat-option *ngFor="let district of Districts" [value]="district.districtId">
                     {{district.districtName}}
                   </mat-option>

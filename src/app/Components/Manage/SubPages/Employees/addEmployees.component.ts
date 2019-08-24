@@ -33,6 +33,7 @@ export class AddEmployeesComponent implements OnInit {
     // These two variables are used to show and hid district and school but not in use may be reqired. So dont remove it.
     showDistrict: boolean = true;
     showOrganization: boolean = false;
+    countryCode: string;
 
     constructor(
         private router: Router,
@@ -105,13 +106,14 @@ export class AddEmployeesComponent implements OnInit {
                         District: data[0].districtId,
                         OrganizationId: data[0].organizationId ? data[0].organizationId : '',
                         SecondarySchools: data[0].secondarySchools,
-                        PhoneNumber: data[0].phoneNumber,
+                        PhoneNumber: this.getPhoneNumber(data[0].phoneNumber, data[0].counrtyCode),
                         IsActive: data[0].isActive,
                         role: data[0].roleId
                     }
                     this.getImage(data[0].profilePicture);
                     this.employeeForm.setValue(EmployeeModel);
                     this.userIdForUpdate = EmployeeId;
+                    this.countryCode = data[0].counrtyCode
                     this.onChangeDistrict(data[0].districtId);
                 },
                     error => <any>error);
@@ -120,6 +122,15 @@ export class AddEmployeesComponent implements OnInit {
                 this.profilePicture = 'assets/Images/noimage.png';
             }
         });
+    }
+
+    getPhoneNumber(phoneNumber: string, counrtyCode: string): string {
+        phoneNumber = phoneNumber.includes(counrtyCode) ? phoneNumber.split(counrtyCode)[1] : phoneNumber;
+        return phoneNumber;
+    }
+    
+    setCountryCode(countryCode) {
+        this.countryCode = countryCode;
     }
 
     loadData() {
@@ -141,12 +152,14 @@ export class AddEmployeesComponent implements OnInit {
     }
 
     GetDistricts(): void {
-        this._dataContext.get('district/getDistricts').subscribe((data: any) => {
+        this._dataContext.get('district/getDistricts').subscribe((data: any[]) => {
             this.Districts = data;
             if (this._userSession.getUserRoleId() == 5) {
                 this.employeeForm.controls['District'].enable();
             }
             else {
+                const dist = this.Districts.filter(dis => dis.districtId == this._userSession.getUserDistrictId());
+                this.countryCode = dist[0].counrtyCode;
                 this.employeeForm.get('District').setValue(this._userSession.getUserDistrictId());
                 this.employeeForm.controls['District'].disable();
             }
@@ -213,6 +226,17 @@ export class AddEmployeesComponent implements OnInit {
 
     //ON CHANGING EMPLOYEE TYPE
     onChangeEmployeeType(value: any) {
+        if (value == 1) {
+            this.employeeForm.controls["TeachingLevel"].setValidators([Validators.required]);
+            this.employeeForm.controls["Speciality"].setValidators([Validators.required]);
+            this.employeeForm.controls['TeachingLevel'].updateValueAndValidity();
+            this.employeeForm.controls['Speciality'].updateValueAndValidity();
+        } else {
+            this.employeeForm.controls['TeachingLevel'].clearValidators();
+            this.employeeForm.controls['Speciality'].clearValidators();
+            this.employeeForm.controls['TeachingLevel'].updateValueAndValidity();
+            this.employeeForm.controls['Speciality'].updateValueAndValidity();
+        }
         if (value !== 2 || value !== 3 || value !== 4) {
             this.employeeForm.get('SecondarySchools').setValue([]);
             // this.employeeForm.controls["TeachingLevel"].setValidators([Validators.required]);
@@ -305,7 +329,7 @@ export class AddEmployeesComponent implements OnInit {
                         OrganizationId: this.showOrganization == true ? form.getRawValue().OrganizationId : '',
                         SecondarySchools: form.value.SecondarySchools && this.showOrganization == true ? form.value.SecondarySchools.filter((school: any) => school !== form.getRawValue().OrganizationId) : null,
                         Email: form.value.EmailId,
-                        PhoneNumber: form.value.PhoneNumber,
+                        PhoneNumber: this.countryCode + form.value.PhoneNumber,
                         ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
                         IsActive: form.value.IsActive,
                         Password: 'Password1'
@@ -320,7 +344,7 @@ export class AddEmployeesComponent implements OnInit {
                                 this.notifier.notify('error', err.error.error_description);
                             });
                     }
-                    else if(this.sendWelcomeEmailId == 1){
+                    else if(this.sendWelcomeEmailId == 1) {
                         this._dataContext.post('user/insertUserAndSendWelcomeEmail', model).subscribe((data: any) => {
                             this.router.navigate(['/manage/employees']);
                             this.notifier.notify('success', 'Added Successfully');

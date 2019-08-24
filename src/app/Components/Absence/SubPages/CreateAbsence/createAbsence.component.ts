@@ -21,6 +21,7 @@ import { Absence } from '../../../../Model/absence';
 import { LeaveBalance } from '../../../../Model/leaveBalance';
 import { Announcement } from 'src/app/Model/announcement';
 import { ShowAnnouncementPopupComponent } from 'src/app/Components/Announcement/show-announcement-popup/show-announcement-popup.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'create-absence',
@@ -56,7 +57,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
     // var for Preferred Sub 
     ContactSub: string = '1';
-    ContactSubTime: number = null;
     DisableContactSubTimeAccess: boolean = true;
     isApprovalNeeded: boolean = false;
     PreferredSubstitutes: any;
@@ -67,6 +67,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     AttachedFileName: string;
     CompletedPercentage: number;
     SuccessMessage: boolean;
+    TeachingLevels: any;
+    teachingSubjects: any;
     isLinear = true;
     absenceFirstFormGroup: FormGroup;
     absenceSecondFormGroup: FormGroup;
@@ -96,7 +98,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     NeedASub: boolean = false;
     response: number = 0;
     absenceTypes: AbsenceScope[] = Array<AbsenceScope>();
+    // For Announcements
     Announcements: Announcement[] = Array<Announcement>();
+    IsAnnouncementViewed: boolean = true;
 
     constructor(
         private http: HttpClient,
@@ -107,7 +111,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         private absenceService: AbsenceService,
         notifier: NotifierService,
         private sanitizer: DomSanitizer,
-        private dialogRef: MatDialog) {
+        private dialogRef: MatDialog,
+        private activatedRoute: ActivatedRoute) {
         this.notifier = notifier;
     }
 
@@ -123,10 +128,16 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         // this.preferredSubPanel.expandedChange.subscribe((data) => {
         //     this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
         // });
-        // let UserRoleId = this._userSession.getUserRoleId();
-        // if (UserRoleId === 3) {
-        //     this.GetAndViewAnnouncement();
-        // }
+
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params.announcement && this.IsAnnouncementViewed) {
+                let UserRoleId = this._userSession.getUserRoleId();
+                if (UserRoleId === 3) {
+                    this.GetAndViewAnnouncement();
+                    this.IsAnnouncementViewed = false;
+                }
+            }
+        })
     }
 
     GenerateForms(): void {
@@ -154,10 +165,13 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             AbsenceStartDate: ['', Validators.required],
             AbsenceEndDate: ['', Validators.required],
             PositionId: [''],
+            Grade: [''],
+            Subject: [''],
             AbsenceType: [Validators.required],
             Substitutes: [[]],
             onlyCertified: [true],
-            onlySubjectSpecialist: [false]
+            onlySubjectSpecialist: [false],
+            ContactSubTime: ['10'],
         });
 
         this.absenceSecondFormGroup = this._formBuilder.group({
@@ -299,6 +313,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             return;
         }
         if (this.absenceFirstFormGroup.value.AbsenceStartDate && this.absenceFirstFormGroup.value.AbsenceEndDate) {
+            // if(this.absenceFirstFormGroup.value.AbsenceType != 1) {
+            //     this.absenceFirstFormGroup.get('Substitutes').setValue([]);
+            // }
             let filter = {
                 districtId: this._userSession.getUserDistrictId(),
                 employeeId: this.EmployeeIdForAbsence,
@@ -309,6 +326,27 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             }
             this.availableSubstitutes = this.http.post<User[]>(environment.apiUrl + 'user/getAvailableSubstitutes', filter);
             this.availableSubstitutes = this.availableSubstitutes.map((users: any) => users.filter((val: User) => val.firstName.toLowerCase().includes(SearchedText.toLowerCase())));
+        }
+        else {
+            this.notifier.notify('error', 'Please Select Date First');
+        }
+    }
+
+    OnDateAndTimeChange(): void {
+        if (this.absenceFirstFormGroup.value.AbsenceType != 2 && this.absenceFirstFormGroup.value.AbsenceType != 1) {
+            return;
+        }
+        if (this.absenceFirstFormGroup.value.AbsenceStartDate && this.absenceFirstFormGroup.value.AbsenceEndDate) {
+            this.absenceFirstFormGroup.get('Substitutes').setValue([]);
+            let filter = {
+                districtId: this._userSession.getUserDistrictId(),
+                employeeId: this.EmployeeIdForAbsence,
+                startDate: new Date(this.absenceFirstFormGroup.value.AbsenceStartDate).toLocaleDateString(),
+                endDate: new Date(this.absenceFirstFormGroup.value.AbsenceEndDate).toLocaleDateString(),
+                startTime: this.absenceFirstFormGroup.getRawValue().StartTime,
+                endTime: this.absenceFirstFormGroup.getRawValue().EndTime
+            }
+            this.availableSubstitutes = this.http.post<User[]>(environment.apiUrl + 'user/getAvailableSubstitutes', filter);
         }
         else {
             this.notifier.notify('error', 'Please Select Date First');
@@ -390,6 +428,10 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls["EmployeeId"].setValidators([Validators.required]);
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
             this.absenceFirstFormGroup.controls['OrganizationId'].disable();
+            this.absenceFirstFormGroup.controls['Grade'].clearValidators();
+            this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Subject'].clearValidators();
+            this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
         }
         else if (+event == 3) {
             this.absenceFirstFormGroup.get('AbsenceType').setValue(4);
@@ -403,6 +445,20 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             }
             this.absenceFirstFormGroup.controls['EmployeeId'].clearValidators();
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
+            this.GetTeachingLevels();
+            this.GetTeachingSubjects();
+            if (this.absenceFirstFormGroup.controls['PositionId'].value == 1) {
+                this.absenceFirstFormGroup.controls["Grade"].setValidators([Validators.required]);
+                this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+                this.absenceFirstFormGroup.controls["Subject"].setValidators([Validators.required]);
+                this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
+            }
+            else {
+                this.absenceFirstFormGroup.controls['Grade'].clearValidators();
+                this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+                this.absenceFirstFormGroup.controls['Subject'].clearValidators();
+                this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
+            }
         }
         else {
             if (this.loginedUserLevel == 1) {
@@ -414,12 +470,31 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.absenceFirstFormGroup.controls['PositionId'].updateValueAndValidity();
             this.absenceFirstFormGroup.controls['EmployeeId'].clearValidators();
             this.absenceFirstFormGroup.controls['EmployeeId'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Grade'].clearValidators();
+            this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Subject'].clearValidators();
+            this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
+        }
+    }
+    //On change position in case of Find A Sub
+    OnchangePosition(id: number) {
+        if (id == 1) {
+            this.absenceFirstFormGroup.controls["Grade"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls["Subject"].setValidators([Validators.required]);
+            this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
+        } else {
+            this.absenceFirstFormGroup.controls['Grade'].clearValidators();
+            this.absenceFirstFormGroup.controls['Grade'].updateValueAndValidity();
+            this.absenceFirstFormGroup.controls['Subject'].clearValidators();
+            this.absenceFirstFormGroup.controls['Subject'].updateValueAndValidity();
         }
     }
 
     OnchangeAbsenceScope(AbsenceScopetype: number) {
         if (+AbsenceScopetype === 1 || +AbsenceScopetype === 2) {
             if (this.absenceFirstFormGroup.value.AbsenceStartDate && this.absenceFirstFormGroup.value.AbsenceEndDate) {
+                this.absenceFirstFormGroup.get('Substitutes').setValue([]);
                 this.SearchAvailableSubstitutes('');
             }
             else {
@@ -552,6 +627,21 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             error => <any>error);
     }
 
+    //GET SUBJECTS IN CASE OF NEED A SUB
+    GetTeachingSubjects(): void {
+        this._dataContext.get('lookup/teachingSubjects').subscribe((data: any) => {
+            this.teachingSubjects = data;
+        },
+            error => this.msg = <any>error);
+    }
+    //GET GRADES IN CASE OF NEED A SUB
+    GetTeachingLevels(): void {
+        this._dataContext.get('lookup/getTeachingLevels').subscribe((data: any) => {
+            this.TeachingLevels = data;
+        },
+            error => this.msg = <any>error);
+    }
+
     //ON CREATING ABSENCE CLICK
     createAbsenceSubmission(FirstAbsenceForm: any, SecondAbsenceForm: any, stepper: MatStepper) {
         if (this._userSession.getUserRoleId() === 3) {
@@ -645,11 +735,13 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                 FileExtention: typeof this.AttachedFileName != 'undefined' ? this.AttachedFileExtention : 'N/A',
                 SubstituteId: FirstAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 2 ? Substitutes :
                     FirstAbsenceForm.value.Substitutes && +FirstAbsenceForm.value.AbsenceType == 1 ? Substitutes : '-1',
-                Interval: this.ContactSub == "1" ? 0 : this.ContactSubTime,
-                TotalInterval: this.ContactSub == "1" ? 0 : this.PreferredSubstitutes.length * this.ContactSubTime + this.ContactSubTime,
+                Interval: this.ContactSub == "1" ? 0 : FirstAbsenceForm.value.ContactSubTime,
+                TotalInterval: this.ContactSub == "1" ? 0 : (this.PreferredSubstitutes.length - 1) * (+FirstAbsenceForm.value.ContactSubTime) + 10, //Send All to After 10 mins
                 isApprovalRequired: this.isApprovalNeeded && this.loginedUserRole === 3 ? 0 : 1,
                 onlyCertified: FirstAbsenceForm.value.onlyCertified,
-                onlySubjectSpecialist: FirstAbsenceForm.value.onlySubjectSpecialist
+                onlySubjectSpecialist: FirstAbsenceForm.value.onlySubjectSpecialist,
+                TeachingLevelId: this.NeedASub && FirstAbsenceForm.value.Grade ? FirstAbsenceForm.value.Grade : 0,
+                SpecialityTypeId: this.NeedASub && FirstAbsenceForm.value.Subject ? FirstAbsenceForm.value.Subject : 0
             }
 
             if (!this.CheckDataAndTimeOverlape(FirstAbsenceForm.value.AbsenceStartDate as Date,
@@ -710,11 +802,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     OnchangeContactSubOption(): void {
         if (this.ContactSub == "1") {
-            this.ContactSubTime = null;
             this.DisableContactSubTimeAccess = true;
         }
         else {
-            this.ContactSubTime = 10;
             this.DisableContactSubTimeAccess = false;
         }
     }
@@ -847,18 +937,20 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
 
     GetAndViewAnnouncement() {
-        let model = {}
+        let model = {
+            DistrictId: this._userSession.getUserDistrictId(),
+            OrganizationId: this._userSession.getUserOrganizationId()
+        }
         this._dataContext.post('announcement/getAnnouncement', model).subscribe((data: any) => {
             this.Announcements = data;
-            this.dialogRef.open(
-                ShowAnnouncementPopupComponent, {
-                    panelClass: 'announcements-dialog',
-                    data: this.Announcements
-                }
-            );
-            // this.Announcements = data.filter(number => moment(number.hideOnTime, 'hh:mm A').isSameOrAfter(moment().format('hh:mm A')));
-            // this.Announcements = data.filter(number => moment(number.showOnDate, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')));
-            // this.Announcements = data.filter(number => moment(number.hideOnDate, 'hh:mm').isSameOrBefore(moment().format('hh:mm')));
+            if (data.length > 0) {
+                this.dialogRef.open(
+                    ShowAnnouncementPopupComponent, {
+                        panelClass: 'announcements-dialog',
+                        data: this.Announcements
+                    }
+                );
+            }
         },
             error => <any>error);
     }
