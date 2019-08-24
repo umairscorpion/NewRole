@@ -54,6 +54,11 @@
             <mat-cell *matCellDef="let report"> {{report.startDate | date:'mediumDate'}} </mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="JobId">
+            <mat-header-cell *matHeaderCellDef> Job ID </mat-header-cell>
+            <mat-cell *matCellDef="let report"> {{report.jobId}} </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="Employee">
             <mat-header-cell *matHeaderCellDef> Employee </mat-header-cell>
             <mat-cell *matCellDef="let report"> {{report.employeeName}} </mat-cell>

@@ -10,4 +10,10 @@ export interface LeaveBalance {
     leaveTypeId: number;
     balance: number;
     isAllowNegativeAllowance: boolean;
+    balanceId: number;
+    allowanceTitle: string;
+    allowanceBalance: number;
+    firstColumn: number;
+    secondColumn: number;
+    thirdColumn: number;
 }

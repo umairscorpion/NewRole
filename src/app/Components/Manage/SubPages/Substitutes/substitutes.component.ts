@@ -37,6 +37,8 @@ export class SubstitutesComponent implements OnInit {
   Districts: any;
   UserRole: number = this._userSession.getUserRoleId();
   selectedTab: any = 0;
+  districtIdForWelcome: any = 0;
+  userRole: any;
 
   constructor(
     private router: Router,
@@ -111,6 +113,17 @@ export class SubstitutesComponent implements OnInit {
     });
   }
 
+  onChangeDistrict(districtId: any) {
+    let RoleId = 4;
+    let OrgId = -1;
+    this.districtIdForWelcome = districtId;
+    this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + districtId).subscribe((data: any) => {
+      this.substituteDataSource.data = data;
+      this.substituteDataSource = data.filter((t => t.districtId == districtId));
+    },
+      error => this.msg = <any>error);
+  }
+
   ResendWelcomeLetter(user: any) {
     swal.fire({
       title: 'Send',
@@ -126,6 +139,9 @@ export class SubstitutesComponent implements OnInit {
     }).then(r => {
       if (r.value) {
         this._dataContext.post('user/resendWelcomeLetter', user).subscribe((data: any) => {
+          setTimeout(() => {
+            this.GetSustitutes();
+          }, 2500);
           this.notifier.notify('success', 'Sent Successfully');
         },
           error => this.msg = <any>error);
@@ -172,8 +188,27 @@ export class SubstitutesComponent implements OnInit {
     }
     this._dataContext.post('Communication/sendWellcomeLetter', userToSendWelcomeLetter).subscribe(result => {
       this.notifier.notify('success', 'Email Send Successfully.');
+      this.GetSustitutes();
     },
       error => this.msg = <any>error);
+  }
+
+  onSendAll() {
+    this.userRole = 4;
+    if (this.districtIdForWelcome == 0) {
+      this.districtIdForWelcome = this._userSession.UserClaim.districtId;
+      if (this.districtIdForWelcome == 0) {
+        this.notifier.notify('error', 'Please Select District First.');
+        return;
+      }
+    }
+    this._dataContext.get('user/sendWellcomeLetterToAll/' + this.districtIdForWelcome + '/' + this.userRole).subscribe((response: any) => {
+      this.notifier.notify('success', 'Email Sent Successfully.');
+      setTimeout(() => {
+        this.GetSustitutes();
+      }, 5000);
+    },
+      error => this.notifier.notify('error', 'Please Select District First'));
   }
 
   resetPassword(userdId: string) {
@@ -198,15 +233,6 @@ export class SubstitutesComponent implements OnInit {
       this.Districts = data;
     },
       error => <any>error);
-  }
-  onChangeDistrict(districtId: any) {
-    let RoleId = 4;
-    let OrgId = -1;
-    this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + districtId).subscribe((data: any) => {
-      this.substituteDataSource.data = data;
-      this.substituteDataSource = data.filter((t => t.districtId == districtId));
-    },
-      error => this.msg = <any>error);
   }
 
   onTabChanged(tab: any) {

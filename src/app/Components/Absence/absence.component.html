@@ -10,7 +10,7 @@
                     <create-absence (refreshBalance)="getEmployeeBalance()"></create-absence>
                 </mat-tab>
                 <mat-tab label="Upcoming">
-                    <upcoming-absences></upcoming-absences>
+                    <upcoming-absences (refreshBalance)="getEmployeeBalance()"></upcoming-absences>
                 </mat-tab>
                 <mat-tab label="Past">
                     <past-absences></past-absences>

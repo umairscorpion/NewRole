@@ -13,7 +13,7 @@
       <mat-tab label="Leave">
         <mat-card>
           <div class="demo-tab-content">
-            <h4>Leave Type</h4>
+            <h4>Absence Reasons</h4>
             <div>
               <div class="row col-md-12 col-lg-12" style="text-align: right">
                 <a routerLink="./AddLeave">
@@ -62,7 +62,7 @@
                   <ng-container matColumnDef="action">
                     <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <i class="material-icons" style="cursor: pointer; color: #448ac9" #tooltip="matTooltip"
+                      <i class="material-icons" *ngIf = '!row.isSubtractAllowance' style="cursor: pointer; color: #448ac9" #tooltip="matTooltip"
                         matTooltip="Delete Leave" matTooltipPosition="below" (click)="deleteLeaveType(row.leaveTypeId)"
                         [hideIfUnauthorized]="'ADD_EDIT_LEAVE_TYPE'">delete_sweep</i>
                       <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:  #448ac9"

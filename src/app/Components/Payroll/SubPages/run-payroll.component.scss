@@ -3,7 +3,12 @@ table {
   }
 
 .mat-column-Date {
-    flex: 0 0 8% !important;
+    flex: 0 0 9% !important;
+    min-width: 104px !important;
+}
+
+.mat-column-JobId {
+    flex: 0 0 5% !important;
     min-width: 104px !important;
 }
 
@@ -18,24 +23,24 @@ table {
 }
 
 .mat-column-Reason {
-    flex: 0 0 8% !important;
+    flex: 0 0 10% !important;
     min-width: 104px !important;
 }
 
 .mat-column-Time {
-    flex: 0 0 8% !important;
+    flex: 0 0 11% !important;
     min-width: 104px !important;
 }
 
 .mat-column-Hours {
     text-align: center;
-    flex: 0 0 8% !important;
-    min-width: 90px !important;
+    flex: 0 0 4% !important;
+    min-width: 60px !important;
 }
 
 .mat-column-Notes {
-    flex: 0 0 8% !important;
-    min-width: 104px !important;
+    flex: 0 0 15% !important;
+    min-width: 130px !important;
 }
 
 .mat-column-Substitute {

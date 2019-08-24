@@ -1,29 +1,14 @@
 .employeeForm-table {
-    text-align: left;
-    font-size: 12px;
+  text-align: left;
+  font-size: 12px;
 }
 
 ::ng-deep .mat-column-action {
-    flex: 0 0 15% !important;
-    min-width: 300px !important;
-  }
-
-  .example-container {
-    display: flex;
-    flex-direction: column;
-    min-width: 300px;
-  }
-
-  .example-header {
-    min-height: 64px;
-    padding: 8px 24px 0;
-  }
-  
-.mat-column-Approver {
-    flex: 0 0 5% !important;
-    min-width: 20px !important;
+  flex: 0 0 15% !important;
+  min-width: 250px !important;
 }
- .example-container {
+
+.example-container {
   display: flex;
   flex-direction: column;
   min-width: 300px;
@@ -34,52 +19,62 @@
   padding: 8px 24px 0;
 }
 
- .mat-table {
-  overflow: auto;
-  max-height: 400px;
+.mat-column-Approver {
+  flex: 0 0 5% !important;
+  min-width: 20px !important;
+}
+.example-container {
+display: flex;
+flex-direction: column;
+min-width: 300px;
+}
+
+.example-header {
+min-height: 64px;
+padding: 8px 24px 0;
+}
+
+.mat-table {
+overflow: auto;
+max-height: 400px;
 }
 
 .mat-column-firstName {
-  flex: 0 0 5% !important;
-  min-width: 140px !important;
+flex: 0 0 5% !important;
+min-width: 140px !important;
 }
 
 .mat-column-LastName {
-  flex: 0 0 5% !important;
-  min-width: 140px !important;
+flex: 0 0 5% !important;
+min-width: 140px !important;
 }
 
 .mat-column-Email {
-  flex: 0 0 10% !important;
-  min-width: 180px !important;
+flex: 0 0 10% !important;
+min-width: 180px !important;
 }
 
 .mat-column-PhoneNumber {
-  flex: 0 0 5% !important;
-  min-width: 120px !important;
+flex: 0 0 5% !important;
+min-width: 110px !important;
 }
 
 .mat-column-location {
-  flex: 0 0 5% !important;
-  min-width: 140px !important;
+flex: 0 0 5% !important;
+min-width: 140px !important;
 }
 
 .mat-column-Role {
-  flex: 0 0 5% !important;
-  min-width: 130px !important;
+flex: 0 0 5% !important;
+min-width: 130px !important;
 }
 
 .mat-column-ClassificationStatus {
-  flex: 0 0 5% !important;
-  min-width: 140px !important;
+flex: 0 0 5% !important;
+min-width: 120px !important;
 }
 
 .mat-column-Approver {
-  flex: 0 0 5% !important;
-  min-width: 140px !important;
-}
-
-.mat-column-action {
-  flex: 0 0 5% !important;
-  min-width: 160px !important;
+flex: 0 0 5% !important;
+min-width: 140px !important;
 }

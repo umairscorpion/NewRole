@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, EventEmitter, Output } from '@angular/core';
 import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { CommunicationService } from '../../../../Services/communication.service';
@@ -17,6 +17,7 @@ import { ReportDetailsComponent } from 'src/app/Components/Reports/popups/report
     styleUrls: ['upcommingAbsence.component.scss']
 })
 export class UpcommingAbsenceComponent implements OnInit {
+    @Output() refreshBalance = new EventEmitter<string>();
     CurrentDate: Date = new Date;
     private notifier: NotifierService;
     UpcommingAbsences = new MatTableDataSource();
@@ -108,6 +109,7 @@ export class UpcommingAbsenceComponent implements OnInit {
             if (r.value) {
                 this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
                     if (response == "success") {
+                        if (this._userSession.getUserRoleId() === 3) this.refreshBalance.next();
                         this.notifier.notify('success', 'Cancelled Successfully.');
                         this.GetAbsences();
                     }
