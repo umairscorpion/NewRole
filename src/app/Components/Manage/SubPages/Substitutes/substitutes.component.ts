@@ -174,7 +174,7 @@ export class SubstitutesComponent implements OnInit {
   ViewSubstituteNotificationSettings(SelectedRow: any) {
     this.dialog.open(PopupDialogForNotificationSettings, {
       data: SelectedRow.userId,
-      height: '718px',
+      height: '660px',
       width: '650px',
     });
   }
