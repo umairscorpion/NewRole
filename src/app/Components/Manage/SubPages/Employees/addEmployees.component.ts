@@ -328,8 +328,8 @@ export class AddEmployeesComponent implements OnInit {
                         DistrictId: typeof form.getRawValue().District != 'undefined' && form.getRawValue().District ? form.getRawValue().District : 0,
                         OrganizationId: this.showOrganization == true ? form.getRawValue().OrganizationId : '',
                         SecondarySchools: form.value.SecondarySchools && this.showOrganization == true ? form.value.SecondarySchools.filter((school: any) => school !== form.getRawValue().OrganizationId) : null,
-                        Email: this.countryCode + form.value.EmailId,
-                        PhoneNumber: form.value.PhoneNumber,
+                        Email: form.value.EmailId,
+                        PhoneNumber: this.countryCode + form.value.PhoneNumber,
                         ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
                         IsActive: form.value.IsActive,
                         Password: 'Password1'

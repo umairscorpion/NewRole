@@ -155,11 +155,11 @@
                     <tr>
                         <td class="col-md-3">Mobile Number</td>
                         <td>
-                            <mat-form-field hintLabel="Min 7 and Max 11 characters" class="col-md-7">
+                            <mat-form-field hintLabel="Min 7 and Max 15 characters" class="col-md-7">
                                     <span matPrefix>{{countryCode}} &nbsp;</span>
-                                <input matInput #mobile minlength="7" maxlength="11" formControlName="PhoneNumber"
+                                <input matInput #mobile minlength="7" maxlength="15" formControlName="PhoneNumber"
                                     placeholder="Mobile Number">
-                                <mat-hint align="end">{{mobile.value?.length || 0}}/11</mat-hint>
+                                <mat-hint align="end">{{mobile.value?.length || 0}}/15</mat-hint>
                                 <mat-error *ngIf="employeeForm.controls['PhoneNumber'].hasError('pattern')">
                                     Only numbers allowed.
                                 </mat-error>
