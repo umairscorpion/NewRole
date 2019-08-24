@@ -56,7 +56,7 @@ export class ReportFiltersComponent implements OnInit {
     for (let i = 0; i < 5; i++) {
       this.years.push(new Years(new Date().getFullYear() + i));
     }
-    
+
     this.loadData();
     this.GetUserTypes();
     this.GetOrganiations();
@@ -136,8 +136,8 @@ export class ReportFiltersComponent implements OnInit {
         formGroup.get('reportTitle').setValue('D');
       }
       else {
-        formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
-        formGroup.get('toDate').setValue(moment(formGroup.get('toDate').value).format('YYYY-MM-DD'));
+        formGroup.get('fromDate').setValue(moment(formGroup.get('monthlyFromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('toDate').setValue(moment(formGroup.get('monthlyToDate').value).format('YYYY-MM-DD'));
         formGroup.get('reportTitle').setValue('M');
       }
       const action = {
@@ -177,8 +177,16 @@ export class ReportFiltersComponent implements OnInit {
       if (formGroup.value.reasonId != 0) {
         formGroup.get('reasonId').setValue(formGroup.value.reasonId);
       }
-      formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
-      formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+      if (this.componentName == "daily") {
+        formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('reportTitle').setValue('D');
+      }
+      else {
+        formGroup.get('fromDate').setValue(moment(formGroup.get('monthlyFromDate').value).format('YYYY-MM-DD'));
+        formGroup.get('toDate').setValue(moment(formGroup.get('monthlyToDate').value).format('YYYY-MM-DD'));
+        formGroup.get('reportTitle').setValue('M');
+      }
       const action = {
         actionName: 'print',
         formValue: formGroup.value

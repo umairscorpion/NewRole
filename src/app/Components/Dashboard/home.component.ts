@@ -107,12 +107,18 @@ export class HomeComponent implements OnInit {
             if (params.jobId && params.ac == 3) {
                 this.onApproveClick(0, params.jobId, 'NULL');
             }
-            else if(params.jobId && params.ac == 4){
+            else if (params.jobId && params.ac == 4) {
                 this.onDenyClick(0, params.jobId, 'NULL');
             }
+            else if (params.announcement) {
+                let UserRoleId = this.userSession.getUserRoleId();
+                if (UserRoleId === 1 || UserRoleId === 2) {
+                    this.GetAndViewAnnouncement();
+                }
+            }
             else
-            return;
-                
+                return;
+
         })
         this.absenceService.getSummary().subscribe((summary: any) => {
             this.bindAbsenceSummary(summary);
@@ -160,10 +166,6 @@ export class HomeComponent implements OnInit {
             this.isOpen = isOpen;
         });
         this.LoadUserResources();
-        let UserRoleId = this.userSession.getUserRoleId();
-        if (UserRoleId === 1 || UserRoleId === 2) {
-            this.GetAndViewAnnouncement();
-        }
     }
 
     LoadUserResources(): void {

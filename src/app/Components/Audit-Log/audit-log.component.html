@@ -61,14 +61,14 @@
         <div class="col-md-12 col-lg-12">
           <ngx-datatable class="material" style="overflow: auto;" [rows]="auditLog" [columnMode]="'standard'"
             [headerHeight]="40" [footerHeight]="50" [rowHeight]="'auto'" [limit]="9">
-            <ngx-datatable-column [width]="300" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
+            <ngx-datatable-column [width]="200" name="Date" [flexGrow]="2" cellClass="middle" [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis" [title]="value">
                   <span>{{row['occurredOn'] | date:'MMM d, hh:mm a'}}</span>
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="300" name="User" prop="user" [flexGrow]="2" cellClass="middle"
+            <ngx-datatable-column [width]="240" name="User" prop="user" [flexGrow]="2" cellClass="middle"
               [draggable]="false">
               <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                 <div class="ellipsis">
@@ -76,7 +76,15 @@
                 </div>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [width]="300" name="Organization" [flexGrow]="2" cellClass="middle"
+            <ngx-datatable-column [width]="220" name="Position" prop="userRoleName" [flexGrow]="2" cellClass="middle"
+              [draggable]="false">
+              <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                <div class="ellipsis">
+                  <span>{{value}}</span>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [width]="240" name="Organization" [flexGrow]="2" cellClass="middle"
             [draggable]="false">
             <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
               <div class="ellipsis">

@@ -91,7 +91,7 @@ $sides: (top, bottom, left, right);
 
  .school-files-dialog {
   width: 40vw;
-  min-height: 550px;
+  height: 550px;
   .mat-dialog-container {
     overflow-x: hidden !important;
     overflow-y: auto !important;
@@ -104,8 +104,6 @@ $sides: (top, bottom, left, right);
   height: 350px;
   .mat-dialog-container {
     overflow-x: hidden !important;
-    overflow-y: auto !important;
-    padding: 0;
   }
  }
 
@@ -149,8 +147,8 @@ $sides: (top, bottom, left, right);
       margin-bottom: 45px;
       h5 {
       margin-bottom: 5px;
-      padding-top: 16px;
-      font-size: 45px;
+      padding-top: 20px;
+      font-size: 35px;
       }
       }
       
@@ -434,8 +432,8 @@ div.center-text{
 }
 
 .styledoughnut {
-  height: 100px !important;
-  width: 190px !important;
+  height: 105px !important;
+  width: 200px !important;
 }
 
 .right-styledoughnut {

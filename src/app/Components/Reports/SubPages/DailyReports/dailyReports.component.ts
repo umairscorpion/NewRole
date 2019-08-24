@@ -129,7 +129,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
                 });
             }
         });
-        
+
     }
 
     bindDetails(details: ReportDetail[]) {
@@ -196,7 +196,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
             report.confirmationNumber, report.reason, moment(report.startDate).format('MM/DD/YYYY')
             + " - " + moment(report.endDate).format('MM/DD/YYYY'),
             this.timeFormatPipe.transform(report.startTime) + "-" + this.timeFormatPipe.transform(report.endTime),
-             report.statusTitle, report.substituteName,
+            report.statusTitle, report.substituteName,
             report.notes, report.districtName, report.schoolName)
         return result;
     }
