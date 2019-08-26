@@ -2,20 +2,22 @@
   <mat-card-title>Schools</mat-card-title>
   <div>
     <div *ngIf='UserRole == 5' class="row">
-        <mat-form-field appearance="outline" class="col-md-3">
-          <mat-label>Select District</mat-label>
-          <mat-select placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
-            <mat-option *ngFor="let district of Districts" [value]="district.districtId">
-              {{district.districtName}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+      <mat-form-field appearance="outline" class="col-md-3">
+        <mat-label>Select District</mat-label>
+        <mat-select placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
+          <mat-option *ngFor="let district of Districts" [value]="district.districtId">
+            {{district.districtName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <div class="row">
       <div style="text-align: right">
         <a routerLink="./AddSchool" [hideIfUnauthorized]="'ADD_SCHOOL'">
-          <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 15px;">Add
-            Schools</button></a>
+          <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 15px;">
+            Add Schools
+          </button>
+        </a>
       </div>
     </div>
   </div>

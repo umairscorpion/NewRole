@@ -16,127 +16,140 @@
         <div class="row">
           <div style="text-align: right">
             <a routerLink="/manage/substitutes/addSubstitute">
-              <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 44px;"
+              <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 15px;"
                 [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
             </a>
           </div>
         </div>
-        <div class="row col-md-12 col-lg-12">
-          <div class="example-container mat-elevation-z8">
-            <div class="row example-header">
-              <div>
-                <mat-form-field class="col-md-3">
-                  <mat-icon matPrefix>search</mat-icon>
-                  <input matInput #inputName [(ngModel)]="substituteName" placeholder="Search Substitute">
-                </mat-form-field>
+        <div class="row">
+          <div class="col-md-12 col-lg-12">
+            <div class="example-container mat-elevation-z8">
+              <div class="row example-header">
+                <div>
+                  <mat-form-field class="col-md-3">
+                    <mat-icon matPrefix>search</mat-icon>
+                    <input matInput #inputName [(ngModel)]="substituteName" placeholder="Search Substitute">
+                  </mat-form-field>
+                </div>
+                <div>
+                  <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white"
+                    type="submit" (click)="applyFilter(inputName)">Search</button>
+                </div>
               </div>
-              <div>
-                <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit" (click)="applyFilter(inputName)">Search</button>
-              </div>
-            </div>
-            <mat-table #table [dataSource]="substituteDataSource" matSort>
-              <!-- Position Column -->
-              <ng-container matColumnDef="firstName">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-                <mat-cell *matCellDef="let Substitute"> {{Substitute.firstName}} </mat-cell>
-              </ng-container>
+              <mat-table #table [dataSource]="substituteDataSource" matSort>
+                <!-- Position Column -->
+                <ng-container matColumnDef="firstName">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+                  <mat-cell *matCellDef="let Substitute"> {{Substitute.firstName}} </mat-cell>
+                </ng-container>
 
-              <ng-container matColumnDef="lastName">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-                <mat-cell *matCellDef="let Substitute"> {{Substitute.lastName}} </mat-cell>
-              </ng-container>
+                <ng-container matColumnDef="lastName">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+                  <mat-cell *matCellDef="let Substitute"> {{Substitute.lastName}} </mat-cell>
+                </ng-container>
 
-              <ng-container matColumnDef="Position">
-                <mat-header-cell *matHeaderCellDef> Position </mat-header-cell>
-                <mat-cell *matCellDef="let Substitute"> {{Substitute.userTypeDescription}} </mat-cell>
-              </ng-container>
+                <ng-container matColumnDef="Position">
+                  <mat-header-cell *matHeaderCellDef> Position </mat-header-cell>
+                  <mat-cell *matCellDef="let Substitute"> {{Substitute.userTypeDescription}} </mat-cell>
+                </ng-container>
 
-              <ng-container matColumnDef="isCertified">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Classification </mat-header-cell>
-                <mat-cell *matCellDef="let Substitute"> {{Substitute.isCertified ? 'Certified' : 'Classified'}} </mat-cell>
-              </ng-container>
+                <ng-container matColumnDef="isCertified">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Classification </mat-header-cell>
+                  <mat-cell *matCellDef="let Substitute"> {{Substitute.isCertified ? 'Certified' : 'Classified'}}
+                  </mat-cell>
+                </ng-container>
 
-              <ng-container matColumnDef="Email">
-                <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-                <mat-cell *matCellDef="let Substitute"> {{Substitute.email}} </mat-cell>
-              </ng-container>
+                <ng-container matColumnDef="Email">
+                  <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                  <mat-cell *matCellDef="let Substitute"> {{Substitute.email}} </mat-cell>
+                </ng-container>
 
-              <ng-container matColumnDef="PhoneNumber">
-                <mat-header-cell *matHeaderCellDef> Phone No </mat-header-cell>
-                <mat-cell *matCellDef="let Substitute"> {{Substitute.phoneNumber}} </mat-cell>
-              </ng-container>
+                <ng-container matColumnDef="PhoneNumber">
+                  <mat-header-cell *matHeaderCellDef> Phone No </mat-header-cell>
+                  <mat-cell *matCellDef="let Substitute"> {{Substitute.phoneNumber}} </mat-cell>
+                </ng-container>
 
-              <ng-container matColumnDef="Active">
-                <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
-                <mat-cell *matCellDef="let Substitute">
-                  {{Substitute.lastActive == '0' ? 'Today' : Substitute.lastActive == null ? 'Not yet logged in' : Substitute.lastActive +
+                <ng-container matColumnDef="Active">
+                  <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
+                  <mat-cell *matCellDef="let Substitute">
+                    {{Substitute.lastActive == '0' ? 'Today' : Substitute.lastActive == null ? 'Not yet logged in' : Substitute.lastActive +
                   ' days ago' }}
-                </mat-cell>
-              </ng-container>
+                  </mat-cell>
+                </ng-container>
 
-              <ng-container matColumnDef="action">
-                <mat-header-cell *matHeaderCellDef> Action
-                  <mat-select style="margin-left:139px; width: 10%; border:2px solid gray">
-                    <mat-option style="margin: 5px; background-color: white;">
-                      <button mat-raised-button style="background-color: #3CCCD1; color: white; margin-left: 5px"
-                        (click)="onSendAll()">Send All</button>
-                    </mat-option>
-                  </mat-select>
-                </mat-header-cell>
-                <mat-cell *matCellDef="let row">
-                  <!-- <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Send Welcome Letter" (click)="sendWelcomeLetter(row)" matTooltipPosition="below">
+                <ng-container matColumnDef="action">
+                  <mat-header-cell *matHeaderCellDef> Action
+                    <mat-select style="margin-left:139px; width: 10%; border:2px solid gray">
+                      <mat-option style="margin: 5px; background-color: white;">
+                        <button mat-raised-button style="background-color: #3CCCD1; color: white; margin-left: 5px"
+                          (click)="onSendAll()">Send All</button>
+                      </mat-option>
+                    </mat-select>
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <!-- <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Send Welcome Letter" (click)="sendWelcomeLetter(row)" matTooltipPosition="below">
                     Send Welcome
                   </a> -->
-                  <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Substitute" matTooltipPosition="below">
-                    <i class="material-icons" (click)="DeleteSubstitute(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">delete_sweep</i>
-                  </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Notification Settings" matTooltipPosition="below">
-                    <i class="material-icons" (click)="ViewSubstituteNotificationSettings(row)">notification_important</i>
-                  </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute" matTooltipPosition="below">
-                    <i class="material-icons" (click)="EditSubstitute(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">edit</i>
-                  </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail" matTooltipPosition="below">
-                    <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
-                  </a>
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Reset Password"
-                    (click)="resetPassword(row.userId)" matTooltipPosition="below">
-                    <span class="fa-passwd-reset fa-stack">
-                      <i class="fa fa-undo fa-stack-2x"></i>
-                      <i class="fa fa-lock fa-stack-1x"></i>
-                    </span>
-                  </a>
-<<<<<<< HEAD
-                  <a style="cursor: pointer;margin-left: 10px" *ngIf = 'row.isWelcomeEmailSend == null' #tooltip="matTooltip"
-                    [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Resend Welcome Letter"
-                    matTooltipPosition="below">
-                    <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
-                  </a>
-                  <a style="cursor: pointer;margin-left: 10px" *ngIf='row.isWelcomeEmailSend != null'
-                    #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Welcome Letter Sent"
-                    matTooltipPosition="below">
-                    <i class="material-icons" (click)="ResendWelcomeLetter(row)">how_to_reg</i>
-                  </a>
-                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
-                    [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'" matTooltipPosition="above"
-                    [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)"
-                    [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" color=""></mat-slide-toggle>
-=======
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Resend Welcome Letter"
-                    matTooltipPosition="below">
-                    <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
-                  </a>
-                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'"
-                    matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'"
-                    color=""></mat-slide-toggle>
->>>>>>> f4228ff806dfc5cb80d0b183b19e6ff15d35c6de
-                </mat-cell>
-              </ng-container>
-              <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
-            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
-            </mat-paginator>
+                    <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Substitute"
+                      matTooltipPosition="below">
+                      <i class="material-icons" (click)="DeleteSubstitute(row)"
+                        [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">delete_sweep</i>
+                    </a>
+                    <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                      matTooltip="Notification Settings" matTooltipPosition="below">
+                      <i class="material-icons"
+                        (click)="ViewSubstituteNotificationSettings(row)">notification_important</i>
+                    </a>
+                    <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Substitute"
+                      matTooltipPosition="below">
+                      <i class="material-icons" (click)="EditSubstitute(row)"
+                        [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">edit</i>
+                    </a>
+                    <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail"
+                      matTooltipPosition="below">
+                      <i class="material-icons" (click)="ViewSubstituteDetail(row)">visibility</i>
+                    </a>
+                    <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                      [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Reset Password"
+                      (click)="resetPassword(row.userId)" matTooltipPosition="below">
+                      <span class="fa-passwd-reset fa-stack">
+                        <i class="fa fa-undo fa-stack-2x"></i>
+                        <i class="fa fa-lock fa-stack-1x"></i>
+                      </span>
+                    </a>
+                    <<<<<<< HEAD <a style="cursor: pointer;margin-left: 10px" *ngIf='row.isWelcomeEmailSend == null'
+                      #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'"
+                      matTooltip="Resend Welcome Letter" matTooltipPosition="below">
+                      <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
+                      </a>
+                      <a style="cursor: pointer;margin-left: 10px" *ngIf='row.isWelcomeEmailSend != null'
+                        #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'"
+                        matTooltip="Welcome Letter Sent" matTooltipPosition="below">
+                        <i class="material-icons" (click)="ResendWelcomeLetter(row)">how_to_reg</i>
+                      </a>
+                      <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
+                        [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'"
+                        matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)"
+                        [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" color=""></mat-slide-toggle>
+                      =======
+                      <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                        [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Resend Welcome Letter"
+                        matTooltipPosition="below">
+                        <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
+                      </a>
+                      <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
+                        [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'"
+                        matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)"
+                        [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" color=""></mat-slide-toggle>
+                      >>>>>>> f4228ff806dfc5cb80d0b183b19e6ff15d35c6de
+                  </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </mat-table>
+              <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+              </mat-paginator>
+            </div>
           </div>
         </div>
       </mat-card>
