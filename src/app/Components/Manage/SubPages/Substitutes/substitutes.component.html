@@ -106,7 +106,6 @@
                       <i class="fa fa-lock fa-stack-1x"></i>
                     </span>
                   </a>
-<<<<<<< HEAD
                   <a style="cursor: pointer;margin-left: 10px" *ngIf = 'row.isWelcomeEmailSend == null' #tooltip="matTooltip"
                     [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Resend Welcome Letter"
                     matTooltipPosition="below">
@@ -121,15 +120,6 @@
                     [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'" matTooltipPosition="above"
                     [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)"
                     [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" color=""></mat-slide-toggle>
-=======
-                  <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" matTooltip="Resend Welcome Letter"
-                    matTooltipPosition="below">
-                    <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
-                  </a>
-                  <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px" [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'"
-                    matTooltipPosition="above" [checked]="row.isActive" (change)="UpdateSubstituteStatus(row)" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'"
-                    color=""></mat-slide-toggle>
->>>>>>> f4228ff806dfc5cb80d0b183b19e6ff15d35c6de
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
