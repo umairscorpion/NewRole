@@ -246,11 +246,11 @@
                                                         </mat-select>
                                                     </mat-form-field>
                                                     <mat-form-field class="col-md-4">
-                                                        <input matInput type="number" min="0"
+                                                        <input matInput type="number" min="0" [disabled]="DisableContactSubTimeAccess" placeholder="Wait Time" formControlName="ContactSubTime"
                                                             [disabled]="DisableContactSubTimeAccess"
                                                             placeholder="Wait Time" formControlName="ContactSubTime"
                                                             [disabled]="DisableContactSubTimeAccess"
-                                                            placeholder="Wait Time" [(value)]="ContactSubTime">
+                                                            placeholder="Wait Time">
                                                         <span matSuffix>min</span>
                                                     </mat-form-field>
                                                 </div>

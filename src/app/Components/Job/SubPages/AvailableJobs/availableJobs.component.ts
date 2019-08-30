@@ -166,7 +166,7 @@ export class AvailableJobsComponent implements OnInit {
             this.GetAvailableJobs();
         }
         else if (Message == "Blocked") {
-            this.notifier.notify('error', 'You Are Blocked By Employee To Accept This Job.');
+            this.notifier.notify('error', 'This Job is locked.');
             this.GetAvailableJobs();
         }
         else if (Message == "Cancelled") {

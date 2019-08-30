@@ -41,52 +41,62 @@ export class LoginComponent implements OnInit {
             password: ['', Validators.required]
         });
         this.activatedRoute.queryParams.subscribe((params: any) => {
-            this.action = params.ac;
-            this.email = params.email;
-            if (this.action == 5) {
+            if (params['email']) {
                 let model = {
-                    ForUserVerification: 1,
-                    IsCertified: 1,
-                    Email: this.email
+                    email: params.email,
+                    password: params.pa,
+                    action: params.ac ? params.ac : 0,
+                    absenceId: params.job ? params.job : "0"
                 }
-                this._userService.updateUserStatus('auth/updateUserStatus', model).subscribe((data: any) => {
-                    localStorage.removeItem('userToken');
-                    localStorage.removeItem('userClaims');
-                    let model = {
-                        userName: params.email,
-                        password: params.pa
-                    }
-                    this.loginFrm.setValue(model);
-                    this.onSubmit(this.loginFrm);
-                },
-                    error => this.msg = <any>error);
-            }
-            else {
-                if (params.pa && params.email && params.job) {
-                    localStorage.removeItem('userToken');
-                    localStorage.removeItem('userClaims');
-                    this.JobId = params.job;
+                this._userService.upprotectData('auth/unprotectdata', model).subscribe((unprotectedData: any) => {
                     this.action = params.ac;
-                    let model = {
-                        userName: params.email,
-                        password: params.pa
+                    this.email = unprotectedData.email;
+                    if (this.action == 5) {
+                        let model = {
+                            ForUserVerification: 1,
+                            IsCertified: 1,
+                            Email: this.email
+                        }
+                        this._userService.updateUserStatus('auth/updateUserStatus', model).subscribe((data: any) => {
+                            localStorage.removeItem('userToken');
+                            localStorage.removeItem('userClaims');
+                            let model = {
+                                userName: unprotectedData.email,
+                                password: unprotectedData.password
+                            }
+                            this.loginFrm.setValue(model);
+                            this.onSubmit(this.loginFrm);
+                        },
+                            error => this.msg = <any>error);
                     }
+                    else {
+                        if (params.pa && params.email && params.job) {
+                            localStorage.removeItem('userToken');
+                            localStorage.removeItem('userClaims');
+                            this.JobId = unprotectedData.absenceId;
+                            this.action = params.ac;
+                            let model = {
+                                userName: unprotectedData.email,
+                                password: unprotectedData.password
+                            }
 
-                    this.loginFrm.setValue(model);
-                    this.onSubmit(this.loginFrm);
-                }
-                else if (params.pa && params.email) {
-                    localStorage.removeItem('userToken');
-                    localStorage.removeItem('userClaims');
-                    let model = {
-                        userName: params.email,
-                        password: params.pa
+                            this.loginFrm.setValue(model);
+                            this.onSubmit(this.loginFrm);
+                        }
+                        else if (params.pa && params.email) {
+                            localStorage.removeItem('userToken');
+                            localStorage.removeItem('userClaims');
+                            let model = {
+                                userName: unprotectedData.email,
+                                password: unprotectedData.password
+                            }
+                            this.loginFrm.setValue(model);
+                            this.onSubmit(this.loginFrm);
+                        }
                     }
-                    this.loginFrm.setValue(model);
-                    this.onSubmit(this.loginFrm);
-                }
+                },
+                    error => this.notifier.notify('error', 'Link is not valid.'));
             }
-
         })
     }
 
