@@ -254,14 +254,18 @@ export class HomeComponent implements OnInit {
     }
 
     bindAbsenceReason(chartSummary: DashboardSummary) {
-        this.AbsenceReason.push(chartSummary.absenceSummary[0].personalLeave);
-        this.AbsenceReason.push(chartSummary.absenceSummary[0].illnessSelf);
-        this.AbsenceReason.push(chartSummary.absenceSummary[0].other);
-        this.AbsenceReason.push(chartSummary.absenceSummary[0].pd);
+        // this.AbsenceReason.push(chartSummary.absenceSummary[0].personalLeave);
+        // this.AbsenceReason.push(chartSummary.absenceSummary[0].illnessSelf);
+        // this.AbsenceReason.push(chartSummary.absenceSummary[0].other);
+        // this.AbsenceReason.push(chartSummary.absenceSummary[0].pd);
+        chartSummary.topFourAbsenceReasons.forEach(element => {
+            this.AbsenceReason.push(element.totalAbsenceReason);
+            this.AbsenceReasonTitle.push(element.reasonName);
+        });
         this.absenceReason = new Chart('absenceReason', {
             type: 'horizontalBar',
             data: {
-                labels: ["Personal Leave", "ilness Self", "Other", "PD"],
+                labels: this.AbsenceReasonTitle,
                 datasets: [{
                     label: 'Absence Reason',
                     data: this.AbsenceReason,
@@ -494,6 +498,24 @@ export class HomeComponent implements OnInit {
                 datasets: [{
                     data: this.TotalAbsenceByGradeLevel,
                     backgroundColor: [
+                        '#3e95cd',
+                        '#3cba9f',
+                        '#8e5ea2',
+                        "#c45850",
+                        '#3e95cd',
+                        '#3cba9f',
+                        '#3e95cd',
+                        '#3cba9f',
+                        '#8e5ea2',
+                        "#c45850",
+                        '#3e95cd',
+                        '#3cba9f',
+                        '#3e95cd',
+                        '#3cba9f',
+                        '#8e5ea2',
+                        "#c45850",
+                        '#3e95cd',
+                        '#3cba9f',
                         '#3e95cd',
                         '#3cba9f',
                         '#8e5ea2',

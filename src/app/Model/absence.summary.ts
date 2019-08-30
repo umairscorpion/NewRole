@@ -76,4 +76,6 @@ export class AbsenceSummary extends Entity {
   subjectCareer: number;
   subjectSpecial: number;
   subjectAdult: number;
+  reasonName: string;
+  totalAbsenceReason: number
 }
