@@ -38,22 +38,22 @@
 
 .mat-column-FirstName {
   flex: 0 0 5% !important;
-  min-width: 135px !important;
+  min-width: 130px !important;
 }
 
 .mat-column-LastName {
   flex: 0 0 5% !important;
-  min-width: 135px !important;
+  min-width: 130px !important;
 }
 
 .mat-column-Position {
   flex: 0 0 5% !important;
-  min-width: 130px !important;
+  min-width: 125px !important;
 }
 
-.mat-column-ClassificationStatus {
+.mat-column-isCertified {
   flex: 0 0 5% !important;
-  min-width: 120px !important;
+  min-width: 115px !important;
 }
 
 .mat-column-Email {
@@ -63,7 +63,7 @@
 
 .mat-column-PhoneNumber {
   flex: 0 0 5% !important;
-  min-width: 100px !important;
+  min-width: 130px !important;
 }
 
 .mat-column-Active {

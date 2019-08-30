@@ -16,6 +16,7 @@ export class absenceComponent {
     @ViewChild(UpcommingAbsenceComponent) private getUpcomingAbsences: UpcommingAbsenceComponent;
     @ViewChild(CreateAbsenceComponent) private createAbsenceComponent: CreateAbsenceComponent;
     @Output() refreshEmployeeBalance: EventEmitter<any> = new EventEmitter();
+    @Output() refreshEmployeeBalances: EventEmitter<any> = new EventEmitter();
     selectedTab: number = 0;
     employeeLeaveBalance: any;
     sideNavMenu: any;

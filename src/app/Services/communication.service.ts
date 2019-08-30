@@ -9,6 +9,8 @@ export class CommunicationService {
     @Output() AbsenceDetail: EventEmitter<boolean> = new EventEmitter();
     @Output() updateLeftSidePanel: EventEmitter<boolean> = new EventEmitter();
     @Output() refreshTabSelection: EventEmitter<boolean> = new EventEmitter();
+    @Output() updateSelectedEmployeeLeaveBalance: EventEmitter<any> = new EventEmitter();
+    @Output() updateEmployeeLeaveBalance: EventEmitter<any> = new EventEmitter();
 
     ViewAbsenceDetail(AbsenceDetail: any) {
         this.AbsenceDetail.emit(AbsenceDetail);
@@ -20,5 +22,13 @@ export class CommunicationService {
 
     RefreshTabSelection() {
         this.refreshTabSelection.emit();
+    }
+
+    UpdateSelectedEmployeeLeaveBalance(config: any) {
+        this.updateSelectedEmployeeLeaveBalance.emit(config);
+    }
+
+    UpdateEmployeeLeaveBalance() {
+        this.updateEmployeeLeaveBalance.emit();
     }
 }

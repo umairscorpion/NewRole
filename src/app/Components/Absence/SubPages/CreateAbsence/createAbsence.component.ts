@@ -22,6 +22,8 @@ import { LeaveBalance } from '../../../../Model/leaveBalance';
 import { Announcement } from 'src/app/Model/announcement';
 import { ShowAnnouncementPopupComponent } from 'src/app/Components/Announcement/show-announcement-popup/show-announcement-popup.component';
 import { ActivatedRoute } from '@angular/router';
+import { moment } from 'fullcalendar';
+import { CommunicationService } from 'src/app/Services/communication.service';
 
 @Component({
     selector: 'create-absence',
@@ -32,6 +34,9 @@ import { ActivatedRoute } from '@angular/router';
 export class CreateAbsenceComponent implements OnInit, OnDestroy {
     private notifier: NotifierService;
     @Output() refreshBalance = new EventEmitter<string>();
+    @ViewChild(CreateAbsenceComponent) private createAbsenceComponent: CreateAbsenceComponent;
+    @Output() refreshEmployeeBalance: EventEmitter<any> = new EventEmitter();
+    @Output() refreshBalances = new EventEmitter();
     @ViewChild('preferredSubPanel') preferredSubPanel: MatExpansionPanel;
     matIcon = 'keyboard_arrow_down' || 'keyboard_arrow_up';
     // For Blocking Dates Renderer for Current month when open Calendar
@@ -112,7 +117,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         notifier: NotifierService,
         private sanitizer: DomSanitizer,
         private dialogRef: MatDialog,
-        private activatedRoute: ActivatedRoute) {
+        private activatedRoute: ActivatedRoute,
+        private _communicationService: CommunicationService) {
         this.notifier = notifier;
     }
 
@@ -365,18 +371,15 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             this.notifier.notify('error', 'Inactive Substitute');
             return;
         }
-
         if (this.absenceFirstFormGroup.value.Substitutes.length > 0 && +this.absenceFirstFormGroup.value.AbsenceType === 2) {
             this.notifier.notify('error', 'You can select only one substitute in direct Assign.');
             return;
         }
-
         let alreadyAdded = this.absenceFirstFormGroup.value.Substitutes.filter((obj: User) => obj.userId === user.userId);
         if (alreadyAdded.length > 0) {
             this.notifier.notify('error', 'Already Selected');
             return;
         }
-
         this.absenceFirstFormGroup.value.Substitutes.push(user);
         this.availableSubstitutes = null;
     }
@@ -644,26 +647,19 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
 
     //ON CREATING ABSENCE CLICK
     createAbsenceSubmission(FirstAbsenceForm: any, SecondAbsenceForm: any, stepper: MatStepper) {
-        if (this._userSession.getUserRoleId() === 3) {
-            // let filter = {
-            //     organizationId: this._userSession.getUserOrganizationId(),
-            //     districtId: this._userSession.getUserDistrictId(),
-            //     year: new Date().getFullYear(),
-            //     userId: this._userSession.getUserId()
-            // }
+        if (this.loginedUserRole === 3) {
             let filter = {
-                userId: this._userSession.getUserId(),
+                userId: FirstAbsenceForm.value.employeeId,
                 allowanceType: FirstAbsenceForm.value.Reason.allowanceType,
                 absenceStartDate: new Date(FirstAbsenceForm.value.AbsenceStartDate),
                 absenceEndDate: new Date(FirstAbsenceForm.value.AbsenceEndDate)
             }
-            if(FirstAbsenceForm.value.Reason.allowanceType != 0){
-                var minusbalance = (FirstAbsenceForm.value.endDate - FirstAbsenceForm.value.startDate ) + 1;
-                var userId =  this._userSession.getUserId();
-                this._dataContext.post('Absence/checkNegativeAllowance/',filter).subscribe((response: any) => {
-                    if(response == "success")
-                    {
-                        this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper); 
+            if (FirstAbsenceForm.value.Reason.allowanceType != 0) {
+                var minusbalance = (FirstAbsenceForm.value.endDate - FirstAbsenceForm.value.startDate) + 1;
+                var userId = this._userSession.getUserId();
+                this._dataContext.post('Absence/checkNegativeAllowance/', filter).subscribe((response: any) => {
+                    if (response == "success") {
+                        this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
                     }
                     else {
                         this.notifier.notify('error', 'Please select another absence reason. Please check your leave balance');
@@ -674,25 +670,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             else {
                 this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
             }
-            // this._dataContext.post('Leave/getLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
-            //     response = response.filter(leaveBalance => leaveBalance.leaveTypeId === FirstAbsenceForm.value.Reason.leaveTypeId)
-            //     if (response.length > 0) {
-            //         if (response[0].isAllowNegativeAllowance) {
-            //             this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
-            //         }
-            //         else {
-            //             if (response[0].balance - 1 >= 0) {
-            //                 this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
-            //             }
-            //             else {
-            //                 this.notifier.notify('error', 'Please select another absence reason.');
-            //             }
-            //         }
-            //     }
-            //     else {
-            //         this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
-            //     }
-            // });
         }
         else {
             this.createAbsence(FirstAbsenceForm, SecondAbsenceForm, stepper);
@@ -751,7 +728,12 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
                         this.notifier.notify('success', 'Absence Created Successfully. Confirmation Number: ' + respose + '');
                         this.response = 1;
                         this.resetForm(stepper);
-                        if (this._userSession.getUserRoleId() === 3) this.refreshBalance.next();
+                        if (this.loginedUserRole === 3) {
+                            this.refreshBalance.next();
+                        }
+                        else {
+                            this._communicationService.UpdateEmployeeLeaveBalance();
+                        }
                     }
                 },
                     (err: HttpErrorResponse) => {
@@ -810,6 +792,12 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
 
     goToNextForm(stepper: MatStepper) {
+        let CurrentDate = moment(this.CurrentDate).format('YYYY-MM-DD');
+        let AbsenceStartDate = moment(this.absenceFirstFormGroup.value.AbsenceStartDate).format('YYYY-MM-DD')
+        if ((AbsenceStartDate < CurrentDate) && this.loginedUserRole === 3) {
+            this.notifier.notify('error', 'Unable to create absence, date has passed.');
+            return;
+        }
         if (+this.absenceFirstFormGroup.value.selfEmployeeVacancy === 2) {
             if (!(this.absenceFirstFormGroup.value.EmployeeId instanceof Object)) {
                 this.notifier.notify('error', 'Select Employee');
@@ -953,5 +941,17 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             }
         },
             error => <any>error);
+    }
+
+    getSelectedEmployeeBalances(emp: any, actionName: any) {
+        const action = {
+            actionName: actionName,
+            formValue: emp
+        };
+        this._communicationService.UpdateSelectedEmployeeLeaveBalance(action);
+    }
+
+    getEmployeeBalances(actionName: any) {
+        this._communicationService.UpdateEmployeeLeaveBalance();
     }
 }

@@ -56,7 +56,7 @@ min-width: 180px !important;
 
 .mat-column-PhoneNumber {
 flex: 0 0 5% !important;
-min-width: 110px !important;
+min-width: 130px !important;
 }
 
 .mat-column-location {
@@ -69,7 +69,7 @@ flex: 0 0 5% !important;
 min-width: 130px !important;
 }
 
-.mat-column-ClassificationStatus {
+.mat-column-isCertified {
 flex: 0 0 5% !important;
 min-width: 120px !important;
 }

@@ -5,36 +5,6 @@
     }
 </style>
 <h3 style="padding-left: 10px">Data Dashboard</h3>
-<!-- <mat-card *ngIf="Announcements.length > 0 && Announcement">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="ibox">
-                <div class="col-md-offset-1 col-md-10" style="border-style: solid solid solid; border-color: #e7eaec;">
-                    <div class="ibox-title col-md-12">
-                        <div class="col-md-11" style="text-align: center; color: darkgray"><b>NEW ANNOUNCEMENT</b></div>
-                        <div class="col-md-1" style="text-align: right; color: red">
-                            <mat-icon class="cursor-pointer" title="Dismiss" (click)="Announcement =! Announcement">
-                                clear</mat-icon>
-                        </div>
-                    </div>
-                    <div class="ibox-content col-md-12">
-                        <table style="text-align: center" *ngFor="let announcement of Announcements" cellpadding="3"
-                            cellspacing="3" width="100%">
-                            <tr>
-                                <td><b>{{announcement.title}}</b></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Message :</b> {{announcement.message}}
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</mat-card> -->
 <div class="row" style="padding-top: 10px">
     <div class="col-xs-3">
         <div class="ibox">
@@ -157,13 +127,17 @@
                     </div>
                     <div style="font-size: 10px" class="col-md-4">
                         <b>{{leave.employeeName}}</b>
-                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }}
+                        <br> 
+                        {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }}
                         {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
+                        <br>
+                        Details - {{leave.payrollNotes}}
                     </div>
                     <div style="font-size: 11px" class="col-md-4">
                         {{ leave.startDate | date:'E, M/d/y' }}
                         <div *ngIf="leave.startDate != leave.endDate">
-                            {{ leave.endDate | date:'E, M/d/y' }}</div>
+                            {{ leave.endDate | date:'E, M/d/y' }}
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <i class="material-icons" [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"

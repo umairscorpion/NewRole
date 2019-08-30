@@ -56,32 +56,37 @@
                     <!-- Position Column -->
                     <ng-container matColumnDef="AbsenceDate">
                         <mat-header-cell *matHeaderCellDef mat-sort-header> Absence Date </mat-header-cell>
-                        <mat-cell *matCellDef="let Absence"> {{Absence.startDate | date:'E, M/d/y'}}
-                                <br>
-                                {{Absence.startDate != Absence.endDate ? (Absence.endDate | date:'E, M/d/y') : ' ' }}
+                        <mat-cell *matCellDef="let Absence">
+                            {{Absence.startDate | date:'E, M/d/y'}}
+                            <br *ngIf="Absence.startDate != Absence.endDate">
+                            {{Absence.startDate != Absence.endDate ? (Absence.endDate | date:'E, M/d/y') : ' ' }}
                             <br>
                             {{Absence.startTime | convertFrom24HourTo12HourFormat}}-{{Absence.endTime | convertFrom24HourTo12HourFormat}}
                         </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="JobId">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Job ID </mat-header-cell>
-                            <mat-cell *matCellDef="let Absence">
-                                {{Absence.confirmationNumber}}
-                            </mat-cell>
-                        </ng-container>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Job ID </mat-header-cell>
+                        <mat-cell *matCellDef="let Absence">
+                            {{Absence.confirmationNumber}}
+                        </mat-cell>
+                    </ng-container>
 
                     <ng-container matColumnDef="Posted">
                         <mat-header-cell *matHeaderCellDef mat-sort-header> Posted </mat-header-cell>
-                        <mat-cell *matCellDef="let Absence"> {{Absence.createdDate | date}}
-                            <br> By: {{Absence.createdByUser}} </mat-cell>
+                        <mat-cell *matCellDef="let Absence">
+                            {{Absence.createdDate | date}}
+                            <br>
+                            By: {{Absence.createdByUser}}
+                        </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="Location">
                         <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
                         <mat-cell *matCellDef="let Absence">
                             {{Absence.organizationName ? Absence.organizationName : Absence.absenceLocation }}
-                            <br> {{Absence.organizationName ? Absence.organizationAddress : Absence.districtAddress }}
+                            <br>
+                            {{Absence.organizationName ? Absence.organizationAddress : Absence.districtAddress }}
                         </mat-cell>
                     </ng-container>
 

@@ -1,97 +1,106 @@
 <mat-card>
   <mat-card-title>New Announcement</mat-card-title>
   <hr>
-  <mat-card-content>
-    <form (ngSubmit)="onSubmit(form)" [formGroup]="form">
-      <div class="col-md-offset-1">
-        <div class="row">
-          <mat-form-field class="col-md-6">
-            <mat-label>Select District</mat-label>
-            <mat-select formControlName="districtId">
-              <mat-option [value]="0" (onSelectionChange)="SetOrganizations()">All</mat-option>
-              <mat-option *ngFor="let district of Districts" [value]="district.districtId"
-                (onSelectionChange)="GetOrganizationsByDistrictId(district.districtId)">
-                {{district.districtName}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+  <div #ref="hideIfUnauthorized" [hideIfUnauthorized]="'CREATE_ANNOUNCEMENTS'">
+    <mat-card-content>
+      <form (ngSubmit)="onSubmit(form)" [formGroup]="form">
+        <div class="col-md-offset-1">
+          <div class="row">
+            <mat-form-field class="col-md-6">
+              <mat-label>Select District</mat-label>
+              <mat-select formControlName="districtId">
+                <mat-option [value]="0" (onSelectionChange)="SetOrganizations()">All</mat-option>
+                <mat-option *ngFor="let district of Districts" [value]="district.districtId"
+                  (onSelectionChange)="GetOrganizationsByDistrictId(district.districtId)">
+                  {{district.districtName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="row" *ngIf="form.value.districtId != 0">
+            <mat-form-field class="col-md-6">
+              <mat-label>Select School</mat-label>
+              <mat-select formControlName="organizationId" (selectionChange)="SetRecipients()">
+                <mat-option *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
+                  {{Organization.schoolName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="col-md-6">
+              <mat-label>Recipients</mat-label>
+              <mat-select matNativeControl placeholder="Recipients" formControlName="recipients">
+                <mat-option [value]="1">All Users</mat-option>
+                <mat-option [value]="2">Administrators</mat-option>
+                <mat-option [value]="3">Employees</mat-option>
+                <mat-option [value]="4" [disabled]="UserLevelId == 3 || form.value.organizationId.length > 0">
+                  Substitutes</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="col-md-6">
+              <mat-label>Title</mat-label>
+              <input matInput placeholder="Title" formControlName="title">
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field appearance="outline" class="col-md-6">
+              <mat-label>Message</mat-label>
+              <textarea matInput placeholder="Message" style="height: 80px" formControlName="message"></textarea>
+            </mat-form-field>
+          </div>
+          <div class="row col-md-12">
+            <mat-checkbox color="primary" formControlName="scheduleAnnouncement">Schedule Announcement</mat-checkbox>
+          </div>
+          <div class="row col-md-12">
+            <mat-checkbox color="primary" formControlName="showOn">Show On</mat-checkbox>
+          </div>
+          <div class="row">
+            <mat-form-field class="col-md-3">
+              <mat-label>Date</mat-label>
+              <input matInput [matDatepicker]="showOnDatePicker" [max]="form.value.hideOnDate"
+                placeholder="Choose a date" formControlName="showOnDate"
+                (dateChange)="SetEndDateValue(form.value.showOnDate,form.value.hideOnDate)">
+              <mat-datepicker-toggle matSuffix [for]="showOnDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #showOnDatePicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="col-md-3">
+              <mat-label>Time</mat-label>
+              <input matInput type="time" placeholder="Time" formControlName="showOnTime">
+            </mat-form-field>
+          </div>
+          <div class="row col-md-12">
+            <mat-checkbox color="primary" formControlName="hideOn">Hide On</mat-checkbox>
+          </div>
+          <div class="row">
+            <mat-form-field class="col-md-3">
+              <mat-label>Date</mat-label>
+              <input matInput [matDatepicker]="picker" [min]="form.value.showOnDate" placeholder="Choose a date"
+                formControlName="hideOnDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="col-md-3">
+              <mat-label>Time</mat-label>
+              <input matInput type="time" placeholder="Time" formControlName="hideOnTime">
+            </mat-form-field>
+          </div>
+          <div class="row col-md-12">
+            <button type="button" mat-raised-button style="background-color: #74a4a7; color: white;"
+              (click)="OnCancel()">Cancel</button>
+            <button type="submit" mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px">
+              Save
+            </button>
+          </div>
         </div>
-        <div class="row" *ngIf="form.value.districtId != 0">
-          <mat-form-field class="col-md-6">
-            <mat-label>Select School</mat-label>
-            <mat-select formControlName="organizationId" (selectionChange)="SetRecipients()">
-              <mat-option *ngFor="let Organization of Organizations" [value]="Organization.schoolId">
-                {{Organization.schoolName}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="row">
-          <mat-form-field class="col-md-6">
-            <mat-label>Recipients</mat-label>
-            <mat-select matNativeControl placeholder="Recipients" formControlName="recipients">
-              <mat-option [value]="1">All Users</mat-option>
-              <mat-option [value]="2">Administrators</mat-option>
-              <mat-option [value]="3">Employees</mat-option>
-              <mat-option [value]="4" [disabled]="form.value.organizationId.length > 0">Substitutes</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="row">
-          <mat-form-field class="col-md-6">
-            <mat-label>Title</mat-label>
-            <input matInput placeholder="Title" formControlName="title">
-          </mat-form-field>
-        </div>
-        <div class="row">
-          <mat-form-field appearance="outline" class="col-md-6">
-            <mat-label>Message</mat-label>
-            <textarea matInput placeholder="Message" style="height: 80px" formControlName="message"></textarea>
-          </mat-form-field>
-        </div>
-        <div class="row col-md-12">
-          <mat-checkbox color="primary" formControlName="scheduleAnnouncement">Schedule Announcement</mat-checkbox>
-        </div>
-        <div class="row col-md-12">
-          <mat-checkbox color="primary" formControlName="showOn">Show On</mat-checkbox>
-        </div>
-        <div class="row">
-          <mat-form-field class="col-md-3">
-            <mat-label>Date</mat-label>
-            <input matInput [matDatepicker]="showOnDatePicker" [max]="form.value.hideOnDate" placeholder="Choose a date"
-              formControlName="showOnDate" (dateChange)="SetEndDateValue(form.value.showOnDate,form.value.hideOnDate)">
-            <mat-datepicker-toggle matSuffix [for]="showOnDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #showOnDatePicker></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field class="col-md-3">
-            <mat-label>Time</mat-label>
-            <input matInput type="time" placeholder="Time" formControlName="showOnTime">
-          </mat-form-field>
-        </div>
-        <div class="row col-md-12">
-          <mat-checkbox color="primary" formControlName="hideOn">Hide On</mat-checkbox>
-        </div>
-        <div class="row">
-          <mat-form-field class="col-md-3">
-            <mat-label>Date</mat-label>
-            <input matInput [matDatepicker]="picker" [min]="form.value.showOnDate" placeholder="Choose a date"
-              formControlName="hideOnDate">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field class="col-md-3">
-            <mat-label>Time</mat-label>
-            <input matInput type="time" placeholder="Time" formControlName="hideOnTime">
-          </mat-form-field>
-        </div>
-        <div class="row col-md-12">
-          <button type="button" mat-raised-button style="background-color: #74a4a7; color: white;"
-            (click)="OnCancel()">Cancel</button>
-          <button type="submit" mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px">
-            Save
-          </button>
-        </div>
-      </div>
-    </form>
-  </mat-card-content>
+      </form>
+    </mat-card-content>
+  </div>
+  <div class="row" *ngIf="!ref.hide" style="margin-top: 30px;text-align: center;">
+    <div class="alert-warning m-20 p-20">
+      You haven't been granted permissions to this module.
+    </div>
+  </div>
 </mat-card>

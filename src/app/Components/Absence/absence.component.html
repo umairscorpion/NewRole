@@ -5,7 +5,8 @@
     <mat-card>
         <mat-card-content>
             <h2 class="example-h2">Absences</h2>
-            <mat-tab-group class="demo-tab-group" (selectedTabChange)="onTabChange($event)" [selectedIndex]="selectedTab">
+            <mat-tab-group class="demo-tab-group" (selectedTabChange)="onTabChange($event)"
+                [selectedIndex]="selectedTab">
                 <mat-tab label="New">
                     <create-absence (refreshBalance)="getEmployeeBalance()"></create-absence>
                 </mat-tab>

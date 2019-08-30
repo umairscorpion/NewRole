@@ -52,6 +52,7 @@ export class PermissionsComponent implements OnInit {
     ngOnInit(): void {
         this.GetDistricts();
         this.LoadUserResources();
+        this.loadRoles();
     }
 
     GetDistricts(): void {
