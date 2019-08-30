@@ -131,20 +131,23 @@ export class ReportFiltersComponent implements OnInit {
     this.submitted = true;
     if (!formGroup.invalid) {
       if (this.componentName == "daily") {
-        formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
-        formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+        moment(formGroup.get('fromDate').setValue(formGroup.get('fromDate').value)).format('YYYY-MM-DD');
+        moment(formGroup.get('toDate').setValue(formGroup.get('fromDate').value)).format('YYYY-MM-DD');
         formGroup.get('reportTitle').setValue('D');
       }
       else {
-        formGroup.get('fromDate').setValue(moment(formGroup.get('monthlyFromDate').value).format('YYYY-MM-DD'));
-        formGroup.get('toDate').setValue(moment(formGroup.get('monthlyToDate').value).format('YYYY-MM-DD'));
+        moment(formGroup.get('monthlyFromDate').setValue(formGroup.get('monthlyFromDate').value)).format('YYYY-MM-DD');
+        moment(formGroup.get('monthlyToDate').setValue(formGroup.get('monthlyToDate').value)).format('YYYY-MM-DD');
         formGroup.get('reportTitle').setValue('M');
+        if(formGroup.value.year == undefined || formGroup.value.year == null) {
+          formGroup.get('year').setValue('')
+        }
       }
       const action = {
         actionName: 'submit',
         formValue: formGroup.value
       };
-      this.formAction.emit(action);
+      this.formAction.next(action);
     }
   }
 
@@ -178,13 +181,13 @@ export class ReportFiltersComponent implements OnInit {
         formGroup.get('reasonId').setValue(formGroup.value.reasonId);
       }
       if (this.componentName == "daily") {
-        formGroup.get('fromDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
-        formGroup.get('toDate').setValue(moment(formGroup.get('fromDate').value).format('YYYY-MM-DD'));
+        moment(formGroup.get('fromDate').setValue(formGroup.get('fromDate').value)).format('YYYY-MM-DD');
+        moment(formGroup.get('toDate').setValue(formGroup.get('fromDate').value)).format('YYYY-MM-DD');
         formGroup.get('reportTitle').setValue('D');
       }
       else {
-        formGroup.get('fromDate').setValue(moment(formGroup.get('monthlyFromDate').value).format('YYYY-MM-DD'));
-        formGroup.get('toDate').setValue(moment(formGroup.get('monthlyToDate').value).format('YYYY-MM-DD'));
+        moment(formGroup.get('fromDate').setValue(formGroup.get('monthlyFromDate').value)).format('YYYY-MM-DD');
+        moment(formGroup.get('toDate').setValue(formGroup.get('monthlyToDate').value)).format('YYYY-MM-DD');
         formGroup.get('reportTitle').setValue('M');
       }
       const action = {

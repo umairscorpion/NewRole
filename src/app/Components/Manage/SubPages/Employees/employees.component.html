@@ -1,27 +1,3 @@
-<!-- <style>
-  /* Structure */
-
-  .example-container {
-    display: flex;
-    flex-direction: column;
-    min-width: 300px;
-  }
-
-  .example-header {
-    min-height: 64px;
-    padding: 8px 24px 0;
-  }
-
-  .mat-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
-
-  .mat-table {
-    overflow: auto;
-    max-height: 400px;
-  }
-</style>  -->
 <mat-card>
   <mat-card-title>Staff</mat-card-title>
   <div class="row" *ngIf='UserRole == 5'>
@@ -33,127 +9,132 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    
   </div>
   <div class="row">
     <div style="text-align: right">
       <a routerLink="/manage/employees/addemployee">
-        <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 44px;"
+        <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 15px;"
           [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">Add Staff</button>
       </a>
     </div>
   </div>
-  <div class="row col-md-12 col-lg-12">
-    <div class="example-container mat-elevation-z8">
-      <div class="row example-header">
-        <div>
-          <mat-form-field class="col-md-3">
-            <mat-icon matPrefix>search</mat-icon>
-            <input matInput #inputName [(ngModel)]="employeeName" placeholder="Search Employee">
-          </mat-form-field>
-          <mat-form-field class="col-md-3">
-            <input matInput #inputLoc [(ngModel)]="location" placeholder="Search Location">
-          </mat-form-field>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div class="example-container mat-elevation-z8">
+        <div class="row example-header">
+          <div>
+            <mat-form-field class="col-md-3">
+              <mat-icon matPrefix>search</mat-icon>
+              <input matInput #inputName [(ngModel)]="employeeName" placeholder="Search Employee">
+            </mat-form-field>
+            <mat-form-field class="col-md-3">
+              <input matInput #inputLoc [(ngModel)]="location" placeholder="Search Location">
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit"
+              (click)="applyFilter(inputName, inputLoc)">Search</button>
+          </div>
         </div>
-        <div>
-          <button mat-raised-button class="btn btn-success" style="background: #3CCCD1;color: white" type="submit"
-            (click)="applyFilter(inputName, inputLoc)">Search</button>
-        </div>
-      </div>
-      <mat-table #table [dataSource]="dataSource" matSort>
-        <!-- Position Column -->
-        <ng-container matColumnDef="firstName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-          <mat-cell *matCellDef="let iEmployee"> {{iEmployee.firstName}} </mat-cell>
-        </ng-container>
+        <mat-table #table [dataSource]="dataSource" matSort>
+          <!-- Position Column -->
+          <ng-container matColumnDef="firstName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+            <mat-cell *matCellDef="let iEmployee"> {{iEmployee.firstName}} </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="lastName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-          <mat-cell *matCellDef="let iEmployee"> {{iEmployee.lastName}} </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="lastName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+            <mat-cell *matCellDef="let iEmployee"> {{iEmployee.lastName}} </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="Email">
-          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-          <mat-cell *matCellDef="let iEmployee"> {{iEmployee.email}} </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="Email">
+            <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+            <mat-cell *matCellDef="let iEmployee"> {{iEmployee.email}} </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="PhoneNumber">
-          <mat-header-cell *matHeaderCellDef> Phone No </mat-header-cell>
-          <mat-cell *matCellDef="let iEmployee"> {{iEmployee.phoneNumber}} </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="PhoneNumber">
+            <mat-header-cell *matHeaderCellDef> Phone No </mat-header-cell>
+            <mat-cell *matCellDef="let iEmployee"> {{iEmployee.phoneNumber}} </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="districtName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Location </mat-header-cell>
-          <mat-cell *matCellDef="let iEmployee">
-            {{iEmployee.organizationName ? iEmployee.organizationName: iEmployee.districtName}} </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="districtName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Location </mat-header-cell>
+            <mat-cell *matCellDef="let iEmployee">
+              {{iEmployee.organizationName ? iEmployee.organizationName: iEmployee.districtName}} </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="Role">
-          <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
-          <mat-cell *matCellDef="let iEmployee"> {{iEmployee.roleName}} </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="Role">
+            <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+            <mat-cell *matCellDef="let iEmployee"> {{iEmployee.roleName}} </mat-cell>
+          </ng-container>
 
-        <!-- <ng-container matColumnDef="Approver">
+          <!-- <ng-container matColumnDef="Approver">
             <mat-header-cell *matHeaderCellDef> Approver </mat-header-cell>
             <mat-cell *matCellDef="let iEmployee"> </mat-cell>
           </ng-container> -->
 
-        <ng-container matColumnDef="isCertified">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Classification </mat-header-cell>
-          <mat-cell *matCellDef="let iEmployee"> {{iEmployee.isCertified ? 'Certified' : 'Classified'}} </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="isCertified">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Classification </mat-header-cell>
+            <mat-cell *matCellDef="let iEmployee"> {{iEmployee.isCertified ? 'Certified' : 'Classified'}} </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="action">
-          <mat-header-cell *matHeaderCellDef> Action 
-            <mat-select [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" style="margin-left:100px; width: 10%; border:2px solid gray">
-              <mat-option style="margin: 5px; background-color: white;">
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> Action
+              <mat-select [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'"
+                style="margin-left:100px; width: 10%; border:2px solid gray">
+                <mat-option style="margin: 5px; background-color: white;">
                   <button mat-raised-button style="background-color: #3CCCD1; color: white; margin-left: 5px"
-                  (click) = "onSendAll()">Send All</button>
-              </mat-option>
-            </mat-select> </mat-header-cell>
-          <mat-cell *matCellDef="let row">
-            <!-- <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Send Welcome Letter" (click)="sendWelcomeLetter(row)" matTooltipPosition="below">
+                    (click)="onSendAll()">Send All</button>
+                </mat-option>
+              </mat-select>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <!-- <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Send Welcome Letter" (click)="sendWelcomeLetter(row)" matTooltipPosition="below">
               Send Welcome
             </a> -->
-            <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Employee" matTooltipPosition="below">
-              <i class="material-icons" (click)="DeleteEmployee(row)"
-                [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">delete_sweep</i>
-            </a>
-            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Employee"
-              matTooltipPosition="below">
-              <i class="material-icons" (click)="EditEmployee(row)" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">edit</i>
-            </a>
-            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail"
-              matTooltipPosition="below">
-              <i class="material-icons" (click)="ViewEmployeeDetail(row)">visibility</i>
-            </a>
-            <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
-              [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" matTooltip="Reset Password" (click)="resetPassword(row.userId)"
-              matTooltipPosition="below">
-              <span class="fa-passwd-reset fa-stack">
-                <i class="fa fa-undo fa-stack-2x"></i>
-                <i class="fa fa-lock fa-stack-1x"></i>
-              </span>
-            </a>
-            <a style="cursor: pointer;margin-left: 10px" *ngIf = 'row.isWelcomeEmailSend == null' #tooltip="matTooltip"
-              [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" matTooltip="Resend Welcome Letter" matTooltipPosition="below">
-              <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
-            </a>
-            <a style="cursor: pointer;margin-left: 10px" *ngIf = 'row.isWelcomeEmailSend != null' #tooltip="matTooltip"
-              [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" matTooltip="Welcome Letter Sent" matTooltipPosition="below">
-              <i class="material-icons" (click)="ResendWelcomeLetter(row)">how_to_reg</i>
-            </a>
-            <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
-              [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'" matTooltipPosition="above"
-              [checked]="row.isActive" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" (change)="UpdateEmployeeStatus(row)"
-              color=""></mat-slide-toggle>
-          </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
-      <mat-paginator [length]="resultsLength" [pageSize]="30">
-      </mat-paginator>
+              <a style="cursor: pointer;" #tooltip="matTooltip" matTooltip="Delete Employee" matTooltipPosition="below">
+                <i class="material-icons" (click)="DeleteEmployee(row)"
+                  [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">delete_sweep</i>
+              </a>
+              <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="Edit Employee"
+                matTooltipPosition="below">
+                <i class="material-icons" (click)="EditEmployee(row)"
+                  [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'">edit</i>
+              </a>
+              <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip" matTooltip="View Detail"
+                matTooltipPosition="below">
+                <i class="material-icons" (click)="ViewEmployeeDetail(row)">visibility</i>
+              </a>
+              <a style="cursor: pointer;margin-left: 10px" #tooltip="matTooltip"
+                [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" matTooltip="Reset Password"
+                (click)="resetPassword(row.userId)" matTooltipPosition="below">
+                <span class="fa-passwd-reset fa-stack">
+                  <i class="fa fa-undo fa-stack-2x"></i>
+                  <i class="fa fa-lock fa-stack-1x"></i>
+                </span>
+              </a>
+              <a style="cursor: pointer;margin-left: 10px" *ngIf='row.isWelcomeEmailSend == null' #tooltip="matTooltip"
+                [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" matTooltip="Resend Welcome Letter"
+                matTooltipPosition="below">
+                <i class="material-icons" (click)="ResendWelcomeLetter(row)">send</i>
+              </a>
+              <a style="cursor: pointer;margin-left: 10px" *ngIf='row.isWelcomeEmailSend != null' #tooltip="matTooltip"
+                [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" matTooltip="Welcome Letter Sent" matTooltipPosition="below">
+                <i class="material-icons" (click)="ResendWelcomeLetter(row)">how_to_reg</i>
+              </a>
+              <mat-slide-toggle #tooltip="matTooltip" style="margin-left:5px"
+                [matTooltip]="row.isActive ? 'Click To Inactivate' : 'Click To Activate'" matTooltipPosition="above"
+                [checked]="row.isActive" [hideIfUnauthorized]="'ADD_EDIT_EMPLOYEE'" (change)="UpdateEmployeeStatus(row)"
+                color=""></mat-slide-toggle>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [length]="resultsLength" [pageSize]="30">
+        </mat-paginator>
+      </div>
     </div>
   </div>
 </mat-card>

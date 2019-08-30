@@ -1,10 +1,11 @@
 <style>
-.not-empty-select.mat-selected {
-  color: #448ac9 !important;
-}
-:host /deep/ .mat-select-value-text {
-  color: #448ac9 !important;
-}
+  .not-empty-select.mat-selected {
+    color: #448ac9 !important;
+  }
+
+  :host /deep/ .mat-select-value-text {
+    color: #448ac9 !important;
+  }
 </style>
 <mat-card>
   <mat-card-content>
@@ -62,8 +63,9 @@
                   <ng-container matColumnDef="action">
                     <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <i class="material-icons" *ngIf = '!row.isSubtractAllowance' style="cursor: pointer; color: #448ac9" #tooltip="matTooltip"
-                        matTooltip="Delete Leave" matTooltipPosition="below" (click)="deleteLeaveType(row.leaveTypeId)"
+                      <i class="material-icons" *ngIf='!row.isSubtractAllowance' style="cursor: pointer; color: #448ac9"
+                        #tooltip="matTooltip" matTooltip="Delete Leave" matTooltipPosition="below"
+                        (click)="deleteLeaveType(row.leaveTypeId)"
                         [hideIfUnauthorized]="'ADD_EDIT_LEAVE_TYPE'">delete_sweep</i>
                       <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:  #448ac9"
                         #tooltip="matTooltip" matTooltip="Edit Leave" matTooltipPosition="below"
@@ -80,98 +82,144 @@
           </div>
         </mat-card>
       </mat-tab>
-      <mat-tab [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" label="Time Off Requests ({{submittedLeaveRequests.length}})">
+      <mat-tab [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+        label="Time Off Requests ({{submittedLeaveRequests.length}})">
         <!-- md-dynamic-height md-stretch-tabs -->
         <mat-tab-group *ngIf="selectedTab == 1" [selectedIndex]="0" (selectedTabChange)="tabClick($event)">
           <mat-tab label="Absence Requests">
             <div>
               <div>
                 <mat-list>
-                  <mat-list-item style="height: 76px;" class="row" *ngFor="let leave of submittedLeaveRequests">
-                    <div class="col-md-6">
-                      <div class="col-md-1">
-                        <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40" width="40" />
-                      </div>
-                      <div class="col-md-5">
-                        {{leave.employeeName}}
-                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }}
-                        {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      {{ leave.startDate | date:'E, M/d/y' }}
-                      <br> {{ leave.endDate | date:'E, M/d/y' }}
-                    </div>
-                    <div class="col-md-3">
-                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                        #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
-                        <mat-icon style="background-color: #f0f1f3; color: #04b54a;font-weight: bold;">check</mat-icon>
-                      </button>
-                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                        #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="below">
-                        <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
-                      </button>
+                  <mat-list-item style="height: 90px;" class="row" *ngFor="let leave of submittedLeaveRequests">
+                    <div class="col-md-12">
+                      <table>
+                        <tr>
+                          <td style="width: 3%">
+                            <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40"
+                              width="40" />
+                          </td>
+                          <td style="width: 55%">
+                            {{leave.employeeName}}
+                            <br>
+                            {{leave.leaveTypeName}} - {{ leave.totalDays + 1 }}
+                            {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
+                            <br>
+                            Details - {{leave.payrollNotes}}
+                          </td>
+                          <td style="width: 20%">
+                            {{ leave.startDate | date:'E, M/d/y' }}
+                            <br>
+                            {{ leave.endDate | date:'E, M/d/y' }}
+                          </td>
+                          <td style="width: 10%">
+                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                              (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                              #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
+                              <mat-icon style="background-color: #f0f1f3; color: #04b54a;font-weight: bold;">check
+                              </mat-icon>
+                            </button>
+                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                              (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                              #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="below">
+                              <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close
+                              </mat-icon>
+                            </button>
+                          </td>
+                        </tr>
+                      </table>
                     </div>
                     <mat-divider></mat-divider>
                   </mat-list-item>
                   <mat-divider></mat-divider>
-                  <h3 style="background: #F5F5F5;" mat-subheader>Approved Requests</h3>
-                  <mat-list-item style="height: 76px;" class="row" *ngFor="let leave of approvedLeaveRequests">
-                    <div class="col-md-6">
-                      <div class="col-md-1">
-                        <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40" width="40" />
-                      </div>
-                      <div class="col-md-5">
-                        {{leave.employeeName}}
-                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }}
-                        {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      {{ leave.startDate | date:'E, M/d/y' }}
-                      <br> {{ leave.endDate | date:'E, M/d/y' }}
-                    </div>
-                    <div class="col-md-3">
-                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                        #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="below">
-                        <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close</mat-icon>
-                      </button>
-                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                        #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
-                        <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
-                          class="fa fa-mail-forward"></i>
-                      </button>
+                  <h3 style="background: #F5F5F5;" mat-subheader>
+                    Approved Requests
+                  </h3>
+                  <mat-list-item style="height: 90px;" class="row" *ngFor="let leave of approvedLeaveRequests">
+                    <div class="col-md-12">
+                      <table width="100%">
+                        <tr>
+                          <td style="width: 3%">
+                            <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40"
+                              width="40" />
+                          </td>
+                          <td style="width: 35%">
+                            {{leave.employeeName}}
+                            <br>
+                            {{leave.leaveTypeName}} - {{ leave.totalDays + 1 }}
+                            {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
+                            <br>
+                            Details - {{leave.payrollNotes}}
+                          </td>
+                          <td style="width: 20%">
+                            {{ leave.approvedBy }}
+                          </td>
+                          <td style="width: 20%">
+                            {{ leave.startDate | date:'E, M/d/y' }}
+                            <br>
+                            {{ leave.endDate | date:'E, M/d/y' }}
+                          </td>
+                          <td style="width: 10%">
+                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                              (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                              #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="below">
+                              <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close
+                              </mat-icon>
+                            </button>
+                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                              (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                              #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
+                              <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
+                                class="fa fa-mail-forward"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </table>
                     </div>
                     <mat-divider></mat-divider>
                   </mat-list-item>
                   <mat-divider></mat-divider>
                   <h3 style="background: #F5F5F5;" mat-subheader>Denied Leaves</h3>
-                  <mat-list-item style="height: 76px;" class="row" *ngFor="let leave of deniedLeaveRequests">
-                    <div class="col-md-6">
-                      <div class="col-md-1">
-                        <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40" width="40" />
-                      </div>
-                      <div class="col-md-5">
-                        {{leave.employeeName}}
-                        <br> {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }}
-                        {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      {{ leave.startDate | date:'E, M/d/y' }}
-                      <br> {{ leave.endDate | date:'E, M/d/y' }}
-                    </div>
-                    <div class="col-md-3">
-                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                        #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
-                        <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check</mat-icon>
-                      </button>
-                      <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'" (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                        #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below" #tooltip="matTooltip"
-                        matTooltip="Archive" matTooltipPosition="below">
-                        <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
-                          class="fa fa-mail-forward"></i>
-                      </button>
+                  <mat-list-item style="height: 90px;" class="row" *ngFor="let leave of deniedLeaveRequests">
+                    <div class="col-md-12">
+                      <table>
+                        <tr>
+                          <td style="width: 3%">
+                            <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40"
+                              width="40" />
+                          </td>
+                          <td style="width: 35%">
+                            {{leave.employeeName}}
+                            <br>
+                            {{leave.leaveTypeName}} - {{ leave.totalDays + 1 }}
+                            {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
+                            <br>
+                            Details - {{leave.payrollNotes}}
+                          </td>
+                          <td style="width: 20%">
+                            {{ leave.deniedBy }}
+                          </td>
+                          <td style="width: 20%">
+                            {{ leave.startDate | date:'E, M/d/y' }}
+                            <br>
+                            {{ leave.endDate | date:'E, M/d/y' }}
+                          </td>
+                          <td style="width: 10%">
+                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                              (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                              #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
+                              <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check
+                              </mat-icon>
+                            </button>
+                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                              (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
+                              #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below"
+                              #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
+                              <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
+                                class="fa fa-mail-forward"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </table>
                     </div>
                     <mat-divider></mat-divider>
                   </mat-list-item>
@@ -190,12 +238,14 @@
                       </div>
                       <div class="col-md-5">
                         {{ leave.employeeName }}
-                        <br> {{leave.createdDate | date}}
+                        <br>
+                        {{leave.createdDate | date}}
                       </div>
                     </div>
                     <div class="col-md-3">
                       {{leave.createdDate | date}}
-                      <br> {{leave.createdDate | date}}
+                      <br>
+                      {{leave.createdDate | date}}
                     </div>
                     <mat-divider></mat-divider>
                   </mat-list-item>
@@ -215,12 +265,14 @@
                       </div>
                       <div class="col-md-5">
                         {{leave.employeeName}}
-                        <br> {{leave.createdDate | date}}
+                        <br>
+                        {{leave.createdDate | date}}
                       </div>
                     </div>
                     <div class="col-md-3">
                       {{leave.createdDate | date}}
-                      <br> {{leave.createdDate | date}}
+                      <br>
+                      {{leave.createdDate | date}}
                     </div>
                     <mat-divider></mat-divider>
                   </mat-list-item>
@@ -232,65 +284,67 @@
         </mat-tab-group>
       </mat-tab>
       <mat-tab label="Allowances">
-          <mat-card>
-              <div class="demo-tab-content">
-                
-                <div class="row">
-                  <div class="col-md-1">
-                      <h4>Allowances</h4>
-                  </div>
-                    <div *ngIf='UserRole == 5'>
-                        <mat-form-field appearance="outline" class="col-md-3">
-                          <mat-label>Select District</mat-label>
-                          <mat-select placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
-                            <mat-option class="not-empty-select" *ngFor="let district of Districts" [value]="district.districtId">
-                              {{district.districtName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                </div>
-                <div class="row col-md-12 col-lg-12">
-                  <div class="example-container mat-elevation-z8">
-                    <mat-table #table [dataSource]="dataSourceForAllowances" matSort>
-                      <!-- Position Column -->
-                      <ng-container matColumnDef="AllowanceName">
-                        <mat-header-cell *matHeaderCellDef> Allowance Name </mat-header-cell>
-                        <mat-cell *matCellDef="let allowance"> {{allowance.title}} </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="YearlyAllowance">
-                        <mat-header-cell *matHeaderCellDef> Yearly Allowance </mat-header-cell>
-                        <mat-cell *matCellDef="let allowance">{{allowance.yearlyAllowance}}
-                        </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="CreatedDate">
-                          <mat-header-cell *matHeaderCellDef> Beginning Date </mat-header-cell>
-                          <mat-cell *matCellDef="let allowance">{{allowance.createdDate | date}}
-                          </mat-cell>
-                        </ng-container>
-                      <ng-container matColumnDef="Action">
-                        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-                        <mat-cell *matCellDef="let allowance">
-                            <mat-slide-toggle #tooltip="matTooltip"
-                            [matTooltip]="allowance.isEnalbled ? 'Click To Disable' : 'Click To Enable'" matTooltipPosition="left"
-                            [checked]="allowance.isEnalbled" (change)="updateAllowance(allowance)" color=""></mat-slide-toggle>
-                          <i class="material-icons" style="cursor: pointer;margin-left: 10px ; color:#448ac9"
-                            #tooltip="matTooltip" matTooltip="Edit Allowance" matTooltipPosition="below"
-                            (click)="editAllowance(allowance)" [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">edit</i>
-                          <!-- <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:#448ac9" #tooltip="matTooltip"
+        <mat-card>
+          <div class="demo-tab-content">
+
+            <div class="row">
+              <div class="col-md-1">
+                <h4>Allowances</h4>
+              </div>
+              <div *ngIf='UserRole == 5'>
+                <mat-form-field appearance="outline" class="col-md-3">
+                  <mat-label>Select District</mat-label>
+                  <mat-select placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
+                    <mat-option class="not-empty-select" *ngFor="let district of Districts"
+                      [value]="district.districtId">
+                      {{district.districtName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row col-md-12 col-lg-12">
+              <div class="example-container mat-elevation-z8">
+                <mat-table #table [dataSource]="dataSourceForAllowances" matSort>
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="AllowanceName">
+                    <mat-header-cell *matHeaderCellDef> Allowance Name </mat-header-cell>
+                    <mat-cell *matCellDef="let allowance"> {{allowance.title}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="YearlyAllowance">
+                    <mat-header-cell *matHeaderCellDef> Yearly Allowance </mat-header-cell>
+                    <mat-cell *matCellDef="let allowance">{{allowance.yearlyAllowance}}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="CreatedDate">
+                    <mat-header-cell *matHeaderCellDef> Beginning Date </mat-header-cell>
+                    <mat-cell *matCellDef="let allowance">{{allowance.createdDate | date}}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="Action">
+                    <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                    <mat-cell *matCellDef="let allowance">
+                      <mat-slide-toggle #tooltip="matTooltip"
+                        [matTooltip]="allowance.isEnalbled ? 'Click To Disable' : 'Click To Enable'"
+                        matTooltipPosition="left" [checked]="allowance.isEnalbled" (change)="updateAllowance(allowance)"
+                        color=""></mat-slide-toggle>
+                      <i class="material-icons" style="cursor: pointer;margin-left: 10px ; color:#448ac9"
+                        #tooltip="matTooltip" matTooltip="Edit Allowance" matTooltipPosition="below"
+                        (click)="editAllowance(allowance)" [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">edit</i>
+                      <!-- <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:#448ac9" #tooltip="matTooltip"
                             matTooltip="Delete Allowance" matTooltipPosition="below" (click)="deleteAllowance(allowance.id)"
                             [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">delete_sweep</i> -->
-                        </mat-cell>
-                      </ng-container>
-                      <mat-header-row *matHeaderRowDef="displayedColumnsforAllowances; sticky: true"></mat-header-row>
-                      <mat-row *matRowDef="let row; columns: displayedColumnsforAllowances;"></mat-row>
-                    </mat-table>
-                    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
-                    </mat-paginator>
-                  </div>
-                </div>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumnsforAllowances; sticky: true"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumnsforAllowances;"></mat-row>
+                </mat-table>
+                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+                </mat-paginator>
               </div>
-            </mat-card>
+            </div>
+          </div>
+        </mat-card>
         <!-- <div class="row col-lg-12">
           <div class="col-md-12 vertical-center">
             <div class="col-lg-10 vertical-center">
@@ -324,8 +378,8 @@
       </mat-tab>
       <mat-tab label="Employee Leave Balance">
         <mat-card>
-        <leave-balance></leave-balance>
-      </mat-card>
+          <leave-balance></leave-balance>
+        </mat-card>
       </mat-tab>
     </mat-tab-group>
   </mat-card-content>

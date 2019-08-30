@@ -64,14 +64,24 @@ export class AppLayoutComponent implements OnInit {
     this._communicationService.updateLeftSidePanel.subscribe((config: any) => {
       this.parentResourceType = config.parentResourceTypeId;
       this.loadUserResources(config.resourceTypeId, config.parentResourceTypeId, config.isAdminPanel);
-      if (this.parentResourceType === 2 && this.userRole === 3) {
+      if (this.parentResourceType === 2 && (this.userRole === 1 || this.userRole === 2 || this.userRole === 3)) {
+        this.getEmployeeBalance();
+      }
+    });
+    this._communicationService.updateSelectedEmployeeLeaveBalance.subscribe((config: any) => {
+      if (this.userRole === 1 || this.userRole === 2) {
+        this.getSelectedEmployeeBalance(config);
+      }
+    });
+    this._communicationService.updateEmployeeLeaveBalance.subscribe((config: any) => {
+      if (this.userRole === 1 || this.userRole === 2) {
         this.getEmployeeBalance();
       }
     });
   }
 
   onActivate(componentReference) {
-    if (this.userRole === 3) {
+    if (this.userRole === 3 || this.userRole === 1 || this.userRole === 2) {
       componentReference.refreshEmployeeBalance.subscribe((data) => {
         this.getEmployeeBalance();
       });
@@ -97,6 +107,18 @@ export class AppLayoutComponent implements OnInit {
       districtId: this.userSession.getUserDistrictId(),
       year: new Date().getFullYear(),
       userId: this.userSession.getUserId()
+    }
+    this.dataContext.post('Leave/getLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
+      this.employeeLeaveBalance = response;
+    })
+  }
+
+  getSelectedEmployeeBalance(emp: any) {
+    let filter = {
+      organizationId: emp.formValue.organizationId,
+      districtId: emp.formValue.districtId,
+      year: new Date().getFullYear(),
+      userId: emp.formValue.userId
     }
     this.dataContext.post('Leave/getLeaveBalance', filter).subscribe((response: LeaveBalance[]) => {
       this.employeeLeaveBalance = response;

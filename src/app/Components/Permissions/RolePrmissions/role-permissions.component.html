@@ -10,8 +10,8 @@
     <div class="row p-15">
       <div class="form-group col-md-6">
         <label class="required">Role Title</label>
-        <input type="text" class="form-control" autocomplete="off" formControlName="name" [ngClass]="{'has-error': !form.get('name').valid && submitted}"
-        />
+        <input type="text" class="form-control" autocomplete="off" formControlName="name"
+          [ngClass]="{'has-error': !form.get('name').valid && submitted}" />
         <div class="form-inline form-error-content" *ngIf="submitted">
           <span *ngIf="submitted && form.get('name').errors?.required">Role Title is required</span>
           <span *ngIf="submitted && form.get('name').errors?.pattern">Role Title is invalid</span>
@@ -26,27 +26,31 @@
       <mat-list *ngFor="let category of permissions">
         <h3 mat-subheader>{{category.description}}</h3>
         <mat-list-item *ngFor="let permission of category.permissions">
-            <div class="col-xs-6">
-              <h5 mat-line>{{permission.displayName}}</h5>
-            </div>
-            <div class="col-xs-2">
-              <mat-radio-group>
-                <mat-radio-button [value]="'true'" [checked]="permission.isChecked" (change)="permissionCheckedChanged(permission, $event)">Granted</mat-radio-button>&nbsp;
-                <mat-radio-button [value]="'false'" [checked]="!permission.isChecked" (change)="permissionCheckedChanged(permission, $event)">Denied</mat-radio-button>
-              </mat-radio-group>
-            </div>
-            <div class="col-xs-4" *ngIf="userId =='undefined'">
-              <mat-checkbox color="primary" [checked]="permission.isHided" (change)="permisionVisibilityChanged(permission)">
-                Hide menu item from this role.
-              </mat-checkbox>
-            </div>
-            <mat-divider></mat-divider>
+          <div class="col-xs-6">
+            <h5 mat-line>{{permission.displayName}}</h5>
+          </div>
+          <div class="col-xs-2">
+            <mat-radio-group>
+              <mat-radio-button [value]="'true'" [checked]="permission.isChecked"
+                (change)="permissionCheckedChanged(permission, $event)">Granted</mat-radio-button>&nbsp;
+              <mat-radio-button [value]="'false'" [checked]="!permission.isChecked"
+                (change)="permissionCheckedChanged(permission, $event)">Denied</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="col-xs-4" *ngIf="userId =='undefined'">
+            <mat-checkbox color="primary" [checked]="permission.isHided"
+              (change)="permisionVisibilityChanged(permission)">
+              Hide menu item from this role.
+            </mat-checkbox>
+          </div>
+          <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button type="submit" class="btn btn-success">Save</button>&nbsp;
-      <button mat-raised-button type="button" class="btn-default" [routerLink]="['/permissions']" style="margin-left: 0px">Cancel</button>
+      <button mat-raised-button type="button" class="btn-default" [routerLink]="['/permissions']"
+        style="margin-left: 0px">Cancel</button>
     </mat-card-actions>
   </mat-card>
 </form>

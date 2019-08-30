@@ -3,6 +3,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DataContext } from 'src/app/Services/dataContext.service';
 import { NotifierService } from 'angular-notifier';
 import { moment } from 'fullcalendar';
+import { UserSession } from 'src/app/Services/userSession.service';
 
 @Component({
   selector: 'app-create-announcement',
@@ -15,11 +16,13 @@ export class CreateAnnouncementComponent implements OnInit {
   Districts: any;
   Organizations: any;
   DistrictId: any;
+  UserLevelId: any;
 
   constructor(
     private fb: FormBuilder,
     private _dataContext: DataContext,
-    private notifier: NotifierService, ) { }
+    private notifier: NotifierService,
+    private _userSession: UserSession) { }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -38,14 +41,25 @@ export class CreateAnnouncementComponent implements OnInit {
     });
 
     this.GetDistricts();
+    this.UserLevelId = this._userSession.getUserLevelId();
+    if (this.UserLevelId === 1) {
+      this.form.get('districtId').setValue(this._userSession.getUserDistrictId());
+      this.form.controls['districtId'].disable();
+    }
+    else if (this.UserLevelId === 3) {
+      this.form.get('districtId').setValue(this._userSession.getUserDistrictId());
+      this.form.get('organizationId').setValue(this._userSession.getUserOrganizationId());
+      this.form.controls['districtId'].disable();
+      this.form.controls['organizationId'].disable();
+    }
   }
 
   onSubmit(form: any) {
     if (!form.invalid) {
       let model = {
         Recipients: form.value.recipients,
-        DistrictId: form.value.districtId,
-        OrganizationId: form.value.organizationId,
+        DistrictId: form.getRawValue().districtId,
+        OrganizationId: form.getRawValue().organizationId,
         Title: form.value.title,
         Message: form.value.message,
         ScheduleAnnouncement: 1,

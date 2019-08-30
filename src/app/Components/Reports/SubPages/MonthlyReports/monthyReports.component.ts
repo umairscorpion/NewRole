@@ -81,6 +81,7 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     loadReportSummary() {
         const filters = ReportFilter.initial();
         const date = new Date();
+        filters.reportTitle = 'M';
         filters.fromDate = moment(new Date(date.getFullYear(), date.getMonth(), 1)).format('YYYY-MM-DD');
         filters.toDate = moment(new Date(date.getFullYear(), date.getMonth() + 1, 0)).format('YYYY-MM-DD');
         this.reportService.getSummary(filters).subscribe((summary: ReportSummary[]) => {
@@ -94,7 +95,14 @@ export class MonthlyReportsComponent implements OnInit, AfterViewInit {
     }
 
     onSubmit($event) {
-        this.date = moment($event.formValue.fromDate).format('dddd, MM/DD/YYYY');
+        $event.formValue.fromDate = new Date($event.formValue.monthlyFromDate).toLocaleDateString();
+        $event.formValue.toDate = new Date($event.formValue.monthlyToDate).toLocaleDateString();
+        if ($event.formValue.month > 0) {
+            this.date = moment($event.formValue.month).format('dddd, MM/DD/YYYY');
+        }
+        else {
+            this.date = moment().format('dddd, MM/DD/YYYY');
+        }
         this.reportService.getSummary($event.formValue).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
             this.bindChart(summary[0]);

@@ -73,6 +73,7 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
 
     loadReportSummary() {
         const filters = ReportFilter.initial();
+        filters.reportTitle = 'D';
         this.date = moment(filters.fromDate).format('dddd, MM/DD/YYYY');
         this.reportService.getSummary(filters).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
@@ -85,6 +86,8 @@ export class DailyReportsComponent implements OnInit, AfterViewInit {
 
     onSubmit($event) {
         this.date = moment($event.formValue.fromDate).format('dddd, MM/DD/YYYY');
+        $event.formValue.fromDate = new Date($event.formValue.fromDate).toLocaleDateString();
+        $event.formValue.toDate = new Date($event.formValue.fromDate).toLocaleDateString();
         this.reportService.getSummary($event.formValue).subscribe((summary: ReportSummary[]) => {
             this.resetChart();
             this.bindChart(summary[0]);

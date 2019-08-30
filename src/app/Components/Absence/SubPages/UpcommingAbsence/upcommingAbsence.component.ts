@@ -41,6 +41,7 @@ export class UpcommingAbsenceComponent implements OnInit {
 
     ngOnInit(): void {
         this.GetAbsences();
+        this._communicationService.UpdateEmployeeLeaveBalance();
     }
 
     ngAfterViewInit() {
