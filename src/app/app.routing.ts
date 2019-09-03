@@ -71,6 +71,7 @@ import { UserRoleType } from './Shared/enum';
 import { SubscriptionComponent } from './Components/User/Unsubscribed/unsubscribed.component';
 import { SchoolFilesComponent } from './Components/SchoolFiles/school-files.component';
 import { CreateAnnouncementComponent } from './Components/Announcement/create-announcement/create-announcement.component';
+import { ImportSchoolsComponent } from './Components/Manage/SubPages/Schools/importSchools.component';
 
 const appRoutes: Routes = [
     {
@@ -344,6 +345,18 @@ const appRoutes: Routes = [
                     data: {
                         path: '/manage/schools/AddSchool',
                         title: 'Add School',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: { roles: [UserRoleType.SuperAdmin] }
+                    }
+                },
+                {
+                    path: 'schools/ImportSchools', component: ImportSchoolsComponent, canActivateChild: [ AuthGuard ],
+                    data: {
+                        path: '/manage/schools/ImportSchools',
+                        title: 'Import Schools',
                         type: 'sub',
                         icontype: 'apps',
                         collapse: 'components',

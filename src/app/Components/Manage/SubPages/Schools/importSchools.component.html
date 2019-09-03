@@ -1,0 +1,39 @@
+<mat-card>
+    <mat-card-title> <i class="material-icons" style="color: #52b57c">
+            import_export
+        </i> Import Schools</mat-card-title>
+    <hr>
+    <mat-card-content>
+        <div class="row">
+            <mat-form-field appearance="outline" style="margin-top: -6px;" class="col-md-3">
+                <mat-label>Select District</mat-label>
+                <mat-select placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
+                    <mat-option *ngFor="let district of Districts" [value]="district.districtId">
+                        {{district.districtName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-md-4">
+                <input class="form-control" type="file" #fileInput />
+            </div>
+            <div class="col-md-2">
+                <button mat-raised-button style="background: #52b57c; color: white;" (click)="uploadFile();"> <i class="material-icons">
+                        verified_user
+                    </i>  Verify Data</button>
+            </div>
+            <div class="col-md-1">
+                <button mat-raised-button style="background: #3CCCD1; color: white; margin-left: -65px;" (click)="uploadFile();"> <i class="material-icons">
+                        import_export
+                    </i> Import Schools</button>
+            </div>
+        </div>
+        <div class="row">
+            <div><a routerLink="../../schools">
+                    <button mat-raised-button type="button"
+                        style="background-color: #74a4a7; color: white; margin-left: 15px; margin-top: 15px;"> <i class="material-icons">
+                            chevron_left
+                        </i> Back</button>
+                </a></div>
+        </div>
+    </mat-card-content>
+</mat-card>
