@@ -81,19 +81,19 @@ export class LeavesComponent implements OnInit {
         this.selectedTab = tab;
     }
 
-    GetDistricts(): void{
+    GetDistricts(): void {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
-          this.Districts = data;
-      },
-          error => <any>error);
-      }
-      onChangeDistrict(districtIdd: any) {
+            this.Districts = data;
+        },
+            error => <any>error);
+    }
+    onChangeDistrict(districtIdd: any) {
         this._dataContext.getById('District/getAllowances', this.userSession.getUserDistrictId()).subscribe((data: any) => {
-          this.dataSourceForAllowances = data;
-          this.dataSourceForAllowances = data.filter(t => t.districtId == districtIdd);
-      },
-          error => this.msg = <any>error);
-      }
+            this.dataSourceForAllowances = data;
+            this.dataSourceForAllowances = data.filter(t => t.districtId == districtIdd);
+        },
+            error => this.msg = <any>error);
+    }
     GetLeaveTypes(): void {
         let districtId = this.userSession.getUserDistrictId();
         let organizationId = this.userSession.getUserOrganizationId() ? this.userSession.getUserOrganizationId() : '-1';

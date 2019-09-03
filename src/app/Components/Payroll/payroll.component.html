@@ -25,7 +25,8 @@
                         </div>
                     </div>
                     <mat-divider></mat-divider>
-                    <form (ngSubmit)="onUpdateweeklyLimitSetting(weeklyLimitSettings)" [formGroup]="weeklyLimitSettings">
+                    <form (ngSubmit)="onUpdateweeklyLimitSetting(weeklyLimitSettings)"
+                        [formGroup]="weeklyLimitSettings">
                         <div class="row" style="min-height: 10vh !important; padding-top: 10px;">
                             <div class="col-md-5 col-lg-5">
                                 Current Weekly Limit: {{!weeklyLimitSettings.getRawValue().isWeeklyLimitApplicable ? weeklyLimitSettings.getRawValue().weeklyHourLimit:
@@ -34,15 +35,18 @@
                             </div>
                             <div class="col-md-2 col-lg-2">
                                 <mat-form-field>
-                                    <input matInput formControlName="weeklyHourLimit" type="number" placeholder="Maximum Weekly Hours">
+                                    <input matInput formControlName="weeklyHourLimit" type="number"
+                                        placeholder="Maximum Weekly Hours">
                                 </mat-form-field>
                                 <br>
                                 <mat-checkbox formControlName="isWeeklyLimitApplicable">No weekly limit</mat-checkbox>
                             </div>
                             <div class="col-md-5 col-lg-5" style="text-align: right;">
                                 <button mat-raised-button type="submit" style="background-color: #04C0BF">Save</button>
-                                <button mat-raised-button type="button" (click)="onEditHourLimit()" style="margin-left:3px;background-color: #C3DEF1">Edit</button>
-                                <button mat-raised-button type="button" style="margin-left:3px;background-color: #FFCB97">Remove</button>
+                                <button mat-raised-button type="button" (click)="onEditHourLimit()"
+                                    style="margin-left:3px;background-color: #C3DEF1">Edit</button>
+                                <button mat-raised-button type="button"
+                                    style="margin-left:3px;background-color: #FFCB97">Remove</button>
                             </div>
                         </div>
                         <mat-divider></mat-divider>
@@ -63,9 +67,10 @@
                 </div>
             </mat-tab>
             <mat-tab label="Payrates">
-                <payRate-details #reference="hideIfUnauthorized" [hideIfUnauthorized]="'ACCESS_PAYRATES'"></payRate-details>
+                <payRate-details #reference="hideIfUnauthorized" [hideIfUnauthorized]="'ACCESS_PAYRATES'">
+                </payRate-details>
                 <div class="row" *ngIf="!reference.hide" style="margin-top: 30px;text-align: center;">
-                        <div class="alert-warning m-20 p-20">You haven't been granted permissions to this module.</div>
+                    <div class="alert-warning m-20 p-20">You haven't been granted permissions to this module.</div>
                 </div>
             </mat-tab>
         </mat-tab-group>
