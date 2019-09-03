@@ -6,6 +6,9 @@ import { NotifierService } from 'angular-notifier';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataContext } from '../../../../Services/dataContext.service';
 import { DistrictService } from 'src/app/Service/Manage/district.service';
+import { ICountry } from 'src/app/Model/Lookups/country';
+import { Observable } from 'rxjs/Observable';
+import { IStates } from 'src/app/Model/Lookups/states';
 
 @Component({
     templateUrl: 'addSchool.component.html'
@@ -14,6 +17,8 @@ export class AddSchoolComponent implements OnInit {
     private notifier: NotifierService;
     SchoolIdForUpdate: any = null;
     Districts: IDistrict[];
+    countries: ICountry[];
+    states: Observable<IStates[]>;
     timezones: any;
     msg: string;
     schoolForm: FormGroup;
@@ -21,6 +26,7 @@ export class AddSchoolComponent implements OnInit {
     modalTitle: string;
     modalBtnTitle: string;
     countryCode: string;
+
     constructor(
         private router: Router,
         private fb: FormBuilder,
@@ -36,6 +42,7 @@ export class AddSchoolComponent implements OnInit {
         this.GetTimeZone();
         this.GenerateSchoolForm();
         this.GetSchoolInformationOnEditing();
+        this.GetCountries();
     }
 
     GenerateSchoolForm(): void {
@@ -55,7 +62,9 @@ export class AddSchoolComponent implements OnInit {
             notifyOthersTime: ['0'],
             dailyAbenceLimit: [0],
             isAbsenceLimit: [false],
-            IsActive: [1]
+            IsActive: [1],
+            Country: [[], Validators.required],
+            State: ['', Validators.required],
         });
     }
 
@@ -80,9 +89,13 @@ export class AddSchoolComponent implements OnInit {
                         notifyOthersTime: data[0].notifyOthersTime,
                         dailyAbenceLimit: data[0].dailyAbenceLimit,
                         isAbsenceLimit: data[0].isAbsenceLimit,
-                        IsActive: data[0].isActive
+                        IsActive: data[0].isActive,
+                        Country: data[0].countryId,
+                        State: data[0].schoolStateId,
                     }
                     this.schoolForm.setValue(SchoolModel);
+                    this.states = this._districtService.getStatesByCountryId('districtLookup/getStateByCountryId', data[0].countryId);
+                    this.schoolForm.get('State').setValue(data[0].schoolStateId);
                     this.SchoolIdForUpdate = SchoolId;
                     this.countryCode = data[0].counrtyCode;
                 },
@@ -107,11 +120,23 @@ export class AddSchoolComponent implements OnInit {
             error => <any>error);
     }
 
+    GetCountries(): void {
+        this._districtService.getCountries('districtLookup/getCountries').subscribe((data: any) => {
+            this.countries = data;
+        },
+            error => <any>error);
+    }
+
     GetTimeZone(): void {
         this._districtService.getCountries('districtLookup/getTimeZone').subscribe((data: any) => {
             this.timezones = data;
         },
             error => <any>error);
+    }
+
+    onChange(countryId: any) {
+        this.states = this._districtService.getStatesByCountryId('districtLookup/getStateByCountryId', countryId);
+        this.schoolForm.controls['State'].setErrors({ 'incorrect': true });
     }
 
     onSubmit(form: any) {
@@ -134,7 +159,9 @@ export class AddSchoolComponent implements OnInit {
                     notifyOthersTime: form.value.notifyOthersTime,
                     dailyAbenceLimit: form.value.dailyAbenceLimit,
                     isAbsenceLimit: form.value.isAbsenceLimit,
-                    IsActive: form.value.IsActive
+                    IsActive: form.value.IsActive,
+                    CountryId: form.value.Country,
+                    SchoolStateId: form.value.State,
                 }
                 if (this.SchoolIdForUpdate != null) {
                     this._dataContext.Patch('school/updateSchool', model).subscribe((data: any) => {

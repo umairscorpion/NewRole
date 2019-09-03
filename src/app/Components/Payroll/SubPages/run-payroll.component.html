@@ -1,6 +1,7 @@
 <div class="col-md-12">
     <div style="font-size: 16px;" class="row col-md-offset-4 vertical-center">
-        <b> Payroll {{payRollFilter.value.dateRange.begin | date:'mediumDate'}}-{{payRollFilter.value.dateRange.end | date:'mediumDate'}}
+        <b> Payroll
+            {{payRollFilter.value.dateRange.begin | date:'mediumDate'}}-{{payRollFilter.value.dateRange.end | date:'mediumDate'}}
         </b>
     </div>
     <mat-divider></mat-divider>
@@ -29,18 +30,22 @@
                 </mat-form-field>
             </div>
             <div class="col-md-1">
-                <button mat-raised-button class="btn btn-success" style="background: #3CCCD1; color: white;" type="submit">Search</button>
+                <button mat-raised-button class="btn btn-success" style="background: #3CCCD1; color: white;"
+                    type="submit">Search</button>
             </div>
             <div class="col-md-5" style="text-align: right">
-                <button mat-raised-button (click)="onEditPayrollReport()" style="background: #76C598; color: white; margin-left:5px" type="button">Edit</button>
-                <button mat-raised-button style="background: #5E9ECC; color: white; margin-left:5px" type="button">Save</button>
-                <button mat-raised-button printSectionId="htmlForPrint" ngxPrint style="background:#F0F1F3; color:#A1A1A3; margin-left:5px"
-                    type="button">
+                <button mat-raised-button (click)="onEditPayrollReport()"
+                    style="background: #76C598; color: white; margin-left:5px" type="button">Edit</button>
+                <button mat-raised-button style="background: #5E9ECC; color: white; margin-left:5px"
+                    type="button">Save</button>
+                <button mat-raised-button printSectionId="htmlForPrint" ngxPrint
+                    style="background:#F0F1F3; color:#A1A1A3; margin-left:5px" type="button">
                     <i class="material-icons">
                         print
                     </i>
                     Print</button>
-                <button mat-raised-button (click)="onExportingToCSV()" style="background:#F0F1F3; color:#A1A1A3; margin-left:5px" type="button">
+                <button mat-raised-button (click)="onExportingToCSV()"
+                    style="background:#F0F1F3; color:#A1A1A3; margin-left:5px" type="button">
                     <i class="material-icons">
                         description
                     </i>
@@ -48,7 +53,7 @@
             </div>
         </div>
     </form>
-    <mat-table id="htmlForPrint"  [dataSource]="runPayRollDataSource" class="mat-elevation-z8">
+    <mat-table id="htmlForPrint" [dataSource]="runPayRollDataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="Date">
             <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
             <mat-cell *matCellDef="let report"> {{report.startDate | date:'mediumDate'}} </mat-cell>
@@ -66,7 +71,8 @@
 
         <ng-container matColumnDef="Location">
             <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
-            <mat-cell *matCellDef="let report"> {{ report.schoolName ? report.schoolName : report.districtName}} </mat-cell>
+            <mat-cell *matCellDef="let report"> {{ report.schoolName ? report.schoolName : report.districtName}}
+            </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Reason">
@@ -76,7 +82,8 @@
 
         <ng-container matColumnDef="Time">
             <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
-            <mat-cell *matCellDef="let report"> {{report.startTime | convertFrom24HourTo12HourFormat}}- {{report.endTime | convertFrom24HourTo12HourFormat}}
+            <mat-cell *matCellDef="let report"> {{report.startTime | convertFrom24HourTo12HourFormat}}-
+                {{report.endTime | convertFrom24HourTo12HourFormat}}
             </mat-cell>
         </ng-container>
 
@@ -112,14 +119,15 @@
 
         <ng-container matColumnDef="action">
             <mat-header-cell *matHeaderCellDef>
-                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
-                    [aria-label]="checkboxLabel()">
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
                 </mat-checkbox>
                 Approve All
             </mat-header-cell>
             <mat-cell *matCellDef="let row">
-                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
-                    [aria-label]="checkboxLabel(row)">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
                 </mat-checkbox>
             </mat-cell>
         </ng-container>

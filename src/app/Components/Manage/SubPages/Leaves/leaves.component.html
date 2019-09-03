@@ -13,17 +13,15 @@
     <mat-tab-group class="demo-tab-group" [selectedIndex]="selectedTab" (selectedTabChange)="onTabChange($event.index)">
       <mat-tab label="Leave">
         <mat-card>
-          <div class="demo-tab-content">
-            <h4>Absence Reasons</h4>
-            <div>
-              <div class="row col-md-12 col-lg-12" style="text-align: right">
+          <div class="row">
+            <div class="col-md-12 col-lg-12">
+              <h4>Absence Reasons</h4>
+              <div style="text-align: right">
                 <a routerLink="./AddLeave">
                   <button mat-raised-button style="background-color:#04c0be; color: white;"
                     [hideIfUnauthorized]="'ADD_EDIT_LEAVE_TYPE'">Add Leave</button>
                 </a>
               </div>
-            </div>
-            <div class="row col-md-12 col-lg-12">
               <div class="example-container mat-elevation-z8">
                 <mat-table #table [dataSource]="dataSourceForLeaveTypes" matSort>
                   <!-- Position Column -->
@@ -87,210 +85,362 @@
         <!-- md-dynamic-height md-stretch-tabs -->
         <mat-tab-group *ngIf="selectedTab == 1" [selectedIndex]="0" (selectedTabChange)="tabClick($event)">
           <mat-tab label="Absence Requests">
-            <div>
-              <div>
-                <mat-list>
-                  <mat-list-item style="height: 90px;" class="row" *ngFor="let leave of submittedLeaveRequests">
-                    <div class="col-md-12">
-                      <table>
-                        <tr>
-                          <td style="width: 3%">
-                            <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40"
+            <mat-card>
+              <div class="row">
+                <div class="col-md-12 col-lg-12">
+                  <ngx-datatable class="material" [rows]="submittedLeaveRequests" [columnMode]="'standard'"
+                    [headerHeight]="40" [footerHeight]="30" [rowHeight]="'auto'" [limit]="5">
+                    <ngx-datatable-column [width]="'230'" name="Employee Name" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            <img class="img-circle" [src]="getImage(row['employeeProfilePicUrl'])" height="40"
                               width="40" />
-                          </td>
-                          <td style="width: 55%">
-                            {{leave.employeeName}}
+                            {{ row['employeeName'] }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'210'" name="Leave" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            {{ row['leaveTypeName'] }} - {{ row['totalDays'] + 1 }}
+                            {{ row['totalDays'] + 1 > 1 ? 'Days' : 'Day' }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'420'" name="Notes" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis">
+                          <span>{{ row['payrollNotes'] }}</span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'210'" name="Date" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            {{ row['startDate'] | date:'E, M/d/y' }}
                             <br>
-                            {{leave.leaveTypeName}} - {{ leave.totalDays + 1 }}
-                            {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
-                            <br>
-                            Details - {{leave.payrollNotes}}
-                          </td>
-                          <td style="width: 20%">
-                            {{ leave.startDate | date:'E, M/d/y' }}
-                            <br>
-                            {{ leave.endDate | date:'E, M/d/y' }}
-                          </td>
-                          <td style="width: 10%">
-                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
-                              (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                              #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
-                              <mat-icon style="background-color: #f0f1f3; color: #04b54a;font-weight: bold;">check
-                              </mat-icon>
-                            </button>
-                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
-                              (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                              #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="below">
-                              <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close
-                              </mat-icon>
-                            </button>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
-                    <mat-divider></mat-divider>
-                  </mat-list-item>
-                  <mat-divider></mat-divider>
-                  <h3 style="background: #F5F5F5;" mat-subheader>
+                            {{ row['endDate'] | date:'E, M/d/y' }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="140" name="Actions" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                          (click)="onApproveClick(row.leaveRequestId, row.absenceId, row.confirmationNumber)"
+                          #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
+                          <mat-icon style="background-color: #dddddd; color: #04b54a;font-weight: bold;">
+                            check
+                          </mat-icon>
+                        </button>
+                        <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                          (click)="onDenyClick(row.leaveRequestId, row.absenceId, row.confirmationNumber)"
+                          #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="below">
+                          <mat-icon style="background-color: #dddddd; color:#d20e0f; font-weight: bold;">
+                            close
+                          </mat-icon>
+                        </button>
+                      </ng-template>
+                    </ngx-datatable-column>
+                  </ngx-datatable>
+                  <h4 class="col-lg-12 col-md-12" style="background: #F5F5F5; margin-top: 0px; margin-bottom: 0px"
+                    mat-subheader>
                     Approved Requests
-                  </h3>
-                  <mat-list-item style="height: 90px;" class="row" *ngFor="let leave of approvedLeaveRequests">
-                    <div class="col-md-12">
-                      <table width="100%">
-                        <tr>
-                          <td style="width: 3%">
-                            <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40"
+                  </h4>
+                  <ngx-datatable class="material" [rows]="approvedLeaveRequests" [columnMode]="'standard'"
+                    [headerHeight]="40" [footerHeight]="30" [rowHeight]="'auto'" [limit]="5">
+                    <ngx-datatable-column [width]="'230'" name="Employee Name" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            <img class="img-circle" [src]="getImage(row['employeeProfilePicUrl'])" height="40"
                               width="40" />
-                          </td>
-                          <td style="width: 35%">
-                            {{leave.employeeName}}
+                            {{ row['employeeName'] }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'210'" name="Leave" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            {{ row['leaveTypeName'] }} - {{ row['totalDays'] + 1 }}
+                            {{ row['totalDays'] + 1 > 1 ? 'Days' : 'Day' }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'210'" name="Notes" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis">
+                          <span>{{ row['payrollNotes'] }}</span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'210'" name="Approver" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span> {{ row['approvedBy'] }}</span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'210'" name="Date" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            {{ row['startDate'] | date:'E, M/d/y' }}
                             <br>
-                            {{leave.leaveTypeName}} - {{ leave.totalDays + 1 }}
-                            {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
-                            <br>
-                            Details - {{leave.payrollNotes}}
-                          </td>
-                          <td style="width: 20%">
-                            {{ leave.approvedBy }}
-                          </td>
-                          <td style="width: 20%">
-                            {{ leave.startDate | date:'E, M/d/y' }}
-                            <br>
-                            {{ leave.endDate | date:'E, M/d/y' }}
-                          </td>
-                          <td style="width: 10%">
-                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
-                              (click)="onDenyClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                              #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="below">
-                              <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">close
-                              </mat-icon>
-                            </button>
-                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
-                              (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                              #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
-                              <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
-                                class="fa fa-mail-forward"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
-                    <mat-divider></mat-divider>
-                  </mat-list-item>
-                  <mat-divider></mat-divider>
-                  <h3 style="background: #F5F5F5;" mat-subheader>Denied Leaves</h3>
-                  <mat-list-item style="height: 90px;" class="row" *ngFor="let leave of deniedLeaveRequests">
-                    <div class="col-md-12">
-                      <table>
-                        <tr>
-                          <td style="width: 3%">
-                            <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40"
+                            {{ row['endDate'] | date:'E, M/d/y' }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="140" name="Actions" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                          (click)="onDenyClick(row.leaveRequestId, row.absenceId, row.confirmationNumber)"
+                          #tooltip="matTooltip" matTooltip="Deny" matTooltipPosition="below">
+                          <mat-icon style="background-color: #f0f1f3; color:#d20e0f; font-weight: bold;">
+                            close
+                          </mat-icon>
+                        </button>
+                        <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                          (click)="onArchiveRequest(row.leaveRequestId, row.absenceId, row.confirmationNumber)"
+                          #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
+                          <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
+                            class="fa fa-mail-forward"></i>
+                        </button>
+                      </ng-template>
+                    </ngx-datatable-column>
+                  </ngx-datatable>
+                  <h4 class="col-lg-12 col-md-12" style="background: #F5F5F5; margin-top: 0px; margin-bottom: 0px"
+                    mat-subheader>
+                    Denied Requests
+                  </h4>
+                  <ngx-datatable class="material" [rows]="deniedLeaveRequests" [columnMode]="'standard'"
+                    [headerHeight]="40" [footerHeight]="30" [rowHeight]="'auto'" [limit]="5">
+                    <ngx-datatable-column [width]="'230'" name="Employee Name" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            <img class="img-circle" [src]="getImage(row['employeeProfilePicUrl'])" height="40"
                               width="40" />
-                          </td>
-                          <td style="width: 35%">
-                            {{leave.employeeName}}
+                            {{ row['employeeName'] }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'210'" name="Leave" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            {{ row['leaveTypeName'] }} - {{ row['totalDays'] + 1 }}
+                            {{ row['totalDays'] + 1 > 1 ? 'Days' : 'Day' }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'210'" name="Notes" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis">
+                          <span>{{ row['payrollNotes'] }}</span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'210'" name="Approver" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span> {{ row['deniedBy'] }}</span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'210'" name="Date" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            {{ row['startDate'] | date:'E, M/d/y' }}
                             <br>
-                            {{leave.leaveTypeName}} - {{ leave.totalDays + 1 }}
-                            {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
-                            <br>
-                            Details - {{leave.payrollNotes}}
-                          </td>
-                          <td style="width: 20%">
-                            {{ leave.deniedBy }}
-                          </td>
-                          <td style="width: 20%">
-                            {{ leave.startDate | date:'E, M/d/y' }}
-                            <br>
-                            {{ leave.endDate | date:'E, M/d/y' }}
-                          </td>
-                          <td style="width: 10%">
-                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
-                              (click)="onApproveClick(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                              #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
-                              <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">check
-                              </mat-icon>
-                            </button>
-                            <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
-                              (click)="onArchiveRequest(leave.leaveRequestId, leave.absenceId, leave.confirmationNumber)"
-                              #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below"
-                              #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below">
-                              <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
-                                class="fa fa-mail-forward"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
-                    <mat-divider></mat-divider>
-                  </mat-list-item>
-                </mat-list>
+                            {{ row['endDate'] | date:'E, M/d/y' }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="140" name="Actions" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                          (click)="onApproveClick(row.leaveRequestId, row.absenceId, row.confirmationNumber)"
+                          #tooltip="matTooltip" matTooltip="Approve" matTooltipPosition="below">
+                          <mat-icon style="background-color: #f0f1f3; color: #04b54a; font-weight: bold;">
+                            check
+                          </mat-icon>
+                        </button>
+                        <button mat-icon-button [hideIfUnauthorized]="'APPROVE_DENY_REQUESTS'"
+                          (click)="onArchiveRequest(row.leaveRequestId, row.absenceId, row.confirmationNumber)"
+                          #tooltip="matTooltip" matTooltip="Archive" matTooltipPosition="below" #tooltip="matTooltip"
+                          matTooltip="Archive" matTooltipPosition="below">
+                          <i style="background-color: #f0f1f3; color:#0da8e9; font-size: 20px;"
+                            class="fa fa-mail-forward"></i>
+                        </button>
+                      </ng-template>
+                    </ngx-datatable-column>
+                  </ngx-datatable>
+                </div>
               </div>
-            </div>
+            </mat-card>
           </mat-tab>
           <mat-tab label="Approved Requests">
-            <div>
-              <div>
-                <mat-list>
-                  <mat-list-item style="height: 76px;" class="row" *ngFor="let leave of archivedApprovedLeaveRequests">
-                    <div class="col-md-6">
-                      <div class="col-md-1">
-                        <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40" width="40" />
-                      </div>
-                      <div class="col-md-5">
-                        {{ leave.employeeName }}
-                        <br>
-                        {{leave.createdDate | date}}
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      {{leave.createdDate | date}}
-                      <br>
-                      {{leave.createdDate | date}}
-                    </div>
-                    <mat-divider></mat-divider>
-                  </mat-list-item>
-                  <mat-divider></mat-divider>
-                </mat-list>
+            <mat-card>
+              <div class="row">
+                <div class="col-md-12 col-lg-12">
+                  <ngx-datatable class="material" [rows]="archivedApprovedLeaveRequests" [columnMode]="'standard'"
+                    [headerHeight]="40" [footerHeight]="30" [rowHeight]="'auto'" [limit]="10">
+                    <ngx-datatable-column [width]="'250'" name="Employee Name" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            <img class="img-circle" [src]="getImage(row['employeeProfilePicUrl'])" height="40"
+                              width="40" />
+                            {{ row['employeeName'] }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'240'" name="Leave" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            {{ row['leaveTypeName'] }} - {{ row['totalDays'] + 1 }}
+                            {{ row['totalDays'] + 1 > 1 ? 'Days' : 'Day' }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'240'" name="Notes" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis">
+                          <span>{{ row['payrollNotes'] }}</span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'240'" name="Approver" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span> {{ row['approvedBy'] }}</span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'240'" name="Date" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            {{ row['startDate'] | date:'E, M/d/y' }}
+                            <br>
+                            {{ row['endDate'] | date:'E, M/d/y' }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                  </ngx-datatable>
+                </div>
               </div>
-            </div>
+            </mat-card>
           </mat-tab>
           <mat-tab label="Denied Requests">
-            <div>
-              <div>
-                <mat-list>
-                  <mat-list-item style="height: 76px;" class="row" *ngFor="let leave of archivedDeniedLeaveRequests">
-                    <div class="col-md-6">
-                      <div class="col-md-1">
-                        <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="40" width="40" />
-                      </div>
-                      <div class="col-md-5">
-                        {{leave.employeeName}}
-                        <br>
-                        {{leave.createdDate | date}}
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      {{leave.createdDate | date}}
-                      <br>
-                      {{leave.createdDate | date}}
-                    </div>
-                    <mat-divider></mat-divider>
-                  </mat-list-item>
-                  <mat-divider></mat-divider>
-                </mat-list>
+            <mat-card>
+              <div class="row">
+                <div class="col-md-12 col-lg-12">
+                  <ngx-datatable class="material" [rows]="archivedDeniedLeaveRequests" [columnMode]="'standard'"
+                    [headerHeight]="40" [footerHeight]="30" [rowHeight]="'auto'" [limit]="10">
+                    <ngx-datatable-column [width]="'250'" name="Employee Name" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            <img class="img-circle" [src]="getImage(row['employeeProfilePicUrl'])" height="40"
+                              width="40" />
+                            {{ row['employeeName'] }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'240'" name="Leave" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            {{ row['leaveTypeName'] }} - {{ row['totalDays'] + 1 }}
+                            {{ row['totalDays'] + 1 > 1 ? 'Days' : 'Day' }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'240'" name="Notes" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis">
+                          <span>{{ row['payrollNotes'] }}</span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'240'" name="Approver" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span> {{ row['deniedBy'] }}</span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="'240'" name="Date" [flexGrow]="2" cellClass="middle"
+                      [draggable]="false">
+                      <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div class="ellipsis" [title]="value">
+                          <span>
+                            {{ row['startDate'] | date:'E, M/d/y' }}
+                            <br>
+                            {{ row['endDate'] | date:'E, M/d/y' }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                  </ngx-datatable>
+                </div>
               </div>
-            </div>
+            </mat-card>
           </mat-tab>
         </mat-tab-group>
       </mat-tab>
       <mat-tab label="Allowances">
         <mat-card>
-          <div class="demo-tab-content">
-
-            <div class="row">
-              <div class="col-md-1">
-                <h4>Allowances</h4>
-              </div>
+          <div class="row">
+            <div class="col-md-12 col-lg-12">
+              <h4>Allowances</h4>
               <div *ngIf='UserRole == 5'>
                 <mat-form-field appearance="outline" class="col-md-3">
                   <mat-label>Select District</mat-label>
@@ -302,8 +452,6 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-            </div>
-            <div class="row col-md-12 col-lg-12">
               <div class="example-container mat-elevation-z8">
                 <mat-table #table [dataSource]="dataSourceForAllowances" matSort>
                   <!-- Position Column -->
@@ -345,36 +493,6 @@
             </div>
           </div>
         </mat-card>
-        <!-- <div class="row col-lg-12">
-          <div class="col-md-12 vertical-center">
-            <div class="col-lg-10 vertical-center">
-              <span> Allowances </span>
-            </div>
-          </div>
-          <div class="col-md-12 col-lg-12">
-            <mat-divider></mat-divider>
-            <div style="height: 76px;" *ngFor="let allowance of allowances" class="row vertical-center">
-              <div class="col-md-5">
-                {{allowance.title}}
-                <br> Yearly Allowance {{allowance.yearlyAllowance}}
-              </div>
-              <div class="col-md-4">
-                {{allowance.districtName}}
-              </div>
-              <div class="col-md-3" style="text-align: center">
-                <mat-slide-toggle #tooltip="matTooltip"
-                  [matTooltip]="allowance.isEnalbled ? 'Click To Disable' : 'Click To Enable'" matTooltipPosition="left"
-                  [checked]="allowance.isEnalbled" (change)="updateAllowance(allowance)" color=""></mat-slide-toggle>
-                <i class="material-icons" style="cursor: pointer;margin-left: 10px ; color:#448ac9"
-                  #tooltip="matTooltip" matTooltip="Edit Allowance" matTooltipPosition="below"
-                  (click)="editAllowance(allowance)" [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">edit</i>
-                <i class="material-icons" style="cursor: pointer;margin-left: 10px; color:#448ac9" #tooltip="matTooltip"
-                  matTooltip="Delete Allowance" matTooltipPosition="below" (click)="deleteAllowance(allowance.id)"
-                  [hideIfUnauthorized]="'ADD_EDIT_ALLOWANCES'">delete_sweep</i>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </mat-tab>
       <mat-tab label="Employee Leave Balance">
         <mat-card>

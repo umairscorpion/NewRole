@@ -115,19 +115,19 @@
         <div class="ibox-title">
             <b>Pending Time Off Requests ({{submittedLeaveRequests ? submittedLeaveRequests.length : '0' }})</b>
         </div>
-        <div style="max-height: 333px; overflow:auto">
+        <div style="max-height: 300px; overflow:auto">
             <div *ngIf="submittedLeaveRequests.length == 0">
                 <h5 style="text-align:center;">No pending requests.</h5>
             </div>
             <mat-list>
-                <mat-list-item style="height: 76px;"
+                <mat-list-item style="height: 75px;"
                     *ngFor="let leave of submittedLeaveRequests | slice:0:4; let i=index">
                     <div class="col-md-1">
                         <img class="img-circle" [src]="getImage(leave.employeeProfilePicUrl)" height="25" width="25" />
                     </div>
-                    <div style="font-size: 10px" class="col-md-4">
+                    <div style="font-size: 10px" class="col-md-5">
                         <b>{{leave.employeeName}}</b>
-                        <br> 
+                        <br>
                         {{leave.leaveTypeName}}-{{ leave.totalDays + 1 }}
                         {{ leave.totalDays + 1 > 1 ? 'Days' : 'Day'}}
                         <br>

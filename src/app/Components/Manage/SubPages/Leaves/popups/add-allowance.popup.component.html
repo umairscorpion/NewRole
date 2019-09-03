@@ -4,7 +4,8 @@
             Allowance
         </div>
         <div class="col-md-1">
-            <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onCloseDialog()" mat-dialog-close>clear</mat-icon>
+            <mat-icon class="mr-15 cursor-pointer" title="Close" (click)="onCloseDialog()" mat-dialog-close>clear
+            </mat-icon>
         </div>
     </mat-dialog-actions>
     <mat-divider></mat-divider>
@@ -16,33 +17,34 @@
                         <input matInput type="text" disabled="disabled" formControlName="title" placeholder="Title">
                     </mat-form-field>
                     <div class="col-md-2">
-                        <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;" #tooltip="matTooltip" matTooltip="save"
-                            matTooltipPosition="below" (click)="submitAllowance(allowance)">check</i>
-                        <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;" #tooltip="matTooltip" matTooltip="delete"
-                            matTooltipPosition="below">close</i>
+                        <i class="material-icons" style="cursor: pointer;color:#00B945;font-weight: bold;"
+                            #tooltip="matTooltip" matTooltip="save" matTooltipPosition="below"
+                            (click)="submitAllowance(allowance)">check</i>
+                        <i class="material-icons" style="cursor: pointer;color:#D70812;font-weight: bold;"
+                            #tooltip="matTooltip" matTooltip="delete" matTooltipPosition="below">close</i>
                     </div>
                     <div class="col-md-3" style="text-align: right;">
-                        <button mat-raised-button style="background-color:#FFCC99; color: #4f2800; border:1px solid #f19f4d;">Deactivate</button>
+                        <button mat-raised-button
+                            style="background-color:#FFCC99; color: #4f2800; border:1px solid #f19f4d;">Deactivate</button>
                     </div>
                 </div>
+                <mat-divider></mat-divider>
             </div>
-            <mat-divider></mat-divider>
             <div class="row" style="background-color: #F4F3F3">
                 <div class="col-md-12 vertical-center">
-                    <div class="col-md-7">
+                    <div class="col-md-8">
                         Settings
                     </div>
-                    <div class="col-md-1">
-
-                    </div>
                     <div class="col-md-4" style="text-align: right;">
-                        <button mat-raised-button type="submit" style="background-color:#75c598; color:white">Save</button>
-                        <button mat-raised-button style="background-color:#bfd8ea; color: #0c4872; border:1px solid #9ec3dc; margin-left: 10px;">cancel</button>
+                        <button mat-raised-button type="submit"
+                            style="background-color:#75c598; color:white">Save</button>
+                        <button mat-raised-button
+                            style="background-color:#bfd8ea; color: #0c4872; border:1px solid #9ec3dc; margin-left: 10px;">cancel</button>
                     </div>
                 </div>
+                <mat-divider></mat-divider>
             </div>
-            <mat-divider></mat-divider>
-            <div class="row">
+            <div class="row" style="padding-top: 10px">
                 <div class="col-md-12 vertical-center">
                     <mat-form-field class="col-md-12">
                         <input matInput type="number" formControlName="yearlyAllowance" placeholder="Yearly Allowance">
@@ -61,7 +63,6 @@
                     </mat-checkbox>
                 </div>
             </div>
-
             <div [hidden]="!allowance.value.isResidualDays">
                 <div class="row">
                     <div class="col-md-12 vertical-center">
@@ -95,14 +96,16 @@
                         <tr>
                             <td>
                                 <mat-form-field style="width: 100px;">
-                                    <input matInput [matDatepicker]="startDatePicker" placeholder="valid from" formControlName="expirationStartDate">
+                                    <input matInput [matDatepicker]="startDatePicker" placeholder="valid from"
+                                        formControlName="expirationStartDate">
                                     <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                                     <mat-datepicker #startDatePicker></mat-datepicker>
                                 </mat-form-field>
                             </td>
                             <td>
                                 <mat-form-field style="width: 100px;">
-                                    <input matInput [matDatepicker]="endDatePicker" placeholder="expires on" formControlName="expirationEndDate">
+                                    <input matInput [matDatepicker]="endDatePicker" placeholder="expires on"
+                                        formControlName="expirationEndDate">
                                     <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                                     <mat-datepicker #endDatePicker></mat-datepicker>
                                 </mat-form-field>
@@ -119,7 +122,6 @@
                                 <i class="material-icons">edit</i>
                             </td>
                         </tr>
-
                     </table>
                 </div>
             </div>
