@@ -98,4 +98,15 @@ export class DataContext {
     CancelAbsences(url: string, data: string): Observable<any> {
         return this._http.get(this.baseUrl + url + "/" + data);
     }
+
+    UploadExcel(formData: FormData, districtId: any) {  
+        let headers = new HttpHeaders();  
+  
+        headers.append('Content-Type', 'multipart/form-data');  
+        headers.append('Accept', 'application/json');  
+      
+        const httpOptions = { headers: headers }; 
+        return this._http.post(this.baseUrl + '/school/uploadExcel' + "/" + districtId, formData, httpOptions)  
+      } 
+      
 }
