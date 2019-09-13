@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
     templateUrl: 'addSubstitute.component.html'
 })
 export class AddSubstituteComponent implements OnInit {
+
     profilePictureUrl: string
     userIdForUpdate: string;
     sendWelcomeEmailId: any = null;
@@ -33,6 +34,7 @@ export class AddSubstituteComponent implements OnInit {
     msg: string;
     substituteForm: FormGroup;
     countryCode: string;
+    loginUserId: any;
 
     constructor(
         private router: Router,
@@ -48,6 +50,7 @@ export class AddSubstituteComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.loginUserId = this._userSession.getUserId();
         this.substituteForm = this.fb.group({
             FirstName: ['', Validators.required],
             LastName: ['', Validators.required],
@@ -200,7 +203,7 @@ export class AddSubstituteComponent implements OnInit {
         fileUpload.click();
     }
 
-    InsertUser(){
+    InsertUser() {
         this.sendWelcomeEmailId = 1;
     }
 
@@ -236,7 +239,9 @@ export class AddSubstituteComponent implements OnInit {
                         PayRate: form.value.PayRate,
                         HourLimit: form.value.HourLimit,
                         IsActive: form.value.IsActive,
-                        Password: 'Password1'
+                        Password: 'Password1',
+                        CreatedBy: this.loginUserId,
+                        ModifiedBy: this.loginUserId
                     }
                     if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
                         this._dataContext.Patch('user/updateUser', model).subscribe((data: any) => {
@@ -247,7 +252,7 @@ export class AddSubstituteComponent implements OnInit {
                                 this.notifier.notify('error', err.error.error_description);
                             });
                     }
-                    else if(this.sendWelcomeEmailId == 1){
+                    else if (this.sendWelcomeEmailId == 1) {
                         this._dataContext.post('user/insertUserAndSendWelcomeEmail', model).subscribe((data: any) => {
                             this.router.navigate(['/manage/substitutes']);
                             this.notifier.notify('success', 'Added Successfully');

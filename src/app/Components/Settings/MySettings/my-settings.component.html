@@ -112,46 +112,46 @@
                         </mat-tab>
                         <mat-tab *ngIf='isSubstitute' label="School Settings">
                             <div class="row col-md-12 col-lg-12 col-xs-12">
-                            <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 school-div changewidth">
-                                <div class="col-md-8 heading-div">
-                                    <p>
-                                        <b> Select Schools against which you want to get notifications.</b>
-                                    </p>
-                                </div>
-                                <div class="col-md-8" style="height:400px; width:100%">
-                                    <!-- <mat-selection-list #EnabledSchools>
+                                <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 school-div changewidth">
+                                    <div class="col-md-8 heading-div">
+                                        <p>
+                                            <b> Select Schools against which you want to get notifications.</b>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-8" style="height:400px; width:100%">
+                                        <!-- <mat-selection-list #EnabledSchools>
                                         <mat-list-option *ngFor="let school of PreferredSchools"
                                             [value]="school.organizationId" [selected]="school.isEnabled">
                                             {{school.organizationName}}
                                         </mat-list-option>
                                     </mat-selection-list> -->
-                                    <table mat-table style="width: 100%" [dataSource]="schoolsForNotification">
+                                        <table mat-table style="width: 100%" [dataSource]="schoolsForNotification">
 
-                                        <ng-container matColumnDef="school">
-                                            <th mat-header-cell *matHeaderCellDef> School </th>
-                                            <td mat-cell *matCellDef="let row"> {{row.organizationName}} </td>
-                                        </ng-container>
+                                            <ng-container matColumnDef="school">
+                                                <th mat-header-cell *matHeaderCellDef> School </th>
+                                                <td mat-cell *matCellDef="let row"> {{row.organizationName}} </td>
+                                            </ng-container>
 
-                                        <ng-container matColumnDef="notification">
-                                            <th style="padding-left: 70px;" mat-header-cell *matHeaderCellDef>Get
-                                                Notification</th>
-                                            <td mat-cell style="padding-left: 100px;"
-                                                *matCellDef="let row ;let i = index;">
-                                                <mat-checkbox color="primary" (change)="onChangeSchool(row)"
-                                                    [checked]="row.isEnabled">
-                                                </mat-checkbox>
-                                            </td>
-                                        </ng-container>
-                                        <tr mat-header-row *matHeaderRowDef="displayedColumnsForSchools"></tr>
-                                        <tr mat-row *matRowDef="let row; columns: displayedColumnsForSchools;"></tr>
-                                    </table>
+                                            <ng-container matColumnDef="notification">
+                                                <th style="padding-left: 70px;" mat-header-cell *matHeaderCellDef>Get
+                                                    Notification</th>
+                                                <td mat-cell style="padding-left: 100px;"
+                                                    *matCellDef="let row ;let i = index;">
+                                                    <mat-checkbox color="primary" (change)="onChangeSchool(row)"
+                                                        [checked]="row.isEnabled">
+                                                    </mat-checkbox>
+                                                </td>
+                                            </ng-container>
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumnsForSchools"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumnsForSchools;"></tr>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-8 school-save-btn">
-                                <button style="background-color: #04c0be; color: white;" mat-raised-button
-                                    (click)="SavePreferredSchoolSettings(schoolsForNotification)">Save</button>
-                            </div>
-                            <!-- <div class="col-md-8" style="text-align: center; width: 85%; margin-top: 20px;">
+                                <div class="col-md-8 school-save-btn">
+                                    <button style="background-color: #04c0be; color: white;" mat-raised-button
+                                        (click)="SavePreferredSchoolSettings(schoolsForNotification)">Save</button>
+                                </div>
+                                <!-- <div class="col-md-8" style="text-align: center; width: 85%; margin-top: 20px;">
                                     <button style="background-color: #04c0be; color: white;" mat-raised-button
                                         (click)="SavePreferredSchoolSettings(EnabledSchools)">Save</button>
                                 </div> -->
@@ -299,14 +299,17 @@
                         </mat-tab>
                         <mat-tab label="Notification Settings">
                             <div class="row col-md-8 col-md-offset-2 mat-elevation-z8 notification-div changewidth">
-                                    <div class="col-md-8 heading-div">
-                                        <p>
-                                            <b> Select event for which you want to get notifications.</b>
-                                        </p>
-                                    </div>
+                                <div class="col-md-8 heading-div">
+                                    <p>
+                                        <b> Select event for which you want to get notifications.</b>
+                                    </p>
+                                </div>
                                 <div class="col-md-8" style="width: 100%; margin-top: 10px;">
-                                    <mat-checkbox color="primary" (change)="onChangeNotification(NotificationEvents[0])" [checked]="NotificationEvents[0].isSubscribedEmail == true ? false : true" > </mat-checkbox> Turn Notifications OFF    
-                                    <table mat-table style="width: 100%" [dataSource]="notificationEvents" *ngIf='UserRole ==4'>
+                                    <mat-checkbox color="primary" (change)="onChangeNotification(NotificationEvents[0])"
+                                        [checked]="NotificationEvents[0].isSubscribedEmail == true ? false : true">
+                                    </mat-checkbox> Turn Notifications OFF
+                                    <table mat-table style="width: 100%" [dataSource]="notificationEvents"
+                                        *ngIf='UserRole ==4'>
                                         <ng-container matColumnDef="event">
                                             <th mat-header-cell *matHeaderCellDef> Event </th>
                                             <td mat-cell *matCellDef="let row"> {{row.eventName}} </td>
@@ -346,7 +349,8 @@
                                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                                     </table>
-                                    <table mat-table style="width: 100%" [dataSource]="notificationEvents" *ngIf='UserRole != 4'>
+                                    <table mat-table style="width: 100%" [dataSource]="notificationEvents"
+                                        *ngIf='UserRole != 4'>
                                         <ng-container matColumnDef="event">
                                             <th mat-header-cell *matHeaderCellDef> Event </th>
                                             <td mat-cell *matCellDef="let row"> {{row.eventName}} </td>

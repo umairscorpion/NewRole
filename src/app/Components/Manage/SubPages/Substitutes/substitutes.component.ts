@@ -20,6 +20,7 @@ import { PopupDialogForNotificationSettings } from './SubPages/popups/notificati
   styleUrls: ['substitutes.component.css']
 })
 export class SubstitutesComponent implements OnInit {
+
   displayedColumns = ['firstName', 'lastName', 'Position', 'isCertified', 'Email', 'PhoneNumber', 'Active', 'action'];
   SubstituteDetail: any;
   substituteName: string = '';
@@ -87,8 +88,6 @@ export class SubstitutesComponent implements OnInit {
     let DistrictId = this._userSession.getUserDistrictId();
     this._employeeService.get('user/getUsers', RoleId, OrgId, DistrictId).subscribe((data: any) => {
       this.substituteDataSource.data = data;
-      // this.lastActiveDaysTemp = moment(data.lastActive).format('YYYY-MM-DD');
-      // this.lastActiveDays = Math.abs(this.currentDate.diff(this.lastActiveDaysTemp, 'days'));
     },
       error => this.msg = <any>error);
   }
@@ -244,6 +243,7 @@ export class SubstitutesComponent implements OnInit {
     },
       error => <any>error);
   }
+
   GetDistricts(): void {
     this._dataContext.get('district/getDistricts').subscribe((data: any) => {
       this.Districts = data;

@@ -107,6 +107,22 @@ $sides: (top, bottom, left, right);
   }
  }
 
+ .release-decline-dialog {
+  width: 26vw;
+  height: 410px;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+  }
+ }
+
+ .cancel-dialog {
+  width: 26vw;
+  height: 445px;
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+  }
+ }
+
  .position-details-dialog {
   width: 38vw;
   height: 650px;

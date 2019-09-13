@@ -16,7 +16,7 @@ import { ChartsModule } from 'ng2-charts';
 import { BlockUIModule } from 'ng-block-ui';
 import { TagInputModule } from 'ngx-chips';
 import { NgxPrintModule } from 'ngx-print';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { createCustomElement } from '@angular/elements';
 
 
@@ -54,7 +54,7 @@ import {
     MatTooltipModule,
     MatDialogRef
 } from '@angular/material';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 //Routing Authentication
 import { AuthGuard } from './Authentication/auth.guard';
 
@@ -211,6 +211,10 @@ import { objectLengthPipe } from './Shared/pipe/objectLength.pipe';
 import { PopupDialogForRunningLate } from './Components/Job/popus/runningLate.component';
 import { ShowAnnouncementPopupComponent } from './Components/Announcement/show-announcement-popup/show-announcement-popup.component';
 import { ImportSchoolsComponent } from './Components/Manage/SubPages/Schools/importSchools.component';
+import { ReleasePopupComponent } from './Components/Job/popus/release-popup/release-popup.component';
+import { DeclinePopupComponent } from './Components/Job/popus/decline-popup/decline-popup.component';
+import { CancelPopupComponent } from './Components/Absence/popup/cancel-popup/cancel-popup.component';
+import { ReportAnIssuePopupComponent } from './Components/Reports/popups/report-an-issue-popup/report-an-issue-popup.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -272,10 +276,10 @@ const customNotifierOptions: NotifierOptions = {
             color: 'rgb(0,128,0)',
             switchColor: '#FFFFFF',
             defaultBgColor: '#FF0000',
-            defaultBoColor : '#3ab7a9',
+            defaultBoColor: '#3ab7a9',
             checkedLabel: 'Yes',
             uncheckedLabel: 'No'
-          }),
+        }),
         NgxPrintModule,
         TagInputModule,
         NgxDatatableModule,
@@ -420,7 +424,11 @@ const customNotifierOptions: NotifierOptions = {
         objectLengthPipe,
         PopupDialogForRunningLate,
         ShowAnnouncementPopupComponent,
-        ImportSchoolsComponent
+        ImportSchoolsComponent,
+        ReleasePopupComponent,
+        DeclinePopupComponent,
+        CancelPopupComponent,
+        ReportAnIssuePopupComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
@@ -447,7 +455,11 @@ const customNotifierOptions: NotifierOptions = {
         ShowSchoolFilesPopupComponent,
         PopupDialogForNotificationSettings,
         PopupDialogForRunningLate,
-        ShowAnnouncementPopupComponent
+        ShowAnnouncementPopupComponent,
+        ReleasePopupComponent,
+        DeclinePopupComponent,
+        CancelPopupComponent,
+        ReportAnIssuePopupComponent
     ],
     providers: [
         DatePipe,

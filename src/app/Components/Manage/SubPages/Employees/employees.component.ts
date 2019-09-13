@@ -15,6 +15,7 @@ import swal from 'sweetalert2';
   styleUrls: ['employee.component.css']
 })
 export class EmployeesComponent implements OnInit {
+
   private notifier: NotifierService;
   displayedColumns = ['firstName', 'lastName', 'Email', 'PhoneNumber', 'districtName', 'Role', 'isCertified', 'action'];
   DataSourceEmployeesObj: DataSourceEmployees | null;
@@ -212,6 +213,7 @@ export class EmployeesComponent implements OnInit {
     },
       error => this.msg = <any>error);
   }
+
   GetDistricts(): void {
     this._dataContext.get('district/getDistricts').subscribe((data: any) => {
       this.Districts = data;
@@ -232,17 +234,17 @@ export class EmployeesComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  onSendAll(){
+
+  onSendAll() {
     this.userRole = 3;
-    if(this.districtIdForWelcome == 0){
+    if (this.districtIdForWelcome == 0) {
       this.districtIdForWelcome = this._userSession.UserClaim.districtId;
-      if(this.districtIdForWelcome == 0)
-      {
+      if (this.districtIdForWelcome == 0) {
         this.notifier.notify('error', 'Please Select District First.');
         return;
       }
     }
-    this._dataContext.get('user/sendWellcomeLetterToAll/' + this.districtIdForWelcome + '/' + this.userRole).subscribe((response : any) => {
+    this._dataContext.get('user/sendWellcomeLetterToAll/' + this.districtIdForWelcome + '/' + this.userRole).subscribe((response: any) => {
       this.notifier.notify('success', 'Email Sent Successfully.');
       setTimeout(() => {
         this.GetStaff();
@@ -257,11 +259,10 @@ export class EmployeesComponent implements OnInit {
     let DistrictId = this._userSession.getUserDistrictId();
     this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId).subscribe((data: any) => {
       this.dataSource.data = data;
-      // this.lastActiveDaysTemp = moment(data.lastActive).format('YYYY-MM-DD');
-      // this.lastActiveDays = Math.abs(this.currentDate.diff(this.lastActiveDaysTemp, 'days'));
     },
       error => this.msg = <any>error);
   }
+
   resetPassword(userdId: string) {
     let model = {
       userId: userdId,
@@ -285,5 +286,4 @@ export class DataSourceEmployees {
     let DistrictId = this._UserSession.getUserDistrictId();
     return this._dataContext.get('user/getUsers' + '/' + RoleId + '/' + OrgId + '/' + DistrictId);
   }
-
 }

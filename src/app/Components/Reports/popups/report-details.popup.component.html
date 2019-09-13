@@ -24,7 +24,13 @@
       <div class="avatar-wrapper" *ngIf="reportDetail.callingPage != 'Absence'">
         <img class="profile-pic" [src]="getImage(reportDetail.employeeProfilePicUrl)" width="150" height="150" />
       </div>
-      <div class="absence-summary-title p-2 mt-2">Absence Summary</div>
+      <div class="absence-summary-title p-2 mt-2">
+        Absence Summary
+        <button type="button" mat-raised-button
+          style="background-color: #f3f3f3; color: #5e5e5e; margin-left: 200px; border-style: double;">
+          Report an Issue
+        </button>
+      </div>
       <br>
       <table *ngIf="menuAction == 'view' || menuAction == 'delete' || menuAction == 'resend' || menuAction == 'release'"
         class="report-details-table" cellpadding="3" cellspacing="3" width="100%">
@@ -244,8 +250,9 @@
     <hr>
     <mat-dialog-actions class="m-10">
       <button *ngIf="menuAction=='assign'" type="button" mat-raised-button class="btn btn-info"
-        (click)="onAssign(absenceForm)">Direct
-        Assign</button>
+        (click)="onAssign(absenceForm)">
+        Direct Assign
+      </button>
       <button *ngIf="menuAction=='edit'" type="submit" mat-raised-button class="btn btn-info"
         (click)="onSubmit(absenceForm)">Save</button>&nbsp;
       <button type="button" mat-raised-button class="btn btn-default" (click)="onClose()">Cancel</button>
