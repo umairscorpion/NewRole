@@ -100,6 +100,65 @@ export class LoginComponent implements OnInit {
         })
     }
 
+    // ngOnInit(): void {
+    //     this.loginFrm = this.fb.group({
+    //         userName: ['', Validators.required],
+    //         password: ['', Validators.required]
+    //     });
+    //     this.activatedRoute.queryParams.subscribe((params: any) => {
+    //         if (params['email']) {
+    //             this.action = params.ac;
+    //             this.email = params.email;
+    //                 if (this.action == 5) {
+    //                     let model = {
+    //                         ForUserVerification: 1,
+    //                         IsCertified: 1,
+    //                         Email: this.email
+    //                     }
+    //                     this._userService.updateUserStatus('auth/updateUserStatus', model).subscribe((data: any) => {
+    //                         localStorage.removeItem('userToken');
+    //                         localStorage.removeItem('userClaims');
+    //                         let model = {
+    //                             userName: params.email,
+    //                             password: params.pa
+    //                         }
+    //                         this.loginFrm.setValue(model);
+    //                         this.onSubmit(this.loginFrm);
+    //                     },
+    //                         error => this.msg = <any>error);
+    //                 }
+    //                 else {
+    //                     if (params.pa && params.email && params.job) {
+    //                         localStorage.removeItem('userToken');
+    //                         localStorage.removeItem('userClaims');
+    //                         this.JobId = params.job;
+    //                         this.action = params.ac;
+    //                         let model = {
+    //                             userName: params.email,
+    //                             password: params.pa
+    //                         }
+
+    //                         this.loginFrm.setValue(model);
+    //                         this.onSubmit(this.loginFrm);
+    //                     }
+    //                     else if (params.pa && params.email) {
+    //                         localStorage.removeItem('userToken');
+    //                         localStorage.removeItem('userClaims');
+    //                         let model = {
+    //                             userName: params.email,
+    //                             password: params.pa
+    //                         }
+    //                         this.loginFrm.setValue(model);
+    //                         this.onSubmit(this.loginFrm);
+    //                     }
+    //                 }
+    //         }
+    //     },
+    // );
+    // }
+           
+        
+
     changeLang(lang: string) {
         if (lang === 'es') {
             localStorage.setItem('locale', 'es');

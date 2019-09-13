@@ -211,6 +211,8 @@ import { objectLengthPipe } from './Shared/pipe/objectLength.pipe';
 import { PopupDialogForRunningLate } from './Components/Job/popus/runningLate.component';
 import { ShowAnnouncementPopupComponent } from './Components/Announcement/show-announcement-popup/show-announcement-popup.component';
 import { ImportSchoolsComponent } from './Components/Manage/SubPages/Schools/importSchools.component';
+import { ImportSubstitutesComponent } from './Components/Manage/SubPages/Substitutes/importSubstitutes.component';
+import { ImportStaffComponent } from './Components/Manage/SubPages/Employees/importStaff.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -420,7 +422,9 @@ const customNotifierOptions: NotifierOptions = {
         objectLengthPipe,
         PopupDialogForRunningLate,
         ShowAnnouncementPopupComponent,
-        ImportSchoolsComponent
+        ImportSchoolsComponent,
+        ImportSubstitutesComponent,
+        ImportStaffComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,

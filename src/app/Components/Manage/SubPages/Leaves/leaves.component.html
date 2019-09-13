@@ -11,7 +11,7 @@
   <mat-card-content>
     <mat-card-title>Leave</mat-card-title>
     <mat-tab-group class="demo-tab-group" [selectedIndex]="selectedTab" (selectedTabChange)="onTabChange($event.index)">
-      <mat-tab label="Leave">
+      <mat-tab  label="Leave">
         <mat-card>
           <div class="row">
             <div class="col-md-12 col-lg-12">
@@ -436,7 +436,7 @@
           </mat-tab>
         </mat-tab-group>
       </mat-tab>
-      <mat-tab label="Allowances">
+      <mat-tab *ngIf='UserRole != 2' label="Allowances">
         <mat-card>
           <div class="row">
             <div class="col-md-12 col-lg-12">
@@ -494,7 +494,7 @@
           </div>
         </mat-card>
       </mat-tab>
-      <mat-tab label="Employee Leave Balance">
+      <mat-tab *ngIf='UserRole != 2' label="Employee Leave Balance">
         <mat-card>
           <leave-balance></leave-balance>
         </mat-card>

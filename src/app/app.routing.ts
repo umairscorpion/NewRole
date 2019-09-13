@@ -72,6 +72,8 @@ import { SubscriptionComponent } from './Components/User/Unsubscribed/unsubscrib
 import { SchoolFilesComponent } from './Components/SchoolFiles/school-files.component';
 import { CreateAnnouncementComponent } from './Components/Announcement/create-announcement/create-announcement.component';
 import { ImportSchoolsComponent } from './Components/Manage/SubPages/Schools/importSchools.component';
+import { ImportSubstitutesComponent } from './Components/Manage/SubPages/Substitutes/importSubstitutes.component';
+import { ImportStaffComponent } from './Components/Manage/SubPages/Employees/importStaff.component';
 
 const appRoutes: Routes = [
     {
@@ -269,6 +271,18 @@ const appRoutes: Routes = [
                     }
                 },
                 {
+                    path: 'employees/importStaff', component: ImportStaffComponent, canActivateChild: [ AuthGuard ],
+                    data: {
+                        path: '/manage/employees/importStaff',
+                        title: 'Add Employee',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin, UserRoleType.SchoolAdmin] }
+                    }
+                },
+                {
                     path: 'substitutes', component: SubstitutesComponent,
                     data: {
                         path: '/manage/substitutes',
@@ -293,6 +307,18 @@ const appRoutes: Routes = [
                     }
                 },
                 {
+                    path: 'substitutes/importSubstitutes', component: ImportSubstitutesComponent, canActivateChild: [ AuthGuard ],
+                    data: {
+                        path: '/manage/substitutes/ImportSubstitutes',
+                        title: 'Import Schools',
+                        type: 'sub',
+                        icontype: 'apps',
+                        collapse: 'components',
+                        ab: 'account_circle',
+                        permission: { roles: [UserRoleType.SuperAdmin, UserRoleType.DistrictAdmin] }
+                    }
+                },
+                {
                     path: 'leave', component: LeavesComponent,
                     data: {
                         path: '/manage/leave',
@@ -301,7 +327,7 @@ const appRoutes: Routes = [
                         icontype: 'apps',
                         collapse: 'components',
                         ab: 'account_circle',
-                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin] }
+                        permission: { roles: [UserRoleType.DistrictAdmin, UserRoleType.SuperAdmin, UserRoleType.SchoolAdmin] }
                     }
                 },
                 {

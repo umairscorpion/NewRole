@@ -1,0 +1,119 @@
+<mat-card>
+    <mat-card-title> <i class="material-icons" style="color: #52b57c">
+            import_export
+        </i> Import Staff</mat-card-title>
+    <hr>
+    <mat-card-content>
+        <div class="row">
+            <mat-form-field appearance="outline" style="margin-top: -6px;" class="col-md-3" *ngIf='UserRole == 5'>
+                <mat-label>Select District</mat-label>
+                <mat-select placeholder="Select District" (selectionChange)="onChangeDistrict($event.value)">
+                    <mat-option *ngFor="let district of Districts" [value]="district.districtId">
+                        {{district.districtName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-md-4">
+                <input class="form-control" type="file" #fileInput />
+            </div>
+            <div class="col-md-2">
+                <button mat-raised-button style="background: #52b57c; color: white;" (click)="VerifyData();"> <i
+                        class="material-icons">
+                        verified_user
+                    </i> Verify Data</button>
+            </div>
+            <div class="col-md-1">
+                <button mat-raised-button style="background: #3CCCD1; color: white; margin-left: -65px;"
+                    (click)="uploadFile();"> <i class="material-icons">
+                        import_export
+                    </i> Import Staff</button>
+            </div>
+        </div>
+        <div class="row" style="margin-left: 0px;">
+            <p><span style="font-weight: bold;">Please follow these steps to import Staff. </span></p>
+            <p><span style="font-weight: bold;">Step 1 : </span> <span style="color:#52b57c">Select District.</span></p>
+            <p><span style="font-weight: bold;">Step 2 : </span> <span style="color:#52b57c">Select Excel File. </span>
+            </p>
+            <p><span style="font-weight: bold;">Step 3 : </span> <span style="color:#52b57c">Click on 'Verify Data'
+                    button.</span></p>
+            <p><span style="font-weight: bold;">Step 4 : </span> <span style="color:#52b57c">Verify Your Data in Table
+                    given below. If status is not OK then correct your data according to the status remarks.</span></p>
+            <p><span style="font-weight: bold;">Step 5 : </span> <span style="color:#52b57c">If Status is Ok for all
+                    rows then click on 'Import Staff' button.</span></p>
+
+        </div>
+        <h5 class="col-lg-12 col-md-12" style="background: #F5F5F5; color: red" mat-subheader>
+            Please verify and check your data before importing.
+        </h5>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="example-container mat-elevation-z8">
+                    <mat-table #table [dataSource]="dataSource" matSort>
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="Index">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Row No </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff; let i = index;"> {{ i + 1 }} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="FName">
+                            <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff"> {{Staff.firstName}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="LName">
+                            <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff"> {{Staff.lastName}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Role">
+                            <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff"> {{Staff.userRoleDesciption}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Location">
+                            <mat-header-cell *matHeaderCellDef> Work Location </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff"> {{Staff.userWorkLocation}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Grade">
+                            <mat-header-cell *matHeaderCellDef> Grade </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff"> {{Staff.userGrade}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Subject">
+                            <mat-header-cell *matHeaderCellDef> Subject </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff"> {{Staff.userSubject}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Email">
+                            <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff"> {{Staff.email}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Phone">
+                            <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff"> {{Staff.phoneNumber}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Level">
+                            <mat-header-cell *matHeaderCellDef> Employee Level </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff"> {{Staff.userLevelDescription}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Status">
+                            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                            <mat-cell *matCellDef="let Staff" style="color:red">
+                                {{Staff.statusMessage == "" ? 'OK' : Staff.statusMessage }} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]"
+                        [showFirstLastButtons]="true">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div><a routerLink="./../../employees">
+                    <button mat-raised-button type="button"
+                        style="background-color: #74a4a7; color: white; margin-left: 15px; margin-top: 15px;"> <i
+                            class="material-icons">
+                            chevron_left
+                        </i> Back</button>
+                </a></div>
+        </div>
+    </mat-card-content>
+</mat-card>

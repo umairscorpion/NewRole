@@ -50,6 +50,12 @@ export class User extends Entity {
     password: string;
     isWelcomeEmailSend: string;
     jobId: string;
+    statusMessage: string;
+    userGrade: string;
+    userSubject: string;
+    organizationName: string;
+    userLevelDescription: string;
+    userWorkLocation: string; 
 }
 
 export class UserSummary extends Entity {

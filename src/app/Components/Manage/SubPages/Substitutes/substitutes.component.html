@@ -15,6 +15,13 @@
         </div>
         <div class="row">
           <div style="text-align: right">
+              <a routerLink="/manage/substitutes/importSubstitutes" [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'" *ngIf='UserRole == 5'>
+                <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 15px;">
+                    <i class="material-icons">
+                        import_export
+                        </i>Import Substitutes
+                </button>
+              </a>
             <a routerLink="/manage/substitutes/addSubstitute">
               <button mat-raised-button style="background: #3CCCD1; color: white; margin-right: 15px;"
                 [hideIfUnauthorized]="'ADD_EDIT_SUBSTITUTE'">Add Substitute</button>
