@@ -70,8 +70,12 @@ export class DataContext {
         return this._http.get(this.baseUrl + url + "/" + userId + "/" + userLevel);
     }
 
-    UpdateAbsenceStatus(url: string, ConfirmationNumber: string, AbsenceId: number, StatusId: number, UpdateStatusDate: string, userId: string): Observable<any> {
-        return this._http.get(this.baseUrl + url + "/" + ConfirmationNumber + "/" + AbsenceId + "/" + StatusId + "/" + UpdateStatusDate + "/" + userId);
+    // UpdateAbsenceStatus(url: string, ConfirmationNumber: string, AbsenceId: number, StatusId: number, UpdateStatusDate: string, userId: string): Observable<any> {
+    //     return this._http.get(this.baseUrl + url + "/" + ConfirmationNumber + "/" + AbsenceId + "/" + StatusId + "/" + UpdateStatusDate + "/" + userId);
+    // }
+
+    UpdateAbsenceStatus(url: string, model: any): Observable<any> {
+        return this._http.post(this.baseUrl + url, model);
     }
 
     private handleError(error: Response) {

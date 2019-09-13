@@ -16,6 +16,7 @@ import { RoleService } from '../../../../Services/role.service';
     styleUrls: ['employee.component.css']
 })
 export class AddEmployeesComponent implements OnInit {
+
     userIdForUpdate: any = null;
     sendWelcomeEmailId: any = null;
     profilePictureUrl: string
@@ -34,6 +35,8 @@ export class AddEmployeesComponent implements OnInit {
     showDistrict: boolean = true;
     showOrganization: boolean = false;
     countryCode: string;
+    loginUserId: any;
+    loginUserRoleId: any;
 
     constructor(
         private router: Router,
@@ -51,6 +54,8 @@ export class AddEmployeesComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadData();
+        this.loginUserId = this._userSession.getUserId();
+        this.loginUserRoleId = this._userSession.getUserRoleId();
         this.employeeForm = this.fb.group({
             FirstName: ['', Validators.required],
             LastName: ['', Validators.required],
@@ -70,7 +75,7 @@ export class AddEmployeesComponent implements OnInit {
             PhoneNumber: ['', [Validators.required, Validators.pattern(/^-?(0|[0-9]\d*)?$/)]],
             IsActive: [1],
         });
-        if (this._userSession.getUserRoleId() == 2) {
+        if (this.loginUserRoleId == 2) {
             this.employeeForm.get('WorkLocaion').setValue('2');
             this.employeeForm.controls['WorkLocaion'].disable();
             this.employeeForm.controls['WorkLocaion'].updateValueAndValidity();
@@ -128,7 +133,7 @@ export class AddEmployeesComponent implements OnInit {
         phoneNumber = phoneNumber.includes(counrtyCode) ? phoneNumber.split(counrtyCode)[1] : phoneNumber;
         return phoneNumber;
     }
-    
+
     setCountryCode(countryCode) {
         this.countryCode = countryCode;
     }
@@ -291,7 +296,7 @@ export class AddEmployeesComponent implements OnInit {
 
     }
 
-    InsertUser(){
+    InsertUser() {
         this.sendWelcomeEmailId = 1;
     }
 
@@ -332,7 +337,9 @@ export class AddEmployeesComponent implements OnInit {
                         PhoneNumber: this.countryCode + form.value.PhoneNumber,
                         ProfilePicture: this.profilePictureUrl ? this.profilePictureUrl : 'noimage.png',
                         IsActive: form.value.IsActive,
-                        Password: 'Password1'
+                        Password: 'Password1',
+                        CreatedBy: this.loginUserId,
+                        ModifiedBy: this.loginUserId
                     }
 
                     if (this.userIdForUpdate && this.userIdForUpdate != 'undefined') {
@@ -344,7 +351,7 @@ export class AddEmployeesComponent implements OnInit {
                                 this.notifier.notify('error', err.error.error_description);
                             });
                     }
-                    else if(this.sendWelcomeEmailId == 1) {
+                    else if (this.sendWelcomeEmailId == 1) {
                         this._dataContext.post('user/insertUserAndSendWelcomeEmail', model).subscribe((data: any) => {
                             this.router.navigate(['/manage/employees']);
                             this.notifier.notify('success', 'Added Successfully');

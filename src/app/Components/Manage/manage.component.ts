@@ -8,17 +8,18 @@ import { CommunicationService } from '../../Services/communication.service';
     styleUrls: ['manage.component.css']
 })
 export class ManageComponent {
+
     sideNavMenu: any;
     isOpen = true;
     msg: string;
     // @HostBinding('class.is-open')
     mobileQuery: MediaQueryList;
     private _mobileQueryListener: () => void;
-    
-    constructor( 
-        changeDetectorRef: ChangeDetectorRef, 
-        private sideNavService: SideNavService, 
-        media: MediaMatcher, 
+
+    constructor(
+        changeDetectorRef: ChangeDetectorRef,
+        private sideNavService: SideNavService,
+        media: MediaMatcher,
         private _communicationService: CommunicationService) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();

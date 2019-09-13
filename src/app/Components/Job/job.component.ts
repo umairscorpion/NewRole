@@ -10,6 +10,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { AvailableJobsComponent } from './SubPages/AvailableJobs/availableJobs.component';
 import { AuditFilter } from '../../Model/auditLog';
 import { AuditLogService } from '../../Services/audit_logs/audit-log.service';
+import { PastJobsComponent } from './SubPages/PastJobs/pastJobs.component';
 
 @Component({
     templateUrl: 'job.component.html',
@@ -19,6 +20,7 @@ import { AuditLogService } from '../../Services/audit_logs/audit-log.service';
 export class JobComponent implements OnInit {
     @ViewChild(MyJobsComponent) private upcomingJobs: MyJobsComponent;
     @ViewChild(AvailableJobsComponent) private getavailable: AvailableJobsComponent;
+    @ViewChild(PastJobsComponent) private pastJobs: PastJobsComponent;
     available: string;
     upcoming: string;
     past: string;
@@ -51,6 +53,7 @@ export class JobComponent implements OnInit {
 
     UpcomingJobCounter($event) {
         this.upcoming = $event
+        this.pastJobs.GetPastJobs();
     }
 
     PastJobCounter($event) {
@@ -70,6 +73,12 @@ export class JobComponent implements OnInit {
     onTabChange(tabIndex: any) {
         if (tabIndex.index == 0) {
             this.getavailable.GetAvailableJobs();
+        }
+        else if (tabIndex.index == 1) {
+            this.upcomingJobs.GetUpcommingJobs();
+        }
+        else {
+            this.pastJobs.GetPastJobs();
         }
     }
 

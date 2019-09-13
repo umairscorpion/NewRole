@@ -39,7 +39,8 @@
                             <mat-form-field class="col-md-7">
                                 <mat-select placeholder="District" formControlName="District">
                                     <mat-option>--</mat-option>
-                                    <mat-option *ngFor="let district of Districts" (click)="setCountryCode(district.counrtyCode)" [value]="district.districtId">
+                                    <mat-option *ngFor="let district of Districts"
+                                        (click)="setCountryCode(district.counrtyCode)" [value]="district.districtId">
                                         {{district.districtName}}
                                     </mat-option>
                                 </mat-select>
@@ -53,7 +54,8 @@
                         <td class="col-md-3">Position Type</td>
                         <td>
                             <mat-form-field class="col-md-7">
-                                <mat-select placeholder="Position Type" (selectionChange)="onChangeEmployeeType($event.value)" formControlName="UserTypeId">
+                                <mat-select placeholder="Position Type"
+                                    (selectionChange)="onChangeEmployeeType($event.value)" formControlName="UserTypeId">
                                     <mat-option>--</mat-option>
                                     <mat-option *ngFor="let position of positions" [value]="position.id">
                                         {{position.title}}
@@ -102,7 +104,8 @@
                         <td>
                             <mat-form-field hintLabel="Min 7 and Max 15 characters" class="col-md-7">
                                 <span matPrefix>{{countryCode}} &nbsp;</span>
-                                <input matInput #mobile minlength="7" maxlength="15" formControlName="PhoneNumber" placeholder="Mobile Number">
+                                <input matInput #mobile minlength="7" maxlength="15" formControlName="PhoneNumber"
+                                    placeholder="Mobile Number">
                                 <mat-hint align="end">{{mobile.value?.length || 0}}/15</mat-hint>
                                 <mat-error *ngIf="substituteForm.controls['PhoneNumber'].hasError('pattern')">
                                     Only numbers allowed
@@ -117,7 +120,8 @@
                         <td class="col-md-3">Work Email Address</td>
                         <td>
                             <mat-form-field class="col-md-7">
-                                <input matInput placeholder="Email" type="email" autocomplete="off" formControlName="Email">
+                                <input matInput placeholder="Email" type="email" autocomplete="off"
+                                    formControlName="Email">
                                 <mat-error *ngIf="substituteForm.controls['Email'].hasError('email')">
                                     Not a valid email
                                 </mat-error>
@@ -150,7 +154,8 @@
                     <tr>
                         <td class="col-md-3">Email Alerts</td>
                         <td>
-                            <mat-radio-group formControlName="IsSubscribedEmail" #radioGroup="matRadioGroup" class="col-md-7">
+                            <mat-radio-group formControlName="IsSubscribedEmail" #radioGroup="matRadioGroup"
+                                class="col-md-7">
                                 <mat-radio-button color="primary" value="1" style="margin-right: 10px">Yes
                                 </mat-radio-button>
                                 <mat-radio-button color="primary" value="0">No
@@ -161,7 +166,8 @@
                     <tr>
                         <td class="col-md-3">Text Alerts</td>
                         <td>
-                            <mat-radio-group formControlName="IsSubscribedSMS" #radioGroup="matRadioGroup" class="col-md-7">
+                            <mat-radio-group formControlName="IsSubscribedSMS" #radioGroup="matRadioGroup"
+                                class="col-md-7">
                                 <mat-radio-button color="primary" value="1" style="margin-right: 10px">Yes
                                 </mat-radio-button>
                                 <mat-radio-button color="primary" value="0">No
@@ -178,8 +184,10 @@
                         <img [src]="profilePicture" width="150" height="150">
                     </div>
                     <div style="padding-top: 5px">
-                        <input type="file" id="UploadButton" style="display: none;" (change)="onSelectProfileImage($event)">
-                        <button mat-button type="button" matTooltip="Upload Image" (click)="uploadClick()" style="color:white; background-color: #04c0be; padding: 0px 7px;">
+                        <input type="file" id="UploadButton" style="display: none;"
+                            (change)="onSelectProfileImage($event)">
+                        <button mat-button type="button" matTooltip="Upload Image" (click)="uploadClick()"
+                            style="color:white; background-color: #04c0be; padding: 0px 7px;">
                             Upload
                             <i class="material-icons">add</i>
                         </button>
@@ -192,13 +200,15 @@
                         Back
                     </button>
                 </a>
-                <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px" type="submit">{{userIdForUpdate ? 'Update': 'Add Substitute to Database'}}</button>
-                <button *ngIf='!userIdForUpdate' mat-raised-button style="background-color: #25e8c8; color: white; margin-left: 5px" (click)="InsertUser()">Add & Send Welcome Email</button>
+                <button mat-raised-button style="background-color: #04c0be; color: white; margin-left: 5px"
+                    type="submit">{{userIdForUpdate ? 'Update': 'Add Substitute to Database'}}</button>
+                <button *ngIf='!userIdForUpdate' mat-raised-button
+                    style="background-color: #25e8c8; color: white; margin-left: 5px" (click)="InsertUser()">Add & Send
+                    Welcome Email</button>
             </div>
         </form>
     </mat-card-content>
 </mat-card>
-
 <div class="row" *ngIf="!ref.hide" style="margin-top: 30px;text-align: center;">
     <div class="alert-warning m-20 p-20">You haven't been granted permissions to this module.</div>
 </div>

@@ -163,7 +163,15 @@ export class ReportDetailsComponent implements OnInit {
         buttonsStyling: false
       }).then(r => {
         if (r.value) {
-          this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+          let model = {
+            ConfirmationNumber: this.reportDetail.confirmationNumber,
+            AbsenceId: this.reportDetail.absenceId,
+            Status: StatusId,
+            EmployeeId: this._userSession.getUserId(),
+            CreatedDate: this.currentDate.toISOString(),
+            ForReason: false,
+          }
+          this._dataContext.UpdateAbsenceStatus('Absence/UpdateAbsenceReasonStatus', model).subscribe((response: any) => {
             this.dialogRef.close('Reload');
             this.notifier.notify('success', 'Cancelled Successfully.');
           });
@@ -186,7 +194,15 @@ export class ReportDetailsComponent implements OnInit {
         buttonsStyling: false
       }).then(r => {
         if (r.value) {
-          this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', this.reportDetail.confirmationNumber, this.reportDetail.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+          let model = {
+            ConfirmationNumber: this.reportDetail.confirmationNumber,
+            AbsenceId: this.reportDetail.absenceId,
+            Status: StatusId,
+            EmployeeId: this._userSession.getUserId(),
+            CreatedDate: this.currentDate.toISOString(),
+            ForReason: false,
+          }
+          this._dataContext.UpdateAbsenceStatus('Absence/UpdateAbsenceReasonStatus', model).subscribe((response: any) => {
             if (response == "success") {
               this.dialogRef.close('Reload');
               this.notifier.notify('success', 'Released Successfully.');
@@ -235,6 +251,10 @@ export class ReportDetailsComponent implements OnInit {
 
   onAssign(formGroup: FormGroup) {
     let StatusId = 2;
+    if (!(formGroup.value.substituteId instanceof Object)) {
+      this.notifier.notify('error', 'Please Select Substitute.');
+      return;
+    }
     swal.fire({
       title: 'Assign',
       text:
@@ -293,7 +313,7 @@ export class ReportDetailsComponent implements OnInit {
 
   OnDateAndTimeChange(): void {
     if (this.reportDetail.startDate && this.reportDetail.endDate) {
-      if(this.reportDetail.statusId != 2) {
+      if (this.reportDetail.statusId != 2) {
         this.absenceForm.get('substituteId').setValue(this.reportDetail.substituteId);
         this.absenceForm.controls['substituteId'].clearValidators();
         this.absenceForm.controls['substituteId'].updateValueAndValidity();
@@ -345,7 +365,7 @@ export class ReportDetailsComponent implements OnInit {
         formGroup.get('status').setValue('2');
         formGroup.get('substituteRequired').setValue(1);
       }
-      else if(formGroup.value.substituteId && formGroup.value.substituteId.length >= 10) {
+      else if (formGroup.value.substituteId && formGroup.value.substituteId.length >= 10) {
         formGroup.get('substituteId').setValue(formGroup.value.substituteId);
       }
       else {

@@ -97,6 +97,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     AbsenceForUserLevel: number = 0;
     loginedUserRole: number = 0;
     loginedUserType: number = 0;
+    loginDistrictId: any;
+    loginOrganizationId: any;
     //Available Substitutes
     availableSubstitutes: Observable<User[]>;
     // for checking that if absence is for need a sub or not
@@ -123,17 +125,16 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.loginDistrictId = this._userSession.getUserDistrictId()
+        this.loginOrganizationId = this._userSession.getUserOrganizationId()
         this.GenerateForms();
         this.GetLeaveTypes();
-        this.GetDistricts();
+        this.getAbsenceTypes(this.loginDistrictId, this.loginOrganizationId);
         this.GetDistricts();
         if (this._userSession.getUserRoleId() != 5)
-            this.GetOrganizations(this._userSession.getUserDistrictId());
+            this.GetOrganizations(this.loginDistrictId);
         this.GetPositions();
         this.InitializeValues();
-        // this.preferredSubPanel.expandedChange.subscribe((data) => {
-        //     this.matIcon = data ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
-        // });
 
         this.activatedRoute.queryParams.subscribe((params: any) => {
             if (params.announcement && this.IsAnnouncementViewed) {
@@ -199,9 +200,8 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
     }
 
     GetLeaveTypes(): void {
-        let districtId = this._userSession.getUserDistrictId();
-        let organizationId = this._userSession.getUserOrganizationId() ? this._userSession.getUserOrganizationId() : '-1';
-        this.absenceService.getLeaveType(districtId, organizationId).subscribe((data: LeaveType[]) => {
+        let organizationId = this.loginOrganizationId ? this.loginOrganizationId : '-1';
+        this.absenceService.getLeaveType(this.loginDistrictId, organizationId).subscribe((data: LeaveType[]) => {
             this.Leaves = data;
         },
             error => this.msg = <any>error);
@@ -236,7 +236,6 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this.GetCreatedAbsencesOfEmployee(this.EmployeeIdForAbsence);
         this.AbsenceForUserLevel = this.loginedUserLevel;
         this.GetLocationTime(this.EmployeeIdForAbsence, this.loginedUserLevel)
-        this.getAbsenceTypes(this._userSession.getUserDistrictId(), this._userSession.getUserOrganizationId());
     }
 
     //Get Location Time For User
@@ -413,7 +412,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         this._dataContext.get('district/getDistricts').subscribe((data: any) => {
             this.Districts = data;
             if (this._userSession.getUserRoleId() != 5) {
-                this.absenceFirstFormGroup.get('Location').setValue(this._userSession.getUserDistrictId());
+                this.absenceFirstFormGroup.get('Location').setValue(this.loginDistrictId);
                 this.absenceFirstFormGroup.controls['Location'].disable();
             }
         },
@@ -800,7 +799,7 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
         }
         if (+this.absenceFirstFormGroup.value.selfEmployeeVacancy === 2) {
             if (!(this.absenceFirstFormGroup.value.EmployeeId instanceof Object)) {
-                this.notifier.notify('error', 'Select Employee');
+                this.notifier.notify('error', 'Please Select Employee.');
                 return;
             }
         }
@@ -934,9 +933,9 @@ export class CreateAbsenceComponent implements OnInit, OnDestroy {
             if (data.length > 0) {
                 this.dialogRef.open(
                     ShowAnnouncementPopupComponent, {
-                        panelClass: 'announcements-dialog',
-                        data: this.Announcements
-                    }
+                    panelClass: 'announcements-dialog',
+                    data: this.Announcements
+                }
                 );
             }
         },

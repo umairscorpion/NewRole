@@ -22,11 +22,7 @@
             <mat-datepicker #EndDatePicker></mat-datepicker>
           </mat-form-field>
           <mat-form-field class="col-md-3 col-lg-3">
-            <mat-select placeholder="District" formControlName="DistrictId">
-              <mat-option *ngFor="let district of Districts" [value]="district.districtId">
-                {{district.districtName}}
-              </mat-option>
-            </mat-select>
+            <input matInput placeholder="District" formControlName="DistrictId">
           </mat-form-field>
           <mat-form-field class="col-md-3 col-lg-3">
             <mat-select placeholder="School" formControlName="OrganizationId">
@@ -42,7 +38,7 @@
         </form>
       </div>
     </div>
-    <div class="row col-md-12 col-lg-12">
+    <div class="col-md-12 col-lg-12">
       <div class="row" style="text-align: center">
         <h4>{{FilterForm.value.FilterStartDate | date}} - {{FilterForm.value.FilterEndDate | date}}</h4>
       </div>
@@ -109,6 +105,7 @@
               </a>
             </mat-cell>
           </ng-container>
+
           <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>

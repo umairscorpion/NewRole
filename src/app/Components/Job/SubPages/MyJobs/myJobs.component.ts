@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import swal from 'sweetalert2';
 import { PopupDialogForRunningLate } from '../../popus/runningLate.component';
+import { ReleasePopupComponent } from '../../popus/release-popup/release-popup.component';
 
 @Component({
     selector: 'my-jobs',
@@ -30,6 +31,7 @@ export class MyJobsComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
+    UserClaim: any;
 
     constructor(
         private _dataContext: DataContext,
@@ -38,8 +40,28 @@ export class MyJobsComponent implements OnInit {
         public dialog: MatDialog,
         notifier: NotifierService,
         private _communicationService: CommunicationService,
-        private activatedRoute: ActivatedRoute) {
+        private activatedRoute: ActivatedRoute,
+        private dialogRef: MatDialog) {
         this.notifier = notifier;
+    }
+
+    ngOnInit(): void {
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params.jobId && params.ac == 1) {
+                this.AcceptJob(params.jobId, 'Email');
+            }
+        })
+        this.FilterForm = this._formBuilder.group({
+            FilterStartDate: ['', Validators.required],
+            FilterEndDate: ['', Validators.required],
+            DistrictId: ['', Validators.required],
+            OrganizationId: ['-1', Validators.required]
+        });
+        this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
+        this.FilterForm.get('DistrictId').setValue(this.UserClaim.districtName);
+        this.FilterForm.controls['DistrictId'].disable();
+        this.GetUpcommingJobs();
+        this.GetOrganizations(this._userSession.getUserDistrictId());
     }
 
     ngAfterViewInit() {
@@ -68,34 +90,41 @@ export class MyJobsComponent implements OnInit {
     }
 
     ReleaseJob(SelectedRow: any, StatusId: number) {
-        let currentTime = moment();
-        let currentDate = moment().format('YYYY MM DD');
-        let starttime = moment(SelectedRow.startTime, 'h:mma');
-        let endtime = moment(SelectedRow.endTime, 'h:mma');
-        let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
-        if (currentDate == startdate) {
-            if (currentTime > endtime) {
-                this.notifier.notify('error', 'Job has ended, unable to release.');
-            }
-            else if (currentTime > starttime) {
-                this.notifier.notify('error', 'Job has started, unable to release.');
-            }
-            else {
-                swal.fire({
-                    title: 'Release',
-                    text:
-                        'Are you sure you want to Release this Job?',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonClass: 'btn btn-danger',
-                    cancelButtonClass: 'btn btn-success',
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    buttonsStyling: false
-                }).then(r => {
-                    if (r.value) {
-                        if ((SelectedRow.startDate as Date) <= this.currentDate) { this.notifier.notify('error', 'Not able to release now.'); return; }
-                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+        const dialog = this.dialogRef.open(
+            ReleasePopupComponent, {
+            panelClass: 'release-decline-dialog'
+        }
+        );
+        dialog.afterClosed().subscribe(result => {
+            if (result != null) {
+                let currentTime = moment();
+                let currentDate = moment().format('YYYY MM DD');
+                let starttime = moment(SelectedRow.startTime, 'h:mma');
+                let endtime = moment(SelectedRow.endTime, 'h:mma');
+                let startdate = moment(SelectedRow.startDate).format('YYYY MM DD');
+                if (currentDate == startdate) {
+                    if (currentTime > endtime) {
+                        this.notifier.notify('error', 'Job has ended, unable to release.');
+                    }
+                    else if (currentTime > starttime) {
+                        this.notifier.notify('error', 'Job has started, unable to release.');
+                    }
+                    else {
+                        if ((SelectedRow.startDate as Date) <= this.currentDate) {
+                            this.notifier.notify('error', 'Not able to release now.');
+                            return;
+                        }
+                        let model = {
+                            ConfirmationNumber: SelectedRow.confirmationNumber,
+                            AbsenceId: SelectedRow.absenceId,
+                            Status: StatusId,
+                            EmployeeId: this._userSession.getUserId(),
+                            CreatedDate: this.currentDate.toISOString(),
+                            ForReason: true,
+                            ReasonId: result.reasonId,
+                            ReasonText: result.reasonText
+                        }
+                        this._dataContext.UpdateAbsenceStatus('Absence/UpdateAbsenceReasonStatus', model).subscribe((response: any) => {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
                                 this.GetUpcommingJobs();
@@ -103,29 +132,24 @@ export class MyJobsComponent implements OnInit {
                         },
                             error => this.msg = <any>error);
                     }
-                });
-            }
-        }
-        else {
-            if (startdate > currentDate) {
-                swal.fire({
-                    title: 'Release',
-                    text:
-                        'Are you sure you want to Release this Job?',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonClass: 'btn btn-danger',
-                    cancelButtonClass: 'btn btn-success',
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    buttonsStyling: false
-                }).then(r => {
-                    if (r.value) {
+                }
+                else {
+                    if (startdate > currentDate) {
                         if ((SelectedRow.startDate as Date) <= this.currentDate) {
                             this.notifier.notify('error', 'Not able to Release now.');
                             return;
                         }
-                        this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+                        let model = {
+                            ConfirmationNumber: SelectedRow.confirmationNumber,
+                            AbsenceId: SelectedRow.absenceId,
+                            Status: StatusId,
+                            EmployeeId: this._userSession.getUserId(),
+                            CreatedDate: this.currentDate.toISOString(),
+                            ForReason: true,
+                            ReasonId: result.reasonId,
+                            ReasonText: result.reasonText
+                        }
+                        this._dataContext.UpdateAbsenceStatus('Absence/UpdateAbsenceReasonStatus', model).subscribe((response: any) => {
                             if (response == "success") {
                                 this.notifier.notify('success', 'Released Successfully.');
                                 this.GetUpcommingJobs();
@@ -133,50 +157,24 @@ export class MyJobsComponent implements OnInit {
                         },
                             error => this.msg = <any>error);
                     }
-                });
+                    else {
+                        this.notifier.notify('error', 'Something Went Wrong.');
+                    }
+                }
             }
-
             else {
                 this.notifier.notify('error', 'Something Went Wrong.');
             }
-
-        }
+        });
     }
 
     ngOnChanges() {
         alert("Inti");
     }
 
-    ngOnInit(): void {
-        this.activatedRoute.queryParams.subscribe((params: any) => {
-            if (params.jobId && params.ac == 1) {
-                this.AcceptJob(params.jobId, 'Email');
-            }
-        })
-        this.FilterForm = this._formBuilder.group({
-            FilterStartDate: ['', Validators.required],
-            FilterEndDate: ['', Validators.required],
-            DistrictId: [{ disabled: true }, Validators.required],
-            OrganizationId: ['-1', Validators.required]
-        });
-        this.GetUpcommingJobs();
-        this.GetDistricts();
-        this.GetOrganizations(this._userSession.getUserDistrictId());
-
-    }
-
     GetOrganizations(DistrictId: number): void {
         this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
             this.Organizations = data;
-        },
-            error => <any>error);
-    }
-
-    GetDistricts(): void {
-        this._dataContext.get('district/getDistricts').subscribe((data: any) => {
-            this.Districts = data;
-            this.FilterForm.get('DistrictId').setValue(this._userSession.getUserDistrictId());
-            this.FilterForm.controls['DistrictId'].disable();
         },
             error => <any>error);
     }
@@ -207,10 +205,10 @@ export class MyJobsComponent implements OnInit {
 
     ShowRuningLate(AbsenceDetail: any) {
         this.dialog.open(PopupDialogForRunningLate, {
-            data:AbsenceDetail,
+            data: AbsenceDetail,
             height: '410px',
             width: '350px',
-          });
+        });
     }
 
     AcceptJob(jobNo: number, via: string) {

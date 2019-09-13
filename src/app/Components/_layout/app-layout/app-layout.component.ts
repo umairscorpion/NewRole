@@ -68,20 +68,20 @@ export class AppLayoutComponent implements OnInit {
         this.getEmployeeBalance();
       }
     });
-    this._communicationService.updateSelectedEmployeeLeaveBalance.subscribe((config: any) => {
-      if (this.userRole === 1 || this.userRole === 2) {
+    if (this.userRole === 1 || this.userRole === 2) {
+      this._communicationService.updateSelectedEmployeeLeaveBalance.subscribe((config: any) => {
         this.getSelectedEmployeeBalance(config);
-      }
-    });
-    this._communicationService.updateEmployeeLeaveBalance.subscribe((config: any) => {
-      if (this.userRole === 1 || this.userRole === 2) {
+      });
+    }
+    if (this.userRole === 1 || this.userRole === 2) {
+      this._communicationService.updateEmployeeLeaveBalance.subscribe((config: any) => {
         this.getEmployeeBalance();
-      }
-    });
+      });
+    }
   }
 
   onActivate(componentReference) {
-    if (this.userRole === 3 || this.userRole === 1 || this.userRole === 2) {
+    if (this.userRole === 3) {
       componentReference.refreshEmployeeBalance.subscribe((data) => {
         this.getEmployeeBalance();
       });

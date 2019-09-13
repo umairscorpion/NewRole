@@ -12,6 +12,7 @@ import { NotifierService } from 'angular-notifier';
     styleUrls: ['pastJobs.component.scss']
 })
 export class PastJobsComponent implements OnInit {
+
     PastJobCount: any;
     @Output() PastCountEvent = new EventEmitter<string>();
     Organizations: any;
@@ -22,10 +23,11 @@ export class PastJobsComponent implements OnInit {
     PastJobs = new MatTableDataSource();
     msg: string;
     currentDate: Date = new Date();
-    displayedColumns = ['AbsenceDate','JobId', 'Posted', 'Location', 'Employee', 'Status', 'Action'];
+    displayedColumns = ['AbsenceDate', 'JobId', 'Posted', 'Location', 'Employee', 'Status', 'Action'];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     FileStream: any;
+    UserClaim: any;
 
     constructor(
         private _dataContext: DataContext,
@@ -34,6 +36,20 @@ export class PastJobsComponent implements OnInit {
         notifier: NotifierService,
         private _communicationService: CommunicationService) {
         this.notifier = notifier;
+    }
+
+    ngOnInit(): void {
+        this.FilterForm = this._formBuilder.group({
+            FilterStartDate: ['', Validators.required],
+            FilterEndDate: ['', Validators.required],
+            DistrictId: ['', Validators.required],
+            OrganizationId: ['-1', Validators.required]
+        });
+        this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
+        this.FilterForm.get('DistrictId').setValue(this.UserClaim.districtName);
+        this.FilterForm.controls['DistrictId'].disable();
+        this.GetPastJobs();
+        this.GetOrganizations(this._userSession.getUserDistrictId());
     }
 
     ngAfterViewInit() {
@@ -51,42 +67,21 @@ export class PastJobsComponent implements OnInit {
             SubstituteId: this._userSession.getUserId(),
             DistrictId: this._userSession.getUserDistrictId(),
             Status: 2,
-       }
+        }
         this.FilterForm.get('FilterStartDate').setValue(StartDate);
         this.FilterForm.get('FilterEndDate').setValue(this.CurrentDate);
         this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
-                this.PastJobs.data = data;
-                this.PastJobCount = data.length
-                this.PastCountEvent.emit(this.PastJobCount)
+            this.PastJobs.data = data;
+            this.PastJobCount = data.length
+            this.PastCountEvent.emit(this.PastJobCount)
 
-            },
-                error => this.msg = <any>error);
-    }
-
-    ngOnInit(): void {
-        this.FilterForm = this._formBuilder.group({
-            FilterStartDate: ['', Validators.required],
-            FilterEndDate: ['', Validators.required],
-            DistrictId: [{ disabled: true }, Validators.required],
-            OrganizationId: ['-1', Validators.required]
-        });
-        this.GetPastJobs();
-        this.GetDistricts();
-        this.GetOrganizations(this._userSession.getUserDistrictId());
+        },
+            error => this.msg = <any>error);
     }
 
     GetOrganizations(DistrictId: number): void {
         this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
             this.Organizations = data;
-        },
-            error => <any>error);
-    }
-
-    GetDistricts(): void {
-        this._dataContext.get('district/getDistricts').subscribe((data: any) => {
-            this.Districts = data;
-            this.FilterForm.get('DistrictId').setValue(this._userSession.getUserDistrictId());
-            this.FilterForm.controls['DistrictId'].disable();
         },
             error => <any>error);
     }
@@ -101,13 +96,13 @@ export class PastJobsComponent implements OnInit {
                 Status: 2,
                 Requested: false,
                 OrganizationId: SearchFilter.value.OrganizationId
-           }
+            }
             this._dataContext.post('Job/getAvailableJobs', model).subscribe((data: any) => {
-                    this.PastJobs.data = data;
-                    this.PastJobCount = data.length
-                    this.PastCountEvent.emit(this.PastJobCount)
-                },
-                    error => this.msg = <any>error);
+                this.PastJobs.data = data;
+                this.PastJobCount = data.length
+                this.PastCountEvent.emit(this.PastJobCount)
+            },
+                error => this.msg = <any>error);
         }
     }
 

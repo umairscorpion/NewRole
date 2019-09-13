@@ -4,7 +4,6 @@
         max-height: 400px;
     }
 </style>
-<!-- <h4>Past Jobs ({{PastJobs.data && PastJobs.data.length > 0 ? PastJobs.data.length : 0 }})</h4> -->
 <mat-card>
     <div style="margin-top:30px;" class="row">
         <div class="row">
@@ -25,11 +24,7 @@
                         <mat-datepicker #EndDatePicker></mat-datepicker>
                     </mat-form-field>
                     <mat-form-field class="col-md-3 col-lg-3">
-                        <mat-select placeholder="District" formControlName="DistrictId">
-                            <mat-option *ngFor="let district of Districts" [value]="district.districtId">
-                                {{district.districtName}}
-                            </mat-option>
-                        </mat-select>
+                        <input matInput placeholder="District" formControlName="DistrictId">
                     </mat-form-field>
                     <mat-form-field class="col-md-3 col-lg-3">
                         <mat-select placeholder="School" formControlName="OrganizationId">
@@ -110,6 +105,7 @@
                             </a>
                         </mat-cell>
                     </ng-container>
+
                     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                 </mat-table>

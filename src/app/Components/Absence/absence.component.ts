@@ -7,14 +7,17 @@ import { CommunicationService } from '../../Services/communication.service';
 import { UserSession } from '../../Services/userSession.service';
 import { UpcommingAbsenceComponent } from './SubPages/UpcommingAbsence/upcommingAbsence.component';
 import { CreateAbsenceComponent } from './SubPages/CreateAbsence/createAbsence.component';
+import { PastAbsenceComponent } from './SubPages/PastAbsence/pastAbsence.component';
 
 @Component({
     templateUrl: 'absence.component.html',
     styleUrls: ['absence.component.scss']
 })
 export class absenceComponent {
+
     @ViewChild(UpcommingAbsenceComponent) private getUpcomingAbsences: UpcommingAbsenceComponent;
     @ViewChild(CreateAbsenceComponent) private createAbsenceComponent: CreateAbsenceComponent;
+    @ViewChild(PastAbsenceComponent) private getPastAbsences: PastAbsenceComponent;
     @Output() refreshEmployeeBalance: EventEmitter<any> = new EventEmitter();
     @Output() refreshEmployeeBalances: EventEmitter<any> = new EventEmitter();
     selectedTab: number = 0;
@@ -57,12 +60,13 @@ export class absenceComponent {
             this.selectedTab = 1;
             this.getUpcomingAbsences.GetAbsences();
         }
-         else if (tabIndex.index == 0) {
+        else if (tabIndex.index == 0) {
             this.selectedTab = 0;
             this.createAbsenceComponent.GetCreatedAbsencesOfEmployee(this._userSession.getUserId());
         }
         else {
             this.selectedTab = 2;
+            this.getPastAbsences.GetAbsences();
         }
     }
 

@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import swal from 'sweetalert2';
 import { ReportDetail } from 'src/app/Model/Report/report.detail';
 import { ReportDetailsComponent } from 'src/app/Components/Reports/popups/report-details.popup.component';
+import { CancelPopupComponent } from '../../popup/cancel-popup/cancel-popup.component';
 
 @Component({
     selector: 'upcoming-absences',
@@ -17,6 +18,7 @@ import { ReportDetailsComponent } from 'src/app/Components/Reports/popups/report
     styleUrls: ['upcommingAbsence.component.scss']
 })
 export class UpcommingAbsenceComponent implements OnInit {
+    
     @Output() refreshBalance = new EventEmitter<string>();
     CurrentDate: Date = new Date;
     private notifier: NotifierService;
@@ -80,8 +82,14 @@ export class UpcommingAbsenceComponent implements OnInit {
             return;
         }
         else if (SelectedRow.status == 2) {
-            this.notifier.notify('error', 'Job has accepted, you cannot cancel it.');
-            return;
+            if (SelectedRow.absenceType != 2) {
+                this.notifier.notify('error', 'Job has accepted, you cannot cancel it.');
+                return;
+            }
+            else {
+                this.notifier.notify('error', 'Job has assigned, you cannot cancel it.');
+                return;
+            }
         }
         else {
             if (absenceStartDate <= currentDate) {
@@ -95,20 +103,25 @@ export class UpcommingAbsenceComponent implements OnInit {
                 }
             }
         }
-        swal.fire({
-            title: 'Cancel',
-            text:
-                'Are you sure you want to cancel this absence?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonClass: 'btn btn-danger',
-            cancelButtonClass: 'btn btn-success',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
-            buttonsStyling: false
-        }).then(r => {
-            if (r.value) {
-                this._dataContext.UpdateAbsenceStatus('Absence/updateAbseceStatus', SelectedRow.confirmationNumber, SelectedRow.absenceId, StatusId, this.currentDate.toISOString(), this._userSession.getUserId()).subscribe((response: any) => {
+        const dialog = this.dialogRef.open(
+            CancelPopupComponent, {
+            panelClass: 'cancel-dialog',
+            data: SelectedRow
+        }
+        );
+        dialog.afterClosed().subscribe(result => {
+            if (result != null) {
+                let model = {
+                    ConfirmationNumber: SelectedRow.confirmationNumber,
+                    AbsenceId: SelectedRow.absenceId,
+                    Status: StatusId,
+                    EmployeeId: this._userSession.getUserId(),
+                    CreatedDate: this.currentDate.toISOString(),
+                    ForReason: true,
+                    ReasonId: result.reasonId,
+                    ReasonText: result.reasonText
+                }
+                this._dataContext.UpdateAbsenceStatus('Absence/UpdateAbsenceReasonStatus', model).subscribe((response: any) => {
                     if (response == "success") {
                         if (this._userSession.getUserRoleId() === 3) this.refreshBalance.next();
                         this.notifier.notify('success', 'Cancelled Successfully.');
@@ -156,9 +169,9 @@ export class UpcommingAbsenceComponent implements OnInit {
 
         const dialogEdit = this.dialogRef.open(
             ReportDetailsComponent, {
-                panelClass: 'report-details-dialog',
-                data: modeldata
-            }
+            panelClass: 'report-details-dialog',
+            data: modeldata
+        }
         );
         dialogEdit.afterClosed().subscribe(result => {
             if (result == 'Reload') {

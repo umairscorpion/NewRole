@@ -30,10 +30,13 @@
           <!-- Position Column -->
           <ng-container matColumnDef="AbsenceDate">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Absence Date </mat-header-cell>
-            <mat-cell *matCellDef="let Absence"> {{Absence.startDate | date}} 
-              {{Absence.startDate != Absence.endDate ? ' - ' + (Absence.endDate | date) : ' ' }}
-              <br> {{Absence.startTime | convertFrom24HourTo12HourFormat }}-{{Absence.endTime | convertFrom24HourTo12HourFormat
-            }} </mat-cell>
+            <mat-cell *matCellDef="let Absence">
+              {{Absence.startDate | date}}
+              <br *ngIf="Absence.startDate != Absence.endDate">
+              {{Absence.startDate != Absence.endDate ? (Absence.endDate | date) : ' ' }}
+              <br>
+              {{Absence.startTime | convertFrom24HourTo12HourFormat }}-{{Absence.endTime | convertFrom24HourTo12HourFormat}}
+            </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="JobId">
@@ -67,6 +70,7 @@
             <mat-header-cell *matHeaderCellDef> Substitute </mat-header-cell>
             <mat-cell *matCellDef="let Absence"> {{Absence.substituteName ? Absence.substituteName: 'N/A'}} </mat-cell>
           </ng-container>
+
           <ng-container matColumnDef="Action">
             <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
             <mat-cell *matCellDef="let Absence">
@@ -83,6 +87,7 @@
               </a>
             </mat-cell>
           </ng-container>
+
           <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>

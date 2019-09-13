@@ -18,6 +18,7 @@ import { FileService } from 'src/app/Services/file.service';
 import { FileManager } from 'src/app/Model/FileSystem/fileManager.detail';
 import { ShowAnnouncementPopupComponent } from 'src/app/Components/Announcement/show-announcement-popup/show-announcement-popup.component';
 import { Announcement } from 'src/app/Model/announcement';
+import { DeclinePopupComponent } from '../../popus/decline-popup/decline-popup.component';
 
 @Component({
     selector: 'available-jobs',
@@ -54,6 +55,7 @@ export class AvailableJobsComponent implements OnInit {
     FileStream: any;
     iamRequested: boolean;
     Files = [];
+    UserClaim: any;
     // For Announcements
     Announcements: Announcement[] = Array<Announcement>();
     IsAnnouncementViewed: boolean = false;
@@ -87,12 +89,14 @@ export class AvailableJobsComponent implements OnInit {
         this.FilterForm = this._formBuilder.group({
             FilterStartDate: ['', Validators.required],
             FilterEndDate: ['', Validators.required],
-            DistrictId: [{ disabled: true }, Validators.required],
+            DistrictId: ['', Validators.required],
             OrganizationId: ['-1', Validators.required],
             Requested: [false]
         });
+        this.UserClaim = JSON.parse(localStorage.getItem('userClaims'));
+        this.FilterForm.get('DistrictId').setValue(this.UserClaim.districtName);
+        this.FilterForm.controls['DistrictId'].disable();
         this.GetMyJobs();
-        this.GetDistricts();
         this.GetOrganizations(this._userSession.getUserDistrictId());
         this.GetAvailableJobs();
         this.getSchoolFiles();
@@ -101,7 +105,6 @@ export class AvailableJobsComponent implements OnInit {
     ngAfterViewInit() {
         this.AvailableJobs.sort = this.sort;
         this.AvailableJobs.paginator = this.paginator;
-        this.GetAvailableJobs();
     }
 
     GetAvailableJobs() {
@@ -127,15 +130,6 @@ export class AvailableJobsComponent implements OnInit {
     GetOrganizations(DistrictId: number): void {
         this._dataContext.getById('School/getOrganizationsByDistrictId', DistrictId).subscribe((data: any) => {
             this.Organizations = data;
-        },
-            error => <any>error);
-    }
-
-    GetDistricts(): void {
-        this._dataContext.get('district/getDistricts').subscribe((data: any) => {
-            this.Districts = data;
-            this.FilterForm.get('DistrictId').setValue(this._userSession.getUserDistrictId());
-            this.FilterForm.controls['DistrictId'].disable();
         },
             error => <any>error);
     }
@@ -318,25 +312,31 @@ export class AvailableJobsComponent implements OnInit {
     }
 
     DeclineAbsence(absenceId: any) {
-        swal.fire({
-            title: 'Decline',
-            text:
-                'Are you sure you want to Decline this Job?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonClass: 'btn btn-danger',
-            cancelButtonClass: 'btn btn-success',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
-            buttonsStyling: false
-        }).then(r => {
-            if (r.value) {
-                this._dataContext.get('Job/DeclineJob/' + absenceId).subscribe((response: any) => {
+        const dialog = this.dialogRef.open(
+            DeclinePopupComponent, {
+            panelClass: 'release-decline-dialog',
+            data: absenceId
+        }
+        );
+        dialog.afterClosed().subscribe(result => {
+            if (result != null) {
+                let model = {
+                    AbsenceId: absenceId,
+                    Status: 9,
+                    EmployeeId: this._userSession.getUserId(),
+                    ForReason: true,
+                    ReasonId: result.reasonId,
+                    ReasonText: result.reasonText
+                }
+                this._dataContext.post('Job/DeclineJob/', model).subscribe((response: any) => {
                     this.NotifyResponse(response as string);
                     this.GetAvailableJobs();
                     this.upcomingJobs.GetUpcommingJobs();
                 },
                     error => this.msg = <any>error);
+            }
+            else {
+                this.notifier.notify('error', 'Something Went Wrong.');
             }
         });
     }
@@ -354,9 +354,9 @@ export class AvailableJobsComponent implements OnInit {
     ShowSchoolFiles() {
         const dialogEdit = this.dialogRef.open(
             ShowSchoolFilesPopupComponent, {
-                panelClass: 'school-files-dialog',
-                data: this.Files
-            }
+            panelClass: 'school-files-dialog',
+            data: this.Files
+        }
         );
         dialogEdit.afterClosed().subscribe(result => {
         });
@@ -372,9 +372,9 @@ export class AvailableJobsComponent implements OnInit {
             if (data.length > 0) {
                 this.dialogRef.open(
                     ShowAnnouncementPopupComponent, {
-                        panelClass: 'announcements-dialog',
-                        data: this.Announcements
-                    }
+                    panelClass: 'announcements-dialog',
+                    data: this.Announcements
+                }
                 );
             }
         },

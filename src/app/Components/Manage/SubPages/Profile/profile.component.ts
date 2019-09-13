@@ -140,16 +140,13 @@ export class ProfileComponent implements OnInit {
             Email: this.UserClaim.email,
             PhoneNumber: this.UserClaim.phoneNumber
         }
-        if(this.UserClaim.organizationName == null && this.UserClaim.districtName == null){
+        if (this.UserClaim.organizationName == null && this.UserClaim.districtName == null) {
             this.OrganizationName = 'No Organization';
         }
-        else if(this.UserClaim.organizationName == null)
-        {
+        else if (this.UserClaim.organizationName == null) {
             this.OrganizationName = this.UserClaim.districtName;
         }
-        
-        else{
-           
+        else {
             this.OrganizationName = this.UserClaim.organizationName;
         }
 

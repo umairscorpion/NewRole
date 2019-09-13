@@ -95,7 +95,7 @@
                                     <div class="col-md-2 col-lg-2">
                                         <mat-form-field class="col-md-12 col-lg-12">
                                             <mat-select placeholder="Duration" formControlName="Duration"
-                                                (selectionChange)="onChangeDurationForAbsence($event.value)">
+                                                (selectionChange)="onChangeDurationForAbsence($event.value);OnDateAndTimeChange()">
                                                 <mat-option value="1">Full Day</mat-option>
                                                 <mat-option value="2">Half Day AM</mat-option>
                                                 <mat-option value="3">Half Day PM</mat-option>
@@ -182,7 +182,6 @@
                             <div class="row" style="height: 56.56px;">
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6">
-
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <mat-form-field class="col-md-10 col-lg-10">
@@ -246,7 +245,9 @@
                                                         </mat-select>
                                                     </mat-form-field>
                                                     <mat-form-field class="col-md-4">
-                                                        <input matInput type="number" min="0" [disabled]="DisableContactSubTimeAccess" placeholder="Wait Time" formControlName="ContactSubTime"
+                                                        <input matInput type="number" min="0"
+                                                            [disabled]="DisableContactSubTimeAccess"
+                                                            placeholder="Wait Time" formControlName="ContactSubTime"
                                                             [disabled]="DisableContactSubTimeAccess"
                                                             placeholder="Wait Time" formControlName="ContactSubTime"
                                                             [disabled]="DisableContactSubTimeAccess"
@@ -274,7 +275,6 @@
                             <div class="row" style="margin-top:10px">
                                 <div class="col-md-12">
                                     <div class="col-md-6 col-lg-6">
-
                                     </div>
                                     <div class="col-md-6 col-lg-6">
                                         <div class="col-md-8 col-lg-8">
