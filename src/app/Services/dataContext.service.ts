@@ -103,14 +103,64 @@ export class DataContext {
         return this._http.get(this.baseUrl + url + "/" + data);
     }
 
-    UploadExcel(formData: FormData, districtId: any) {  
+    VerifySchoolsData(formData: FormData, districtId: any) {  
         let headers = new HttpHeaders();  
   
         headers.append('Content-Type', 'multipart/form-data');  
         headers.append('Accept', 'application/json');  
       
         const httpOptions = { headers: headers }; 
-        return this._http.post(this.baseUrl + '/school/uploadExcel' + "/" + districtId, formData, httpOptions)  
+        return this._http.post(this.baseUrl + '/school/verifySchoolsData' + "/" + districtId, formData, httpOptions)  
+      } 
+
+    ImportSchools(formData: FormData, districtId: any) {  
+        let headers = new HttpHeaders();  
+  
+        headers.append('Content-Type', 'multipart/form-data');  
+        headers.append('Accept', 'application/json');  
+      
+        const httpOptions = { headers: headers }; 
+        return this._http.post(this.baseUrl + '/school/importSchools' + "/" + districtId, formData, httpOptions)  
+      } 
+
+      VerifySubstitutesData(formData: FormData, districtId: any) {  
+        let headers = new HttpHeaders();  
+  
+        headers.append('Content-Type', 'multipart/form-data');  
+        headers.append('Accept', 'application/json');  
+      
+        const httpOptions = { headers: headers }; 
+        return this._http.post(this.baseUrl + '/user/verifySubstitutesData' + "/" + districtId, formData, httpOptions)  
+      } 
+
+      ImportSubstitutes(formData: FormData, districtId: any) {  
+        let headers = new HttpHeaders();  
+  
+        headers.append('Content-Type', 'multipart/form-data');  
+        headers.append('Accept', 'application/json');  
+      
+        const httpOptions = { headers: headers }; 
+        return this._http.post(this.baseUrl + '/user/importSubstitutes' + "/" + districtId, formData, httpOptions)  
+      } 
+
+      VerifyStaffData(formData: FormData, districtId: any) {  
+        let headers = new HttpHeaders();  
+  
+        headers.append('Content-Type', 'multipart/form-data');  
+        headers.append('Accept', 'application/json');  
+      
+        const httpOptions = { headers: headers }; 
+        return this._http.post(this.baseUrl + '/user/verifyStaffData' + "/" + districtId, formData, httpOptions)  
+      } 
+
+      ImportStaff(formData: FormData, districtId: any) {  
+        let headers = new HttpHeaders();  
+  
+        headers.append('Content-Type', 'multipart/form-data');  
+        headers.append('Accept', 'application/json');  
+      
+        const httpOptions = { headers: headers }; 
+        return this._http.post(this.baseUrl + '/user/importStaff' + "/" + districtId, formData, httpOptions)  
       } 
       
 }

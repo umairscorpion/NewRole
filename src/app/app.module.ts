@@ -215,6 +215,8 @@ import { ReleasePopupComponent } from './Components/Job/popus/release-popup/rele
 import { DeclinePopupComponent } from './Components/Job/popus/decline-popup/decline-popup.component';
 import { CancelPopupComponent } from './Components/Absence/popup/cancel-popup/cancel-popup.component';
 import { ReportAnIssuePopupComponent } from './Components/Reports/popups/report-an-issue-popup/report-an-issue-popup.component';
+import { ImportSubstitutesComponent } from './Components/Manage/SubPages/Substitutes/importSubstitutes.component';
+import { ImportStaffComponent } from './Components/Manage/SubPages/Employees/importStaff.component';
 
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig(
@@ -428,7 +430,9 @@ const customNotifierOptions: NotifierOptions = {
         ReleasePopupComponent,
         DeclinePopupComponent,
         CancelPopupComponent,
-        ReportAnIssuePopupComponent
+        ReportAnIssuePopupComponent,
+        ImportSubstitutesComponent,
+        ImportStaffComponent
     ],
     entryComponents: [
         PopupDialogForSubstituteDetail,
