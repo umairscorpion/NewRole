@@ -7,14 +7,13 @@ import swal from 'sweetalert2';
 import { UserSession } from '../../../../Services/userSession.service';
 
 @Component({
-  templateUrl: 'importSchools.component.html',
-  styleUrls: ['importSchools.component.scss']
+  templateUrl: 'importStaff.component.html',
+  styleUrls: ['importStaff.component.scss']
 })
-export class ImportSchoolsComponent implements OnInit {
+export class ImportStaffComponent implements OnInit {
   @ViewChild('fileInput') fileInput;  
   private notifier: NotifierService;
-  displayedColumns = ['Index', 'SchoolName', 'SchoolAddress', 'Country', 'State', 'City',
-   'ZipCode', 'District', 'StartTime', 'FirstHalf', 'SecondHalf','EndTime','Phone','Status' ];
+  displayedColumns = ['Index', 'FName', 'LName', 'Role', 'Location','Grade', 'Subject', 'Email', 'Phone', 'Level','Status'];
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -34,7 +33,8 @@ export class ImportSchoolsComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetDistricts();
-    this.DeleteSchools();
+    //this.GetTemporaryStaff();
+    this.DeleteTemporaryStaff();
   }
 
   ngAfterViewInit() {
@@ -48,22 +48,23 @@ export class ImportSchoolsComponent implements OnInit {
   },
       error => <any>error);
   }
+  GetTemporaryStaff(): void {
+    this._dataContext.get('user/getTemporaryStaff').subscribe((data: any) => {
+    this.dataSource.data = data;
+    },
+      error => this.msg = <any>error);
+  }
+
   onChangeDistrict(districtId: any) {
       this.DistrictId = districtId;
   }
 
-  GetSchools(): void {
-    this._dataContext.get('school/getTemporarySchools').subscribe((data: any) => {
-      this.dataSource.data = data;
+  DeleteTemporaryStaff(): void {
+    this._dataContext.get('user/deleteTemporaryStaff').subscribe((data: any) => {
     },
       error => this.msg = <any>error);
   }
 
-  DeleteSchools(): void {
-    this._dataContext.get('school/deleteTemporarySchools').subscribe((data: any) => {
-    },
-      error => this.msg = <any>error);
-  }
 
   VerifyData() {  
     if (this.DistrictId == 0) {
@@ -79,54 +80,54 @@ export class ImportSchoolsComponent implements OnInit {
     }
     let formData = new FormData();  
     formData.append('upload', this.fileInput.nativeElement.files[0]);
-    this._dataContext.VerifySchoolsData(formData, this.DistrictId).subscribe(result => {  
-      if(result == 'Imported'){
-        this.notifier.notify('success', 'Data Uploaded Successfully. Please Verify Your Data');
-        this.GetSchools();
+    this._dataContext.VerifyStaffData(formData, this.DistrictId).subscribe(result => {  
+      if(result == 3){
+        this.notifier.notify('success', 'Data Uploaded Successfully. Please Verify Your Data.');
+        this.GetTemporaryStaff();
       }
-      else if(result == 'Empty'){
+      else if(result == 2){
         this.notifier.notify('error', 'File is Empty.');
       }
-      else if(result == 'NotSupported'){
+      else if(result == 1){
         this.notifier.notify('error', 'We are Sorry, This file format is not supported. Only Excel files are allowed.');
       }
       else{
         this.notifier.notify('error', 'We are Sorry, Something Went Wrong.');
       }
     });   
-  
-  }  
-  uploadFile() {  
-    if (this.DistrictId == 0) {
-      this.DistrictId = this._userSession.UserClaim.districtId;
+  }
+    uploadFile() {  
       if (this.DistrictId == 0) {
-        this.notifier.notify('error', 'Please Select District First.');
+        this.DistrictId = this._userSession.UserClaim.districtId;
+        if (this.DistrictId == 0) {
+          this.notifier.notify('error', 'Please Select District First.');
+          return;
+        }
+      } 
+      if(this.fileInput.nativeElement.files[0] == null){
+        this.notifier.notify('error', 'Please Select File First.');
         return;
       }
+      let formData = new FormData();  
+      formData.append('upload', this.fileInput.nativeElement.files[0]);
+      this._dataContext.ImportStaff(formData, this.DistrictId).subscribe((result: any) => {  
+        if(result == 3){
+          this.notifier.notify('success', 'Staff Imported Successfully.');
+        }
+        else if(result == 2){
+          this.notifier.notify('error', 'File is Empty.');
+        }
+        else if(result == 1){
+          this.notifier.notify('error', 'We are Sorry, This file format is not supported. Only Excel files are allowed.');
+        }
+        else if (result == '')
+      {
+        this.notifier.notify('error', 'We are Sorry something went wrong.');
+      }
+        else{
+          this.notifier.notify('error', result);
+        }
+      });   
+    
     } 
-    if(this.fileInput.nativeElement.files[0] == null){
-      this.notifier.notify('error', 'Please Select File First.');
-      return;
-    }
-    let formData = new FormData();  
-    formData.append('upload', this.fileInput.nativeElement.files[0]);
-    this._dataContext.ImportSchools(formData, this.DistrictId).subscribe((result: any) => {  
-      if(result == 'Imported'){
-        this.notifier.notify('success', 'Schools Imported Successfully.');
-        this.GetSchools();
-      }
-      else if(result == 'Empty'){
-        this.notifier.notify('error', 'File is Empty.');
-      }
-      else if(result == 'NotSupported'){
-        this.notifier.notify('error', 'We are Sorry, This file format is not supported. Only Excel files are allowed.');
-      }
-      else{
-        this.notifier.notify('error', result);
-      }
-    });   
-  
   }  
-
-  
-}

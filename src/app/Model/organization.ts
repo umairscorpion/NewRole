@@ -22,4 +22,6 @@ export class Organization extends Entity {
     dailyAbenceLimit: number;
     isAbsenceLimit: boolean;
     isActive: boolean;
+    stateName: string;
+    statusMessage: string;
 }

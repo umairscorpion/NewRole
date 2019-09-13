@@ -17,7 +17,7 @@
                 <input class="form-control" type="file" #fileInput />
             </div>
             <div class="col-md-2">
-                <button mat-raised-button style="background: #52b57c; color: white;" (click)="uploadFile();"> <i class="material-icons">
+                <button mat-raised-button style="background: #52b57c; color: white;" (click)="VerifyData();"> <i class="material-icons">
                         verified_user
                     </i>  Verify Data</button>
             </div>
@@ -27,6 +27,93 @@
                     </i> Import Schools</button>
             </div>
         </div>
+        <div class="row" style="margin-left: 0px;">
+            <p><span style="font-weight: bold;">Please follow these steps to import Schools. </span></p>
+            <p><span style="font-weight: bold;">Step 1 : </span> <span style="color:#52b57c">Select District.</span></p>
+            <p><span style="font-weight: bold;">Step 2 : </span> <span style="color:#52b57c">Select Excel File. </span></p>
+            <p><span style="font-weight: bold;">Step 3 : </span> <span style="color:#52b57c">Click on 'Verify Data' button.</span></p>
+            <p><span style="font-weight: bold;">Step 4 : </span> <span style="color:#52b57c">Verify Your Data in Table given below. If status is not OK then correct your data according to the status remarks.</span></p>
+            <p><span style="font-weight: bold;">Step 5 : </span> <span style="color:#52b57c">If Status is Ok for all rows then click on 'Import Schools' button.</span></p>
+
+          </div>
+        <h5 class="col-lg-12 col-md-12" style="background: #F5F5F5; color: red"
+                    mat-subheader>
+                    Please verify and check your data before importing.
+                  </h5>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+              <div class="example-container mat-elevation-z8">
+                <mat-table #table [dataSource]="dataSource" matSort>
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="Index">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Row No </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool; let i = index;"> {{ i + 1 }} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> School Name </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.schoolName}} </mat-cell>
+                  </ng-container>
+        
+                  <ng-container matColumnDef="SchoolAddress">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Address </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.schoolAddress}} </mat-cell>
+                  </ng-container>
+        
+                  <ng-container matColumnDef="Country">
+                    <mat-header-cell *matHeaderCellDef> Country </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.counrtyCode}} </mat-cell>
+                  </ng-container>
+        
+                  <ng-container matColumnDef="State">
+                    <mat-header-cell *matHeaderCellDef> State </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.stateName}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="City">
+                    <mat-header-cell *matHeaderCellDef> City </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.schoolCity}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="ZipCode">
+                    <mat-header-cell *matHeaderCellDef> Zip Code </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.schoolZipCode}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="District">
+                    <mat-header-cell *matHeaderCellDef> District </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.districtName}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="StartTime">
+                    <mat-header-cell *matHeaderCellDef> Start Time </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.schoolStartTime | convertFrom24HourTo12HourFormat}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="FirstHalf">
+                    <mat-header-cell *matHeaderCellDef> First Half Time </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.school1stHalfEnd | convertFrom24HourTo12HourFormat}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="SecondHalf">
+                    <mat-header-cell *matHeaderCellDef> Second Half Time </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.school2ndHalfStart | convertFrom24HourTo12HourFormat}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="EndTime">
+                    <mat-header-cell *matHeaderCellDef> End Time </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.schoolEndTime | convertFrom24HourTo12HourFormat}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="Phone">
+                    <mat-header-cell *matHeaderCellDef> Phone Number </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool"> {{iSchool.schoolPhone}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="Status">
+                    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                    <mat-cell *matCellDef="let iSchool" style="color:red"> {{iSchool.statusMessage == "" ? 'OK' : iSchool.statusMessage }} </mat-cell>
+                  </ng-container>
+                  
+                  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[1, 10, 20]" [showFirstLastButtons]="true">
+                </mat-paginator>
+              </div>
+            </div>
+          </div>
         <div class="row">
             <div><a routerLink="../../schools">
                     <button mat-raised-button type="button"

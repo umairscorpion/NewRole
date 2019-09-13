@@ -7,14 +7,13 @@ import swal from 'sweetalert2';
 import { UserSession } from '../../../../Services/userSession.service';
 
 @Component({
-  templateUrl: 'importSchools.component.html',
-  styleUrls: ['importSchools.component.scss']
+  templateUrl: 'importSubstitutes.component.html',
+  styleUrls: ['importSubstitutes.component.scss']
 })
-export class ImportSchoolsComponent implements OnInit {
+export class ImportSubstitutesComponent implements OnInit {
   @ViewChild('fileInput') fileInput;  
   private notifier: NotifierService;
-  displayedColumns = ['Index', 'SchoolName', 'SchoolAddress', 'Country', 'State', 'City',
-   'ZipCode', 'District', 'StartTime', 'FirstHalf', 'SecondHalf','EndTime','Phone','Status' ];
+  displayedColumns = ['Index', 'FName', 'LName', 'Type', 'Email', 'Phone', 'District', 'Status'];
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -34,7 +33,7 @@ export class ImportSchoolsComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetDistricts();
-    this.DeleteSchools();
+    this.DeleteTemporarySubstitutes();
   }
 
   ngAfterViewInit() {
@@ -52,15 +51,15 @@ export class ImportSchoolsComponent implements OnInit {
       this.DistrictId = districtId;
   }
 
-  GetSchools(): void {
-    this._dataContext.get('school/getTemporarySchools').subscribe((data: any) => {
-      this.dataSource.data = data;
+  GetTemporarySustitutes(): void {
+    this._dataContext.get('user/getTemporarySubstitutes').subscribe((data: any) => {
+    this.dataSource.data = data;
     },
       error => this.msg = <any>error);
   }
 
-  DeleteSchools(): void {
-    this._dataContext.get('school/deleteTemporarySchools').subscribe((data: any) => {
+  DeleteTemporarySubstitutes(): void {
+    this._dataContext.get('user/deleteTemporarySubstitutes').subscribe((data: any) => {
     },
       error => this.msg = <any>error);
   }
@@ -79,15 +78,15 @@ export class ImportSchoolsComponent implements OnInit {
     }
     let formData = new FormData();  
     formData.append('upload', this.fileInput.nativeElement.files[0]);
-    this._dataContext.VerifySchoolsData(formData, this.DistrictId).subscribe(result => {  
-      if(result == 'Imported'){
+    this._dataContext.VerifySubstitutesData(formData, this.DistrictId).subscribe((result: any) => {  
+      if(result == 3){
         this.notifier.notify('success', 'Data Uploaded Successfully. Please Verify Your Data');
-        this.GetSchools();
+        this.GetTemporarySustitutes();
       }
-      else if(result == 'Empty'){
+      else if(result == 2){
         this.notifier.notify('error', 'File is Empty.');
       }
-      else if(result == 'NotSupported'){
+      else if(result == 1){
         this.notifier.notify('error', 'We are Sorry, This file format is not supported. Only Excel files are allowed.');
       }
       else{
@@ -96,6 +95,7 @@ export class ImportSchoolsComponent implements OnInit {
     });   
   
   }  
+
   uploadFile() {  
     if (this.DistrictId == 0) {
       this.DistrictId = this._userSession.UserClaim.districtId;
@@ -110,16 +110,20 @@ export class ImportSchoolsComponent implements OnInit {
     }
     let formData = new FormData();  
     formData.append('upload', this.fileInput.nativeElement.files[0]);
-    this._dataContext.ImportSchools(formData, this.DistrictId).subscribe((result: any) => {  
-      if(result == 'Imported'){
-        this.notifier.notify('success', 'Schools Imported Successfully.');
-        this.GetSchools();
+    this._dataContext.ImportSubstitutes(formData, this.DistrictId).subscribe((result: any) => {  
+      if(result == 3){
+        this.notifier.notify('success', 'Substitutes Imported Successfully.');
+        this.GetTemporarySustitutes();
       }
-      else if(result == 'Empty'){
+      else if(result == 2){
         this.notifier.notify('error', 'File is Empty.');
       }
-      else if(result == 'NotSupported'){
+      else if(result == 1){
         this.notifier.notify('error', 'We are Sorry, This file format is not supported. Only Excel files are allowed.');
+      }
+      else if (result == '')
+      {
+        this.notifier.notify('error', 'We are Sorry something went wrong.');
       }
       else{
         this.notifier.notify('error', result);
