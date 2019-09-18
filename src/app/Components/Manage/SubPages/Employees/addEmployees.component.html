@@ -107,7 +107,7 @@
                                 <mat-select placeholder="Subzz Role" formControlName="role" required>
                                     <mat-option>--</mat-option>
                                     <mat-option *ngFor="let role of roles"
-                                        [disabled]="(employeeForm.value.WorkLocaion == 1 && role.roleId == 2) || (employeeForm.value.WorkLocaion == 2 && role.roleId == 1) || (role.roleId == 4 || role.roleId == 5)"
+                                        [disabled]="(employeeForm.value.WorkLocaion == 1 && role.roleId == 2) || (employeeForm.value.WorkLocaion == 2 && role.roleId == 1) || (role.roleId == 4 || role.roleId == 5 || role.roleId == 6)"
                                         [value]="role.roleId">
                                         {{role.roleName}}
                                     </mat-option>

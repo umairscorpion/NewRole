@@ -26,6 +26,7 @@ export enum UserRoleType {
     SchoolAdmin ,
     Employee ,
     Substitute ,
-    SuperAdmin 
+    SuperAdmin ,
+    DataEntryOperator
 }
 

@@ -59,11 +59,13 @@ export class PastJobsComponent implements OnInit {
 
     GetPastJobs() {
         let StartDate = new Date();
-        let EndDate = this.CurrentDate.toISOString();
+        // let EndDate = this.CurrentDate.toISOString();
+        let EndDate = new Date();
+        EndDate.setDate(this.currentDate.getDate() - 1);
         StartDate.setDate(this.currentDate.getDate() - 30);
         let model = {
             StartDate: StartDate.toISOString(),
-            EndDate: EndDate,
+            EndDate: EndDate.toISOString(),
             SubstituteId: this._userSession.getUserId(),
             DistrictId: this._userSession.getUserDistrictId(),
             Status: 2,
